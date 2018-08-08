@@ -10,9 +10,11 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "css-loader": "^1.0.0",
     "element-ui": "^2.4.5",
     "register-service-worker": "^1.0.0",
     "vue": "^2.5.17",
+    "vue-loader": "^15.3.0",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
   },
