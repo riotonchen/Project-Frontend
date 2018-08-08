@@ -1,6 +1,5 @@
 .DS_Store
 node_modules
-/static
 
 # local env files
 .env.local
@@ -20,6 +19,3 @@ yarn-error.log*
 *.sln
 *.sw*
 
-/templates
-
-/static
