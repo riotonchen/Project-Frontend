@@ -1,4 +1,9 @@
-# frontend
+# frontend vue cli 3
+
+## you can use vue ui(beta)
+```
+vue ui
+```
 
 ## Project setup
 ```
