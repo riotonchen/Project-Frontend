@@ -1,0 +1,32 @@
+node js 
+https://nodejs.org/dist/v10.8.0/node-v10.8.0-x64.msi
+
+安裝好後，打開cmd
+輸入
+npm install -g @vue/cli
+
+請安裝 github desktop
+https://central.github.com/deployments/desktop/desktop/latest/win32
+
+註冊一組帳號密碼  登入github desktop，並且打開瀏覽器
+進入(也請登入 Web Github)
+https://github.com/riotonchen/Project-Frontend
+
+點選右上的 Fork 把專案導入自己的github
+
+打開desktop版github 選左上 file ---> Clone r...的選項 選好路徑後，等待跑完 接下來
+選中間的 current branch ---> new branch ---> 輸入你自己的代號(隨意) 之後commit請選自己的branch
+
+(commit ： 你檔案變動過後，可在左下角的 summary 輸入這次變動的主題，輸入完後即可commit)
+
+接下來請用 cmd 指令 cd 到 你剛剛clone下來的資料夾路徑
+下一個指令為
+npm i
+(此過程較久，請耐心等候)
+
+接下來可以再輸入
+vue ui
+
+或是 README.MD裡面的指令 去遊玩看看
+
+(PS 請勿覆蓋主幹 master 的資料)
