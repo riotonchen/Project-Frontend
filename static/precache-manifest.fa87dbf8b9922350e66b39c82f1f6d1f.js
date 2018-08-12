@@ -37,6 +37,6 @@ self.__precacheManifest = [
   },
   {
     "revision": "2a4ac9ced8d042ed9ef2e612f8c17695",
-    "url": "/static/..\\templates\\client\\index.html"
+    "url": "/static/..\\templates\\index.html"
   }
 ];
