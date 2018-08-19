@@ -6,6 +6,7 @@ import "./registerServiceWorker";
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 import locale from "element-ui/lib/locale/lang/zh-TW";
+import './plugins/element.js'
 
 Vue.use(ElementUI, { locale });
 

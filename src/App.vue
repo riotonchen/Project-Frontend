@@ -1,14 +1,23 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    <div id="app">
+      <!--
+      <div id="nav">
+        <router-link to="/">Home</router-link> |
+        <router-link to="/about">About</router-link>
+      </div>
+      <router-view/>
+      -->
+      
+
     </div>
-    <router-view/>
-  </div>
 </template>
 
 <style lang="less">
+body {
+  background: url("./assets/background.png") no-repeat fixed;
+  background-size: cover;
+}
+
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -27,3 +36,19 @@
   }
 }
 </style>
+
+<script>
+export default {
+  data() {
+    return {
+      activeIndex: "1",
+      activeIndex2: "1"
+    };
+  },
+  methods: {
+    handleSelect(key, keyPath) {
+      console.log(key, keyPath);
+    }
+  }
+};
+</script>
