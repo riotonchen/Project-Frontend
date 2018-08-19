@@ -7,8 +7,23 @@
       </div>
       <router-view/>
       -->
-      
-
+      <div id="navbar">
+        <el-row type="flex" class="row-bg" justify="end">
+          <el-col :span="1">
+            <div class="grid-content bg-purple">
+              <el-button round="" type="text">
+                <router-link to="/signup">註冊</router-link>
+              </el-button>
+            </div>          
+          </el-col>
+          <el-col :span="1">
+              <el-button round="" type="text">
+                <router-link to="/login">登入</router-link>
+              </el-button>
+          </el-col>
+        </el-row>
+      </div>
+      <router-view/>
     </div>
 </template>
 
@@ -16,15 +31,19 @@
 body {
   background: url("./assets/background.png") no-repeat fixed;
   background-size: cover;
+  font-family: Microsoft JhengHei;
 }
 
 #app {
+  /*
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  */
   text-align: center;
   color: #2c3e50;
 }
+/*
 #nav {
   padding: 30px;
   a {
@@ -35,20 +54,43 @@ body {
     }
   }
 }
-</style>
-
-<script>
-export default {
-  data() {
-    return {
-      activeIndex: "1",
-      activeIndex2: "1"
-    };
-  },
-  methods: {
-    handleSelect(key, keyPath) {
-      console.log(key, keyPath);
-    }
+*/
+a {
+  text-decoration: none;
+  font-size: 18px;
+  font-family: Microsoft JhengHei;
+  color: black;
+}
+.router-link-active {
+  //.router-link-active 指定
+  color: black;
+  background: #fff;
+}
+.el-row {
+  margin-bottom: 50px;
+  &:last-child {
+    margin-bottom: 0;
   }
-};
-</script>
+}
+.el-col {
+  border-radius: 4px;
+}
+.bg-purple-dark {
+  background: #99a9bf;
+}
+.bg-purple {
+  background: rgba(0, 0, 0, 0);
+}
+.bg-purple-light {
+  background: #e5e9f2;
+}
+.grid-content {
+  border-radius: 4px;
+  min-height: 36px;
+}
+.row-bg {
+  padding: 10px 0;
+  padding-right: 10px;
+  background-color: rgba(0, 0, 0, 0);
+}
+</style>
