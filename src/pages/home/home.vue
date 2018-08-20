@@ -1,37 +1,43 @@
 <template>
-    <div id="app">
-      <!--
+  <div>
+    <title>
+      <%= htmlWebpackPlugin.options.title %>
+    </title>
+    <!--
       <div id="nav">
         <router-link to="/">Home</router-link> |
         <router-link to="/about">About</router-link>
       </div>
       <router-view/>
       -->
-      <div id="navbar">
-        <el-row type="flex" class="row-bg" justify="end">
-          <el-col :span="1">
-            <div class="grid-content bg-purple">
-              <el-button round="" type="text">
-                <router-link to="/signup">註冊</router-link>
-              </el-button>
-            </div>          
-          </el-col>
-          <el-col :span="1">
-              <el-button round="" type="text">
-                <router-link to="/login">登入</router-link>
-              </el-button>
-          </el-col>
-        </el-row>
-      </div>
-      <router-view/>
+    <div id="navbar">
+      <el-row type="flex" class="row-bg" justify="end">
+        <el-col :span="1">
+          <div class="grid-content bg-purple">
+            <el-button type="text" plain>
+              <a href="signup.html">註冊</a>
+            </el-button>
+          </div>
+        </el-col>
+        <el-col :span="1">
+          <div class="grid-content bg-purple">
+            <el-button type="text" plain>
+              <a href="login.html">登入</a>
+            </el-button>
+          </div>
+        </el-col>
+      </el-row>
     </div>
+    <router-view/>
+  </div>
 </template>
 
 <style lang="less">
 body {
-  background: url("./assets/background.png") no-repeat fixed;
+  background: url("../../assets/background.png") no-repeat fixed;
   background-size: cover;
   font-family: Microsoft JhengHei;
+  text-align: center;
 }
 
 #app {

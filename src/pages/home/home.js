@@ -1,14 +1,16 @@
 import Vue from "vue";
-import App from "./App.vue";
-import router from "./router";
-import store from "./store";
-import "./registerServiceWorker";
+import home from "./home.vue";
+import router from "../../router";
+import store from "../../store";
+import "../../registerServiceWorker";
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 import locale from "element-ui/lib/locale/lang/zh-TW";
-import "./plugins/element.js";
+import "../../plugins/element";
 
-Vue.use(ElementUI, { locale });
+Vue.use(ElementUI, {
+  locale
+});
 
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
@@ -16,5 +18,5 @@ Vue.use(ElementUI);
 new Vue({
   router,
   store,
-  render: h => h(App)
-}).$mount("#app");
+  render: h => h(home)
+}).$mount("#home");
