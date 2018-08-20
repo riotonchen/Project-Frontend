@@ -10,31 +10,29 @@
       </div>
       <router-view/>
       -->
-    <div id="navbar">
-      <el-row type="flex" class="row-bg" justify="end">
-        <el-col :span="1">
-          <div class="grid-content bg-purple">
-            <el-button type="text" plain>
-              <a href="signup.html">註冊</a>
-            </el-button>
-          </div>
-        </el-col>
-        <el-col :span="1">
-          <div class="grid-content bg-purple">
-            <el-button type="text" plain>
-              <a href="login.html">登入</a>
-            </el-button>
-          </div>
-        </el-col>
-      </el-row>
-    </div>
+    <el-row type="flex" class="row-bg" justify="end">
+      <el-col :span="1">
+        <div class="grid-content bg-purple">
+          <el-button type="text" plain>
+            <a href="signup.html">註冊</a>
+          </el-button>
+        </div>
+      </el-col>
+      <el-col :span="1">
+        <div class="grid-content bg-purple">
+          <el-button type="text" plain>
+            <a href="login.html">登入</a>
+          </el-button>
+        </div>
+      </el-col>
+    </el-row>
     <router-view/>
   </div>
 </template>
 
 <style lang="less">
 body {
-  background: url("../../assets/background.png") no-repeat fixed;
+  background: url("../../assets/images/background.png") no-repeat fixed;
   background-size: cover;
   font-family: Microsoft JhengHei;
   text-align: center;

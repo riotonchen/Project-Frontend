@@ -8,7 +8,7 @@ function getEntry(globPath) {
     pathname,
     appname;
 
-  glob.sync(globPath).forEach(function(entry) {
+  glob.sync(globPath).forEach(function (entry) {
     basename = path.basename(entry, path.extname(entry));
     // console.log(entry)
     tmp = entry.split("/").splice(-3);
@@ -46,5 +46,5 @@ module.exports = {
   pages: htmls,
   devServer: {
     index: "home.html"
-  }
+  },
 };

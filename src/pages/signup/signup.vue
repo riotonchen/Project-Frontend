@@ -12,7 +12,7 @@
   font-size: 50px;
 }
 body {
-  background: url("../../assets/background.png") no-repeat fixed;
+  background: url("../../assets/images/background.png") no-repeat fixed;
   background-size: cover;
   font-family: Microsoft JhengHei;
   text-align: center;
