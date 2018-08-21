@@ -10,25 +10,37 @@
       </div>
       <router-view/>
       -->
-    <div id="navbar">
-      <el-row type="flex" class="row-bg" justify="end">
-        <el-col :span="1">
-          <div class="grid-content bg-purple">
-            <el-button type="text" plain>
-              <a href="signup.html">註冊</a>
-            </el-button>
-          </div>
-        </el-col>
-        <el-col :span="1">
-          <div class="grid-content bg-purple">
-            <el-button type="text" plain>
-              <a href="login.html">登入</a>
-            </el-button>
-          </div>
-        </el-col>
-      </el-row>
+    <el-row :gutter="1" class="header">
+      <el-col :xs="3" :sm="1" :md="1" :lg="1" :xl="1">
+        <div class="grid-content">
+          <el-button type="text" plain>
+            <a href="signup.html">註冊</a>
+          </el-button>
+        </div>
+      </el-col>
+      <el-col :xs="3" :sm="1" :md="1" :lg="1" :xl="1">
+        <div class="grid-content">
+          <el-button type="text" plain>
+            <a href="login.html">登入</a>
+          </el-button>
+        </div>
+      </el-col>
+    </el-row>
+    <div class="body">
+      <div class="title title1">
+        <p>
+          177 一起記
+        </p>
+      </div>
+      <div class="title title2">
+        <p>
+          記帳
+        </p>
+      </div>
+      <div class="title title3">
+        不只是你一個人的事
+      </div>
     </div>
-    <router-view/>
   </div>
 </template>
 
@@ -41,66 +53,54 @@ body {
   background: url("../../assets/images/background.png") no-repeat fixed;
   background-size: cover;
   font-family: Microsoft JhengHei;
-  text-align: center;
 }
-
-#app {
-  /*
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  */
-  text-align: center;
-  color: #2c3e50;
-}
-/*
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
-*/
 a {
   text-decoration: none;
-  font-size: 18px;
+  font-size: 2vmin;
   font-family: Microsoft JhengHei;
-  color: black;
+  color: #9d9d9d;
 }
 .router-link-active {
   //.router-link-active 指定
   color: black;
   background: #fff;
 }
-.el-row {
-  margin-bottom: 50px;
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-.el-col {
-  border-radius: 4px;
-}
-.bg-purple-dark {
-  background: #99a9bf;
-}
-.bg-purple {
-  background: rgba(0, 0, 0, 0);
-}
-.bg-purple-light {
-  background: #e5e9f2;
-}
 .grid-content {
-  border-radius: 4px;
-  min-height: 36px;
+  text-align: center;
 }
-.row-bg {
-  padding: 10px 0;
-  padding-right: 10px;
-  background-color: rgba(0, 0, 0, 0);
+.header {
+  //background-color: antiquewhite;
+}
+.body {
+  //background-color: antiquewhite;
+  height: 90vh;
+  margin-top: -8.5vh;
+}
+.title {
+  //background-color: #9d9d9d;
+  text-align: center;
+  color: #7d7d7d;
+  font-family: SentryTEA;
+}
+.title1 {
+  font-size: 11vmin;
+  width: 22vw;
+  margin-left: 6vw;
+  margin-top: 20vh;
+  z-index: 1;
+}
+.title2 {
+  width: 7vw;
+  font-size: 8vmin;
+  margin-top: -6vh;
+  margin-left: 9vw;
+  z-index: 2;
+}
+.title3 {
+  width: 18vw;
+  font-size: 4.2vmin;
+  margin-top: -14.3vh;
+  margin-left: 15.5vw;
+  z-index: 3;
 }
 </style>
