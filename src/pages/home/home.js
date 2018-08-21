@@ -1,7 +1,7 @@
 import Vue from "vue";
 import home from "./home.vue";
-import router from "../../router";
-import store from "../../store";
+import router from "./router";
+import store from "./store";
 import "../../registerServiceWorker";
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";

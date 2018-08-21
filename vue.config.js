@@ -8,7 +8,7 @@ function getEntry(globPath) {
     pathname,
     appname;
 
-  glob.sync(globPath).forEach(function (entry) {
+  glob.sync(globPath).forEach(function(entry) {
     basename = path.basename(entry, path.extname(entry));
     // console.log(entry)
     tmp = entry.split("/").splice(-3);
@@ -19,32 +19,28 @@ function getEntry(globPath) {
     entries[pathname] = {
       entry: "src/" + tmp[0] + "/" + tmp[1] + "/" + tmp[1] + ".js",
       template: "src/" + tmp[0] + "/" + tmp[1] + "/" + tmp[2],
+      title: tmp[2],
       filename: tmp[2]
     };
   });
-  console.log(entries);
   return entries;
 }
 
-let htmls = getEntry("./src/pages/**/*.html");
-// console.log(htmls)
+let pages = getEntry("./src/pages/**?/*.html");
+console.log(pages);
 //配置end
+
 module.exports = {
-  outputDir: "static",
   baseUrl: "/",
-  chainWebpack: config => {
-    config.module
-      .rule("vue")
-      .use("vue-loader")
-      .loader("vue-loader")
-      .tap(options => {
-        // 修改它的选项...
-        options.limit = 10000;
-        return options;
-      });
-  },
-  pages: htmls,
+  outputDir: "static",
+  productionSourceMap: true,
+  pages,
   devServer: {
-    index: "home.html"
-  },
+    index: "home.html", //默认启动serve 打开page1页面
+    open: process.platform === "darwin",
+    host: "",
+    port: 8088,
+    https: false,
+    hotOnly: false
+  }
 };

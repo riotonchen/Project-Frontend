@@ -10,27 +10,33 @@
       </div>
       <router-view/>
       -->
-    <el-row type="flex" class="row-bg" justify="end">
-      <el-col :span="1">
-        <div class="grid-content bg-purple">
-          <el-button type="text" plain>
-            <a href="signup.html">註冊</a>
-          </el-button>
-        </div>
-      </el-col>
-      <el-col :span="1">
-        <div class="grid-content bg-purple">
-          <el-button type="text" plain>
-            <a href="login.html">登入</a>
-          </el-button>
-        </div>
-      </el-col>
-    </el-row>
+    <div id="navbar">
+      <el-row type="flex" class="row-bg" justify="end">
+        <el-col :span="1">
+          <div class="grid-content bg-purple">
+            <el-button type="text" plain>
+              <a href="signup.html">註冊</a>
+            </el-button>
+          </div>
+        </el-col>
+        <el-col :span="1">
+          <div class="grid-content bg-purple">
+            <el-button type="text" plain>
+              <a href="login.html">登入</a>
+            </el-button>
+          </div>
+        </el-col>
+      </el-row>
+    </div>
     <router-view/>
   </div>
 </template>
 
 <style lang="less">
+@font-face {
+  font-family: SentryTEA;
+  src: url("../../assets/fonts/SentyTEA.ttf");
+}
 body {
   background: url("../../assets/images/background.png") no-repeat fixed;
   background-size: cover;
