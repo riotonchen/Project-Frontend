@@ -30,3 +30,5 @@ vue ui
 或是 README.MD裡面的指令 去遊玩看看
 
 (PS 請勿覆蓋主幹 master 的資料)
+  outputDir: "static",
+  baseUrl: "/",
