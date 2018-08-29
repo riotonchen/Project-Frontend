@@ -1,3 +1,6 @@
+const CompressionWebpackPlugin = require("compression-webpack-plugin");
+const productionGzipExtensions = ["js", "css"];
+
 let path = require("path");
 let glob = require("glob");
 //配置pages多页面获取当前文件夹下的html和js
@@ -42,5 +45,16 @@ module.exports = {
     port: 8088,
     https: false,
     hotOnly: false
+  },
+  configureWebpack: {
+    plugins: [
+      new CompressionWebpackPlugin({
+        asset: "[path].gz[query]",
+        algorithm: "gzip",
+        test: new RegExp("\\.(" + productionGzipExtensions.join("|") + ")$"),
+        threshold: 10240,
+        minRatio: 0.8
+      })
+    ]
   }
 };
