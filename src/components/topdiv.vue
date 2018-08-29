@@ -7,10 +7,10 @@
                 </p>
             </div>
             <div class="index1">
-                1 &nbsp; 一向做到最好 <br> 7 &nbsp; 七大模組應有盡有<br> 7 &nbsp; 一周七天做你最棒的記帳管家
+                ✔ &nbsp; 一向做到最好 <br> ✔ &nbsp; 七大模組應有盡有<br> ✔ &nbsp; 七天每週做你最棒的記帳管家
             </div>
             <div class="index2">
-                孤軍奮戰的時代已經過去了，讓我們與你一起創造美好未來吧！
+                紙筆的時代已經過去了，讓我們與你<br>一起更聰明，更方便的理財吧！
             </div>
         </div>
         <div class="right">

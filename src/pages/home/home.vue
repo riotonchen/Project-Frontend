@@ -4,9 +4,17 @@
       <%= htmlWebpackPlugin.options.title %>
     </title>
     <div class="header">
-      <Navbar></Navbar>
-      <Titleword></Titleword>
-      <topdiv></topdiv>
+      <el-row>
+        <el-col :span="24" class="navbar">
+          <Navbar></Navbar>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="24" class="topdiv">
+          <topdiv></topdiv>
+        </el-col>
+      </el-row>
+
     </div>
   </div>
 </template>
