@@ -1,9 +1,9 @@
 <template>
   <div>
+    <title>
+      Home
+    </title>
     <div class="home1-container">
-      <title>
-        Home
-      </title>
       <el-row class="navbar">
         <el-col :xs="3" :sm="3" :md="3" :lg="3" :xl="4" class="logo">
           <div class="grid-content bg-purple">
@@ -14,7 +14,8 @@
         </el-col>
         <el-col :xs="8" :sm="7" :md="7" :lg="7" :xl="6">
           <div class="grid-content bg-purple-light title">
-            <router-link to="/">177&nbsp;一起記</router-link>
+            <router-link to="/">177&nbsp; 一起記
+            </router-link>
           </div>
         </el-col>
         <el-col :xs="9" :sm="9" :md="9" :lg="10" :xl="9">
@@ -87,7 +88,7 @@
                   <div class="item4">
                     <img src="../../assets/images/group.svg" class="img4">
                     <div class="text4">
-                      每次跟朋友出去遊玩<br>卻發現每次都收不齊錢?<br>我們，幫您分攤憂愁。
+                      每次跟朋友出去遊玩<br>卻發現每次都收不齊錢<br>我們幫您分攤憂愁
                     </div>
                   </div>
                 </div>
@@ -106,19 +107,19 @@
                   <div class="item3">
                     <img src="../../assets/images/smartphone.png" class="img3">
                     <div class="text3">
-                      我們仔細聆聽您的聲音<br>將您的字字句句記錄下來<br>快速的紀錄您的所有
+                      2
                     </div>
                   </div>
                   <div class="item4">
                     <img src="../../assets/images/group.svg" class="img4">
                     <div class="text4">
-                      每次跟朋友出去遊玩<br>卻發現每次都收不齊錢?<br>我們，幫您分攤憂愁。
+                      3
                     </div>
                   </div>
                   <div class="item5">
                     <img src="../../assets/images/group.svg" class="img5">
                     <div class="text5">
-                      每次跟朋友出去遊玩<br>卻發現每次都收不齊錢?<br>我們，幫您分攤憂愁。
+                      4
                     </div>
                   </div>
                 </div>
@@ -133,7 +134,7 @@
 
 <style lang="scss" scoped>
 @font-face {
-  font-family: sentytea;
+  font-family: GenJyuuGothic-Normal;
   src: url("../../assets/fonts/GenJyuuGothic-Normal.ttf");
 }
 
@@ -143,8 +144,8 @@
   -webkit-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-  height: 45vw;
-  font-family: sentytea;
+  height: 44.4vw;
+  font-family: GenJyuuGothic-Normal;
 }
 .home2-container {
   background: url("../../assets/images/background-comp2.svg") no-repeat;
@@ -153,7 +154,7 @@
   -o-background-size: cover;
   background-size: cover;
   height: 44.4vw;
-  font-family: sentytea;
+  font-family: GenJyuuGothic-Normal;
 }
 .navbar {
   padding-top: 1vmin;
@@ -261,7 +262,7 @@
 .carou-in1 .item4 .text4 {
   font-size: 1.8vw;
   text-align: center;
-  margin-left: 61.1vw;
+  margin-left: 62.1vw;
   margin-top: 3vw;
 }
 .carou-in2 {
