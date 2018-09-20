@@ -100,6 +100,23 @@ export const constantRouterMap = [{
   }]
 },
 
+  // 我是新增路由 START
+{
+  path: '/test',
+  component: Layout,
+  children: [{
+    path: 'index',
+    name: 'Test',
+    component: () =>
+        import('@/views/testpage/index'),
+    meta: {
+      title: 'Test',
+      icon: 'form'
+    }
+  }]
+},
+  // END
+
 {
   path: '/nested',
   component: Layout,
