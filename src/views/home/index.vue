@@ -169,7 +169,16 @@
           <img src="../../assets/images/facebook.svg" class="b3-fb">
         </el-col>
       </el-row>
+      <el-row class="lasttext">
+        <el-col :span="19" class="team">
+          製作團隊：中國文化大學&nbsp;&nbsp;資訊管理學系<br>吳彥霆，陳維宗，張弘毅，江建呈，王昭勝，王俐璇，胡芷菱，李耕渼
+        </el-col>
+        <el-col :span="4" class="contact">
+          聯絡方式：<br>177together@gmail.com
+        </el-col>
+      </el-row>
     </div>
+    <!--
     <div class="footer-container">
       <el-row>
         <el-col :span="19" class="team">
@@ -179,7 +188,8 @@
           聯絡方式：<br>177together@gmail.com
         </el-col>
       </el-row>
-    </div>
+    <div>
+    -->
   </div>
 </template>
 
@@ -259,6 +269,11 @@
   width: 38vw;
   padding-top: 7.2vw;
   padding-left: 5.5vw;
+}
+.lasttext {
+  color: rgba(250, 235, 215, 0.6);
+  padding-top: 5vw;
+  font-size: 1vw;
 }
 .words .title {
   font-size: 7vw;
