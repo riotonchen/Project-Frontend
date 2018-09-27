@@ -9,12 +9,12 @@
       </div>
       <div class="bullshit">
         <div class="bullshit__oops">OOPS!</div>
-        <div class="bullshit__info">版权所有
-          <a class="link-type" href="https://wallstreetcn.com" target="_blank">华尔街见闻</a>
+        <div class="bullshit__info">哈哈哈哈好像錯誤囉~~
+          <!--<a class="link-type" href="/home" target="_blank">按我回首頁</a>-->
         </div>
         <div class="bullshit__headline">{{ message }}</div>
-        <div class="bullshit__info">请检查您输入的网址是否正确，请点击以下按钮返回主页或者发送错误报告</div>
-        <a href="" class="bullshit__return-home">返回首页</a>
+        <div class="bullshit__info">請檢查你輸入的網址是否正確，請點擊以下按鈕回首頁</div>
+        <a href="/home" class="bullshit__return-home">回去首頁</a>
       </div>
     </div>
   </div>
@@ -26,15 +26,15 @@ export default {
   name: 'Page404',
   computed: {
     message() {
-      return '网管说这个页面你不能进......'
+      return '這個頁面不是你沒權限就是根本沒有這網頁喔!!'
     }
   }
 }
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.wscn-http404-container{
-  transform: translate(-50%,-50%);
+.wscn-http404-container {
+  transform: translate(-50%, -50%);
   position: absolute;
   top: 40%;
   left: 50%;

@@ -52,159 +52,92 @@ export const constantRouterMap = [{
         import('@/views/dashboard/index')
   }]
 },
-
 {
-  path: '/example',
-  component: Layout,
-  redirect: '/example/table',
-  name: 'Test',
-  meta: {
-    title: 'Test',
-    icon: 'example'
-  },
-  children: [{
-    path: 'table',
-    name: 'Table',
-    component: () =>
-          import('@/views/table/index'),
-    meta: {
-      title: 'Table',
-      icon: 'table'
-    }
-  },
-  {
-    path: 'tree',
-    name: 'Tree',
-    component: () =>
-          import('@/views/tree/index'),
-    meta: {
-      title: 'Tree',
-      icon: 'tree'
-    }
-  }
-  ]
-},
-
-{
-  path: '/form',
+  path: '/acounting',
   component: Layout,
   children: [{
     path: 'index',
-    name: 'Form',
+    name: 'Acounting',
     component: () =>
-        import('@/views/form/index'),
+        import('@/views/acounting/index'),
     meta: {
-      title: 'Form',
+      title: 'Acounting',
       icon: 'form'
     }
   }]
 },
-
-  // 我是新增路由 START
 {
-  path: '/test',
+  path: '/settings',
   component: Layout,
-  children: [{
-    path: 'index',
-    name: 'Test',
-    component: () =>
-        import('@/views/testpage/index'),
-    meta: {
-      title: 'Test',
-      icon: 'form'
-    }
-  }]
-},
-  // END
-
-{
-  path: '/nested',
-  component: Layout,
-  redirect: '/nested/menu1',
-  name: 'Nested',
+  redirect: '/settings/account',
+  name: 'settings',
   meta: {
-    title: 'nested',
-    icon: 'nested'
+    title: '設定',
+    icon: '4'
   },
   children: [{
-    path: 'menu1',
+    path: 'account',
+    name: 'account',
     component: () =>
-          import('@/views/nested/menu1/index'), // Parent router-view
-    name: 'Menu1',
+          import('@/views/settings/account'),
     meta: {
-      title: 'menu1'
-    },
-    children: [{
-      path: 'menu1-1',
-      component: () =>
-              import('@/views/nested/menu1/menu1-1'),
-      name: 'Menu1-1',
-      meta: {
-        title: 'menu1-1'
-      }
-    },
-    {
-      path: 'menu1-2',
-      component: () =>
-              import('@/views/nested/menu1/menu1-2'),
-      name: 'Menu1-2',
-      meta: {
-        title: 'menu1-2'
-      },
-      children: [{
-        path: 'menu1-2-1',
-        component: () =>
-                  import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-        name: 'Menu1-2-1',
-        meta: {
-          title: 'menu1-2-1'
-        }
-      },
-      {
-        path: 'menu1-2-2',
-        component: () =>
-                  import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-        name: 'Menu1-2-2',
-        meta: {
-          title: 'menu1-2-2'
-        }
-      }
-      ]
-    },
-    {
-      path: 'menu1-3',
-      component: () =>
-              import('@/views/nested/menu1/menu1-3'),
-      name: 'Menu1-3',
-      meta: {
-        title: 'menu1-3'
-      }
+      title: '帳戶管理',
+      icon: '4-1'
     }
-    ]
   },
   {
-    path: 'menu2',
+    path: 'category',
+    name: 'category',
     component: () =>
-          import('@/views/nested/menu2/index'),
+          import('@/views/category'),
     meta: {
-      title: 'menu2'
+      title: '分類管理',
+      icon: '4-1'
+    }
+  },
+  {
+    path: 'card',
+    name: 'card',
+    component: () =>
+          import('@/views/card'),
+    meta: {
+      title: '票卡管理',
+      icon: '4-1'
     }
   }
   ]
 },
-  /*
-  {
-    path: 'external-link',
-    component: Layout,
-    children: [{
-      path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-      meta: {
-        title: 'externalLink',
-        icon: 'link'
-      }
-    }]
-  },
-  */
+  // 優惠資訊
+{
+  path: '/information',
+  component: Layout,
+  children: [{
+    path: 'index',
+    name: 'information',
+    component: () =>
+        import('@/views/information/index'),
+    meta: {
+      title: '優惠資訊',
+      icon: '1'
+    }
+  }]
+},
+
+  // 聯絡我們
+{
+  path: '/connection',
+  component: Layout,
+  children: [{
+    path: 'index',
+    name: 'connection',
+    component: () =>
+        import('@/views/connection/index'),
+    meta: {
+      title: '聯絡我們',
+      icon: '2'
+    }
+  }]
+},
 {
   path: '*',
   redirect: '/404',
