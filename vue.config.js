@@ -5,9 +5,13 @@ function resolve(dir) {
 }
 
 module.exports = {
-  baseUrl: './',
+  baseUrl: '/',
+  outputDir: 'dist',
+  assetsDir: 'static',
+  /* baseUrl: './',
   outputDir: 'static',
   assetsDir: '../static',
+  */
   lintOnSave: process.env.NODE_ENV !== 'production',
   productionSourceMap: false,
   devServer: {
