@@ -1,7 +1,7 @@
 <template>
   <div>
     <title>
-      Home
+      首頁
     </title>
     <div class="home1-container">
       <el-row class="navbar">

@@ -12,8 +12,11 @@ module.exports = {
     proxyTable: {},
 
     // Various Dev Server settings
-    host: 'localhost', // can be overwritten by process.env.HOST
-    port: 9528, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
+
+    // can be overwritten by process.env.HOST
+    // if you want dev by ip, please set host: '0.0.0.0'
+    host: 'localhost',
+    port: 9527, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: true,
     errorOverlay: true,
     notifyOnErrors: false,
@@ -48,7 +51,7 @@ module.exports = {
 
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
-    assetsSubDirectory: 'static',
+    assetsSubDirectory: './',
 
     /**
      * You can set by youself according to actual condition
@@ -57,12 +60,11 @@ module.exports = {
      * then assetsPublicPath should be set to "/bar/".
      * In most cases please use '/' !!!
      */
-    assetsPublicPath: '/',
+    assetsPublicPath: '../static/',
 
     /**
      * Source Maps
      */
-
     productionSourceMap: false,
     // https://webpack.js.org/configuration/devtool/#production
     devtool: 'source-map',
@@ -71,12 +73,12 @@ module.exports = {
     // Surge or Netlify already gzip all static assets for you.
     // Before setting to `true`, make sure to:
     // npm install --save-dev compression-webpack-plugin
-    productionGzip: true,
-    productionGzipExtensions: ['js', 'css', 'png', 'svg', 'ttf'],
+    productionGzip: false,
+    productionGzipExtensions: ['js', 'css'],
 
     // Run the build command with an extra argument to
     // View the bundle analyzer report after build finishes:
-    // `npm run build --report`
+    // `npm run build:prod --report`
     // Set to `true` or `false` to always turn it on or off
     bundleAnalyzerReport: process.env.npm_config_report || false,
 
