@@ -92,13 +92,11 @@ const webpackConfig = merge(baseWebpackConfig, {
     // keep module.id stable when vender modules does not change
     new webpack.HashedModuleIdsPlugin(),
     // copy custom static assets
-    new CopyWebpackPlugin([
-      {
-        from: path.resolve(__dirname, '../static'),
-        to: config.build.assetsSubDirectory,
-        ignore: ['.*']
-      }
-    ])
+    new CopyWebpackPlugin([{
+      from: path.resolve(__dirname, '../static'),
+      to: config.build.assetsSubDirectory,
+      ignore: ['.*']
+    }])
   ],
   optimization: {
     splitChunks: {
@@ -108,17 +106,17 @@ const webpackConfig = merge(baseWebpackConfig, {
           name: 'chunk-libs',
           test: /[\\/]node_modules[\\/]/,
           priority: 10,
-          chunks: 'initial' // 只打包初始时依赖的第三方
+          chunks: 'initial' // 只打包初始時依賴的第三方
         },
         elementUI: {
-          name: 'chunk-elementUI', // 单独将 elementUI 拆包
-          priority: 20, // 权重要大于 libs 和 app 不然会被打包进 libs 或者 app
+          name: 'chunk-elementUI', // 單獨將 elementUI 拆包
+          priority: 20, // 權重要大於 libs 和 app 不然會被打包進 libs 或者 app
           test: /[\\/]node_modules[\\/]element-ui[\\/]/
         },
         commons: {
           name: 'chunk-commons',
-          test: resolve('src/components'), // 可自定义拓展你的规则
-          minChunks: 3, // 最小公用次数
+          test: resolve('src/components'), // 可自定義拓展你的規則
+          minChunks: 3, // 最小公用次數
           priority: 5,
           reuseExistingChunk: true
         }

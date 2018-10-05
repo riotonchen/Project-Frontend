@@ -1,13 +1,13 @@
 import './waves.css'
 
-export default{
+export default {
   bind(el, binding) {
     el.addEventListener('click', e => {
       const customOpts = Object.assign({}, binding.value)
       const opts = Object.assign({
-        ele: el, // 波纹作用元素
-        type: 'hit', // hit 点击位置扩散 center中心点扩展
-        color: 'rgba(0, 0, 0, 0.15)' // 波纹颜色
+        ele: el, // 波紋作用元素
+        type: 'hit', // hit 點擊位置擴散 center中心點擴展
+        color: 'rgba(0, 0, 0, 0.15)' // 波紋顏色
       }, customOpts)
       const target = opts.ele
       if (target) {
@@ -39,4 +39,3 @@ export default{
     }, false)
   }
 }
-

@@ -130,7 +130,7 @@
 
 <script>
 import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
-import waves from '@/directive/waves' // 水波纹指令
+import waves from '@/directive/waves' // 水波紋指令
 import { parseTime } from '@/utils'
 
 const calendarTypeOptions = [

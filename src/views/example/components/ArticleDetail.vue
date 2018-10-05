@@ -77,7 +77,7 @@
 import Tinymce from '@/components/Tinymce'
 import Upload from '@/components/Upload/singleImage3'
 import MDinput from '@/components/MDinput'
-import Sticky from '@/components/Sticky' // 粘性header组件
+import Sticky from '@/components/Sticky' // 黏性header组件
 import { validateURL } from '@/utils/validate'
 import { fetchArticle } from '@/api/article'
 import { userSearch } from '@/api/remoteSearch'
@@ -89,9 +89,9 @@ const defaultForm = {
   title: '', // 文章题目
   content: '', // 文章内容
   content_short: '', // 文章摘要
-  source_uri: '', // 文章外链
-  image_uri: '', // 文章图片
-  display_time: undefined, // 前台展示时间
+  source_uri: '', // 文章外鍵
+  image_uri: '', // 文章圖片
+  display_time: undefined, // 前台展示時間
   id: undefined,
   platforms: ['a-platform'],
   comment_disabled: false,

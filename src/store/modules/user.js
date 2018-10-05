@@ -1,5 +1,13 @@
-import { loginByUsername, logout, getUserInfo } from '@/api/login'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import {
+  loginByUsername,
+  logout,
+  getUserInfo
+} from '@/api/login'
+import {
+  getToken,
+  setToken,
+  removeToken
+} from '@/utils/auth'
 
 const user = {
   state: {
@@ -44,8 +52,10 @@ const user = {
   },
 
   actions: {
-    // 用户名登录
-    LoginByUsername({ commit }, userInfo) {
+    // 用户名登錄
+    LoginByUsername({
+      commit
+    }, userInfo) {
       const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
         loginByUsername(username, userInfo.password).then(response => {
@@ -59,16 +69,19 @@ const user = {
       })
     },
 
-    // 获取用户信息
-    GetUserInfo({ commit, state }) {
+    // 獲取用户信息
+    GetUserInfo({
+      commit,
+      state
+    }) {
       return new Promise((resolve, reject) => {
         getUserInfo(state.token).then(response => {
-          if (!response.data) { // 由于mockjs 不支持自定义状态码只能这样hack
+          if (!response.data) { // 由於mockjs 不支持自定義狀態碼只能這樣hack
             reject('error')
           }
           const data = response.data
 
-          if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
+          if (data.roles && data.roles.length > 0) { // 驗證返回的roles是否是一個非空數组
             commit('SET_ROLES', data.roles)
           } else {
             reject('getInfo: roles must be a non-null array !')
@@ -84,7 +97,7 @@ const user = {
       })
     },
 
-    // 第三方验证登录
+    // 第三方驗證登錄
     // LoginByThirdparty({ commit, state }, code) {
     //   return new Promise((resolve, reject) => {
     //     commit('SET_CODE', code)
@@ -99,7 +112,10 @@ const user = {
     // },
 
     // 登出
-    LogOut({ commit, state }) {
+    LogOut({
+      commit,
+      state
+    }) {
       return new Promise((resolve, reject) => {
         logout(state.token).then(() => {
           commit('SET_TOKEN', '')
@@ -113,7 +129,9 @@ const user = {
     },
 
     // 前端 登出
-    FedLogOut({ commit }) {
+    FedLogOut({
+      commit
+    }) {
       return new Promise(resolve => {
         commit('SET_TOKEN', '')
         removeToken()
@@ -121,8 +139,11 @@ const user = {
       })
     },
 
-    // 动态修改权限
-    ChangeRoles({ commit, dispatch }, role) {
+    // 動態修改權限
+    ChangeRoles({
+      commit,
+      dispatch
+    }, role) {
       return new Promise(resolve => {
         commit('SET_TOKEN', role)
         setToken(role)
@@ -132,7 +153,7 @@ const user = {
           commit('SET_NAME', data.name)
           commit('SET_AVATAR', data.avatar)
           commit('SET_INTRODUCTION', data.introduction)
-          dispatch('GenerateRoutes', data) // 动态修改权限后 重绘侧边菜单
+          dispatch('GenerateRoutes', data) // 動態修改權限後 重繪側邊菜單
           resolve()
         })
       })
