@@ -27,6 +27,13 @@
         </span>
       </el-form-item>
 
+      <el-form-item prop="membertype_id">
+        <span class="svg-container">
+          <svg-icon icon-class="user" />
+        </span>
+        <el-input v-model="loginForm.membertype_id" :placeholder="$t('login.membertype_id')" name="membertype_id" type="text" auto-complete="on" />
+      </el-form-item>
+
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">{{ $t('login.logIn') }}</el-button>
 
       <div class="tips">
@@ -77,11 +84,13 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin',
-        password: '1111111'
+        username: 'a4214679@pccu.edu.tw;2',
+        password: 'k79540777',
+        membertype_id: '2'
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        // username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        username: [{ required: true, trigger: 'blur' }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
       passwordType: 'password',
@@ -100,10 +109,10 @@ export default {
 
   },
   created() {
-    // window.addEventListener('hashchange', this.afterQRScan)
+    window.addEventListener('hashchange', this.afterQRScan)
   },
   destroyed() {
-    // window.removeEventListener('hashchange', this.afterQRScan)
+    window.removeEventListener('hashchange', this.afterQRScan)
   },
   methods: {
     showPwd() {
