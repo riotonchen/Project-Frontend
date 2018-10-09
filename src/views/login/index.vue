@@ -84,7 +84,7 @@ export default {
     }
     return {
       loginForm: {
-        username: 'a4214679@pccu.edu.tw;2',
+        username: 'a4214679@pccu.edu.tw',
         password: 'k79540777',
         membertype_id: '2'
       },
@@ -158,6 +158,7 @@ export default {
     }
   }
 }
+
 </script>
 
 <style rel="stylesheet/scss" lang="scss">

@@ -1,4 +1,7 @@
 import request from '@/utils/request'
+import {
+  strict
+} from 'assert'
 /*
 export function loginByUsername(username, password) {
   const data = {
@@ -31,7 +34,7 @@ export function getUserInfo(token) {
 */
 export function loginByUsername(username, password, membertype_id) {
   const data = {
-    username,
+    username: username + '\;' + membertype_id,
     password,
     membertype_id
   }
@@ -50,11 +53,20 @@ export function logout() {
 }
 
 export function getUserInfo(token) {
+  var jwtDecode = require('jwt-decode')
+  var decoded = jwtDecode(token)
+  console.log(decoded)
+  var user_id = decoded.user_id
+  var requ_url = 'https://www.177together.com/api/member/' + user_id + '/'
+
   return request({
-    url: 'https://www.177together.com/api/member/3/',
-    method: 'get',
+
+    url: requ_url,
+    method: 'get'
+    /*
     params: {
       token
     }
+    */
   })
 }

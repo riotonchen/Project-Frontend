@@ -141,6 +141,7 @@ const webpackConfig = merge(baseWebpackConfig, {
   }
 })
 
+
 if (config.build.productionGzip) {
   const CompressionWebpackPlugin = require('compression-webpack-plugin')
 
@@ -156,6 +157,7 @@ if (config.build.productionGzip) {
     })
   )
 }
+
 
 if (config.build.generateAnalyzerReport || config.build.bundleAnalyzerReport) {
   const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')

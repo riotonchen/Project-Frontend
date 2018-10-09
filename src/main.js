@@ -18,6 +18,8 @@ import './icons' // icon
 import './errorLog' // error log
 import './permission' // permission control
 // import './mock' // simulation data
+import axios from 'axios'
+axios.defaults.withCredentials = true
 
 import * as filters from './filters' // global filters
 
