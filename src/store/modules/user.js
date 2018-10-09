@@ -10,38 +10,99 @@ import {
 } from '@/utils/auth'
 
 const user = {
+  /*
+    state: {
+      user: '',
+      status: '',
+      code: '',
+      token: getToken(),
+      name: '',
+      avatar: '',
+      introduction: '',
+      roles: [],
+      setting: {
+        articlePlatform: []
+      }
+    },
+
+    mutations: {
+      SET_CODE: (state, code) => {
+        state.code = code
+      },
+      SET_TOKEN: (state, token) => {
+        state.token = token
+      },
+      SET_INTRODUCTION: (state, introduction) => {
+        state.introduction = introduction
+      },
+      SET_SETTING: (state, setting) => {
+        state.setting = setting
+      },
+      SET_STATUS: (state, status) => {
+        state.status = status
+      },
+      SET_NAME: (state, name) => {
+        state.name = name
+      },
+      SET_AVATAR: (state, avatar) => {
+        state.avatar = avatar
+      },
+      SET_ROLES: (state, roles) => {
+        state.roles = roles
+      }
+    },
+    */
+
   state: {
-    user: '',
-    status: '',
-    code: '',
+    user_id: '',
+    toid: '',
+    account: '',
+    identifier: '',
     token: getToken(),
+    membertype: '',
     name: '',
-    avatar: '',
-    introduction: '',
+    password: '',
+    localpicture: '',
+    dbpicture: '',
+    renew_time: '',
     roles: [],
     setting: {
       articlePlatform: []
     }
   },
-
   mutations: {
-    SET_CODE: (state, code) => {
-      state.code = code
+    SET_user_id: (state, user_id) => {
+      state.user_id = user_id
     },
     SET_TOKEN: (state, token) => {
       state.token = token
     },
-    SET_INTRODUCTION: (state, introduction) => {
-      state.introduction = introduction
+    SET_toid: (state, toid) => {
+      state.toid = toid
     },
-    SET_SETTING: (state, setting) => {
-      state.setting = setting
+    SET_account: (state, account) => {
+      state.account = account
     },
-    SET_STATUS: (state, status) => {
-      state.status = status
+    SET_identifier: (state, identifier) => {
+      state.identifier = identifier
     },
-    SET_NAME: (state, name) => {
+    SET_membertype: (state, membertype) => {
+      state.membertype = membertype
+    },
+    SET_name: (state, name) => {
       state.name = name
+    },
+    SET_password: (state, password) => {
+      state.password = password
+    },
+    SET_localpicture: (state, localpicture) => {
+      state.localpicture = localpicture
+    },
+    SET_dbpicture: (state, dbpicture) => {
+      state.dbpicture = dbpicture
+    },
+    SET_renew_time: (state, renew_time) => {
+      state.renew_time = renew_time
     },
     SET_AVATAR: (state, avatar) => {
       state.avatar = avatar
