@@ -14,12 +14,7 @@ const service = axios.create({
   timeout: 5000, // request timeout
   headers: {
     'X-Requested-With': 'XMLHttpRequest'
-  },
-  auth: {
-    username: 'a4214679@pccu.edu.tw',
-    password: 'k79540777'
   }
-
 })
 
 // request interceptor

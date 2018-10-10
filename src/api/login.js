@@ -1,7 +1,9 @@
 import request from '@/utils/request'
+/*
 import {
   strict
 } from 'assert'
+*/
 /*
 export function loginByUsername(username, password) {
   const data = {
@@ -62,11 +64,9 @@ export function getUserInfo(token) {
   return request({
 
     url: requ_url,
-    method: 'get'
-    /*
-    params: {
-      token
+    method: 'get',
+    headers: {
+      Authorization: 'JWT ' + token
     }
-    */
   })
 }
