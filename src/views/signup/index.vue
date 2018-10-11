@@ -80,7 +80,9 @@ export default {
       }
     }
     const validatedoublepswd = (rule, value, callback) => {
-      if (value !== this.signupForm.password) {
+      if (value === '') {
+        callback(new Error('請輸入，不可空白'))
+      } else if (value !== this.signupForm.password) {
         callback(new Error('第二次密碼不一樣，請再次輸入！'))
       } else {
         callback()
