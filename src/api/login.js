@@ -1,39 +1,5 @@
 import request from '@/utils/request'
-/*
-import {
-  strict
-} from 'assert'
-*/
-/*
-export function loginByUsername(username, password) {
-  const data = {
-    username,
-    password
-  }
-  return request({
-    url: '/login/login',
-    method: 'post',
-    data
-  })
-}
 
-export function logout() {
-  return request({
-    url: '/login/logout',
-    method: 'post'
-  })
-}
-
-export function getUserInfo(token) {
-  return request({
-    url: '/user/info',
-    method: 'get',
-    params: {
-      token
-    }
-  })
-}
-*/
 export function loginByUsername(username, password, membertype_id) {
   const data = {
     username: username + '\;' + membertype_id,

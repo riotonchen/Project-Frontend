@@ -1,13 +1,13 @@
 import request from '@/utils/request'
 
-export function Signup(username, password, membertype_id) {
+export function Postsignup(account, password, membertype) {
   const data = {
-    username,
+    account,
     password,
-    membertype_id
+    membertype
   }
   return request({
-    url: 'https://www.177together.com/api/member',
+    url: 'https://www.177together.com/api/member/',
     method: 'post',
     data
   })

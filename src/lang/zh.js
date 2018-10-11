@@ -85,7 +85,7 @@ export default {
     signUP: '送出',
     username: '帳號(電子信箱)',
     password: '密碼',
-    password2: '請再次輸入密碼'
+    doublepswd: '請再次輸入密碼'
   },
   documentation: {
     documentation: '文档',

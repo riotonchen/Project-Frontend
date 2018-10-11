@@ -85,7 +85,7 @@ export default {
     signUP: 'Send Out',
     username: 'Account(Email)',
     password: 'Password',
-    password2: 'Plz enter the same Password'
+    doublepswd: 'Plz enter the same Password'
   },
   documentation: {
     documentation: 'Documentation',

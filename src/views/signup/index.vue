@@ -21,39 +21,33 @@
         <span class="svg-container">
           <svg-icon icon-class="password" />
         </span>
-        <el-input :type="passwordType" v-model="signupForm.password" :placeholder="$t('signup.password')" name="password" auto-complete="on" @keyup.enter.native="handleLogin" />
+        <el-input :type="passwordType" v-model="signupForm.password" :placeholder="$t('signup.password')" name="password" auto-complete="on" @keyup.enter.native="handleSignup" />
         <span class="show-pwd" @click="showPwd">
           <svg-icon icon-class="eye" />
         </span>
       </el-form-item>
 
-      <el-form-item prop="password">
+      <el-form-item prop="doublepswd">
         <span class="svg-container">
           <svg-icon icon-class="password" />
         </span>
-        <el-input :type="passwordType" v-model="signupForm.password2" :placeholder="$t('signup.password2')" name="password2" auto-complete="on" @keyup.enter.native="handleLogin" />
+        <el-input :type="passwordType" v-model="signupForm.doublepswd" :placeholder="$t('signup.doublepswd')" name="doublepswd" auto-complete="on" />
         <span class="show-pwd" @click="showPwd">
           <svg-icon icon-class="eye" />
         </span>
       </el-form-item>
 
       <el-form-item prop="membertype_id">
-        <!--
-        <span class="svg-container">
-          <svg-icon icon-class="user" />
-        </span>
-        <el-input v-model="signupForm.membertype_id" :placeholder="$t('login.membertype_id')" name="membertype_id" type="text" auto-complete="on" />
-        -->
         <span class="svg-container">
           <svg-icon icon-class="star" />
         </span>
-        <el-select v-model="signupForm.membertype_id" clearable placeholder="請選擇會員類別">
+        <el-select v-model="signupForm.membertype_id" clearable placeholder="請選擇會員類別" @keyup.enter.native="handleSignup">
           <el-option v-for="item in membertype" :key="item.key" :label="item.label" :value="item.key" />
         </el-select>
       </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">{{ $t('signup.signUP') }}</el-button>
-      <el-button type="primary" style="width:100%;margin-bottom:30px;">
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleSignup">{{ $t('signup.signUP') }}</el-button>
+      <el-button type="primary" style="margin-left:0px;width:100%">
         <router-link to="/home">回首頁</router-link>
       </el-button>
     </el-form>
@@ -63,6 +57,9 @@
 <script>
 import { validateEmail } from '@/utils/validate'
 import LangSelect from '@/components/LangSelect'
+import {
+  Postsignup
+} from '@/api/signup'
 
 export default {
   name: 'Signup',
@@ -82,6 +79,13 @@ export default {
         callback()
       }
     }
+    const validatedoublepswd = (rule, value, callback) => {
+      if (value !== this.signupForm.password) {
+        callback(new Error('第二次密碼不一樣，請再次輸入！'))
+      } else {
+        callback()
+      }
+    }
     const validateMembertype = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('請選擇會員類別'))
@@ -94,11 +98,13 @@ export default {
       signupForm: {
         username: '',
         password: '',
+        doublepswd: '',
         membertype_id: ''
       },
       signupRules: {
         username: [{ required: true, trigger: 'blur', validator: isvalidateEmail }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }],
+        doublepswd: [{ required: true, validator: validatedoublepswd }],
         membertype_id: [{ required: true, trigger: 'blur', validator: validateMembertype }]
       },
       passwordType: 'password',
@@ -123,6 +129,19 @@ export default {
       } else {
         this.passwordType = 'password'
       }
+    },
+    handleSignup() {
+      this.$refs.signupForm.validate(valid => {
+        if (valid) {
+          this.loading = true
+          alert('註冊成功！')
+          Postsignup(this.signupForm.username, this.signupForm.password, this.signupForm.membertype_id)
+          this.$router.push({ path: this.redirect || '/home' })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
     }
   }
 }
