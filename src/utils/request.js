@@ -22,7 +22,7 @@ service.interceptors.request.use(
   config => {
     // Do something before request is sent
     if (store.getters.token) {
-      // 讓每個請求攜带token-- ['X-Token']為自定義key 请根據實際情況自行修改
+      // 讓每個請求攜带token-- ['JWT-Token']為自定義key 请根據實際情況自行修改
       config.headers['JWT-Token'] = getToken()
     }
     return config

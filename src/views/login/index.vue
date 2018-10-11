@@ -28,23 +28,25 @@
       </el-form-item>
 
       <el-form-item prop="membertype_id">
+        <!--
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
         <el-input v-model="loginForm.membertype_id" :placeholder="$t('login.membertype_id')" name="membertype_id" type="text" auto-complete="on" />
+        -->
+        <span class="svg-container">
+          <svg-icon icon-class="star" />
+        </span>
+        <el-select v-model="loginForm.membertype_id" clearable placeholder="請選擇會員類別">
+          <el-option v-for="item in membertype" :key="item.key" :label="item.label" :value="item.key" />
+        </el-select>
       </el-form-item>
 
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">{{ $t('login.logIn') }}</el-button>
-
-      <div class="tips">
-        <span>{{ $t('login.username') }} : admin</span>
-        <span>{{ $t('login.password') }} : {{ $t('login.any') }}</span>
-      </div>
-      <div class="tips">
-        <span style="margin-right:18px;">{{ $t('login.username') }} : editor</span>
-        <span>{{ $t('login.password') }} : {{ $t('login.any') }}</span>
-      </div>
-
+      <br>
+      <br>
+      <br>
+      <br>
       <el-button class="thirdparty-button" type="primary" @click="showDialog=true">{{ $t('login.thirdparty') }}</el-button>
     </el-form>
 
@@ -60,7 +62,7 @@
 </template>
 
 <script>
-import { isvalidUsername } from '@/utils/validate'
+import { validateEmail } from '@/utils/validate'
 import LangSelect from '@/components/LangSelect'
 import SocialSign from './socialsignin'
 
@@ -68,35 +70,44 @@ export default {
   name: 'Login',
   components: { LangSelect, SocialSign },
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!isvalidUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
+    const isvalidateEmail = (rule, value, callback) => {
+      if (!validateEmail(value)) {
+        callback(new Error('請輸入正確的 E-mail'))
       } else {
         callback()
       }
     }
     const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
+      if (value.length < 8) {
+        callback(new Error('密碼不可以小於 8 碼'))
       } else {
         callback()
       }
     }
+    const validateMembertype = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('請選擇會員類別'))
+      } else {
+        callback()
+      }
+    }
+
     return {
       loginForm: {
-        username: 'a4214679@pccu.edu.tw',
-        password: 'k79540777',
-        membertype_id: '2'
+        username: '',
+        password: '',
+        membertype_id: ''
       },
       loginRules: {
-        // username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        username: [{ required: true, trigger: 'blur' }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        username: [{ required: true, trigger: 'blur', validator: isvalidateEmail }],
+        password: [{ required: true, trigger: 'blur', validator: validatePassword }],
+        membertype_id: [{ required: true, trigger: 'blur', validator: validateMembertype }]
       },
       passwordType: 'password',
       loading: false,
       showDialog: false,
-      redirect: undefined
+      redirect: undefined,
+      membertype: [{ label: '一般會員', key: '2' }, { label: '管理員', key: '1' }, { label: '商家', key: '5' }]
     }
   },
   watch: {
@@ -199,10 +210,29 @@ $cursor: #fff;
       }
     }
   }
+  .el-select {
+    display: inline-block;
+    height: 47px;
+    width: 25rem;
+    input {
+      background: transparent;
+      border: 0px;
+      -webkit-appearance: none;
+      border-radius: 0px;
+      padding: 12px 5px 12px 15px;
+      color: $light_gray;
+      height: 47px;
+      caret-color: $cursor;
+      &:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0px 1000px $bg inset !important;
+        -webkit-text-fill-color: $cursor !important;
+      }
+    }
+  }
   .el-form-item {
     border: 1px solid rgba(255, 255, 255, 0.1);
     background: rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
+    border-radius: 10px;
     color: #454545;
   }
 }

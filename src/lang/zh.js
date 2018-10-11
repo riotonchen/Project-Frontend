@@ -72,13 +72,20 @@ export default {
     size: '布局大小'
   },
   login: {
-    title: '系统登录',
-    logIn: '登录',
-    username: '账号',
-    password: '密码',
+    title: '▶ 登錄 ◀',
+    logIn: '登錄',
+    username: '帳號',
+    password: '密碼',
     any: '随便填',
-    thirdparty: '第三方登录',
-    thirdpartyTips: '本地不能模拟，请结合自己业务进行模拟！！！'
+    thirdparty: '第三方登入',
+    thirdpartyTips: '尚未完成'
+  },
+  signup: {
+    title: '帳號註冊',
+    signUP: '送出',
+    username: '帳號(電子信箱)',
+    password: '密碼',
+    password2: '請再次輸入密碼'
   },
   documentation: {
     documentation: '文档',
