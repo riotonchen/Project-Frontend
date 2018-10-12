@@ -42,14 +42,12 @@
         </el-select>
       </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">{{ $t('login.logIn') }}</el-button>
-      <br>
-      <br>
-      <br>
-      <br>
-      <el-button class="thirdparty-button" type="primary" style="width:86.5%;margin-bottom:30px;" @click="showDialog=true">{{ $t('login.thirdparty') }}</el-button>
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:15px;" @click.native.prevent="handleLogin">{{ $t('login.logIn') }}</el-button>
+      <!--<el-button class="thirdparty-button" type="primary" style="width:86.5%;margin-bottom:-5px;" @click="showDialog=true">{{ $t('login.thirdparty') }}</el-button>-->
+      <el-button type="primary" style="width:100%;margin-bottom:-200px;margin-left:0px">
+        <router-link to="/home">回首頁</router-link>
+      </el-button>
     </el-form>
-
     <el-dialog :title="$t('login.thirdparty')" :visible.sync="showDialog" append-to-body>
       {{ $t('login.thirdpartyTips') }}
       <br>
