@@ -47,7 +47,7 @@
       <br>
       <br>
       <br>
-      <el-button class="thirdparty-button" type="primary" @click="showDialog=true">{{ $t('login.thirdparty') }}</el-button>
+      <el-button class="thirdparty-button" type="primary" style="width:86.5%;margin-bottom:30px;" @click="showDialog=true">{{ $t('login.thirdparty') }}</el-button>
     </el-form>
 
     <el-dialog :title="$t('login.thirdparty')" :visible.sync="showDialog" append-to-body>
