@@ -1,12 +1,13 @@
 import Cookies from 'js-cookie'
 
-const TokenKey = 'Admin-Token'
-// const TokenKey = loginByUsername
+// 給定一個假想TOKEN
+const TokenKey = 'Fake-Token'
 
 export function getToken() {
   return Cookies.get(TokenKey)
 }
 
+// 從API取得TOKEN並RESET
 export function setToken(token) {
   return Cookies.set(TokenKey, token)
 }

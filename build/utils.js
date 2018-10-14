@@ -4,16 +4,16 @@ const config = require('../config')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const packageConfig = require('../package.json')
 
-exports.assetsPath = function(_path) {
+exports.assetsPath = function (_path) {
   const assetsSubDirectory =
-    process.env.NODE_ENV === 'production'
-      ? config.build.assetsSubDirectory
-      : config.dev.assetsSubDirectory
+    process.env.NODE_ENV === 'production' ?
+    config.build.assetsSubDirectory :
+    config.dev.assetsSubDirectory
 
   return path.posix.join(assetsSubDirectory, _path)
 }
 
-exports.cssLoaders = function(options) {
+exports.cssLoaders = function (options) {
   options = options || {}
 
   const cssLoader = {
@@ -34,8 +34,8 @@ exports.cssLoaders = function(options) {
   function generateLoaders(loader, loaderOptions) {
     const loaders = []
 
-    // Extract CSS when that option is specified
-    // (which is the case during production build)
+    // 指定該選項時提取CSS
+    // (生產建構期間的狀況)
     if (options.extract) {
       loaders.push(MiniCssExtractPlugin.loader)
     } else {
@@ -73,8 +73,8 @@ exports.cssLoaders = function(options) {
   }
 }
 
-// Generate loaders for standalone style files (outside of .vue)
-exports.styleLoaders = function(options) {
+// 為獨立樣式文件生成加載器(Vue 外)
+exports.styleLoaders = function (options) {
   const output = []
   const loaders = exports.cssLoaders(options)
 

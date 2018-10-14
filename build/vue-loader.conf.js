@@ -1,5 +1,5 @@
 'use strict'
 
 module.exports = {
-  //You can set the vue-loader configuration by yourself.
+  //你可以自己設置 vue-loader 配置
 }

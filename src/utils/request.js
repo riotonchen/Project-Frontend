@@ -22,7 +22,7 @@ service.interceptors.request.use(
   config => {
     // Do something before request is sent
     if (store.getters.token) {
-      // 讓每個請求攜带token-- ['JWT-Token']為自定義key 请根據實際情況自行修改
+      // 讓每個請求攜带token-- ['JWT-Token']為自定義key 請根據實際情況自行修改
       config.headers['JWT-Token'] = getToken()
     }
     return config
@@ -43,6 +43,8 @@ service.interceptors.response.use(
    * 如想通過 xmlhttprequest 來狀態碼標示 邏輯可寫在下面error中
    * 以下代碼均為樣例，請結合自生需求加以修改，若不需要，則可删除
    */
+
+  /*
   response => {
     const res = response.data
     if (res.code !== 20000) {
@@ -79,6 +81,7 @@ service.interceptors.response.use(
     })
     return Promise.reject(error)
   }
+  */
 )
 
 export default service

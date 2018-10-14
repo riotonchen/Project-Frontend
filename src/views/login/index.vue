@@ -63,6 +63,7 @@
 import { validateEmail } from '@/utils/validate'
 import LangSelect from '@/components/LangSelect'
 import SocialSign from './socialsignin'
+import { loginByUsername } from '@/api/login'
 
 export default {
   name: 'Login',

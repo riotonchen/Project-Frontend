@@ -8,6 +8,10 @@ import {
   setToken,
   removeToken
 } from '@/utils/auth'
+import {
+  Message,
+  MessageBox
+} from 'element-ui'
 
 const user = {
   state: {
@@ -52,7 +56,7 @@ const user = {
   },
 
   actions: {
-    // 用户名登錄
+    // 用戶名登錄
     LoginByUsername({
       commit
     }, userInfo) {
@@ -64,12 +68,35 @@ const user = {
           setToken(response.data.token)
           resolve()
         }).catch(error => {
+          console.log(error.response.status)
+          console.log(error.response.data)
           reject(error)
+          MessageBox.confirm('你的帳號，密碼，或著是會員類別輸入錯誤。', '尚未註冊', {
+            confirmButtonText: '重新登入',
+            cancelButtonText: '取消',
+            type: 'error',
+            beforeClose: (action, instance, done) => {
+              if (action === 'confirm') {
+                instance.confirmButtonLoading = true
+                instance.confirmButtonText = '跳轉中'
+                setTimeout(() => {
+                  done()
+                  setTimeout(() => {
+                    instance.confirmButtonLoading = false
+                  }, 300)
+                }, 500)
+              } else {
+                done()
+              }
+            }
+          }).then(() => {
+            location.reload()
+          })
         })
       })
     },
 
-    // 獲取用户信息
+    // 獲取用戶訊息
     GetUserInfo({
       commit,
       state
