@@ -31,7 +31,7 @@
         <el-dropdown-menu slot="dropdown">
           <router-link to="/">
             <el-dropdown-item>
-              {{ $t('返回資訊總覽') }}
+              {{ $t('navbar.bdashboard') }}
             </el-dropdown-item>
           </router-link>
           <!--
@@ -42,7 +42,7 @@
           </a>
           -->
           <el-dropdown-item divided>
-            <span style="display:block;" @click="logout">{{ $t('登出') }}</span>
+            <span style="display:block;" @click="logout">{{ $t('navbar.logOut') }}</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>

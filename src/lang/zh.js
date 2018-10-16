@@ -1,6 +1,6 @@
 export default {
   route: {
-    dashboard: '首頁',
+    dashboard: '資訊總頁',
     introduction: '簡述',
     documentation: '文檔',
     guide: '引導頁',
@@ -51,7 +51,8 @@ export default {
     errorPages: '錯誤頁面',
     page401: '401',
     page404: '404',
-    errorLog: '錯誤日誌',
+    profile_view: '個人資訊',
+    profile_edit: '編輯資訊',
     excel: 'Excel',
     exportExcel: 'Export Excel',
     selectExcel: 'Export Selected',
@@ -64,12 +65,13 @@ export default {
     externalLink: '外鏈'
   },
   navbar: {
-    logOut: '退出登入',
-    dashboard: '首頁',
+    logOut: '登出',
+    dashboard: '首頁控制台',
     github: '項目地址',
     screenfull: '全屏',
     theme: '換膚',
-    size: '布局大小'
+    size: '布局大小',
+    bdashboard: '回到總覽頁'
   },
   login: {
     title: '▶ 登錄 ◀',

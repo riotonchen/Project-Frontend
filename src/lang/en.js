@@ -51,7 +51,8 @@ export default {
     errorPages: 'Error Pages',
     page401: '401',
     page404: '404',
-    errorLog: 'Error Log',
+    profile_view: 'User Profile',
+    profile_edit: 'Edit Profile',
     excel: 'Excel',
     exportExcel: 'Export Excel',
     selectExcel: 'Export Selected',
@@ -69,7 +70,8 @@ export default {
     github: 'Github',
     screenfull: 'Screenfull',
     theme: 'Theme',
-    size: 'Global Size'
+    size: 'Global Size',
+    bdashboard: 'Back to Dashboard'
   },
   login: {
     title: 'Login Form',
