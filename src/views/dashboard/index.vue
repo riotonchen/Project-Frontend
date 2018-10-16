@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-container">
     <title>
-      {{ $t('navbar.dashboard') }}
+      總覽
     </title>
     <component :is="currentRole" />
   </div>

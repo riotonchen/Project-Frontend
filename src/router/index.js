@@ -104,8 +104,8 @@ export const asyncRouterMap = [{
   children: [{
     path: 'profile-view',
     component: () =>
-        import('@/views/u_profile_view/index'),
-    name: 'u_profile_view',
+        import('@/views/c_profile_view/index'),
+    name: 'c_profile_view',
     meta: {
       title: 'profile_view',
       icon: 'user'
@@ -121,59 +121,116 @@ export const asyncRouterMap = [{
   children: [{
     path: 'profile-edit',
     component: () =>
-        import('@/views/u_profile_edit/index'),
-    name: 'u_profile_edit',
+        import('@/views/c_profile_edit/index'),
+    name: 'c_profile_edit',
     meta: {
       title: 'profile_edit',
       icon: 'user'
     }
   }]
 },
-
 {
-  path: '/error',
+  path: '/account',
   component: Layout,
   redirect: 'noredirect',
-  name: 'ErrorPages',
-  meta: {
-    title: 'errorPages',
-    icon: '404'
-  },
   children: [{
-    path: '401',
+    path: 'accountting',
     component: () =>
-          import('@/views/errorPage/401'),
-    name: 'Page401',
+        import('@/views/c_accountting/index'),
+    name: 'c_accountting',
     meta: {
-      title: 'page401',
-      noCache: true
+      title: '開始記帳',
+      icon: 'user'
     }
-  },
-  {
-    path: '404',
-    component: () =>
-          import('@/views/errorPage/404'),
-    name: 'Page404',
-    meta: {
-      title: 'page404',
-      noCache: true
-    }
-  }
-  ]
+  }]
 },
-
 {
-  path: '/error-log',
+  path: '/history',
   component: Layout,
   redirect: 'noredirect',
   children: [{
-    path: 'log',
+    path: '',
     component: () =>
-        import('@/views/errorLog/index'),
-    name: 'ErrorLog',
+        import('@/views/c_history/index'),
+    name: 'c_history',
     meta: {
-      title: 'errorLog',
-      icon: 'bug'
+      title: '歷史紀錄',
+      icon: 'user'
+    }
+  }]
+},
+{
+  path: '/information',
+  component: Layout,
+  redirect: 'noredirect',
+  children: [{
+    path: '',
+    component: () =>
+        import('@/views/c_information/index'),
+    name: 'c_information',
+    meta: {
+      title: '優惠資訊',
+      icon: 'user'
+    }
+  }]
+},
+{
+  path: '/manager',
+  component: Layout,
+  redirect: 'noredirect',
+  children: [{
+    path: 'account',
+    component: () =>
+        import('@/views/c_accountmanager/index'),
+    name: 'c_accountmanager',
+    meta: {
+      title: '帳戶管理',
+      icon: 'user'
+    }
+  }]
+},
+{
+  path: '/manager',
+  component: Layout,
+  redirect: 'noredirect',
+  children: [{
+    path: '/card',
+    component: () =>
+        import('@/views/c_card/index'),
+    name: 'c_card',
+    meta: {
+      title: '卡片管理',
+      icon: 'user'
+    }
+  }]
+},
+{
+  path: '/manager',
+  component: Layout,
+  redirect: 'noredirect',
+  children: [{
+    path: 'category',
+    component: () =>
+        import('@/views/c_category/index'),
+    name: 'c_category',
+    meta: {
+      title: '分類管理 ',
+      icon: 'user'
+    }
+  }]
+},
+{
+  path: '/report',
+  component: Layout,
+  redirect: 'noredirect',
+  children: [{
+    path: '',
+    component: () =>
+        import('@/views/c_connection/index'),
+    name: 'c_connection',
+    meta: {
+      title: '聯絡我們',
+      icon: 'user'
     }
   }]
 },
