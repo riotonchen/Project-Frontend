@@ -58,7 +58,8 @@ const permission = {
           roles
         } = data
         let accessedRouters
-        if (roles.includes('admin')) {
+        /* roles.includes('admin')*/
+        if (roles === 1 || roles === 2 || roles === 5) {
           accessedRouters = asyncRouterMap
         } else {
           accessedRouters = filterAsyncRouter(asyncRouterMap, roles)

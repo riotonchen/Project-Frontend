@@ -13,13 +13,6 @@ export function loginByUsername(username, password, membertype_id) {
   })
 }
 
-export function logout() {
-  return request({
-    url: 'https://www.177together.com/api-token-jwtauth',
-    method: 'post'
-  })
-}
-
 export function getUserInfo(token) {
   var jwtDecode = require('jwt-decode')
   var decoded = jwtDecode(token)

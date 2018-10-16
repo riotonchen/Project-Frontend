@@ -6,14 +6,25 @@ const getters = {
   visitedViews: state => state.tagsView.visitedViews,
   cachedViews: state => state.tagsView.cachedViews,
   token: state => state.user.token,
+  // 目前無用
   avatar: state => state.user.avatar,
-  name: state => state.user.name,
+  // 目前無用
   introduction: state => state.user.introduction,
   status: state => state.user.status,
-  roles: state => state.user.roles,
+  roles: state => state.user.membertype,
   setting: state => state.user.setting,
   permission_routers: state => state.permission.routers,
   addRouters: state => state.permission.addRouters,
-  errorLogs: state => state.errorLog.logs
+  errorLogs: state => state.errorLog.logs,
+  // 以下為回傳值
+  id: state => state.user.id,
+  toid: state => state.user.toid,
+  account: state => state.user.account,
+  identifier: state => state.user.identifier,
+  membertype: state => state.user.membertype,
+  name: state => state.user.name,
+  localpicture: state => state.user.localpicture,
+  dbpicture: state => state.user.dbpicture,
+  renew_time: state => state.user.renew_time
 }
 export default getters
