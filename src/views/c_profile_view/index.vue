@@ -4,67 +4,53 @@
       {{ $t('route.profile_view') }}
     </title>
     <el-card class="box-card">
-      <el-row>
-        <el-col :span="12">
-          <div class="personal_form">
-            <el-row>
-              <el-col :span="4">
-                <p>Email：</p>
-              </el-col>
-              <el-col :span="12">
-                <p>a4214679@pccu.edu.tw</p>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="4">
-                <p>姓名：</p>
-              </el-col>
-              <el-col :span="12">
-                <p>Rioton</p>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="4">
-                <p>ToID：</p>
-              </el-col>
-              <el-col :span="12">
-                <p>74123985</p>
-              </el-col>
-            </el-row>
-          </div>
-        </el-col>
-        <el-col :span="12">
-          <div class="personal_upload">
-            <el-upload :show-file-list="true" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/">
-              <img v-if="imageUrl" :src="imageUrl" class="avatar">
-              <i v-else class="el-icon-plus avatar-uploader-icon" />
-            </el-upload>
-          </div>
+      <div class="userinfo">
+        <el-form :model="infoform">
+          <el-form-item label="Email" class="label1">
+            <el-input v-model="infoform.useraccount" type="text" class="useraccountin" readonly />
+          </el-form-item>
+          <el-form-item label="Name" class="label2">
+            <el-input v-model="infoform.username" type="text" class="username" readonly />
+          </el-form-item>
+          <el-form-item label="ToID" class="label3">
+            <el-input v-model="infoform.usertoid" type="text" class="userntoid" readonly />
+          </el-form-item>
+        </el-form>
+      </div>
 
-          <div class="personal_btn">
-            <el-button type="primary ">
-              <router-link to="/profile/profile-edit">修改</router-link>
-            </el-button>
-          </div>
-        </el-col>
-      </el-row>
+      <div class="personal_btn">
+        <el-button type="primary ">
+          <router-link to="/profile/profile-edit">修改</router-link>
+        </el-button>
+      </div>
 
+      <div class="personal_upload">
+        <el-upload :show-file-list="true" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/">
+          <img v-if="imageUrl" :src="imageUrl" class="avatar">
+          <i v-else class="el-icon-plus avatar-uploader-icon" />
+        </el-upload>
+
+      </div>
     </el-card>
   </div>
 </template>
 <script>
-
+import { getUserInfo } from '@/api/login'
+import { getToken } from '@/utils/auth'
 export default {
   data() {
     return {
       imageUrl: '',
       labelPosition: 'right',
-      formLabelAlign: {
-        name: '',
-        region: '',
-        type: ''
+      infoform: {
+        useraccount: '',
+        username: '',
+        usertoid: ''
       }
     }
+  },
+  created() {
+    this.getinfo()
   },
   methods: {
     handleAvatarSuccess(res, file) {
@@ -81,12 +67,26 @@ export default {
         this.$message.error('上傳頭像圖片大小不能超過 2MB!')
       }
       return isJPG && isLt2M
+    },
+    getinfo() {
+      getUserInfo(getToken()).then(response => {
+        const info = response.data
+        console.log(info)
+        this.infoform.useraccount = info.account
+        this.infoform.username = info.name
+        this.infoform.usertoid = info.toid
+      })
     }
   }
 }
 
 </script>
 <style rel="stylesheet/scss" lang="scss" >
+.personal_upload {
+  position: absolute;
+  margin-left: 40vw;
+  margin-top: 5vh;
+}
 .avatar-uploader .el-upload {
   border: 1px dashed #d9d9d9;
   border-radius: 6px;
@@ -115,21 +115,61 @@ export default {
   width: 80%;
   height: 82vh;
   margin: 2% auto;
+  position: relative;
 }
 
 .personal_btn {
-  padding-left: 76%;
-  padding-top: 12vh;
+  position: absolute;
+  margin-top: 68vh;
+  margin-left: 5vw;
+}
+.personal_btn a {
+  font-family: "Microsoft JhengHei";
 }
 
-.personal_form {
-  font-size: 1vw;
-  padding-top: 6vh;
+.userinfo {
+  padding-top: 5vh;
   padding-left: 5vw;
+  position: absolute;
 }
-
-.personal_upload {
-  padding-top: 8vh;
-  padding-left: 1vw;
+.useraccountin {
+  padding-left: 2vw;
+}
+.username {
+  padding-left: 2vw;
+}
+.userntoid {
+  padding-left: 2vw;
+}
+.useraccountin input {
+  border: 0;
+  font-size: 1vw;
+  width: 30vw;
+  padding-top: 1vh;
+  font-family: "Microsoft JhengHei";
+}
+.username input {
+  border: 0;
+  font-size: 1vw;
+  width: 30vw;
+  padding-top: 1vh;
+  font-family: "Microsoft JhengHei";
+}
+.userntoid input {
+  border: 0;
+  font-size: 1vw;
+  width: 30vw;
+  padding-top: 1vh;
+  font-family: "Microsoft JhengHei";
+}
+.label1 label {
+  font-size: 1.5vw;
+}
+.label2 label {
+  font-size: 1.5vw;
+}
+.label3 label {
+  font-size: 1.5vw;
 }
 </style>
+

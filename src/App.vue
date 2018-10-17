@@ -10,3 +10,9 @@ export default{
 }
 
 </script>
+<style>
+body {
+  font-family: "Microsoft JhengHei";
+}
+</style>
+
