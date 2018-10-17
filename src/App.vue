@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
@@ -8,4 +8,11 @@
 export default{
   name: 'App'
 }
+
 </script>
+<style>
+body {
+  font-family: "Microsoft JhengHei";
+}
+</style>
+

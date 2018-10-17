@@ -15,7 +15,7 @@ NProgress.configure({
 
 // permission judge function
 function hasPermission(roles, permissionRoles) {
-  if (roles.indexOf('admin') >= 0) return true // admin permission passed directly
+  if (roles === 1 || roles === 2 || roles === 5) return true // admin permission passed directly ori-code roles.indexOf('admin') >= 0
   if (!permissionRoles) return true
   return roles.some(role => permissionRoles.indexOf(role) >= 0)
 }

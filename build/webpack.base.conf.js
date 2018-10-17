@@ -2,7 +2,9 @@
 const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
-const { VueLoaderPlugin } = require('vue-loader')
+const {
+  VueLoaderPlugin
+} = require('vue-loader')
 const vueLoaderConfig = require('./vue-loader.conf')
 
 function resolve(dir) {
@@ -28,10 +30,9 @@ module.exports = {
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
-    publicPath:
-      process.env.NODE_ENV === 'production'
-        ? config.build.assetsPublicPath
-        : config.dev.assetsPublicPath
+    publicPath: process.env.NODE_ENV === 'production' ?
+      config.build.assetsPublicPath :
+      config.dev.assetsPublicPath
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
@@ -93,11 +94,11 @@ module.exports = {
   },
   plugins: [new VueLoaderPlugin()],
   node: {
-    // prevent webpack from injecting useless setImmediate polyfill because Vue
-    // source contains it (although only uses it if it's native).
+    // 防止 webpack 因為Vue 注入沒用的 setImmediate polyfill
+    // 來源包含它 (雖然只有使用它,如果它是原本的).
     setImmediate: false,
-    // prevent webpack from injecting mocks to Node native modules
-    // that does not make sense for the client
+    // 防止 webpack from injecting mocks to Node native modules
+    // 對於客務沒有意義
     dgram: 'empty',
     fs: 'empty',
     net: 'empty',

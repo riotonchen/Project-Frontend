@@ -42,14 +42,14 @@ const webpackConfig = merge(baseWebpackConfig, {
     new webpack.DefinePlugin({
       'process.env': env
     }),
-    // extract css into its own file
+    // 將css提取到自己的文件中
     new MiniCssExtractPlugin({
       filename: utils.assetsPath('css/[name].[contenthash:8].css'),
       chunkFilename: utils.assetsPath('css/[name].[contenthash:8].css')
     }),
-    // generate dist index.html with correct asset hash for caching.
-    // you can customize output by editing /index.html
-    // see https://github.com/ampedandwired/html-webpack-plugin
+    // 使用正確的hash生成index.html以進行緩存
+    // 你可以通過編輯/index.html來自訂義輸出
+    // 請參閱https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
       filename: config.build.index,
       template: 'index.html',
@@ -61,18 +61,18 @@ const webpackConfig = merge(baseWebpackConfig, {
         removeComments: true,
         collapseWhitespace: true,
         removeAttributeQuotes: true
-        // more options:
+        // 更多選擇:
         // https://github.com/kangax/html-minifier#options-quick-reference
       }
-      // default sort mode uses toposort which cannot handle cyclic deps
-      // in certain cases, and in webpack 4, chunk order in HTML doesn't
-      // matter anyway
+      // default sort mode uses toposort which cannot handle cyclic deps 默認排序模式使用無法處理循環deps的toposort
+      // 在某些情況下,在webpack 4中,HTML中的順序並不重要
+      // 無論如呵
     }),
     new ScriptExtHtmlWebpackPlugin({
-      //`runtime` must same as runtimeChunk name. default is `runtime`
+      //運行時必須與runtimeChunk名稱相同.運行時默認
       inline: /runtime\..*\.js$/
     }),
-    // keep chunk.id stable when chunk has no name
+    // 保持chunk.id 當它沒有名字時
     new webpack.NamedChunksPlugin(chunk => {
       if (chunk.name) {
         return chunk.name
@@ -89,7 +89,7 @@ const webpackConfig = merge(baseWebpackConfig, {
         return modules[0].id
       }
     }),
-    // keep module.id stable when vender modules does not change
+    // 當供應商模組模組不變時,保持module.id的穩定
     new webpack.HashedModuleIdsPlugin(),
     // copy custom static assets
     new CopyWebpackPlugin([{
@@ -106,7 +106,7 @@ const webpackConfig = merge(baseWebpackConfig, {
           name: 'chunk-libs',
           test: /[\\/]node_modules[\\/]/,
           priority: 10,
-          chunks: 'initial' // 只打包初始時依賴的第三方
+          chunks: 'initial' // 指打包初始時依賴的第三方
         },
         elementUI: {
           name: 'chunk-elementUI', // 單獨將 elementUI 拆包
@@ -134,12 +134,13 @@ const webpackConfig = merge(baseWebpackConfig, {
         cache: true,
         parallel: true
       }),
-      // Compress extracted CSS. We are using this plugin so that possible
-      // duplicated CSS from different components can be deduped.
+      // 壓縮提取的CSS.以便我們使用這個插件
+      // 可重複刪除來自不同組件的重複css
       new OptimizeCSSAssetsPlugin()
     ]
   }
 })
+
 
 if (config.build.productionGzip) {
   const CompressionWebpackPlugin = require('compression-webpack-plugin')
@@ -156,6 +157,7 @@ if (config.build.productionGzip) {
     })
   )
 }
+
 
 if (config.build.generateAnalyzerReport || config.build.bundleAnalyzerReport) {
   const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')

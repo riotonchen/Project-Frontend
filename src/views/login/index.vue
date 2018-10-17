@@ -27,20 +27,27 @@
         </span>
       </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">{{ $t('login.logIn') }}</el-button>
+      <el-form-item prop="membertype_id">
+        <!--
+        <span class="svg-container">
+          <svg-icon icon-class="user" />
+        </span>
+        <el-input v-model="loginForm.membertype_id" :placeholder="$t('login.membertype_id')" name="membertype_id" type="text" auto-complete="on" />
+        -->
+        <span class="svg-container">
+          <svg-icon icon-class="star" />
+        </span>
+        <el-select v-model="loginForm.membertype_id" clearable placeholder="請選擇會員類別" @keyup.enter.native="handleLogin">
+          <el-option v-for="item in membertype" :key="item.key" :label="item.label" :value="item.key" />
+        </el-select>
+      </el-form-item>
 
-      <div class="tips">
-        <span>{{ $t('login.username') }} : admin</span>
-        <span>{{ $t('login.password') }} : {{ $t('login.any') }}</span>
-      </div>
-      <div class="tips">
-        <span style="margin-right:18px;">{{ $t('login.username') }} : editor</span>
-        <span>{{ $t('login.password') }} : {{ $t('login.any') }}</span>
-      </div>
-
-      <el-button class="thirdparty-button" type="primary" @click="showDialog=true">{{ $t('login.thirdparty') }}</el-button>
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:15px;" @click.native.prevent="handleLogin">{{ $t('login.logIn') }}</el-button>
+      <!--<el-button class="thirdparty-button" type="primary" style="width:86.5%;margin-bottom:-5px;" @click="showDialog=true">{{ $t('login.thirdparty') }}</el-button>-->
+      <el-button type="primary" style="width:100%;margin-bottom:-200px;margin-left:0px">
+        <router-link to="/home">回首頁</router-link>
+      </el-button>
     </el-form>
-
     <el-dialog :title="$t('login.thirdparty')" :visible.sync="showDialog" append-to-body>
       {{ $t('login.thirdpartyTips') }}
       <br>
@@ -53,7 +60,7 @@
 </template>
 
 <script>
-import { isvalidUsername } from '@/utils/validate'
+import { validateEmail } from '@/utils/validate'
 import LangSelect from '@/components/LangSelect'
 import SocialSign from './socialsignin'
 
@@ -61,33 +68,44 @@ export default {
   name: 'Login',
   components: { LangSelect, SocialSign },
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!isvalidUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
+    const isvalidateEmail = (rule, value, callback) => {
+      if (!validateEmail(value)) {
+        callback(new Error('請輸入正確的 E-mail'))
       } else {
         callback()
       }
     }
     const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
+      if (value.length < 8) {
+        callback(new Error('密碼不可以小於 8 碼'))
       } else {
         callback()
       }
     }
+    const validateMembertype = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('請選擇會員類別'))
+      } else {
+        callback()
+      }
+    }
+
     return {
       loginForm: {
-        username: 'admin',
-        password: '1111111'
+        username: '',
+        password: '',
+        membertype_id: ''
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        username: [{ required: true, trigger: 'blur', validator: isvalidateEmail }],
+        password: [{ required: true, trigger: 'blur', validator: validatePassword }],
+        membertype_id: [{ required: true, trigger: 'blur', validator: validateMembertype }]
       },
       passwordType: 'password',
       loading: false,
       showDialog: false,
-      redirect: undefined
+      redirect: undefined,
+      membertype: [{ label: '一般會員', key: '2' }, { label: '管理員', key: '1' }, { label: '商家', key: '5' }]
     }
   },
   watch: {
@@ -100,10 +118,10 @@ export default {
 
   },
   created() {
-    // window.addEventListener('hashchange', this.afterQRScan)
+    window.addEventListener('hashchange', this.afterQRScan)
   },
   destroyed() {
-    // window.removeEventListener('hashchange', this.afterQRScan)
+    window.removeEventListener('hashchange', this.afterQRScan)
   },
   methods: {
     showPwd() {
@@ -149,6 +167,7 @@ export default {
     }
   }
 }
+
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
@@ -189,10 +208,29 @@ $cursor: #fff;
       }
     }
   }
+  .el-select {
+    display: inline-block;
+    height: 47px;
+    width: 25rem;
+    input {
+      background: transparent;
+      border: 0px;
+      -webkit-appearance: none;
+      border-radius: 0px;
+      padding: 12px 5px 12px 15px;
+      color: $light_gray;
+      height: 47px;
+      caret-color: $cursor;
+      &:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0px 1000px $bg inset !important;
+        -webkit-text-fill-color: $cursor !important;
+      }
+    }
+  }
   .el-form-item {
     border: 1px solid rgba(255, 255, 255, 0.1);
     background: rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
+    border-radius: 10px;
     color: #454545;
   }
 }

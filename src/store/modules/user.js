@@ -1,6 +1,5 @@
 import {
   loginByUsername,
-  logout,
   getUserInfo
 } from '@/api/login'
 import {
@@ -8,9 +7,13 @@ import {
   setToken,
   removeToken
 } from '@/utils/auth'
+import {
+  MessageBox
+} from 'element-ui'
 
 const user = {
   state: {
+    /*
     user: '',
     status: '',
     code: '',
@@ -22,9 +25,20 @@ const user = {
     setting: {
       articlePlatform: []
     }
+    */
+    id: '',
+    toid: '',
+    account: '',
+    identifier: '',
+    membertype: [],
+    name: '',
+    localpicture: '',
+    dbpicture: '',
+    renew_time: '',
+    token: getToken()
   },
-
   mutations: {
+    /*
     SET_CODE: (state, code) => {
       state.code = code
     },
@@ -49,51 +63,135 @@ const user = {
     SET_ROLES: (state, roles) => {
       state.roles = roles
     }
+    */
+    SET_SETTING: (state, setting) => {
+      state.setting = setting
+    },
+    SET_CODE: (state, code) => {
+      state.code = code
+    },
+    /* use membertype as roles*/
+    SET_ROLES: (state, membertype) => {
+      state.membertype = membertype
+    },
+    SET_TOKEN: (state, token) => {
+      state.token = token
+    },
+    SET_ID: (state, id) => {
+      state.id = id
+    },
+    SET_TOID: (state, toid) => {
+      state.toid = toid
+    },
+    SET_ACCOUNT: (state, account) => {
+      state.account = account
+    },
+    SET_IDENTIFIER: (state, identifier) => {
+      state.identifier = identifier
+    },
+    SET_MEMBERTYPE: (state, membertype) => {
+      state.membertype = membertype
+    },
+    SET_NAME: (state, name) => {
+      state.name = name
+    },
+    SET_LOCALPICTURE: (state, localpicture) => {
+      state.localpicture = localpicture
+    },
+    SET_DBPICTURE: (state, dbpicture) => {
+      state.dbpicture = dbpicture
+    },
+    SET_RENEW_TIME: (state, renew_time) => {
+      state.renew_time = renew_time
+    }
   },
 
   actions: {
-    // 用户名登錄
+    // 用戶名登錄
     LoginByUsername({
       commit
     }, userInfo) {
-      const username = userInfo.username.trim()
+      // const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
-        loginByUsername(username, userInfo.password).then(response => {
-          const data = response.data
-          commit('SET_TOKEN', data.token)
-          setToken(response.data.token)
-          resolve()
-        }).catch(error => {
-          reject(error)
-        })
+        loginByUsername(
+          userInfo.username,
+          userInfo.password,
+          userInfo.membertype_id
+        )
+          .then(response => {
+            const data = response.data
+            commit('SET_TOKEN', data.token)
+            setToken(response.data.token)
+            resolve()
+          })
+          .catch(error => {
+            console.log(error.response.data)
+            reject(error)
+            MessageBox.confirm(
+              '你的帳號，密碼，或著是會員類別輸入錯誤。',
+              '登入錯誤', {
+                confirmButtonText: '重新登入',
+                cancelButtonText: '取消',
+                type: 'error',
+                beforeClose: (action, instance, done) => {
+                  if (action === 'confirm') {
+                    instance.confirmButtonLoading = true
+                    instance.confirmButtonText = '跳轉中'
+                    setTimeout(() => {
+                      done()
+                      setTimeout(() => {
+                        instance.confirmButtonLoading = false
+                      }, 300)
+                    }, 1000)
+                  } else {
+                    done()
+                  }
+                }
+              }
+            ).then(() => {
+              location.reload()
+            })
+          })
       })
     },
 
-    // 獲取用户信息
+    // 獲取用戶訊息
     GetUserInfo({
       commit,
       state
     }) {
       return new Promise((resolve, reject) => {
-        getUserInfo(state.token).then(response => {
-          if (!response.data) { // 由於mockjs 不支持自定義狀態碼只能這樣hack
-            reject('error')
-          }
-          const data = response.data
+        getUserInfo(state.token)
+          .then(response => {
+            if (!response.data) {
+              // 由於mockjs 不支持自定義狀態碼只能這樣hack
+              reject('error')
+            }
+            const data = response.data
+            console.log(data)
+            if (data.membertype && data.membertype === 2 || data.membertype === 1 || data.membertype === 5) {
+              // 驗證返回的membertype是否合法
+              commit('SET_ROLES', data.membertype)
+            } else {
+              reject('資訊: 會員資訊取得錯誤')
+            }
+            commit('SET_ID', data.id)
+            commit('SET_TOID', data.toid)
+            commit('SET_ACCOUNT', data.account)
+            commit('SET_IDENTIFIER', data.identifier)
+            commit('SET_MEMBERTYPE', data.membertype)
+            commit('SET_NAME', data.name)
+            commit('SET_LOCALPICTURE', data.localpicture)
+            commit('SET_DBPICTURE', data.dbpicture)
+            commit('SET_RENEW_TIME', data.renew_time)
+            // commit('SET_AVATAR', data.avatar)
+            // commit('SET_INTRODUCTION', data.introduction)
 
-          if (data.roles && data.roles.length > 0) { // 驗證返回的roles是否是一個非空數组
-            commit('SET_ROLES', data.roles)
-          } else {
-            reject('getInfo: roles must be a non-null array !')
-          }
-
-          commit('SET_NAME', data.name)
-          commit('SET_AVATAR', data.avatar)
-          commit('SET_INTRODUCTION', data.introduction)
-          resolve(response)
-        }).catch(error => {
-          reject(error)
-        })
+            resolve(response)
+          })
+          .catch(error => {
+            reject(error)
+          })
       })
     },
 
@@ -111,22 +209,26 @@ const user = {
     //   })
     // },
 
-    // 登出
+    // 後端登出 廢除
+    /*
     LogOut({
       commit,
       state
     }) {
       return new Promise((resolve, reject) => {
-        logout(state.token).then(() => {
-          commit('SET_TOKEN', '')
-          commit('SET_ROLES', [])
-          removeToken()
-          resolve()
-        }).catch(error => {
-          reject(error)
-        })
+        logout(state.token)
+          .then(() => {
+            commit('SET_TOKEN', '')
+            commit('SET_ROLES', [])
+            removeToken()
+            resolve()
+          })
+          .catch(error => {
+            reject(error)
+          })
       })
     },
+    */
 
     // 前端 登出
     FedLogOut({
@@ -150,9 +252,15 @@ const user = {
         getUserInfo(role).then(response => {
           const data = response.data
           commit('SET_ROLES', data.roles)
+          commit('SET_ID', data.id)
+          commit('SET_TOID', data.toid)
+          commit('SET_ACCOUNT', data.account)
+          commit('SET_IDENTIFIER', data.identifier)
+          commit('SET_MEMBERTYPE', data.membertype)
           commit('SET_NAME', data.name)
-          commit('SET_AVATAR', data.avatar)
-          commit('SET_INTRODUCTION', data.introduction)
+          commit('SET_LOCALPICTURE', data.localpicture)
+          commit('SET_DBPICTURE', data.dbpicture)
+          commit('SET_RENEW_TIME', data.renew_time)
           dispatch('GenerateRoutes', data) // 動態修改權限後 重繪側邊菜單
           resolve()
         })
@@ -160,5 +268,4 @@ const user = {
     }
   }
 }
-
 export default user

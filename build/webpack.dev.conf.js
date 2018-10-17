@@ -24,10 +24,10 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       usePostCSS: true
     })
   },
-  // cheap-module-eval-source-map is faster for development
+  // cheap-module-eval-source-map 開發速度更快
   devtool: config.dev.devtool,
 
-  // these devServer options should be customized in /config/index.js
+  // 這些devServer選項應該在/config/index.js中自訂義
   devServer: {
     clientLogLevel: 'warning',
     historyApiFallback: true,
@@ -36,12 +36,15 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     host: HOST || config.dev.host,
     port: PORT || config.dev.port,
     open: config.dev.autoOpenBrowser,
-    overlay: config.dev.errorOverlay
-      ? { warnings: false, errors: true }
-      : false,
+    overlay: config.dev.errorOverlay ?
+      {
+        warnings: false,
+        errors: true
+      } :
+      false,
     publicPath: config.dev.assetsPublicPath,
     proxy: config.dev.proxyTable,
-    quiet: true, // necessary for FriendlyErrorsPlugin
+    quiet: true, //FriendlyErrorsPlugin必要的
     watchOptions: {
       poll: config.dev.poll
     }
@@ -69,12 +72,12 @@ module.exports = new Promise((resolve, reject) => {
     if (err) {
       reject(err)
     } else {
-      // publish the new Port, necessary for e2e tests
+      // 發布新的端口, e2e測試必要的
       process.env.PORT = port
       // add port to devServer config
       devWebpackConfig.devServer.port = port
 
-      // Add FriendlyErrorsPlugin
+      // 添加FriendlyErrorsPlugin
       devWebpackConfig.plugins.push(
         new FriendlyErrorsPlugin({
           compilationSuccessInfo: {
@@ -84,9 +87,9 @@ module.exports = new Promise((resolve, reject) => {
               }:${port}`
             ]
           },
-          onErrors: config.dev.notifyOnErrors
-            ? utils.createNotifierCallback()
-            : undefined
+          onErrors: config.dev.notifyOnErrors ?
+            utils.createNotifierCallback() :
+            undefined
         })
       )
 

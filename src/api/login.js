@@ -1,29 +1,31 @@
 import request from '@/utils/request'
 
-export function loginByUsername(username, password) {
+export function loginByUsername(username, password, membertype_id) {
   const data = {
-    username,
-    password
+    username: username + '\;' + membertype_id,
+    password,
+    membertype_id
   }
   return request({
-    url: '/login/login',
+    url: 'https://www.177together.com/api-token-jwtauth',
     method: 'post',
     data
   })
 }
 
-export function logout() {
-  return request({
-    url: '/login/logout',
-    method: 'post'
-  })
-}
-
 export function getUserInfo(token) {
+  var jwtDecode = require('jwt-decode')
+  var decoded = jwtDecode(token)
+  console.log(decoded)
+  var user_id = decoded.user_id
+  var requ_url = 'https://www.177together.com/api/member/' + user_id + '/'
+
   return request({
-    url: '/user/info',
+
+    url: requ_url,
     method: 'get',
-    params: { token }
+    headers: {
+      Authorization: 'JWT ' + token
+    }
   })
 }
-

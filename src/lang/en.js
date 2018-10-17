@@ -51,7 +51,8 @@ export default {
     errorPages: 'Error Pages',
     page401: '401',
     page404: '404',
-    errorLog: 'Error Log',
+    profile_view: 'User Profile',
+    profile_edit: 'Edit Profile',
     excel: 'Excel',
     exportExcel: 'Export Excel',
     selectExcel: 'Export Selected',
@@ -69,16 +70,24 @@ export default {
     github: 'Github',
     screenfull: 'Screenfull',
     theme: 'Theme',
-    size: 'Global Size'
+    size: 'Global Size',
+    bdashboard: 'Back to Dashboard'
   },
   login: {
     title: 'Login Form',
     logIn: 'Log in',
-    username: 'Username',
+    username: 'Username(Email)',
     password: 'Password',
     any: 'any',
     thirdparty: 'Or connect with',
-    thirdpartyTips: 'Can not be simulated on local, so please combine you own business simulation! ! !'
+    thirdpartyTips: 'Not Finish~'
+  },
+  signup: {
+    title: 'Sign UP',
+    signUP: 'Send Out',
+    username: 'Account(Email)',
+    password: 'Password',
+    doublepswd: 'Plz enter the same Password'
   },
   documentation: {
     documentation: 'Documentation',

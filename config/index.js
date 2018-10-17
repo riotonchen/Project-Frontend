@@ -65,7 +65,7 @@ module.exports = {
     /**
      * Source Maps
      */
-    productionSourceMap: false,
+    productionSourceMap: true,
     // https://webpack.js.org/configuration/devtool/#production
     devtool: 'source-map',
 
@@ -80,9 +80,10 @@ module.exports = {
     // View the bundle analyzer report after build finishes:
     // `npm run build:prod --report`
     // Set to `true` or `false` to always turn it on or off
+    //bundleAnalyzerReport: process.env.npm_config_report || false,
     bundleAnalyzerReport: process.env.npm_config_report || false,
-
     // `npm run build:prod --generate_report`
+    //generateAnalyzerReport: process.env.npm_config_generate_report || false
     generateAnalyzerReport: process.env.npm_config_generate_report || false
   }
 }
