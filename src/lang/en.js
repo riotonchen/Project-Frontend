@@ -53,6 +53,11 @@ export default {
     page404: '404',
     profile_view: 'User Profile',
     profile_edit: 'Edit Profile',
+    history: 'History',
+    c_information: 'Information',
+    c_card: 'Card',
+    c_category: 'Category',
+    c_connection: 'Connection',
     excel: 'Excel',
     exportExcel: 'Export Excel',
     selectExcel: 'Export Selected',
@@ -134,7 +139,13 @@ export default {
     draft: 'Draft',
     delete: 'Delete',
     cancel: 'Cancel',
-    confirm: 'Confirm'
+    confirm: 'Confirm',
+    project: 'Project',
+    account: 'Account',
+    class: 'Class',
+    subclass: 'Subclass',
+    money: 'Money'
+
   },
   errorLog: {
     tips: 'Please click the bug icon in the upper right corner',
@@ -160,5 +171,80 @@ export default {
     close: 'Close',
     closeOthers: 'Close Others',
     closeAll: 'Close All'
+  },
+  profile_edit: {
+    email: 'Email',
+    name: 'Name',
+    password: 'Password',
+    toid_ipt: 'Please enter 8 numbers',
+    password_ipt: 'If not modified, blank',
+    input: 'Input Again',
+    confirm: 'Confirm',
+    cancel: 'Cancel'
+  },
+  profile_view: {
+    email: 'Email',
+    name: 'Name',
+    alter: 'Aiter'
+  },
+  c_card_view: {
+    content: 'Please enter the content',
+    search: 'Search',
+    add: 'Add',
+    cardname: 'CardName',
+    cardcode: 'CardCode',
+    operating: 'Operating',
+    edit: 'Edit',
+    delete: 'Delete',
+    cancel: 'Cancel',
+    confirm: 'Confirm'
+  },
+  c_category_view: {
+    category: 'Category',
+    subclass: 'Subclass',
+    content: 'Please enter the content',
+    search: 'Search',
+    add: 'Add',
+    categorybudget: 'CategoryBudget',
+    operating: 'Operating',
+    edit: 'Edit',
+    delete: 'Delete',
+    cancel: 'Cancel',
+    confirm: 'Confirm'
+  },
+  c_connection: {
+    subject: 'Subject',
+    contents: 'contents',
+    sent: 'Sent',
+    h1: 'We will respond within 3~5 working days after the problem is sent.'
+  },
+  c_accounting_view: {
+    accountname: 'Accountname',
+    name: 'Please enter your account name',
+    class: 'Classification',
+    choose: 'Please select',
+    categories: 'Sub-categories',
+    project: 'Project',
+    money: 'Money',
+    amount: 'Please enter the amount',
+    other: 'Registration',
+    other2: 'New registration',
+    data: 'Add a new amount of data',
+    send: 'Send out'
+  },
+  c_accountmanager_view: {
+    project: 'Account Type',
+    search: 'Search',
+    word: 'Please enter the content',
+    data: 'Add a new amount of data',
+    style1: 'Account type',
+    style2: 'Account name',
+    money: 'Initial amount',
+    use: 'Operation',
+    edit: 'Edit',
+    delete: 'Delete',
+    choose: 'Please select',
+    canael: 'Canael',
+    sure: 'Sure'
   }
 }

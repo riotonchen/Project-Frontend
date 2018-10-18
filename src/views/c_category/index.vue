@@ -1,16 +1,18 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-
-      <el-select v-model="listQuery.category" :placeholder="$t('分類')" clearable style="width: 10rem" class="filter-item">
+      <title>
+        {{ $t('route.c_category') }}
+      </title>
+      <el-select v-model="listQuery.category" :placeholder="$t('c_category_view.category')" clearable style="width: 10rem" class="filter-item">
         <el-option v-for="item in categoryTypeOptions" :key="item" :label="item" :value="item" />
       </el-select>
 
-      <el-select v-model="listQuery.type" :placeholder="$t('子分類')" clearable class="filter-item" style="width: 10rem">
+      <el-select v-model="listQuery.type" :placeholder="$t('c_category_view.subclass')" clearable class="filter-item" style="width: 10rem">
         <el-option v-for="item in scategoryTypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key" />
       </el-select>
 
-      <el-input :placeholder="$t('請輸入內容')" v-model="listQuery.title" style="width: 15rem;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input :placeholder="$t('c_category_view.content')" v-model="listQuery.title" style="width: 15rem;" class="filter-item" @keyup.enter.native="handleFilter" />
 
       <!--
       <el-select v-model="listQuery.sort" style="width: 140px" class="filter-item" @change="handleFilter">
@@ -18,9 +20,9 @@
       </el-select>
       -->
 
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('搜尋') }}</el-button>
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('c_category_view.search') }}</el-button>
 
-      <el-button class="filter-item" style="margin-left: 0;" type="primary" icon="el-icon-edit" @click="handleCreate">{{ $t('新增一筆') }}</el-button>
+      <el-button class="filter-item" style="margin-left: 0;" type="primary" icon="el-icon-edit" @click="handleCreate">{{ $t('c_category_view.content') }}</el-button>
 
       <!--
       <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">{{ $t('table.export') }}</el-button>
@@ -31,17 +33,17 @@
     </div>
 
     <el-table v-loading="listLoading" :key="tableKey" :data="list" border fit highlight-current-row style="width: 100%;">
-      <el-table-column :label="$t('分類')" align="center" width="250">
+      <el-table-column :label="$t('c_category_view.category')" align="center" width="250">
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('子分類')" width="250" align="center">
+      <el-table-column :label="$t('c_category_view.subclass')" width="250" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('分類預算')" min-width="200" align="center">
+      <el-table-column :label="$t('c_category_view.categorybudget')" min-width="200" align="center">
         <template slot-scope="scope">
           <span class="link-type" @click="handleUpdate(scope.row)">{{ scope.row.title }}</span>
           <el-tag>{{ scope.row.type | typeFilter }}</el-tag>
@@ -78,9 +80,9 @@
         </template>
       </el-table-column>-->
 
-      <el-table-column :label="$t('操作')" align="center" width="250" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('c_category_view.operating')" align="center" width="250" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('編輯') }}</el-button>
+          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('c_category_view.edit') }}</el-button>
           <!--
           <el-button v-if="scope.row.status!='published'" size="mini" type="success" @click="handleModifyStatus(scope.row,'published')">{{ $t('table.publish') }}
           </el-button>
@@ -90,7 +92,7 @@
           <el-button v-if="scope.row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{ $t('table.delete') }}
           </el-button>
            -->
-          <el-button size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{ $t('刪除') }}
+          <el-button size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{ $t('c_category_view.delete') }}
           </el-button>
         </template>
       </el-table-column>
@@ -103,12 +105,12 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
-        <el-form-item :label="$t('分類')" prop="type">
+        <el-form-item :label="$t('c_category_view.category')" prop="type">
           <el-select v-model="temp.type" class="filter-item" placeholder="Please select">
             <el-option v-for="item1 in categoryTypeOptions" :key="item1.key" :label="item1.display_name" :value="item1.key" />
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('子分類')" prop="timestamp">
+        <el-form-item :label="$t('c_category_view.subclass')" prop="timestamp">
           <!--
           <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
           -->
@@ -116,7 +118,7 @@
             <el-option v-for="item in scategoryTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('分類預算')" prop="title">
+        <el-form-item :label="$t('c_category_view.categorybudge')" prop="title">
           <el-input v-model="temp.title" />
         </el-form-item>
         <!--
@@ -139,8 +141,8 @@
           <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
           <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">{{ $t('table.confirm') }}</el-button>
         -->
-        <el-button @click="dialogFormVisible = false">{{ $t('取消') }}</el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">{{ $t('確認') }}</el-button>
+        <el-button @click="dialogFormVisible = false">{{ $t('c_category_view.cancel') }}</el-button>
+        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">{{ $t('c_category_view.confirm') }}</el-button>
       </div>
 
     </el-dialog>

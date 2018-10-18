@@ -131,7 +131,7 @@ const user = {
               '你的帳號，密碼，或著是會員類別輸入錯誤。',
               '登入錯誤', {
                 confirmButtonText: '重新登入',
-                cancelButtonText: '取消',
+                showCancelButton: false,
                 type: 'error',
                 beforeClose: (action, instance, done) => {
                   if (action === 'confirm') {
@@ -141,8 +141,8 @@ const user = {
                       done()
                       setTimeout(() => {
                         instance.confirmButtonLoading = false
-                      }, 300)
-                    }, 1000)
+                      }, 500)
+                    }, 800)
                   } else {
                     done()
                   }
@@ -168,7 +168,6 @@ const user = {
               reject('error')
             }
             const data = response.data
-            console.log(data)
             if (data.membertype && data.membertype === 2 || data.membertype === 1 || data.membertype === 5) {
               // 驗證返回的membertype是否合法
               commit('SET_ROLES', data.membertype)

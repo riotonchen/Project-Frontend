@@ -42,11 +42,9 @@
         </el-select>
       </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:15px;" @click.native.prevent="handleLogin">{{ $t('login.logIn') }}</el-button>
+      <el-button :loading="loadingsend" type="primary" style="width:100%;margin-bottom:15px;" @click.native.prevent="handleLogin">{{ $t('login.logIn') }}</el-button>
       <!--<el-button class="thirdparty-button" type="primary" style="width:86.5%;margin-bottom:-5px;" @click="showDialog=true">{{ $t('login.thirdparty') }}</el-button>-->
-      <el-button type="primary" style="width:100%;margin-bottom:-200px;margin-left:0px">
-        <router-link to="/home">回首頁</router-link>
-      </el-button>
+      <el-button :loading="loadinghome" type="primary" style="width:100%;margin-bottom:-200px;margin-left:0px" @click.native.prevent="gohome">回首頁</el-button>
     </el-form>
     <el-dialog :title="$t('login.thirdparty')" :visible.sync="showDialog" append-to-body>
       {{ $t('login.thirdpartyTips') }}
@@ -102,7 +100,8 @@ export default {
         membertype_id: [{ required: true, trigger: 'blur', validator: validateMembertype }]
       },
       passwordType: 'password',
-      loading: false,
+      loadingsend: false,
+      loadinghome: false,
       showDialog: false,
       redirect: undefined,
       membertype: [{ label: '一般會員', key: '2' }, { label: '管理員', key: '1' }, { label: '商家', key: '5' }]
@@ -134,18 +133,27 @@ export default {
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          this.loading = true
+          this.loadingsend = true
           this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
-            this.loading = false
+            this.loadingsend = false
             this.$router.push({ path: this.redirect || '/' })
           }).catch(() => {
-            this.loading = false
+            this.loadingsend = false
           })
         } else {
           console.log('error submit!!')
           return false
         }
       })
+    },
+    gohome() {
+      this.loadinghome = true
+      setTimeout(() => {
+        setTimeout(() => {
+          this.loadinghome = false
+          this.$router.push({ path: this.redirect || '/home' })
+        }, 300)
+      }, 300)
     },
     afterQRScan() {
       // const hash = window.location.hash.slice(1)

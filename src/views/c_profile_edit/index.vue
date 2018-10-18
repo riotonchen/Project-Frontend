@@ -7,38 +7,41 @@
       <el-row>
         <el-col :span="9">
           <div class="personal_edit_form">
-            <el-form :label-position="labelPosition" :model="formLabelAlign" label-width="9vw">
-              <el-form-item label="Email："><span>a4214679@xxx.com</span></el-form-item>
-
-              <el-form-item label="姓名：">
-                <el-input v-model="formLabelAlign.name" class="personal_ipt" />
+            <el-form ref="profile_edit_form" :model="profile_edit_form" :rules="profile_edit_form_rules">
+              <el-form-item label="Email：">
+                <el-input v-model="profile_edit_form.account" type="text" class="useraccountin" readonly />
               </el-form-item>
-              <el-form-item label="ToID：">
-                <el-input v-model="formLabelAlign.id" class="personal_ipt" placeholder="請輸入8位數字" />
+              <el-form-item label="姓名：" prop="name">
+                <el-input v-model="profile_edit_form.name" placeholder="上限25個中英數字" name="name" />
               </el-form-item>
-              <el-form-item label="新密碼：">
-                <el-input v-model="formLabelAlign.region" class="personal_ipt" type="password" placeholder="如不修改，空白即可" />
+              <el-form-item label="ToID：" prop="toid">
+                <el-input v-model="profile_edit_form.toid" placeholder="上限8位中英數" name="toid" />
               </el-form-item>
-              <el-form-item label="再次輸入：">
-                <el-input v-model="formLabelAlign.type" type="password" class="personal_ipt" placeholder="如不修改，空白即可" />
+              <el-form-item label="新密碼：" prop="pswd">
+                <el-input v-model="profile_edit_form.pswd" type="password" placeholder="如不修改，空白即可" name="pswd" />
+              </el-form-item>
+              <el-form-item label="密碼再次輸入：" prop="pswd2">
+                <el-input v-model="profile_edit_form.pswd2" type="password" placeholder="如不修改，空白即可" name="pswd2" />
               </el-form-item>
 
             </el-form>
           </div>
         </el-col>
         <el-col :span="15">
-          <div class="personal_edit_upload">
-            <el-upload :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/">
+
+          <div class="personal_upload">
+            <el-upload :show-file-list="true" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/">
               <img v-if="imageUrl" :src="imageUrl" class="avatar">
               <i v-else class="el-icon-plus avatar-uploader-icon" />
             </el-upload>
           </div>
+
           <div class="personal_edit_chk">
-            <el-button type="primary ">
+            <el-button :loading="loadingprofile_view_send" type="primary " @click.native.prevent="handleprofile_edit">
               確認
             </el-button>
-            <el-button class="personal_edit_cal">
-              <router-link to="/profile/profile-view">取消</router-link>
+            <el-button :loading="loadingprofile_view_cancal" type="info" class="personal_edit_cal" @click.native.prevent="goprofile_view">
+              取消
             </el-button>
           </div>
         </el-col>
@@ -48,18 +51,75 @@
   </div>
 </template>
 <script>
+import { getUserInfo } from '@/api/login'
+import { getToken } from '@/utils/auth'
+import { validatetoid } from '@/utils/validate'
+import { patchprofile, patchprofilepswd } from '@/api/patchprofile'
+
 export default {
   data() {
-    return {
-      imageUrl: '',
-
-      labelPosition: 'right',
-      formLabelAlign: {
-        name: '',
-        region: '',
-        type: ''
+    const _validatetoid = (rule, value, callback) => {
+      if (value === '') {
+        callback()
+      } else if (!validatetoid(value)) {
+        callback(new Error('ToID 只能有大小寫英數'))
+      } else if (value.length !== 8) {
+        callback(new Error('ToID 只限定於 8 碼'))
+      } else {
+        callback()
       }
     }
+    const validatename = (rule, value, callback) => {
+      if (value === '') {
+        callback()
+      } else if (value.length > 25) {
+        callback(new Error('姓名不可以大於 25 個字'))
+      } else {
+        callback()
+      }
+    }
+    const validatePassword = (rule, value, callback) => {
+      if (value === '') {
+        callback()
+      } else if (value.length < 8) {
+        callback(new Error('密碼不可以小於 8 碼'))
+      } else {
+        callback()
+      }
+    }
+    const validatedoublepswd = (rule, value, callback) => {
+      if (value === '') {
+        callback()
+      } else if (value !== this.profile_edit_form.pswd) {
+        callback(new Error('二次密碼不一樣，請再次輸入！'))
+      } else if (value === '' && this.profile_edit_form.pswd !== '') {
+        callback(new Error('請輸入，不可空白'))
+      } else {
+        callback()
+      }
+    }
+    return {
+      imageUrl: '',
+      labelPosition: 'right',
+      loadingprofile_view_cancal: false,
+      loadingprofile_view_send: false,
+      profile_edit_form: {
+        account: '',
+        name: '',
+        toid: '',
+        pswd: '',
+        pswd2: ''
+      },
+      profile_edit_form_rules: {
+        name: [{ required: false, trigger: 'blur', validator: validatename }],
+        toid: [{ required: false, trigger: 'blur', validator: _validatetoid }],
+        pswd: [{ required: false, trigger: 'blur', validator: validatePassword }],
+        pswd2: [{ required: false, validator: validatedoublepswd }]
+      }
+    }
+  },
+  created() {
+    this.getinfo()
   },
   methods: {
     handleAvatarSuccess(res, file) {
@@ -76,12 +136,84 @@ export default {
         this.$message.error('上傳頭像圖片大小不能超過 2MB!')
       }
       return isJPG && isLt2M
+    },
+    getinfo() {
+      getUserInfo(getToken()).then(response => {
+        const info = response.data
+        this.profile_edit_form.account = info.account
+      })
+    },
+    goprofile_view() {
+      this.loadingprofile_view_cancal = true
+      setTimeout(() => {
+        setTimeout(() => {
+          this.loadingprofile_view_cancal = false
+          this.$router.push({ path: this.redirect || '/profile/profile-view' })
+        }, 300)
+      }, 150)
+    },
+    handleprofile_edit() {
+      this.$refs.profile_edit_form.validate(valid => {
+        if (valid) {
+          this.loadingprofile_view_send = true
+          getUserInfo(getToken()).then(response => {
+            var ori_name = response.name
+            var ori_toid = response.toid
+            var send_name = ''
+            var send_toid = ''
+            var send_pswd = ''
+            if (this.profile_edit_form.name === '') {
+              send_name = ori_name
+            } else {
+              send_name = this.profile_edit_form.name
+            }
+            if (this.profile_edit_form.toid === '') {
+              send_toid = ori_toid
+            } else {
+              send_toid = this.profile_edit_form.toid
+            }
+            if (this.profile_edit_form.name !== '') {
+              send_pswd = this.profile_edit_form.pswd
+              patchprofilepswd(getToken(), send_pswd)
+            }
+            patchprofile(getToken(), send_name, send_toid)
+            const h = this.$createElement
+            this.$notify({
+              title: '送出成功',
+              message: h('b', { style: 'color: teal' }, '你的個人資料已更新')
+            })
+            this.loadingsend = false
+            this.$router.push({ path: this.redirect || '/profile/profile-view' })
+          })
+        } else if (!valid) {
+          console.log('error submit!!')
+          return false
+        } else {
+          console.log('error submit!!')
+          const h = this.$createElement
+          this.$notify({
+            title: '送出失敗',
+            message: h('b', { style: 'color: teal' }, '發生了一點錯誤，請在試一次，如果一直發生請與我們聯繫，造成您的不良體驗，實在非常抱歉！')
+          })
+          this.loadingprofile_view_send = true
+          setTimeout(() => {
+            setTimeout(() => {
+              this.loadingprofile_view_send = false
+            }, 300)
+          }, 800)
+        }
+      })
     }
   }
 }
 
 </script>
 <style rel="stylesheet/scss" lang="scss" >
+.personal_upload {
+  position: absolute;
+  margin-left: 40vw;
+  margin-top: 10vh;
+}
 .avatar-uploader .el-upload {
   border: 1px dashed #d9d9d9;
   border-radius: 6px;
@@ -95,7 +227,7 @@ export default {
 .avatar-uploader-icon {
   font-size: 28px;
   color: #8c939d;
-  width: 28vw;
+  width: 30vw;
   height: 45vh;
   line-height: 45vh;
   text-align: center;
@@ -110,20 +242,23 @@ export default {
   width: 80%;
   height: 82vh;
   margin: 2% auto;
+  position: relative;
 }
 .personal_edit_form {
-  padding-top: 10vh;
+  padding-top: 5vh;
+  width: 30vw;
+  position: absolute;
 }
 .personal_edit_form label {
   font-size: 1vw !important;
 }
 
-.personal_edit_upload {
-  padding-top: 10vh;
-  padding-left: 9vw;
-}
 .personal_edit_chk {
-  padding-top: 8vh;
-  padding-left: 61%;
+  padding-top: 68vh;
+  position: absolute;
+}
+.useraccountin input {
+  border: 0;
+  font-family: "Microsoft JhengHei";
 }
 </style>

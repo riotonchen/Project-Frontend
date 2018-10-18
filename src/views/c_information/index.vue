@@ -1,5 +1,6 @@
 <template>
   <div class="information_container">
+    <title>{{ $t('router.c_information') }}</title>
     <el-carousel indicator-position="outside">
       <el-carousel-item v-for="item in 4" :key="item" />
     </el-carousel>

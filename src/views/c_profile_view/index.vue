@@ -19,8 +19,8 @@
       </div>
 
       <div class="personal_btn">
-        <el-button type="primary ">
-          <router-link to="/profile/profile-edit">修改</router-link>
+        <el-button :loading="loadingprofile_edit" type="primary" style="width:100%;margin-bottom:-200px;margin-left:0px" @click.native.prevent="goprofile_edit">
+          修改
         </el-button>
       </div>
 
@@ -29,7 +29,6 @@
           <img v-if="imageUrl" :src="imageUrl" class="avatar">
           <i v-else class="el-icon-plus avatar-uploader-icon" />
         </el-upload>
-
       </div>
     </el-card>
   </div>
@@ -40,8 +39,8 @@ import { getToken } from '@/utils/auth'
 export default {
   data() {
     return {
-      imageUrl: '',
       labelPosition: 'right',
+      loadingprofile_edit: false,
       infoform: {
         useraccount: '',
         username: '',
@@ -71,11 +70,19 @@ export default {
     getinfo() {
       getUserInfo(getToken()).then(response => {
         const info = response.data
-        console.log(info)
         this.infoform.useraccount = info.account
         this.infoform.username = info.name
         this.infoform.usertoid = info.toid
       })
+    },
+    goprofile_edit() {
+      this.loadingprofile_edit = true
+      setTimeout(() => {
+        setTimeout(() => {
+          this.loadingprofile_edit = false
+          this.$router.push({ path: this.redirect || '/profile/profile-edit' })
+        }, 300)
+      }, 150)
     }
   }
 }

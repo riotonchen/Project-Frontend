@@ -3,7 +3,7 @@
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
         <div class="card-panel-icon-wrapper icon-people">
-          <svg-icon icon-class="money-bag" class-name="card-panel-icon" />
+          <svg-icon icon-class="user" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">總資產</div>
@@ -14,7 +14,7 @@
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('messages')">
         <div class="card-panel-icon-wrapper icon-message">
-          <svg-icon icon-class="new-file" class-name="card-panel-icon" />
+          <svg-icon icon-class="dollar-money-sack" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">本月花費</div>
@@ -25,7 +25,7 @@
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('purchases')">
         <div class="card-panel-icon-wrapper icon-money">
-          <svg-icon icon-class="shopping-cart" class-name="card-panel-icon" />
+          <svg-icon icon-class="cart-of-ecommerce" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">今日支出</div>

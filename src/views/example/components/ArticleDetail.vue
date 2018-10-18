@@ -77,7 +77,7 @@
 import Tinymce from '@/components/Tinymce'
 import Upload from '@/components/Upload/singleImage3'
 import MDinput from '@/components/MDinput'
-import Sticky from '@/components/Sticky' // 黏性header组件
+import Sticky from '@/components/Sticky' // 粘性header组件
 import { validateURL } from '@/utils/validate'
 import { fetchArticle } from '@/api/article'
 import { userSearch } from '@/api/remoteSearch'
@@ -89,9 +89,9 @@ const defaultForm = {
   title: '', // 文章题目
   content: '', // 文章内容
   content_short: '', // 文章摘要
-  source_uri: '', // 文章外鍵
-  image_uri: '', // 文章圖片
-  display_time: undefined, // 前台展示時間
+  source_uri: '', // 文章外链
+  image_uri: '', // 文章图片
+  display_time: undefined, // 前台展示时间
   id: undefined,
   platforms: ['a-platform'],
   comment_disabled: false,
@@ -143,12 +143,16 @@ export default {
         title: [{ validator: validateRequire }],
         content: [{ validator: validateRequire }],
         source_uri: [{ validator: validateSourceUri, trigger: 'blur' }]
-      }
+      },
+      tempRoute: {}
     }
   },
   computed: {
     contentShortLength() {
       return this.postForm.content_short.length
+    },
+    lang() {
+      return this.$store.getters.language
     }
   },
   created() {
@@ -158,6 +162,11 @@ export default {
     } else {
       this.postForm = Object.assign({}, defaultForm)
     }
+
+    // Why need to make a copy of this.$route here?
+    // Because if you enter this page and quickly switch tag, may be in the execution of the setTagsViewTitle function, this.$route is no longer pointing to the current page
+    // https://github.com/PanJiaChen/vue-element-admin/issues/1221
+    this.tempRoute = Object.assign({}, this.$route)
   },
   methods: {
     fetchData(id) {
@@ -166,9 +175,17 @@ export default {
         // Just for test
         this.postForm.title += `   Article Id:${this.postForm.id}`
         this.postForm.content_short += `   Article Id:${this.postForm.id}`
+
+        // Set tagsview title
+        this.setTagsViewTitle()
       }).catch(err => {
         console.log(err)
       })
+    },
+    setTagsViewTitle() {
+      const title = this.lang === 'zh' ? '编辑文章' : 'Edit Article'
+      const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` })
+      this.$store.dispatch('updateVisitedView', route)
     },
     submitForm() {
       this.postForm.display_time = parseInt(this.display_time / 1000)

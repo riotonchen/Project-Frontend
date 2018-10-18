@@ -1,20 +1,21 @@
 <template>
   <div class="connection_container">
     <title>
-      聯絡我們
+      {{ $t('router.c_connection') }}
+
     </title>
     <el-card class="box-card">
       <div class="connection_form">
         <el-form ref="form" :label-position="labelPosition" :model="form">
-          <el-form-item label="主旨:">
+          <el-form-item :label="$t('c_connection.subject')">
             <el-input v-model="form.mail1" style="width:40vw" />
           </el-form-item>
-          <el-form-item label="內容:">
+          <el-form-item :label="$t('c_connection.contents')">
             <el-input v-model="form.desc" type="textarea" style="width:40vw" />
           </el-form-item>
         </el-form>
-        <el-button type="primary " class="sentout" @click="onSubmit">送出</el-button>
-        <p class="connection_h1">我們將在問題送出後3~5工作天內進行回覆</p>
+        <el-button type="primary " class="sentout" @click="onSubmit">{{ $t('c_connection.sent') }}</el-button>
+        <p class="connection_h1">{{ $t('c_connection.h1') }}</p>
       </div>
     </el-card>
   </div>

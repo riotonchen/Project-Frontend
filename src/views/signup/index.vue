@@ -41,15 +41,14 @@
         <span class="svg-container">
           <svg-icon icon-class="star" />
         </span>
-        <el-select v-model="signupForm.membertype_id" clearable placeholder="請選擇會員類別" @keyup.enter.native="handleSignup">
+        <el-select v-model="signupForm.membertype_id" clearable placeholder="請選擇會員類別">
           <el-option v-for="item in membertype" :key="item.key" :label="item.label" :value="item.key" />
         </el-select>
       </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleSignup">{{ $t('signup.signUP') }}</el-button>
-      <el-button type="primary" style="margin-left:0px;width:100%">
-        <router-link to="/home">回首頁</router-link>
-      </el-button>
+      <el-button :loading="loadingsend" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleSignup">{{ $t('signup.signUP') }}</el-button>
+      <el-button :loading="loadinghome" type="primary" style="width:100%;margin-bottom:-200px;margin-left:0px" @click.native.prevent="gohome">回首頁</el-button>
+
     </el-form>
   </div>
 </template>
@@ -83,7 +82,7 @@ export default {
       if (value === '') {
         callback(new Error('請輸入，不可空白'))
       } else if (value !== this.signupForm.password) {
-        callback(new Error('第二次密碼不一樣，請再次輸入！'))
+        callback(new Error('二次密碼不一樣，請再次輸入！'))
       } else {
         callback()
       }
@@ -110,7 +109,8 @@ export default {
         membertype_id: [{ required: true, trigger: 'blur', validator: validateMembertype }]
       },
       passwordType: 'password',
-      loading: false,
+      loadingsend: false,
+      loadinghome: false,
       showDialog: false,
       redirect: undefined,
       membertype: [{ label: '一般會員', key: '2' }, { label: '商家', key: '5' }]
@@ -135,15 +135,56 @@ export default {
     handleSignup() {
       this.$refs.signupForm.validate(valid => {
         if (valid) {
-          this.loading = true
-          alert('註冊成功！')
+          this.loadingsend = true
           Postsignup(this.signupForm.username, this.signupForm.password, this.signupForm.membertype_id)
-          this.$router.push({ path: this.redirect || '/home' })
+            .then(() => {
+              const h = this.$createElement
+              this.$notify({
+                title: '註冊成功',
+                message: h('b', { style: 'color: teal' }, '恭喜你註冊成功，好好享受我們的服務吧！'),
+                position: 'top-left'
+              })
+              this.loadingsend = false
+              this.$router.push({ path: this.redirect || '/home' })
+            })
+            .catch((error) => {
+              console.log(error.response.data)
+              if (error.response.data.error_msg === '帳號已存在！') {
+                const h = this.$createElement
+                this.$notify({
+                  title: '註冊失敗',
+                  message: h('b', { style: 'color: teal' }, '你輸入的電子信箱已經註冊過，請確認後再次註冊！ 5秒自動幫你跳轉'),
+                  position: 'top-left'
+                })
+                setTimeout(() => {
+                  location.reload()
+                }, 5000)
+              } else {
+                const h = this.$createElement
+                this.$notify({
+                  title: '註冊失敗',
+                  message: h('b', { style: 'color: teal' }, '發生了一點錯誤，請在試一次，如果一直發生請與我們聯繫，造成您的不良體驗，實在非常抱歉！ 5秒自動幫你跳轉'),
+                  position: 'top-left'
+                })
+                setTimeout(() => {
+                  location.reload()
+                }, 5000)
+              }
+            })
         } else {
           console.log('error submit!!')
           return false
         }
       })
+    },
+    gohome() {
+      this.loadinghome = true
+      setTimeout(() => {
+        setTimeout(() => {
+          this.loadinghome = false
+          this.$router.push({ path: this.redirect || '/home' })
+        }, 300)
+      }, 300)
     }
   }
 }

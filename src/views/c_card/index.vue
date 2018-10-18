@@ -1,7 +1,10 @@
 <template>
   <div class="app-container">
+    <title>
+      {{ $t('route.card') }}
+    </title>
     <div class="filter-container">
-      <el-input :placeholder="$t('請輸入內容')" v-model="listQuery.title" style="width: 15rem;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input :placeholder="$t('c_card_view.content')" v-model="listQuery.title" style="width: 15rem;" class="filter-item" @keyup.enter.native="handleFilter" />
       <!--
       <el-select v-model="listQuery.importance" :placeholder="$t('table.importance')" clearable style="width: 90px" class="filter-item">
         <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
@@ -14,8 +17,8 @@
         <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key" />
       </el-select>
       -->
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('搜尋') }}</el-button>
-      <el-button class="filter-item" style="margin-left: 0px;" type="primary" icon="el-icon-edit" @click="handleCreate">{{ $t('新增一筆') }}</el-button>
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('c_card_view.search') }}</el-button>
+      <el-button class="filter-item" style="margin-left: 0px;" type="primary" icon="el-icon-edit" @click="handleCreate">{{ $t('c_card_view.add') }}</el-button>
       <!--
       <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">{{ $t('table.export') }}</el-button>
 
@@ -24,12 +27,12 @@
     </div>
 
     <el-table v-loading="listLoading" :key="tableKey" :data="list" border fit highlight-current-row style="width: 100%;">
-      <el-table-column :label="$t('票卡名稱')" align="center" width="400rem">
+      <el-table-column :label="$t('c_card_view.cardname')" align="center" width="400rem">
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('票卡條碼')" width="800rem">
+      <el-table-column :label="$t('c_card_view.cardcode')" width="800rem">
         <template slot-scope="scope">
           <span class="link-type" @click="handleUpdate(scope.row)">{{ scope.row.title }}</span>
           <el-tag>{{ scope.row.type | typeFilter }}</el-tag>
@@ -73,9 +76,9 @@
       </el-table-column>
       -->
 
-      <el-table-column :label="$t('操作')" align="center" width="230" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('c_card_view.operating')" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('編輯') }}</el-button>
+          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('c_card_view.edit') }}</el-button>
           <!--
           <el-button v-if="scope.row.status!='published'" size="mini" type="success" @click="handleModifyStatus(scope.row,'published')">{{ $t('table.publish') }}
           </el-button>
@@ -86,7 +89,7 @@
           <el-button v-if="scope.row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{ $t('table.delete') }}
           </el-button>
            -->
-          <el-button size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{ $t('刪除') }}
+          <el-button size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{ $t('c_card_view.delete') }}
           </el-button>
         </template>
       </el-table-column>
@@ -99,7 +102,7 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
-        <el-form-item :label="$t('票卡名稱')" prop="type" width="100">
+        <el-form-item :label="$t('c_card_view.cardname')" prop="type" width="100">
           <!--
           <el-select v-model="temp.type" class="filter-item" placeholder="Please select">
             <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
@@ -107,7 +110,7 @@
           -->
           <el-input v-model="temp.title" />
         </el-form-item>
-        <el-form-item :label="$t('票卡條碼')" prop="timestamp">
+        <el-form-item :label="$t('c_card_view.cardcode')" prop="timestamp">
           <!--
           <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
         -->
@@ -134,11 +137,11 @@
         <!--
         <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
         -->
-        <el-button @click="dialogFormVisible = false">{{ $t('取消') }}</el-button>
+        <el-button @click="dialogFormVisible = false">{{ $t('c_card_view.cancel') }}</el-button>
         <!--
         <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">{{ $t('table.confirm') }}</el-button>
         -->
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">{{ $t('確定') }}</el-button>
+        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">{{ $t('c_card_view.confirm') }}</el-button>
       </div>
     </el-dialog>
 

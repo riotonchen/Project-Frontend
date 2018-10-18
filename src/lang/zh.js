@@ -53,6 +53,11 @@ export default {
     page404: '404',
     profile_view: '個人資訊',
     profile_edit: '編輯資訊',
+    history: '歷史紀錄',
+    c_information: '優惠資訊',
+    c_card: '票卡管理',
+    c_category: '分類管理',
+    c_connection: '聯絡我們',
     excel: 'Excel',
     exportExcel: 'Export Excel',
     selectExcel: 'Export Selected',
@@ -118,7 +123,7 @@ export default {
     title: '標題',
     importance: '重要性',
     type: '類型',
-    remark: '點屏',
+    remark: '備註',
     search: '搜索',
     add: '添加',
     export: '導出',
@@ -134,7 +139,13 @@ export default {
     draft: '草稿',
     delete: '刪除',
     cancel: '取 消',
-    confirm: '確 定'
+    confirm: '確 定',
+    project: '專案',
+    account: '帳戶',
+    class: '分類',
+    subclass: '子分類',
+    money: '金額'
+
   },
   errorLog: {
     tips: '請點擊右上角bug小圖示',
@@ -160,5 +171,80 @@ export default {
     close: '關閉',
     closeOthers: '關閉其它',
     closeAll: '關閉所有'
+  },
+  profile_edit: {
+    email: '信箱',
+    name: '姓名',
+    password: '密碼',
+    toid_ipt: '請輸入8位數字',
+    password_ipt: '如不修改，空白即可',
+    input: '再次輸入',
+    confirm: '確 認',
+    cancel: '取 消'
+  },
+  profile_view: {
+    email: '信箱',
+    name: '姓名',
+    alter: '修改'
+  },
+  c_card_view: {
+    content: '請輸入內容',
+    search: '搜尋',
+    add: '新增一筆',
+    cardname: '卡片名稱',
+    cardcode: '票卡條碼',
+    operating: '操作',
+    edit: '編輯',
+    delete: '刪除',
+    cancel: '取消',
+    confirm: '確定'
+  },
+  c_category_view: {
+    category: '分類',
+    subclass: '子分類',
+    content: '請輸入內容',
+    search: '搜尋',
+    add: '新增一筆',
+    categorybudget: '分類預算',
+    operating: '操作',
+    edit: '編輯',
+    delete: '刪除',
+    cancel: '取消',
+    confirm: '確定'
+  },
+  c_connection: {
+    subject: '主旨',
+    contents: '內容',
+    sent: '送出',
+    h1: '我們將在問題送出後3~5工作天內進行回覆'
+  },
+  c_accounting_view: {
+    accountname: '帳戶名稱',
+    name: '請輸入帳戶名稱',
+    class: '分類',
+    choose: '請選擇',
+    categories: '子分類',
+    project: '專案',
+    money: '金額',
+    amount: '請輸入金額',
+    other: '備註',
+    other2: '新增備註',
+    data: '新增一筆',
+    send: '送出'
+  },
+  c_accountmanager_view: {
+    project: '帳戶類型',
+    search: '搜尋',
+    word: '請輸入內容',
+    data: '新增一筆',
+    style1: '帳戶類型',
+    style2: '帳戶名稱',
+    money: '初始金額',
+    use: '操作',
+    edit: '編輯',
+    delete: '刪除',
+    choose: '請選擇',
+    canael: '取消',
+    sure: '確定'
   }
 }

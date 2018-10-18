@@ -47,3 +47,7 @@ export function validatemembet_type(str) {
   const re = /^[0-9]+$/
   return re.test(str)
 }
+export function validatetoid(str) {
+  const re = /^[0-9a-zA-Z]+$/
+  return re.test(str)
+}

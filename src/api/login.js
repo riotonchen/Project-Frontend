@@ -16,7 +16,7 @@ export function loginByUsername(username, password, membertype_id) {
 export function getUserInfo(token) {
   var jwtDecode = require('jwt-decode')
   var decoded = jwtDecode(token)
-  console.log(decoded)
+  // console.log(decoded) // 想要看token解密後的東西
   var user_id = decoded.user_id
   var requ_url = 'https://www.177together.com/api/member/' + user_id + '/'
 
