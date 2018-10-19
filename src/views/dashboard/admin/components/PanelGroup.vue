@@ -17,7 +17,7 @@
           <svg-icon icon-class="dollar-money-sack" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">本月花費</div>
+          <div class="card-panel-text">本月收入</div>
           <count-to :start-val="0" :end-val="81212" :duration="3000" class="card-panel-num" />
         </div>
       </div>
@@ -28,7 +28,7 @@
           <svg-icon icon-class="cart-of-ecommerce" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">今日支出</div>
+          <div class="card-panel-text">本月支出</div>
           <count-to :start-val="0" :end-val="9280" :duration="3200" class="card-panel-num" />
         </div>
       </div>

@@ -92,7 +92,7 @@ export default {
       loginForm: {
         username: '',
         password: '',
-        membertype_id: ''
+        membertype_id: '2'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: isvalidateEmail }],
@@ -104,7 +104,7 @@ export default {
       loadinghome: false,
       showDialog: false,
       redirect: undefined,
-      membertype: [{ label: '一般會員', key: '2' }, { label: '管理員', key: '1' }, { label: '商家', key: '5' }]
+      membertype: [{ label: '會員', key: '2' }, { label: '管理員', key: '1' }, { label: '商家', key: '5' }]
     }
   },
   watch: {

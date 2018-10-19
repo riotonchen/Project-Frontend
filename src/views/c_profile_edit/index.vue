@@ -15,7 +15,7 @@
                 <el-input v-model="profile_edit_form.name" placeholder="上限25個中英數字" name="name" />
               </el-form-item>
               <el-form-item label="ToID：" prop="toid">
-                <el-input v-model="profile_edit_form.toid" placeholder="上限8位中英數" name="toid" />
+                <el-input v-model="profile_edit_form.toid" placeholder="ToID 只限定於 8 碼" name="toid" />
               </el-form-item>
               <el-form-item label="新密碼：" prop="pswd">
                 <el-input v-model="profile_edit_form.pswd" type="password" placeholder="如不修改，空白即可" name="pswd" />
@@ -54,7 +54,7 @@
 import { getUserInfo } from '@/api/login'
 import { getToken } from '@/utils/auth'
 import { validatetoid } from '@/utils/validate'
-import { patchprofile, patchprofilepswd } from '@/api/patchprofile'
+import { patchprofile, patchprofilepswd } from '@/api/profile/patchprofile'
 
 export default {
   data() {

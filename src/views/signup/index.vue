@@ -100,7 +100,7 @@ export default {
         username: '',
         password: '',
         doublepswd: '',
-        membertype_id: ''
+        membertype_id: '2'
       },
       signupRules: {
         username: [{ required: true, trigger: 'blur', validator: isvalidateEmail }],
@@ -113,7 +113,7 @@ export default {
       loadinghome: false,
       showDialog: false,
       redirect: undefined,
-      membertype: [{ label: '一般會員', key: '2' }, { label: '商家', key: '5' }]
+      membertype: [{ label: '會員', key: '2' }, { label: '商家', key: '5' }]
     }
   },
   watch: {
@@ -153,7 +153,7 @@ export default {
                 const h = this.$createElement
                 this.$notify({
                   title: '註冊失敗',
-                  message: h('b', { style: 'color: teal' }, '你輸入的電子信箱已經註冊過，請確認後再次註冊！ 5秒自動幫你跳轉'),
+                  message: h('b', { style: 'color: red' }, '你輸入的電子信箱已經註冊過，請確認後再次註冊！ 5秒自動幫你跳轉'),
                   position: 'top-left'
                 })
                 setTimeout(() => {
@@ -163,7 +163,7 @@ export default {
                 const h = this.$createElement
                 this.$notify({
                   title: '註冊失敗',
-                  message: h('b', { style: 'color: teal' }, '發生了一點錯誤，請在試一次，如果一直發生請與我們聯繫，造成您的不良體驗，實在非常抱歉！ 5秒自動幫你跳轉'),
+                  message: h('b', { style: 'color: red' }, '發生了一點錯誤，請在試一次，如果一直發生請與我們聯繫，造成您的不良體驗，實在非常抱歉！ 5秒自動幫你跳轉'),
                   position: 'top-left'
                 })
                 setTimeout(() => {

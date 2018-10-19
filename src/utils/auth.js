@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie'
 
-// 給定一個假想TOKEN
-const TokenKey = 'Fake-Token'
+// 給定一個原始假TOKEN
+const TokenKey = 'AUTH-Token'
 
 export function getToken() {
   return Cookies.get(TokenKey)
