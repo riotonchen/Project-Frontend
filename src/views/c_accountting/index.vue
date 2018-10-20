@@ -7,7 +7,7 @@
         <el-table :data="tableData" height="70vh" style="width:90%">
           <el-table-column :label="$t('c_accounting_view.accountname')" width="200rem">
             <template slot-scope="scope">
-              <el-input v-model="input" :placeholder="$t('c_accounting_view.name')" class="accounting_ipt" />
+              <el-input v-model="input" :placeholder="$t('c_accounting_view.name')" class="accounting" />
 
               <span style="margin-left: 10px">{{ scope.row.account }}</span>
             </template>
@@ -16,7 +16,7 @@
           <el-table-column :label="$t('c_accounting_view.class')" width="200rem">
             <template slot-scope="scope">
 
-              <el-select v-model="value" :placeholder="$t('c_accounting_view.choose')" class="accounting_opt">
+              <el-select v-model="value" :placeholder="$t('c_accounting_view.choose')" class="accounting">
                 <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
               </el-select>
 
@@ -25,7 +25,7 @@
           </el-table-column>
           <el-table-column :label="$t('c_accounting_view.categories')" width="200rem">
             <template slot-scope="scope">
-              <el-select v-model="value" :placeholder="$t('c_accounting_view.choose')" class="accounting_opt">
+              <el-select v-model="value" :placeholder="$t('c_accounting_view.choose')" class="accounting">
                 <el-option v-for="item in options2" :key="item.value" :label="item.label" :value="item.value" />
               </el-select>
               <span style="margin-left: 10px">{{ scope.row.subclass }}</span>
@@ -33,34 +33,37 @@
           </el-table-column>
           <el-table-column :label="$t('c_accounting_view.project')" width="200rem">
             <template slot-scope="scope">
-              <el-select v-model="value" :placeholder="$t('c_accounting_view.choose')" class="accounting_opt">
+              <el-select v-model="value" :placeholder="$t('c_accounting_view.choose')" class="accounting">
                 <el-option v-for="item in options3" :key="item.value" :label="item.label" :value="item.value" />
               </el-select>
               <span style="margin-left: 10px">{{ scope.row.project }}</span>
             </template>
           </el-table-column>
+          <el-table-column :label="$t('發票')" width="200rem">
+            <template slot-scope="scope">
+              <el-input v-model="input" :placeholder="$t('c_accounting_view.amount')">
+                <span style="margin-left: 10px">{{ scope.row.money }}</span>
+              </el-input>
+            </template>
+          </el-table-column>
           <el-table-column :label="$t('c_accounting_view.money')" width="200rem">
             <template slot-scope="scope">
-              <el-input v-model="input" :placeholder="$t('c_accounting_view.amount')" class="accounting_ipt">
+              <el-input v-model="input" :placeholder="$t('c_accounting_view.amount')">
                 <span style="margin-left: 10px">{{ scope.row.money }}</span>
               </el-input>
             </template>
           </el-table-column>
           <el-table-column :label="$t('c_accounting_view.other')" width="400rem">
             <template slot-scope="scope">
-              <el-input v-model="input" :placeholder="$t('c_accounting_view.other2')" class="accounting_ipt" />
+              <el-input v-model="input" :placeholder="$t('c_accounting_view.other2')" class="accounting" />
               <span style="margin-left: 10px">{{ scope.row.remarks }}</span>
             </template>
           </el-table-column>
           <el-table-column label="" right="fixed">
             <template slot-scope="scope">
-
               <el-button type="danger" icon="el-icon-delete" circle />
-
             </template>
-
           </el-table-column>
-
         </el-table>
 
       </el-main>
@@ -169,11 +172,7 @@ export default {
 .accounting_btn {
   padding-left: 73.5vw;
 }
-.accounting_ipt {
-  padding-top: 1.9vh;
-}
-
-.accounting_opt {
-  padding-top: 1.9vh;
+.accounting {
+  padding-top: 2.6vh;
 }
 </style>

@@ -151,6 +151,9 @@
 
   </div>
 </template>
+<style lang="scss">
+</style>
+
 <script>
 import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
 import waves from '@/directive/waves' // 水波紋指令
