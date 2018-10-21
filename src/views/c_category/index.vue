@@ -85,7 +85,6 @@
 
           <el-button size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{ $t('c_category_view.delete') }}
           -->
-          </el-button>
         </template>
       </el-table-column>
 
@@ -136,7 +135,6 @@
         <el-button type="danger" @click="dialogStatus==='create'?createData():updateData()">{{ $t('c_category_view.delete') }}</el-button>
         <el-button @click="dialogFormVisible = false">{{ $t('c_category_view.cancel') }}</el-button>
         <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">{{ $t('c_category_view.confirm') }}</el-button>
-        </el-button>
       </div>
 
     </el-dialog>
@@ -151,7 +149,6 @@
       </span>
     </el-dialog>
 
-  </div>
   </div>
 </template>
 

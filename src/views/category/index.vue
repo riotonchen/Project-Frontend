@@ -57,7 +57,7 @@ export default {
   padding-right: 2vmax;
   padding-left: 2vmax;
   padding-top: 2vmax;
-  padding-button: 2vmax;
+  padding-bottom: 2vmax;
 }
 .add {
   margin-top: 50vmin;
