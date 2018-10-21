@@ -8,17 +8,8 @@
         <el-option v-for="item in categoryTypeOptions" :key="item" :label="item" :value="item" />
       </el-select>
 
-      <el-select v-model="listQuery.type" :placeholder="$t('c_category_view.subclass')" clearable class="filter-item" style="width: 10rem">
-        <el-option v-for="item in scategoryTypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key" />
-      </el-select>
-
-      <el-input :placeholder="$t('c_category_view.content')" v-model="listQuery.title" style="width: 15rem;" class="filter-item" @keyup.enter.native="handleFilter" />
-
-      <!--
-      <el-select v-model="listQuery.sort" style="width: 140px" class="filter-item" @change="handleFilter">
-        <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key" />
-      </el-select>
-      -->
+      <span class="demonstration" />
+      <el-date-picker v-model="value4" type="month" placeholder="選擇月份" />
 
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('c_category_view.search') }}</el-button>
 
@@ -91,8 +82,9 @@
 
           <el-button v-if="scope.row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{ $t('table.delete') }}
           </el-button>
-           -->
+
           <el-button size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{ $t('c_category_view.delete') }}
+          -->
           </el-button>
         </template>
       </el-table-column>
@@ -118,7 +110,7 @@
             <el-option v-for="item in scategoryTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('c_category_view.categorybudge')" prop="title">
+        <el-form-item :label="$t('c_category_view.categorybudget')" prop="title">
           <el-input v-model="temp.title" />
         </el-form-item>
         <!--
@@ -141,8 +133,10 @@
           <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
           <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">{{ $t('table.confirm') }}</el-button>
         -->
+        <el-button type="danger" @click="dialogStatus==='create'?createData():updateData()">{{ $t('c_category_view.delete') }}</el-button>
         <el-button @click="dialogFormVisible = false">{{ $t('c_category_view.cancel') }}</el-button>
         <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">{{ $t('c_category_view.confirm') }}</el-button>
+        </el-button>
       </div>
 
     </el-dialog>
@@ -157,6 +151,7 @@
       </span>
     </el-dialog>
 
+  </div>
   </div>
 </template>
 

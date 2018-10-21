@@ -22,7 +22,6 @@
           </el-form-item>
         </el-form>
       </div>
-
     </el-card>
   </div>
 </template>

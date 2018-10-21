@@ -58,6 +58,8 @@ export default {
     c_card: '票卡管理',
     c_category: '分類管理',
     c_connection: '聯絡我們',
+    c_accounting: '開始記帳',
+    c_cardmanager: '卡片管理',
     excel: 'Excel',
     exportExcel: 'Export Excel',
     selectExcel: 'Export Selected',
@@ -219,14 +221,18 @@ export default {
     h1: '我們將在問題送出後3~5工作天內進行回覆'
   },
   c_accounting_view: {
+    income: '收入',
+    spend: '支出',
     accountname: '帳戶名稱',
-    name: '請輸入帳戶名稱',
+    name: '請輸入名稱',
+    papertime: '發票日期',
     class: '分類',
     choose: '請選擇',
     categories: '子分類',
     project: '專案',
     money: '金額',
-    amount: '請輸入金額',
+    paper: '發票',
+    amount: '請輸入',
     other: '備註',
     other2: '新增備註',
     data: '新增一筆',
@@ -246,5 +252,17 @@ export default {
     choose: '請選擇',
     canael: '取消',
     sure: '確定'
+  },
+  c_project: {
+    word: '請輸入內容',
+    search: '搜尋',
+    data: '新增一筆',
+    name: '專案名稱',
+    expenditure: '專案總支出',
+    income: '專案總收入',
+    action: '操作',
+    edit: '編輯',
+    delete: '刪除',
+    canael: '取消'
   }
 }

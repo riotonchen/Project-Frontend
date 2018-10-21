@@ -58,6 +58,8 @@ export default {
     c_card: 'Card',
     c_category: 'Category',
     c_connection: 'Connection',
+    c_accounting: 'Record accounting',
+    c_cardmanager: 'Card Manage',
     excel: 'Excel',
     exportExcel: 'Export Excel',
     selectExcel: 'Export Selected',
@@ -219,14 +221,18 @@ export default {
     h1: 'We will respond within 3~5 working days after the problem is sent.'
   },
   c_accounting_view: {
+    income: 'Income',
+    spend: 'Spend',
     accountname: 'Accountname',
     name: 'Please enter your account name',
+    papertime: 'Receipt Date',
     class: 'Classification',
     choose: 'Please select',
     categories: 'Sub-categories',
     project: 'Project',
     money: 'Money',
-    amount: 'Please enter the amount',
+    paper: 'Receipt',
+    amount: 'Please enter',
     other: 'Registration',
     other2: 'New registration',
     data: 'Add a new amount of data',
@@ -246,5 +252,17 @@ export default {
     choose: 'Please select',
     canael: 'Canael',
     sure: 'Sure'
+  },
+  c_project: {
+    word: 'Please enter the content',
+    search: 'Seach',
+    data: 'Add',
+    name: 'Project Name',
+    expenditure: 'Total Project Expenditure',
+    income: 'Total Project Income',
+    action: 'Action',
+    edit: 'Edit',
+    delete: 'Delete',
+    canael: 'Canael'
   }
 }

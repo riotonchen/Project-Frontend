@@ -199,7 +199,7 @@ export const asyncRouterMap = [{
         import('@/views/c_card/index'),
     name: 'c_card',
     meta: {
-      title: '卡片管理',
+      title: 'c_cardmanager',
       icon: 'user'
     }
   }]
@@ -215,6 +215,21 @@ export const asyncRouterMap = [{
     name: 'c_category',
     meta: {
       title: '分類管理 ',
+      icon: 'user'
+    }
+  }]
+},
+{
+  path: '/manager/project',
+  component: Layout,
+  redirect: 'noredirect',
+  children: [{
+    path: '',
+    component: () =>
+        import('@/views/c_project/index'),
+    name: 'c_project',
+    meta: {
+      title: '專案管理 ',
       icon: 'user'
     }
   }]

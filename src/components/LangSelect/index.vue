@@ -22,7 +22,7 @@ export default {
       this.$i18n.locale = lang
       this.$store.dispatch('setLanguage', lang)
       this.$message({
-        message: 'Switch Language Success',
+        message: '轉換語言成功!!!',
         type: 'success'
       })
     }
@@ -34,7 +34,7 @@ export default {
 .international-icon {
   font-size: 20px;
   cursor: pointer;
-  vertical-align: -5px!important;
+  vertical-align: -5px !important;
 }
 </style>
 
