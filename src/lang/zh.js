@@ -246,13 +246,5 @@ export default {
     choose: '請選擇',
     canael: '取消',
     sure: '確定'
-  },
-  el: {
-    pagination: {
-      goto: '前往',
-      pagesize: '筆/頁',
-      total: '共 {total} 筆',
-      pageClassifier: '筆'
-    }
   }
 }

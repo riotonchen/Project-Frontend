@@ -105,7 +105,7 @@ export default {
       signupRules: {
         username: [{ required: true, trigger: 'blur', validator: isvalidateEmail }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }],
-        doublepswd: [{ required: true, validator: validatedoublepswd }],
+        doublepswd: [{ required: true, trigger: 'blur', validator: validatedoublepswd }],
         membertype_id: [{ required: true, trigger: 'blur', validator: validateMembertype }]
       },
       passwordType: 'password',
@@ -151,29 +151,28 @@ export default {
               console.log(error.response.data)
               if (error.response.data.error_msg === '帳號已存在！') {
                 const h = this.$createElement
-                this.$notify({
+                this.$notify.error({
                   title: '註冊失敗',
-                  message: h('b', { style: 'color: red' }, '你輸入的電子信箱已經註冊過，請確認後再次註冊！ 5秒自動幫你跳轉'),
-                  position: 'top-left'
+                  message: h('b', { style: 'color: red' }, '你輸入的電子信箱已經註冊過，請確認後再次註冊！ 5秒自動幫你重新刷新頁面'),
+                  position: 'top-left',
+                  showClose: false
                 })
                 setTimeout(() => {
                   location.reload()
                 }, 5000)
               } else {
                 const h = this.$createElement
-                this.$notify({
+                this.$notify.error({
                   title: '註冊失敗',
                   message: h('b', { style: 'color: red' }, '發生了一點錯誤，請在試一次，如果一直發生請與我們聯繫，造成您的不良體驗，實在非常抱歉！ 5秒自動幫你跳轉'),
-                  position: 'top-left'
+                  position: 'top-left',
+                  showClose: false
                 })
                 setTimeout(() => {
                   location.reload()
                 }, 5000)
               }
             })
-        } else {
-          console.log('error submit!!')
-          return false
         }
       })
     },

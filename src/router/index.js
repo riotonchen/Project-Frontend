@@ -98,11 +98,11 @@ export default new Router({
   routes: constantRouterMap
 })
 export const asyncRouterMap = [{
-  path: '/profile',
+  path: '/profile/profile-view',
   component: Layout,
   redirect: 'noredirect',
   children: [{
-    path: 'profile-view',
+    path: '',
     component: () =>
         import('@/views/c_profile_view/index'),
     name: 'c_profile_view',
@@ -114,12 +114,12 @@ export const asyncRouterMap = [{
 },
 
 {
-  path: '/profile',
+  path: '/profile/profile-edit',
   component: Layout,
   redirect: 'noredirect',
   hidden: true,
   children: [{
-    path: 'profile-edit',
+    path: '',
     component: () =>
         import('@/views/c_profile_edit/index'),
     name: 'c_profile_edit',
@@ -175,11 +175,11 @@ export const asyncRouterMap = [{
   }]
 },
 {
-  path: '/manager',
+  path: '/manager/account',
   component: Layout,
   redirect: 'noredirect',
   children: [{
-    path: 'account',
+    path: '',
     component: () =>
         import('@/views/c_accountmanager/index'),
     name: 'c_accountmanager',
@@ -190,11 +190,11 @@ export const asyncRouterMap = [{
   }]
 },
 {
-  path: '/manager',
+  path: '/manager/card',
   component: Layout,
   redirect: 'noredirect',
   children: [{
-    path: '/card',
+    path: '',
     component: () =>
         import('@/views/c_card/index'),
     name: 'c_card',
@@ -205,11 +205,11 @@ export const asyncRouterMap = [{
   }]
 },
 {
-  path: '/manager',
+  path: '/manager/category',
   component: Layout,
   redirect: 'noredirect',
   children: [{
-    path: 'category',
+    path: '',
     component: () =>
         import('@/views/c_category/index'),
     name: 'c_category',

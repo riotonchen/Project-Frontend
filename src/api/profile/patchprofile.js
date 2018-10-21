@@ -1,10 +1,11 @@
 import request from '@/utils/request'
 
-export function patchprofile(token, name, toid) {
+export function patchprofile(token, name, toid, dbpicture) {
   const data = {
     token,
     name,
-    toid
+    toid,
+    dbpicture
   }
   var jwtDecode = require('jwt-decode')
   var decoded = jwtDecode(token)
