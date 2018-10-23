@@ -134,12 +134,12 @@ export const asyncRouterMap = [{
   component: Layout,
   redirect: 'noredirect',
   children: [{
-    path: 'accountting',
+    path: 'c_accounting',
     component: () =>
-        import('@/views/c_accountting/index'),
-    name: 'c_accountting',
+        import('@/views/c_accounting/index'),
+    name: 'c_accounting',
     meta: {
-      title: '開始記帳',
+      title: 'c_accounting',
       icon: 'user'
     }
   }]
@@ -154,8 +154,8 @@ export const asyncRouterMap = [{
         import('@/views/c_history/index'),
     name: 'c_history',
     meta: {
-      title: '歷史紀錄',
-      icon: 'user'
+      title: 'c_history',
+      icon: 'history'
     }
   }]
 },

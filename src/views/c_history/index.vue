@@ -2,10 +2,21 @@
 
   <div class="app-container">
     <title>
-      {{ $t('route.history') }}
+      {{ $t('route.c_history') }}
     </title>
+    <!--篩選器-->
     <div class="filter-container">
-      <el-date-picker v-model="value6" type="daterange" clearable class="filter-item" />
+      <el-date-picker v-model="startenddate" :range-separator="$t('c_history.to')" :start-placeholder="$t('c_history.startdate')" :end-placeholder="$t('c_history.enddate')" type="daterange" style="width: 23.2rem;" />
+      <el-select v-model="c_payorin" filterable placeholder="收支出" style="width: 5.5rem;">
+        <el-option v-for="payorin in c_pay_in" :key="payorin.value" :label="payorin.label" :value="payorin.value" />
+      </el-select>
+      <el-select v-model="c_sort" filterable placeholder="主類別" style="width: 6.5rem;" @focus="get_sort()" @blur="get_subsort()">
+        <el-option v-for="sort in c_sort_payorinitem" :key="sort.id" :label="sort.name" :value="sort.id" />
+      </el-select>
+      <el-select v-model="c_subsort" filterable placeholder="子類別" style="width: 6.5rem;">
+        <el-option v-for="subsort in c_subsort_payorinitem" :key="subsort.id" :label="subsort.name" :value="subsort.id" />
+      </el-select>
+      <!--
       <el-select v-model="listQuery.importance" :placeholder="$t('table.project')" clearable style="width: 7vw" class="filter-item">
         <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
       </el-select>
@@ -14,9 +25,11 @@
       </el-select>
 
       <el-input :placeholder="$t('table.content')" v-model="listQuery.title" style="width: 15vw;" class="filter-item" @keyup.enter.native="handleFilter" />
+ -->
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button>
-    </div>
 
+    </div>
+    <!--
     <el-table v-loading="listLoading" :key="tableKey" :data="list" stripe border fit highlight-current-row style="width: 100%;">
       <el-table-column :label="$t('table.date')" align="center" width="100rem">
         <template slot-scope="scope">
@@ -86,7 +99,6 @@
           </el-select>
         </el-form-item>
         <el-form-item :label="$t('table.subclass')" prop="scategory">
-          <!--<el-input v-model="temp.title" />-->
           <el-select v-model="temp.scategory" class="filter-item" placeholder="Please select">
             <el-option v-for="item in scategoryTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
           </el-select>
@@ -122,54 +134,35 @@
         <el-button type="primary" @click="dialogPvVisible = false">{{ $t('table.confirm') }}</el-button>
       </span>
     </el-dialog>
-
+    -->
   </div>
 </template>
 <script>
-import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
+
+// import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
+
+// import { parseTime } from '@/utils'
+
 import waves from '@/directive/waves' // 水波紋指令
-import { parseTime } from '@/utils'
-
-const calendarTypeOptions = [
-  { key: '1', display_name: '悠遊卡' },
-  { key: '2', display_name: '信用卡' },
-  { key: '3', display_name: '現金' }
-
-]
-
-const categoryTypeOptions = [
-  { key: '1', display_name: '分類1' },
-  { key: '2', display_name: '分類2' },
-  { key: '3', display_name: '分類3' }
-
-]
-
-// arr to obj ,such as { CN : "China", US : "USA" }
-const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
-  acc[cur.key] = cur.display_name
-  return acc
-}, {})
+import { getsort_pay, getsort_in } from '@/api/sort/getsort'
+import { getsubsort } from '@/api/subsort/getsubsort'
+import { getToken } from '@/utils/auth'
 
 export default {
-  name: 'ComplexTable',
+  name: 'CHistory',
   directives: {
     waves
   },
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        published: 'success',
-        draft: 'info',
-        deleted: 'danger'
-      }
-      return statusMap[status]
-    },
-    typeFilter(type) {
-      return calendarTypeKeyValue[type]
-    }
-  },
   data() {
     return {
+      startenddate: '',
+      c_payorin: '',
+      c_sort: '',
+      c_subsort: '',
+      c_sort_payorinitem: [],
+      c_subsort_payorinitem: [],
+      c_pay_in: [{ label: '支出', value: 0 }, { label: '收入', value: 1 }],
+
       tableKey: 0,
       list: null,
       total: null,
@@ -183,8 +176,6 @@ export default {
         sort: '+id'
       },
       importanceOptions: [1, 2, 3],
-      calendarTypeOptions,
-      categoryTypeOptions,
       sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
       statusOptions: ['專案1', '專案2', '專案3'],
       showReviewer: false,
@@ -209,43 +200,52 @@ export default {
         type: [{ message: 'type is required', trigger: 'change' }],
         timestamp: [{ type: 'date', message: 'timestamp is required', trigger: 'change' }],
         title: [{ message: 'title is required', trigger: 'blur' }]
-      },
-      downloadLoading: false,
-      pickerOptions2: {
-        shortcuts: [{
-          text: '最近一周',
-          onClick(picker) {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-            picker.$emit('pick', [start, end])
-          }
-        }, {
-          text: '最近一個月',
-          onClick(picker) {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-            picker.$emit('pick', [start, end])
-          }
-        }, {
-          text: '最近三個月',
-          onClick(picker) {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-            picker.$emit('pick', [start, end])
-          }
-        }]
-      },
-      value6: '',
-      value7: ''
+      }
     }
   },
-  created() {
-    this.getList()
+  watch: {
+    c_payorin: function(newc_payorin, oldc_payorin) {
+      if (oldc_payorin === '') {
+        return
+      } else if (newc_payorin !== oldc_payorin) {
+        this.c_sort = ''
+        this.c_subsort = ''
+        this.get_sort()
+      }
+    },
+    c_sort: function(newc_sort, oldc_sort) {
+      if (oldc_sort === '') {
+        return
+      } else if (newc_sort !== oldc_sort) {
+        this.c_subsort = ''
+        this.get_subsort()
+      }
+    }
   },
   methods: {
+    get_sort() {
+      if (this.c_payorin === 0) {
+        getsort_pay(getToken()).then(response => {
+          this.c_sort_payorinitem = response.data
+        })
+      } else {
+        getsort_in(getToken()).then(response => {
+          this.c_sort_payorinitem = response.data
+        })
+      }
+    },
+    get_subsort() {
+      getsubsort(getToken(), this.c_sort).then(response => {
+        if (response.data === []) {
+          this.c_subsort_payorinitem = '該類別目前無東西'
+        } else {
+          this.c_subsort_payorinitem = response.data
+        }
+      }).catch((error) => {
+        console.log(error)
+      })
+    },
+    /*
     getList() {
       this.listLoading = true
       fetchList(this.listQuery).then(response => {
@@ -258,6 +258,7 @@ export default {
         }, 1.5 * 1000)
       })
     },
+    */
     handleFilter() {
       this.listQuery.page = 1
       this.getList()
@@ -392,3 +393,4 @@ export default {
   }
 }
 </script>
+
