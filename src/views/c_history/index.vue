@@ -1,151 +1,94 @@
 <template>
 
-  <div class="app-container">
+  <div class="history-container">
     <title>
       {{ $t('route.c_history') }}
     </title>
-    <!--篩選器-->
+
     <div class="filter-container">
-      <el-date-picker v-model="startenddate" :range-separator="$t('c_history.to')" :start-placeholder="$t('c_history.startdate')" :end-placeholder="$t('c_history.enddate')" type="daterange" style="width: 23.2rem;" />
-      <el-select v-model="c_payorin" filterable placeholder="收支出" style="width: 5.5rem;">
-        <el-option v-for="payorin in c_pay_in" :key="payorin.value" :label="payorin.label" :value="payorin.value" />
-      </el-select>
-      <el-select v-model="c_sort" filterable placeholder="主類別" style="width: 6.5rem;" @focus="get_sort()" @blur="get_subsort()">
-        <el-option v-for="sort in c_sort_payorinitem" :key="sort.id" :label="sort.name" :value="sort.id" />
-      </el-select>
-      <el-select v-model="c_subsort" filterable placeholder="子類別" style="width: 6.5rem;">
-        <el-option v-for="subsort in c_subsort_payorinitem" :key="subsort.id" :label="subsort.name" :value="subsort.id" />
-      </el-select>
-      <!--
-      <el-select v-model="listQuery.importance" :placeholder="$t('table.project')" clearable style="width: 7vw" class="filter-item">
-        <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
-      </el-select>
-      <el-select v-model="listQuery.type" :placeholder="$t('table.account')" clearable class="filter-item" style="width:7vw">
-        <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key" />
-      </el-select>
-
-      <el-input :placeholder="$t('table.content')" v-model="listQuery.title" style="width: 15vw;" class="filter-item" @keyup.enter.native="handleFilter" />
- -->
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button>
-
-    </div>
-    <!--
-    <el-table v-loading="listLoading" :key="tableKey" :data="list" stripe border fit highlight-current-row style="width: 100%;">
-      <el-table-column :label="$t('table.date')" align="center" width="100rem">
-        <template slot-scope="scope">
-          <span>{{ scope.row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.account')" align="center" width="100rem">
-        <template slot-scope="scope">
-          <span>{{ scope.row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.class')" width="100rem" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.subclass')" width="100rem" align="center">
-        <template slot-scope="scope">
-          <span class="link-type" @click="handleUpdate(scope.row)">{{ scope.row.title }}</span>
-
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.project')" width="100rem" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.author }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column :label="$t('table.money')" width="100rem" align="center">
-        <template slot-scope="scope">
-          <svg-icon v-for="n in +scope.row.importance" :key="n" icon-class="star" class="meta-item__icon" />
-        </template>
-      </el-table-column>
-
-      <el-table-column :label="$t('table.remark')" align="center" width="296rem">
-        <template slot-scope="scope">
-          <span v-if="scope.row.pageviews" class="link-type" @click="handleFetchPv(scope.row.pageviews)">{{ scope.row.pageviews }}</span>
-          <span v-else>0</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column :label="$t('table.actions')" align="center" width="232rem" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
-
-          <el-button size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{ $t('table.delete') }}
-          </el-button>
-        </template>
-      </el-table-column>
-
-    </el-table>
-
-    <div class="pagination-container">
-      <el-pagination v-show="total>0" :current-page="listQuery.page" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" :total="total" background layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange" @current-change="handleCurrentChange" />
+      <el-row class="date_seletor">
+        <el-col :xs="6" :sm="3" :md="2" :lg="2" :xl="1" class="selector_title">
+          <span>用時間篩選</span>
+        </el-col>
+        <el-col :xs="24" :sm="10" :md="9" :lg="8" :xl="6">
+          <el-date-picker v-model="startenddate" :start-placeholder="$t('c_history.startdate')" :end-placeholder="$t('c_history.enddate')" range-separator="-" align="center" type="daterange" style="width: 40vw;min-width:15rem;max-width:20.5rem;" />
+        </el-col>
+      </el-row>
+      <el-row class="class_seletor">
+        <el-col :xs="6" :sm="3" :md="2" :lg="2" :xl="1" class="selector_title">
+          <span>用類別篩選</span>
+        </el-col>
+        <el-col :xs="24" :sm="10" :md="9" :lg="8" :xl="6">
+          <el-select v-model="c_payorin" filterable placeholder="收支出" style="width: 25vw;max-width:5rem;min-width:4.5rem;">
+            <el-option v-for="payorin in c_pay_in" :key="payorin.value" :label="payorin.label" :value="payorin.value" />
+          </el-select>
+          <el-select v-model="c_sort" :disabled="c_sort_disable" filterable placeholder="主類別" style="width: 25vw;max-width:7.5rem;min-width:6.5rem;" @focus="get_sort()" @change="get_subsort()">
+            <el-option v-for="sort in c_sort_payorinitem" :key="sort.id" :label="sort.name" :value="sort.id" />
+          </el-select>
+          <el-select v-model="c_subsort" :disabled="c_subsort_disable" filterable placeholder="子類別" style="width: 25vw;max-width:7.5rem;min-width:6.5rem;">
+            <el-option v-for="subsort in c_subsort_payorinitem" :key="subsort.id" :label="subsort.name" :value="subsort.id" />
+          </el-select>
+        </el-col>
+      </el-row>
+      <el-row class="project_seletor">
+        <el-col :xs="6" :sm="3" :md="2" :lg="2" :xl="1" class="selector_title">
+          <span>用專案篩選</span>
+        </el-col>
+        <el-col :xs="24" :sm="10" :md="9" :lg="8" :xl="6">
+          <el-select v-model="c_project" filterable placeholder="專案" style="width: 25vw;max-width:13.2rem;min-width:11.8rem;" @focus="get_project()">
+            <el-option v-for="project in c_projectitem" :key="project.id" :label="project.name" :value="project.id" />
+          </el-select>
+        </el-col>
+      </el-row>
+      <el-row class="account_seletor">
+        <el-col :xs="6" :sm="3" :md="2" :lg="2" :xl="1" class="selector_title">
+          <span>用帳戶篩選</span>
+        </el-col>
+        <el-col :xs="24" :sm="10" :md="9" :lg="8" :xl="6">
+          <el-select v-model="c_account" filterable placeholder="帳戶" style="width: 25vw;max-width:13.2rem;min-width:11.8rem;" @focus="get_account()">
+            <el-option v-for="account in c_accountitem" :key="account.id" :label="account.name" :value="account.id" />
+          </el-select>
+        </el-col>
+      </el-row>
     </div>
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
-        <el-form-item :label="$t('table.account')" prop="type">
-          <el-select v-model="temp.type" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('table.class')" prop="category">
-          <el-select v-model="temp.category" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in categoryTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('table.subclass')" prop="scategory">
-          <el-select v-model="temp.scategory" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in scategoryTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
-          </el-select>
+    <div class="history_container">
 
-        </el-form-item>
-
-        <el-form-item :label="$t('table.project')" prop="project">
-
-          <el-select v-model="temp.prject" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in projectTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
-          </el-select>
-        </el-form-item>
-
-        <el-form-item :label="$t('table.money')">
-          <el-input v-model="temp.title" />
-        </el-form-item>
-        <el-form-item :label="$t('table.remark')">
-          <el-input :autosize="{ minRows: 2, maxRows: 4}" v-model="temp.remark" type="textarea" placeholder="請輸入備註" />
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">{{ $t('確認') }}</el-button>
-      </div>
-    </el-dialog>
-
-    <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
-      <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
-        <el-table-column prop="key" label="Channel" />
-        <el-table-column prop="pv" label="Pv" />
+      <!--目前使用日期做排序-->
+      <el-table :data="c_user_history" :default-sort="{prop: 'date', order: 'descending'}" stripe style="width: 100%;" max-height="470">
+        <el-table-column type="expand">
+          <template slot-scope="props">
+            <el-form label-position="left" inline class="table-expand">
+              <el-form-item label="備註">
+                <span>{{ props.row.comment }}</span>
+              </el-form-item>
+              <el-form-item label="商品圖樣">
+                <span>{{ props.row.picture }}</span>
+              </el-form-item>
+            </el-form>
+          </template>
+        </el-table-column>
+        <el-table-column prop="date" label="日期" sortable align="center" />
+        <el-table-column prop="invoice" label="發票" align="center" />
+        <el-table-column prop="sort" label="分類" align="center" />
+        <el-table-column prop="subsort" label="子分類" align="center" />
+        <el-table-column prop="project" label="專案" align="center" />
+        <el-table-column prop="account" label="帳戶" align="center" />
+        <el-table-column prop="amount" label="金額" align="center" />
+        <el-table-column label="操作" align="center" />
       </el-table>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogPvVisible = false">{{ $t('table.confirm') }}</el-button>
-      </span>
-    </el-dialog>
-    -->
+    </div>
   </div>
 </template>
 <script>
-
-// import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
 
 // import { parseTime } from '@/utils'
 
 import waves from '@/directive/waves' // 水波紋指令
 import { getsort_pay, getsort_in } from '@/api/sort/getsort'
 import { getsubsort } from '@/api/subsort/getsubsort'
+import { getproject } from '@/api/project/getproject'
+import { getaccount } from '@/api/account/getaccount'
 import { getToken } from '@/utils/auth'
 
 export default {
@@ -159,54 +102,74 @@ export default {
       c_payorin: '',
       c_sort: '',
       c_subsort: '',
+      c_project: '',
+      c_account: '',
       c_sort_payorinitem: [],
       c_subsort_payorinitem: [],
+      c_projectitem: [],
+      c_accountitem: [],
+      c_sort_disable: true,
+      c_subsort_disable: true,
       c_pay_in: [{ label: '支出', value: 0 }, { label: '收入', value: 1 }],
-
-      tableKey: 0,
-      list: null,
-      total: null,
-      listLoading: true,
-      listQuery: {
-        page: 1,
-        limit: 20,
-        importance: undefined,
-        title: undefined,
-        type: undefined,
-        sort: '+id'
-      },
-      importanceOptions: [1, 2, 3],
-      sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
-      statusOptions: ['專案1', '專案2', '專案3'],
-      showReviewer: false,
-      temp: {
-        id: undefined,
-        importance: 1,
-        remark: '',
-        timestamp: new Date(),
-        title: '',
-        type: '',
-        status: 'published'
-      },
-      dialogFormVisible: false,
-      dialogStatus: '',
-      textMap: {
-        update: 'Edit',
-        create: 'Create'
-      },
-      dialogPvVisible: false,
-      pvData: [],
-      rules: {
-        type: [{ message: 'type is required', trigger: 'change' }],
-        timestamp: [{ type: 'date', message: 'timestamp is required', trigger: 'change' }],
-        title: [{ message: 'title is required', trigger: 'blur' }]
-      }
+      c_user_history: [
+        // test data
+        {
+          date: '2016-05-22',
+          invoice: 'EV-89658002',
+          sort: '吃吃吃',
+          subsort: '早餐',
+          project: '團遊',
+          account: '玉山信用卡',
+          amount: '500',
+          comment: '幹，nfjqbcbhjgzd554654',
+          picture: '我是圖片'
+        }, {
+          date: '2016-09-02',
+          invoice: 'EV-89658002',
+          sort: '出去玩',
+          subsort: '劍湖山',
+          project: '單身旅行',
+          account: '耶耶耶耶耶',
+          amount: '5867600',
+          comment: '幹，huihqfqkhfowi',
+          picture: '我是圖片'
+        }, {
+          date: '2016-07-02',
+          invoice: 'EV-89658002',
+          sort: '吃吃吃',
+          subsort: '早餐',
+          project: '不要不要',
+          account: '美國運東',
+          amount: '50887660',
+          comment: '幹，164165feqfbh',
+          picture: '我是圖片'
+        }, {
+          date: '2016-05-05',
+          invoice: 'EV-89658002',
+          sort: '阿咧咧',
+          subsort: '出去玩',
+          project: '團遊',
+          account: '老子沒錢',
+          amount: '9000',
+          comment: 'dqwfegeqqwd ',
+          picture: '我是圖片'
+        }, {
+          date: '2086-05-02',
+          invoice: 'EV-89658002',
+          sort: '喝寶寶',
+          subsort: '爽拉拉拉',
+          project: '與左右手的旅行',
+          account: '玉山信用卡',
+          amount: '8156610',
+          comment: 'dnwiuqg56461',
+          picture: '我是圖片'
+        }]
     }
   },
   watch: {
     c_payorin: function(newc_payorin, oldc_payorin) {
       if (oldc_payorin === '') {
-        return
+        this.c_sort_disable = false
       } else if (newc_payorin !== oldc_payorin) {
         this.c_sort = ''
         this.c_subsort = ''
@@ -215,36 +178,65 @@ export default {
     },
     c_sort: function(newc_sort, oldc_sort) {
       if (oldc_sort === '') {
-        return
+        this.c_subsort_disable = false
       } else if (newc_sort !== oldc_sort) {
         this.c_subsort = ''
         this.get_subsort()
       }
+    },
+    c_subsort: function(newc_subsort, oldc_subsort) {
+      if (oldc_subsort === '') {
+        this.c_subsort_disable = false
+      } else if (this.c_sort === '') {
+        this.c_subsort_disable = true
+      }
     }
   },
   methods: {
+    // test table
+    formatter(row, column) {
+      return row.address
+    },
     get_sort() {
       if (this.c_payorin === 0) {
         getsort_pay(getToken()).then(response => {
           this.c_sort_payorinitem = response.data
+        }).catch((error) => {
+          console.log(error)
         })
       } else {
         getsort_in(getToken()).then(response => {
           this.c_sort_payorinitem = response.data
+        }).catch((error) => {
+          console.log(error)
         })
       }
     },
     get_subsort() {
       getsubsort(getToken(), this.c_sort).then(response => {
-        if (response.data === []) {
-          this.c_subsort_payorinitem = '該類別目前無東西'
-        } else {
+        if (response.data.length !== 0) {
           this.c_subsort_payorinitem = response.data
+        } else {
+          this.c_subsort_disable = true
         }
       }).catch((error) => {
         console.log(error)
       })
     },
+    get_project() {
+      getproject(getToken()).then(response => {
+        this.c_projectitem = response.data
+      }).catch((error) => {
+        console.log(error)
+      })
+    },
+    get_account() {
+      getaccount(getToken()).then(response => {
+        this.c_accountitem = response.data
+      }).catch((error) => {
+        console.log(error)
+      })
+    }
     /*
     getList() {
       this.listLoading = true
@@ -258,7 +250,7 @@ export default {
         }, 1.5 * 1000)
       })
     },
-    */
+
     handleFilter() {
       this.listQuery.page = 1
       this.getList()
@@ -390,7 +382,31 @@ export default {
         }
       }))
     }
+      */
   }
 }
 </script>
+<style lang="scss">
+.selector_title {
+  line-height: 2.25rem;
+  font-size: 0.7vw;
+}
+
+.history-container {
+  padding: 20px;
+}
+
+.table-expand {
+  font-size: 0;
+}
+.table-expand label {
+  width: 90px;
+  color: #99a9bf;
+}
+.table-expand .el-form-item {
+  margin-right: 0;
+  margin-bottom: 0;
+  width: 100%;
+}
+</style>
 
