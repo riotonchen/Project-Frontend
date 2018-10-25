@@ -52,7 +52,7 @@ export default {
     }
   },
   computed: {
-    // 格式化數據源
+    // 格式化数据源
     formatData: function() {
       let tmp
       if (!Array.isArray(this.data)) {
@@ -71,12 +71,12 @@ export default {
       row.row._show = show
       return show ? 'animation:treeTableShow 1s;-webkit-animation:treeTableShow 1s;' : 'display:none;'
     },
-    // 切换下級是否展開
+    // 切换下级是否展开
     toggleExpanded: function(trIndex) {
       const record = this.formatData[trIndex]
       record._expanded = !record._expanded
     },
-    // 圖標顯示
+    // 图标显示
     iconShow(index, record) {
       return (index === 0 && record.children && record.children.length > 0)
     }

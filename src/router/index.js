@@ -5,6 +5,7 @@ Vue.use(Router)
 
 /* Layout */
 import Layout from '@/views/layout/Layout'
+import tableRouter from '@/router/modules/table'
 
 /**
 * hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
@@ -200,7 +201,7 @@ export const asyncRouterMap = [{
     name: 'c_card',
     meta: {
       title: 'c_cardmanager',
-      icon: 'user'
+      icon: 'creditcard'
     }
   }]
 },
@@ -249,6 +250,7 @@ export const asyncRouterMap = [{
     }
   }]
 },
+tableRouter,
 
 {
   path: '*',

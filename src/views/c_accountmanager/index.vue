@@ -1,91 +1,77 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <!--
-      <el-select v-model="listQuery.importance" :placeholder="$t('table.importance')" clearable style="width: 90px" class="filter-item">
-        <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
-      </el-select>
-      -->
-      <el-select v-model="listQuery.type" :placeholder="$t('c_accountmanager_view.project')" clearable class="filter-item" style="width: 10rem">
+      <el-select v-model="listQuery.type" :placeholder="$t('c_accountmanager_view.accountname')" clearable class="filter-item" style="width: 10rem">
         <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key" />
       </el-select>
-      <!--
-      <el-select v-model="listQuery.sort" style="width: 140px" class="filter-item" @change="handleFilter">
-        <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key" />
-      </el-select>
-      -->
-      <el-input :placeholder="$t('c_accountmanager_view.word')" v-model="listQuery.title" style="width: 20rem;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('c_accountmanager_view.search') }}</el-button>
-      <el-button class="filter-item" style="margin-left: 0;" type="primary" icon="el-icon-edit" @click="handleCreate">{{ $t('c_accountmanager_view.data') }}</el-button>
-      <!--
-      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">{{ $t('table.export') }}</el-button>
+      <el-button class="filter-item" style="margin-left: 0;" type="primary" icon="el-icon-edit" @click="dialogFormVisible = true">{{ $t('c_accountmanager_view.addnewaccount') }}</el-button>
 
-      <el-checkbox v-model="showReviewer" class="filter-item" style="margin-left:15px;" @change="tableKey=tableKey+1">{{ $t('table.reviewer') }}</el-checkbox>
-      -->
+      <el-dialog :title="新增帳戶" :visible.sync="dialogFormVisible">
+        <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
+          <el-form-item :label="$t('c_accountmanager_view.accountname')" prop="timestamp">
+            <el-input v-model="temp.title1" :model="accountform.accountname" />
+          </el-form-item>
+          <el-form-item :label="$t('c_accountmanager_view.startmoney')" prop="title">
+            <el-input v-model="temp.title2" :model="accountform.startmoney" />
+          </el-form-item>
+        </el-form>
+
+        <div slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">{{ $t('c_accountmanager_view.sure') }}</el-button>
+          <el-button @click="dialogFormVisible = false">{{ $t('c_accountmanager_view.cancel') }}</el-button>
+        </div>
+
+      </el-dialog>
     </div>
 
+    <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
+      <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
+        <el-table-column prop="key" label="Channel" />
+        <el-table-column prop="pv" label="Pv" />
+      </el-table>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogPvVisible = false">{{ $t('table.confirm') }}</el-button>
+      </span>
+    </el-dialog>
+
     <el-table v-loading="listLoading" :key="tableKey" :data="list" border fit highlight-current-row style="width: 100%;">
-      <el-table-column :label="$t('c_accountmanager_view.style1')" align="center" width="300rem">
-        <template slot-scope="scope">
-          <span>{{ scope.row.id }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('c_accountmanager_view.style2')" width="300rem" align="center">
+      <el-table-column :label="$t('c_accountmanager_view.accountname')" height="25vw" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('c_accountmanager_view.money')" width="400rem" align="center">
+      <el-table-column :label="$t('c_accountmanager_view.startmoney')" height="25vw" align="center">
         <template slot-scope="scope">
           <span class="link-type" @click="handleUpdate(scope.row)">{{ scope.row.title }}</span>
           <el-tag>{{ scope.row.type | typeFilter }}</el-tag>
         </template>
       </el-table-column>
-      <!--
-      <el-table-column :label="$t('table.author')" width="110px" align="center">
+      <el-table-column :label="$t('c_accountmanager_view.finallymoney')" height="25vw" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.author }}</span>
+          <span class="link-type" @click="handleUpdate(scope.row)">{{ scope.row.title }}</span>
+          <el-tag>{{ scope.row.type | typeFilter }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column v-if="showReviewer" :label="$t('table.reviewer')" width="110px" align="center">
+      <el-table-column :label="$t('c_accountmanager_view.operating')" align="center" height="25vw" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <span style="color:red;">{{ scope.row.reviewer }}</span>
-        </template>
-      </el-table-column>
+          <el-button type="primary" size="mini" @click="centerDialogVisible = true">{{ $t('c_accountmanager_view.edit') }}</el-button>
+          <!--@click="handleUpdate(scope.row)先拿掉-->
+          <el-dialog :title="編輯" :visible.sync="centerDialogVisible">
 
-      <el-table-column :label="$t('table.importance')" width="80px">
-        <template slot-scope="scope">
-          <svg-icon v-for="n in +scope.row.importance" :key="n" icon-class="star" class="meta-item__icon" />
-        </template>
-      </el-table-column>
-
-      <el-table-column label="金額" />
-      <el-table-column :label="$t('table.readings')" align="center" width="95">
-        <template slot-scope="scope">
-          <span v-if="scope.row.pageviews" class="link-type" @click="handleFetchPv(scope.row.pageviews)">{{ scope.row.pageviews }}</span>
-          <span v-else>0</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.status')" class-name="status-col" width="100">
-        <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }}</el-tag>
-        </template>
-      </el-table-column>-->
-
-      <el-table-column :label="$t('c_accountmanager_view.use')" align="center" width="230" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('c_accountmanager_view.edit') }}</el-button>
-          <!--
-          <el-button v-if="scope.row.status!='published'" size="mini" type="success" @click="handleModifyStatus(scope.row,'published')">{{ $t('table.publish') }}
-          </el-button>
-          <el-button v-if="scope.row.status!='draft'" size="mini" @click="handleModifyStatus(scope.row,'draft')">{{ $t('table.draft') }}
-          </el-button>
-
-          <el-button v-if="scope.row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{ $t('table.delete') }}
-          </el-button>
-           -->
-          <el-button size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{ $t('c_accountmanager_view.delete') }}
-          </el-button>
+            <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
+              <el-form-item :label="$t('c_accountmanager_view.accountname')" prop="timestamp">
+                <el-input v-model="temp.title3" :model="accountform.accountname" />
+              </el-form-item>
+              <el-form-item :label="$t('c_accountmanager_view.startmoney')" prop="title">
+                <el-input v-model="temp.title4" :model="accountform.startmoney" />
+              </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+              <el-button type="danger" @click="open1">{{ $t('c_accountmanager_view.delete') }}</el-button>
+              <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">{{ $t('c_accountmanager_view.sure') }}</el-button>
+              <el-button @click="centerDialogVisible = false">{{ $t('c_accountmanager_view.cancel') }}</el-button>
+            </div>
+          </el-dialog>
         </template>
       </el-table-column>
 
@@ -94,47 +80,6 @@
     <div class="pagination-container">
       <el-pagination v-show="total>0" :current-page="listQuery.page" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" :total="total" background layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange" @current-change="handleCurrentChange" />
     </div>
-
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
-        <el-form-item :label="$t('c_accountmanager_view.style1')" class="filter-item" prop="type">
-          <!--
-          <el-select v-model="temp.type" class="filter-item" placeholder="Please select">
-            <el-input v-model="temp.title" />
-          </el-select>
-          -->
-
-          <el-select v-model="temp.type" :placeholder="$t('c_accountmanager_view.choose')" class="filter-item">
-            <el-input v-model="temp.title" />
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('c_accountmanager_view.style2')" prop="timestamp">
-          <el-input v-model="temp.title" />
-        </el-form-item>
-        <el-form-item :label="$t('c_accountmanager_view.money')" prop="title">
-          <el-input v-model="temp.title" />
-        </el-form-item>
-        <!--
-        <el-form-item :label="$t('table.status')">
-          <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item" />
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('table.importance')">
-          <el-rate v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;" />
-        </el-form-item>
-        <el-form-item :label="$t('table.remark')">
-          <el-input :autosize="{ minRows: 2, maxRows: 4}" v-model="temp.remark" type="textarea" placeholder="Please input" />
-        </el-form-item>
-        -->
-      </el-form>
-
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">{{ $t('c_accountmanager_view.cancel') }}</el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">{{ $t('c_accountmanager_view.sure') }}</el-button>
-      </div>
-
-    </el-dialog>
 
     <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
       <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
@@ -186,7 +131,29 @@ export default {
     }
   },
   data() {
+    const validatename = (rule, value, callback) => {
+      if (value.lengh > 10) {
+        callback(new Error('中英上限10個字'))
+      } else {
+        callback()
+      }
+    }
+    const validatemoney = (rule, value, callback) => {
+      if (!validatemoney(value)) {
+        callback(new Error('請輸入正確金額'))
+      } else {
+        callback()
+      }
+    }
     return {
+      accountform: {
+        accountname: '',
+        startmoney: ''
+      },
+      accountRules: {
+        accountname: [{ tigger: 'blur', validator: validatename }],
+        startmoney: [{ tigger: 'blur', validator: validatemoney }]
+      },
       tableKey: 0,
       list: null,
       total: null,
@@ -214,6 +181,7 @@ export default {
         status: 'published'
       },
       dialogFormVisible: false,
+      centerDialogVisible: false,
       dialogStatus: '',
       textMap: {
         update: 'Edit',
@@ -233,6 +201,25 @@ export default {
     this.getList()
   },
   methods: {
+    open() {
+      this.$confirm('確認刪除?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        center: true
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
+
     getList() {
       this.listLoading = true
       fetchList(this.listQuery).then(response => {
@@ -290,6 +277,7 @@ export default {
           this.temp.author = 'vue-element-admin'
           createArticle(this.temp).then(() => {
             this.list.unshift(this.temp)
+            this.centerDialogVisible = false
             this.dialogFormVisible = false
             this.$notify({
               title: '成功',
@@ -324,6 +312,7 @@ export default {
               }
             }
             this.dialogFormVisible = false
+            this.centerDialogVisible = false
             this.$notify({
               title: '成功',
               message: '更新成功',

@@ -1,7 +1,7 @@
 <template>
   <div class="accounting_container">
     <title>
-      {{ $t('route.c_accounting') }}
+      {{ $t('route.accounting') }}
     </title>
     <el-container>
 

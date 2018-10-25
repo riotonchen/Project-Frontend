@@ -1,9 +1,5 @@
 // set function parseTime,formatTime to filter
-export {
-  parseTime,
-  formatTime
-}
-  from '@/utils'
+export { parseTime, formatTime } from '@/utils'
 
 function pluralize(time, label) {
   if (time === 1) {
@@ -23,32 +19,15 @@ export function timeAgo(time) {
   }
 }
 
-/* 數字 格式化*/
+/* 数字 格式化*/
 export function numberFormatter(num, digits) {
-  const si = [{
-    value: 1E18,
-    symbol: 'E'
-  },
-  {
-    value: 1E15,
-    symbol: 'P'
-  },
-  {
-    value: 1E12,
-    symbol: 'T'
-  },
-  {
-    value: 1E9,
-    symbol: 'G'
-  },
-  {
-    value: 1E6,
-    symbol: 'M'
-  },
-  {
-    value: 1E3,
-    symbol: 'k'
-  }
+  const si = [
+    { value: 1E18, symbol: 'E' },
+    { value: 1E15, symbol: 'P' },
+    { value: 1E12, symbol: 'T' },
+    { value: 1E9, symbol: 'G' },
+    { value: 1E6, symbol: 'M' },
+    { value: 1E3, symbol: 'k' }
   ]
   for (let i = 0; i < si.length; i++) {
     if (num >= si[i].value) {

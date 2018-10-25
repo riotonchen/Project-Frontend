@@ -23,10 +23,10 @@
             <el-input v-model="profile_edit_form.pswd2" type="password" placeholder="如不修改，空白即可" name="pswd2" />
           </el-form-item>
           <el-form-item>
-            <el-button :loading="loadingprofile_view_send" type="primary" style="width:20%;margin-top:3vh;margin-left:0px" @click.native.prevent="handleprofile_edit">
+            <el-button :loading="loadingprofile_view_send" type="primary" style="width:20%;margin-top:1.5vh;margin-left:0px" @click.native.prevent="handleprofile_edit">
               確認
             </el-button>
-            <el-button :loading="loadingprofile_view_cancal" type="info" style="width:20%;margin-top:3vh;margin-left:20px" class="personal_edit_cal" @click.native.prevent="goprofile_view">
+            <el-button :loading="loadingprofile_view_cancal" type="info" style="width:20%;margin-top:1.5vh;margin-left:20px" @click.native.prevent="goprofile_view">
               取消
             </el-button>
           </el-form-item>
@@ -177,11 +177,9 @@ export default {
                     message: h('b', { style: 'color: teal' }, '你的ToID已經被使用過，請再重新輸入一次！(3秒後幫你刷空資料)')
                   })
                   console.log(this.imageUrl)
-                  /*
                   setTimeout(() => {
                     location.reload()
                   }, 3000)
-                  */
                 } else {
                   const h = this.$createElement
                   this.$notify.error({
@@ -212,7 +210,7 @@ export default {
 }
 .personal_edit_form {
   margin-top: 3vh;
-  width: 30vw;
+  width: 40%;
   position: absolute;
 }
 .personal_edit_form label {

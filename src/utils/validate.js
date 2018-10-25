@@ -51,3 +51,8 @@ export function validatetoid(str) {
   const re = /^[0-9a-zA-Z]+$/
   return re.test(str)
 }
+
+export function validinvoice(str) {
+  const re = /^([A-Z])-([0-9])$/
+  return re.test(str)
+}

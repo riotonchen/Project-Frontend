@@ -42,37 +42,39 @@ const webpackConfig = merge(baseWebpackConfig, {
     new webpack.DefinePlugin({
       'process.env': env
     }),
-    // 將css提取到自己的文件中
+    // extract css into its own file
     new MiniCssExtractPlugin({
       filename: utils.assetsPath('css/[name].[contenthash:8].css'),
       chunkFilename: utils.assetsPath('css/[name].[contenthash:8].css')
     }),
-    // 使用正確的hash生成index.html以進行緩存
-    // 你可以通過編輯/index.html來自訂義輸出
-    // 請參閱https://github.com/ampedandwired/html-webpack-plugin
+    // generate dist index.html with correct asset hash for caching.
+    // you can customize output by editing /index.html
+    // see https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
       filename: config.build.index,
       template: 'index.html',
       inject: true,
       favicon: resolve('favicon.ico'),
       title: 'vue-element-admin',
-      path: config.build.assetsPublicPath + config.build.assetsSubDirectory,
+      templateParameters: {
+        BASE_URL: config.build.assetsPublicPath + config.build.assetsSubDirectory,
+      },
       minify: {
         removeComments: true,
         collapseWhitespace: true,
         removeAttributeQuotes: true
-        // 更多選擇:
+        // more options:
         // https://github.com/kangax/html-minifier#options-quick-reference
       }
-      // default sort mode uses toposort which cannot handle cyclic deps 默認排序模式使用無法處理循環deps的toposort
-      // 在某些情況下,在webpack 4中,HTML中的順序並不重要
-      // 無論如呵
+      // default sort mode uses toposort which cannot handle cyclic deps
+      // in certain cases, and in webpack 4, chunk order in HTML doesn't
+      // matter anyway
     }),
     new ScriptExtHtmlWebpackPlugin({
-      //運行時必須與runtimeChunk名稱相同.運行時默認
+      //`runtime` must same as runtimeChunk name. default is `runtime`
       inline: /runtime\..*\.js$/
     }),
-    // 保持chunk.id 當它沒有名字時
+    // keep chunk.id stable when chunk has no name
     new webpack.NamedChunksPlugin(chunk => {
       if (chunk.name) {
         return chunk.name
@@ -89,14 +91,16 @@ const webpackConfig = merge(baseWebpackConfig, {
         return modules[0].id
       }
     }),
-    // 當供應商模組模組不變時,保持module.id的穩定
+    // keep module.id stable when vender modules does not change
     new webpack.HashedModuleIdsPlugin(),
     // copy custom static assets
-    new CopyWebpackPlugin([{
-      from: path.resolve(__dirname, '../static'),
-      to: config.build.assetsSubDirectory,
-      ignore: ['.*']
-    }])
+    new CopyWebpackPlugin([
+      {
+        from: path.resolve(__dirname, '../static'),
+        to: config.build.assetsSubDirectory,
+        ignore: ['.*']
+      }
+    ])
   ],
   optimization: {
     splitChunks: {
@@ -106,17 +110,17 @@ const webpackConfig = merge(baseWebpackConfig, {
           name: 'chunk-libs',
           test: /[\\/]node_modules[\\/]/,
           priority: 10,
-          chunks: 'initial' // 指打包初始時依賴的第三方
+          chunks: 'initial' // 只打包初始时依赖的第三方
         },
         elementUI: {
-          name: 'chunk-elementUI', // 單獨將 elementUI 拆包
-          priority: 20, // 權重要大於 libs 和 app 不然會被打包進 libs 或者 app
+          name: 'chunk-elementUI', // 单独将 elementUI 拆包
+          priority: 20, // 权重要大于 libs 和 app 不然会被打包进 libs 或者 app
           test: /[\\/]node_modules[\\/]element-ui[\\/]/
         },
         commons: {
           name: 'chunk-commons',
-          test: resolve('src/components'), // 可自定義拓展你的規則
-          minChunks: 3, // 最小公用次數
+          test: resolve('src/components'), // 可自定义拓展你的规则
+          minChunks: 3, // 最小公用次数
           priority: 5,
           reuseExistingChunk: true
         }
@@ -134,13 +138,12 @@ const webpackConfig = merge(baseWebpackConfig, {
         cache: true,
         parallel: true
       }),
-      // 壓縮提取的CSS.以便我們使用這個插件
-      // 可重複刪除來自不同組件的重複css
+      // Compress extracted CSS. We are using this plugin so that possible
+      // duplicated CSS from different components can be deduped.
       new OptimizeCSSAssetsPlugin()
     ]
   }
 })
-
 
 if (config.build.productionGzip) {
   const CompressionWebpackPlugin = require('compression-webpack-plugin')
@@ -157,7 +160,6 @@ if (config.build.productionGzip) {
     })
   )
 }
-
 
 if (config.build.generateAnalyzerReport || config.build.bundleAnalyzerReport) {
   const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')

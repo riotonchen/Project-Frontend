@@ -1,25 +1,25 @@
 <template>
 
-  <div class="history-container">
+  <div class="history_container">
     <title>
       {{ $t('route.c_history') }}
     </title>
 
-    <div class="filter-container">
+    <div class="filter_container">
       <el-row class="date_seletor">
         <el-col :xs="6" :sm="3" :md="2" :lg="2" :xl="1" class="selector_title">
           <span>用時間篩選</span>
         </el-col>
-        <el-col :xs="24" :sm="10" :md="9" :lg="8" :xl="6">
-          <el-date-picker v-model="startenddate" :start-placeholder="$t('c_history.startdate')" :end-placeholder="$t('c_history.enddate')" range-separator="-" align="center" type="daterange" style="width: 40vw;min-width:15rem;max-width:20.5rem;" />
+        <el-col :xs="24" :sm="15" :md="9" :lg="8" :xl="6">
+          <el-date-picker v-model="startenddate" :start-placeholder="$t('c_history.startdate')" :end-placeholder="$t('c_history.enddate')" range-separator="-" align="center" type="daterange" style="width: 40vw;min-width:15rem;max-width:23rem;" />
         </el-col>
       </el-row>
       <el-row class="class_seletor">
         <el-col :xs="6" :sm="3" :md="2" :lg="2" :xl="1" class="selector_title">
           <span>用類別篩選</span>
         </el-col>
-        <el-col :xs="24" :sm="10" :md="9" :lg="8" :xl="6">
-          <el-select v-model="c_payorin" filterable placeholder="收支出" style="width: 25vw;max-width:5rem;min-width:4.5rem;">
+        <el-col :xs="24" :sm="15" :md="9" :lg="8" :xl="6">
+          <el-select v-model="c_payorin" filterable clearable placeholder="收支出" style="width: 25vw;max-width:7.5rem;min-width:5.5rem;">
             <el-option v-for="payorin in c_pay_in" :key="payorin.value" :label="payorin.label" :value="payorin.value" />
           </el-select>
           <el-select v-model="c_sort" :disabled="c_sort_disable" filterable placeholder="主類別" style="width: 25vw;max-width:7.5rem;min-width:6.5rem;" @focus="get_sort()" @change="get_subsort()">
@@ -34,7 +34,7 @@
         <el-col :xs="6" :sm="3" :md="2" :lg="2" :xl="1" class="selector_title">
           <span>用專案篩選</span>
         </el-col>
-        <el-col :xs="24" :sm="10" :md="9" :lg="8" :xl="6">
+        <el-col :xs="24" :sm="12" :md="9" :lg="8" :xl="6">
           <el-select v-model="c_project" filterable placeholder="專案" style="width: 25vw;max-width:13.2rem;min-width:11.8rem;" @focus="get_project()">
             <el-option v-for="project in c_projectitem" :key="project.id" :label="project.name" :value="project.id" />
           </el-select>
@@ -44,7 +44,7 @@
         <el-col :xs="6" :sm="3" :md="2" :lg="2" :xl="1" class="selector_title">
           <span>用帳戶篩選</span>
         </el-col>
-        <el-col :xs="24" :sm="10" :md="9" :lg="8" :xl="6">
+        <el-col :xs="24" :sm="15" :md="9" :lg="8" :xl="6">
           <el-select v-model="c_account" filterable placeholder="帳戶" style="width: 25vw;max-width:13.2rem;min-width:11.8rem;" @focus="get_account()">
             <el-option v-for="account in c_accountitem" :key="account.id" :label="account.name" :value="account.id" />
           </el-select>
@@ -52,10 +52,9 @@
       </el-row>
     </div>
 
-    <div class="history_container">
-
+    <div class="history_table_container">
       <!--目前使用日期做排序-->
-      <el-table :data="c_user_history" :default-sort="{prop: 'date', order: 'descending'}" stripe style="width: 100%;" max-height="470">
+      <el-table :data="c_user_history" :default-sort="{prop: 'date', order: 'descending'}" stripe style="width: 100%;" max-height="470" fit>
         <el-table-column type="expand">
           <template slot-scope="props">
             <el-form label-position="left" inline class="table-expand">
@@ -70,13 +69,73 @@
         </el-table-column>
         <el-table-column prop="date" label="日期" sortable align="center" />
         <el-table-column prop="invoice" label="發票" align="center" />
+        <el-table-column prop="payorin" label="收支出" align="center" />
         <el-table-column prop="sort" label="分類" align="center" />
         <el-table-column prop="subsort" label="子分類" align="center" />
         <el-table-column prop="project" label="專案" align="center" />
         <el-table-column prop="account" label="帳戶" align="center" />
         <el-table-column prop="amount" label="金額" align="center" />
-        <el-table-column label="操作" align="center" />
+        <el-table-column label="操作" align="center">
+          <template slot-scope="scope">
+            <el-button type="primary" @click="handle_edit(scope.$index,scope.row)">編輯</el-button>
+          </template>
+        </el-table-column>
       </el-table>
+    </div>
+    <div class="dialog_container">
+      <el-dialog :visible.sync="c_history_visible" width="80vw" title="編輯">
+        <el-form :model="c_history_edit" label-position="left" inline class="table-invoice">
+          <el-form-item>
+            <span>以下如不修改保持空白即可</span>
+          </el-form-item>
+          <el-form-item>
+            <span />
+          </el-form-item>
+          <el-form-item label="日期">
+            <el-date-picker v-model="c_history_edit.date" :placeholder="c_history_date_p" type="date" />
+          </el-form-item>
+          <el-form-item label="發票號碼">
+            <el-input v-model="c_history_edit.invoice" :placeholder="c_history_invoice_p" clearable />
+          </el-form-item>
+          <el-form-item label="帳戶">
+            <el-select v-model="c_history_edit.account" :placeholder="c_history_account_p" filterable style="width: 25vw;max-width:13.2rem;min-width:11.8rem;" @focus="get_account()">
+              <el-option v-for="account in c_accountitem" :key="account.id" :label="account.name" :value="account.id" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="金額">
+            <el-input v-model="c_history_edit.amount" :placeholder="c_history_amount_p" clearable />
+          </el-form-item>
+          <hr>
+          <el-form-item>
+            <span />
+          </el-form-item>
+          <el-form-item>
+            <span />
+          </el-form-item>
+          <el-form-item label="收支出">
+            <el-select v-model="c_history_edit.payorin" filterable placeholder="收支出" style="width: 25vw;max-width:7.5rem;min-width:6.5rem;">
+              <el-option v-for="payorin in c_pay_in" :key="payorin.value" :label="payorin.label" :value="payorin.value" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="主類別">
+            <el-select v-model="c_history_edit.sort" :disabled="c_sort_disable" filterable placeholder="主類別" style="width: 25vw;max-width:7.5rem;min-width:6.5rem;" @focus="get_sort()" @change="get_subsort()">
+              <el-option v-for="sort in c_sort_payorinitem" :key="sort.id" :label="sort.name" :value="sort.id" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="子類別">
+            <el-select v-model="c_history_edit.subsort" :disabled="c_subsort_disable" filterable placeholder="子類別" style="width: 25vw;max-width:7.5rem;min-width:6.5rem;">
+              <el-option v-for="subsort in c_subsort_payorinitem" :key="subsort.id" :label="subsort.name" :value="subsort.id" />
+            </el-select>
+          </el-form-item>
+        </el-form>
+
+        <span slot="footer" class="invoice_dialog_footer">
+          <el-button type="danger" @click="c_history_del()">刪除</el-button>
+          <el-button type="primary" @click="c_history_confirm()">確定</el-button>
+          <el-button type="info" plain @click="c_history_cal()">取消</el-button>
+        </span>
+
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -104,28 +163,45 @@ export default {
       c_subsort: '',
       c_project: '',
       c_account: '',
+      c_history_edit:
+      {
+        date: '',
+        invoice: '',
+        account: '',
+        amount: '',
+        payorin: '',
+        sort: '',
+        subsort: ''
+      },
+      c_history_date_p: '',
+      c_history_invoice_p: '',
+      c_history_account_p: '',
+      c_history_amount_p: '',
       c_sort_payorinitem: [],
       c_subsort_payorinitem: [],
       c_projectitem: [],
       c_accountitem: [],
       c_sort_disable: true,
       c_subsort_disable: true,
+      c_history_visible: false,
       c_pay_in: [{ label: '支出', value: 0 }, { label: '收入', value: 1 }],
       c_user_history: [
         // test data
         {
           date: '2016-05-22',
           invoice: 'EV-89658002',
+          payorin: '支出',
           sort: '吃吃吃',
           subsort: '早餐',
           project: '團遊',
-          account: '玉山信用卡',
+          account: '現金',
           amount: '500',
           comment: '幹，nfjqbcbhjgzd554654',
           picture: '我是圖片'
         }, {
           date: '2016-09-02',
           invoice: 'EV-89658002',
+          payorin: '支出',
           sort: '出去玩',
           subsort: '劍湖山',
           project: '單身旅行',
@@ -136,6 +212,7 @@ export default {
         }, {
           date: '2016-07-02',
           invoice: 'EV-89658002',
+          payorin: '支出',
           sort: '吃吃吃',
           subsort: '早餐',
           project: '不要不要',
@@ -146,6 +223,7 @@ export default {
         }, {
           date: '2016-05-05',
           invoice: 'EV-89658002',
+          payorin: '支出',
           sort: '阿咧咧',
           subsort: '出去玩',
           project: '團遊',
@@ -156,6 +234,7 @@ export default {
         }, {
           date: '2086-05-02',
           invoice: 'EV-89658002',
+          payorin: '支出',
           sort: '喝寶寶',
           subsort: '爽拉拉拉',
           project: '與左右手的旅行',
@@ -235,6 +314,61 @@ export default {
         this.c_accountitem = response.data
       }).catch((error) => {
         console.log(error)
+      })
+    },
+    handle_edit(index, row) {
+      this.c_history_date_p = row.date
+      this.c_history_invoice_p = row.invoice
+      this.c_history_account_p = row.account
+      this.c_history_amount_p = row.amount
+      this.c_history_visible = true
+    },
+    handle_filter() {
+
+    },
+    c_history_confirm() {
+      this.$message({
+        type: 'success',
+        message: '已完成該筆資料修改'
+      })
+      this.c_history_visible = false
+    },
+    c_history_cal() {
+      this.$message({
+        type: 'info',
+        message: '已取消修改'
+      })
+      this.c_history_visible = false
+    },
+    c_history_del() {
+      this.$confirm('你真的要刪除該筆資料嗎？', '警告', {
+        cancelButtonText: '取消',
+        confirmButtonText: '確認',
+        type: 'warning'
+      }).then(() => {
+        this.$confirm('請在確認一次是否要刪除該筆資料', '警告', {
+          cancelButtonText: '取消',
+          confirmButtonText: '確認',
+          type: 'warning'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '刪除成功'
+          })
+          this.c_card_visible = false
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消刪除'
+          })
+          this.c_history_visible = false
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消刪除'
+        })
+        this.c_history_visible = false
       })
     }
     /*
@@ -387,6 +521,9 @@ export default {
 }
 </script>
 <style lang="scss">
+.history_container {
+  padding: 20px;
+}
 .selector_title {
   line-height: 2.25rem;
   font-size: 0.7vw;
@@ -407,6 +544,19 @@ export default {
   margin-right: 0;
   margin-bottom: 0;
   width: 100%;
+}
+
+.table-invoice {
+  font-size: 0;
+}
+.table-invoice label {
+  width: 90px;
+  color: #99a9bf;
+}
+.table-invoice .el-form-item {
+  margin-right: 0;
+  //margin-bottom: 0;
+  width: 50%;
 }
 </style>
 

@@ -1,389 +1,189 @@
 <template>
   <div class="app-container">
     <title>
-      {{ $t('route.card') }}
+      {{ $t('route.c_cardmanager') }}
     </title>
     <div class="filter-container">
-      <el-input :placeholder="$t('c_card_view.content')" v-model="listQuery.title" style="width: 15rem;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <!--
-      <el-select v-model="listQuery.importance" :placeholder="$t('table.importance')" clearable style="width: 90px" class="filter-item">
-        <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
+      <el-select v-model="listQuery.id" placeholder="票卡名稱" clearable filterable style="width: 25vw;max-width:7.5rem;min-width:5.5rem;" @focus="get_card()" @change="get_card()">
+        <el-option v-for="card in c_carditem" :key="card.id" :label="card.name" :value="card.id" />
       </el-select>
-      <el-select v-model="listQuery.type" :placeholder="$t('table.type')" clearable class="filter-item" style="width: 130px">
-        <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key" />
-      </el-select>
-
-      <el-select v-model="listQuery.sort" style="width: 140px" class="filter-item" @change="handleFilter">
-        <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key" />
-      </el-select>
-      -->
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('c_card_view.search') }}</el-button>
-      <el-button class="filter-item" style="margin-left: 0px;" type="primary" icon="el-icon-edit" @click="handleCreate">{{ $t('c_card_view.add') }}</el-button>
-      <!--
-      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">{{ $t('table.export') }}</el-button>
-
-      <el-checkbox v-model="showReviewer" class="filter-item" style="margin-left:15px;" @change="tableKey=tableKey+1">{{ $t('table.reviewer') }}</el-checkbox>
-       -->
     </div>
-
-    <el-table v-loading="listLoading" :key="tableKey" :data="list" border fit highlight-current-row style="width: 100%;">
-      <el-table-column :label="$t('c_card_view.cardname')" align="center" width="400rem">
-        <template slot-scope="scope">
-          <span>{{ scope.row.id }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('c_card_view.cardcode')" width="800rem">
-        <template slot-scope="scope">
-          <span class="link-type" @click="handleUpdate(scope.row)">{{ scope.row.title }}</span>
-          <el-tag>{{ scope.row.type | typeFilter }}</el-tag>
-        </template>
-      </el-table-column>
-      <!--
-      <el-table-column :label="$t('table.title')" min-width="150px">
-        <template slot-scope="scope">
-          <span class="link-type" @click="handleUpdate(scope.row)">{{ scope.row.title }}</span>
-          <el-tag>{{ scope.row.type | typeFilter }}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.author')" width="110px" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.author }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column v-if="showReviewer" :label="$t('table.reviewer')" width="110px" align="center">
-        <template slot-scope="scope">
-          <span style="color:red;">{{ scope.row.reviewer }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column :label="$t('table.importance')" width="80px">
-        <template slot-scope="scope">
-          <svg-icon v-for="n in +scope.row.importance" :key="n" icon-class="star" class="meta-item__icon" />
-        </template>
-      </el-table-column>
-
-      <el-table-column label="金額" />
-      <el-table-column :label="$t('table.readings')" align="center" width="95">
-        <template slot-scope="scope">
-          <span v-if="scope.row.pageviews" class="link-type" @click="handleFetchPv(scope.row.pageviews)">{{ scope.row.pageviews }}</span>
-          <span v-else>0</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.status')" class-name="status-col" width="100">
-        <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }}</el-tag>
-        </template>
-      </el-table-column>
-      -->
-
-      <el-table-column :label="$t('c_card_view.operating')" align="center" width="230" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('c_card_view.edit') }}</el-button>
-          <!--
-          <el-button v-if="scope.row.status!='published'" size="mini" type="success" @click="handleModifyStatus(scope.row,'published')">{{ $t('table.publish') }}
-          </el-button>
-
-          <el-button v-if="scope.row.status!='draft'" size="mini" @click="handleModifyStatus(scope.row,'draft')">{{ $t('table.draft') }}
-          </el-button>
-
-          <el-button v-if="scope.row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{ $t('table.delete') }}
-          </el-button>
-           -->
-          <el-button size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{ $t('c_card_view.delete') }}
-          </el-button>
-        </template>
-      </el-table-column>
-
-    </el-table>
-
-    <div class="pagination-container">
-      <el-pagination v-show="total>0" :current-page="listQuery.page" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" :total="total" background layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange" @current-change="handleCurrentChange" />
-    </div>
-
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
-        <el-form-item :label="$t('c_card_view.cardname')" prop="type" width="100">
-          <!--
-          <el-select v-model="temp.type" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
-          </el-select>
-          -->
-          <el-input v-model="temp.title" />
-        </el-form-item>
-        <el-form-item :label="$t('c_card_view.cardcode')" prop="timestamp">
-          <!--
-          <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
-        -->
-          <el-input v-model="temp.title" />
-        </el-form-item>
-        <!--
-        <el-form-item :label="$t('table.title')" prop="title">
-          <el-input v-model="temp.title" />
-        </el-form-item>
-        <el-form-item :label="$t('table.status')">
-          <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item" />
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('table.importance')">
-          <el-rate v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;" />
-        </el-form-item>
-        <el-form-item :label="$t('table.remark')">
-          <el-input :autosize="{ minRows: 2, maxRows: 4}" v-model="temp.remark" type="textarea" placeholder="Please input" />
-        </el-form-item>
-        -->
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <!--
-        <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
-        -->
-        <el-button @click="dialogFormVisible = false">{{ $t('c_card_view.cancel') }}</el-button>
-        <!--
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">{{ $t('table.confirm') }}</el-button>
-        -->
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">{{ $t('c_card_view.confirm') }}</el-button>
-      </div>
-    </el-dialog>
-
-    <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
-      <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
-        <el-table-column prop="key" label="Channel" />
-        <el-table-column prop="pv" label="Pv" />
+    <div class="history_table_container">
+      <el-table :data="c_user_card" stripe style="width: 100%;min-width:20rem;max-width:33rem;" max-height="470" fit sortable>
+        <el-table-column prop="id" label="編號" width="70">
+          <template slot-scope="scope">
+            <span>{{ scope.row.id }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="name" label="姓名" width="150">
+          <template slot-scope="scope">
+            <span>{{ scope.row.name }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="number" label="條碼編號" width="200">
+          <template slot-scope="scope">
+            <span>{{ scope.row.number }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="">
+          <template slot-scope="scope">
+            <el-button type="primary" @click="handle_edit(scope.$index,scope.row)">編輯</el-button>
+          </template>
+        </el-table-column>
       </el-table>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogPvVisible = false">{{ $t('table.confirm') }}</el-button>
-      </span>
-    </el-dialog>
+    </div>
+    <div class="dialog_container">
+      <el-dialog :visible.sync="c_card_visible" width="80vw" title="編輯">
+        <el-form :model="c_card_edit" label-position="left" inline class="table-card">
+          <el-form-item>
+            <span>以下如不修改保持空白即可</span>
+          </el-form-item>
+          <el-form-item>
+            <span />
+          </el-form-item>
+          <el-form-item label="卡片名稱">
+            <el-input v-model="c_card_edit.name" :placeholder="c_card_nmae_p" clearable />
+          </el-form-item>
+          <el-form-item label="條碼編號">
+            <el-input v-model="c_card_edit.number" :placeholder="c_card_number_p" clearable />
+          </el-form-item>
+        </el-form>
 
+        <span slot="footer" class="invoice_dialog_footer">
+          <el-button type="danger" @click="c_card_del()">刪除</el-button>
+          <el-button type="primary" @click="c_card_confirm()">確定</el-button>
+          <el-button type="info" plain @click="c_card_cal()">取消</el-button>
+        </span>
+
+      </el-dialog>
+    </div>
   </div>
 </template>
 
 <script>
-import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
+
 import waves from '@/directive/waves' // 水波紋指令
-import { parseTime } from '@/utils'
-
-const calendarTypeOptions = [
-  { key: 'CN', display_name: 'China' },
-  { key: 'US', display_name: 'USA' },
-  { key: 'JP', display_name: 'Japan' },
-  { key: 'EU', display_name: 'Eurozone' }
-]
-
-// arr to obj ,such as { CN : "China", US : "USA" }
-const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
-  acc[cur.key] = cur.display_name
-  return acc
-}, {})
+import { getcard } from '@/api/card/getcard'
+import { getToken } from '@/utils/auth'
 
 export default {
-  name: 'ComplexTable',
+  name: 'CCard',
   directives: {
     waves
   },
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        published: 'success',
-        draft: 'info',
-        deleted: 'danger'
-      }
-      return statusMap[status]
-    },
-    typeFilter(type) {
-      return calendarTypeKeyValue[type]
-    }
-  },
   data() {
     return {
-      tableKey: 0,
-      list: null,
-      total: null,
-      listLoading: true,
       listQuery: {
-        page: 1,
-        limit: 20,
-        importance: undefined,
-        title: undefined,
-        type: undefined,
-        sort: '+id'
+        id: undefined
       },
-      importanceOptions: [1, 2, 3],
-      calendarTypeOptions,
-      sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
-      statusOptions: ['published', 'draft', 'deleted'],
-      showReviewer: false,
-      temp: {
-        id: undefined,
-        importance: 1,
-        remark: '',
-        timestamp: new Date(),
-        title: '',
-        type: '',
-        status: 'published'
+      c_card_nmae_p: '',
+      c_card_number_p: '',
+      c_carditem: [],
+      c_user_card: null,
+      c_card_edit: {
+        name: '',
+        number: ''
       },
-      dialogFormVisible: false,
-      dialogStatus: '',
-      textMap: {
-        update: 'Edit',
-        create: 'Create'
-      },
-      dialogPvVisible: false,
-      pvData: [],
-      rules: {
-        // type: [{ required: true, message: 'type is required', trigger: 'change' }],
-        type: [{ message: 'type is required', trigger: 'change' }],
-        // timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
-        timestamp: [{ type: 'date', message: 'timestamp is required', trigger: 'change' }],
-        title: [{ required: true, message: 'title is required', trigger: 'blur' }]
-      },
-      downloadLoading: false
+      c_card_visible: false
     }
   },
+  watch: {
+
+  },
   created() {
-    this.getList()
+    this.get_card()
   },
   methods: {
-    getList() {
-      this.listLoading = true
-      fetchList(this.listQuery).then(response => {
-        this.list = response.data.items
-        this.total = response.data.total
-
-        // Just to simulate the time of the request
-        setTimeout(() => {
-          this.listLoading = false
-        }, 1.5 * 1000)
+    handle_edit(index, row) {
+      this.c_card_nmae_p = row.name
+      this.c_card_number_p = row.number
+      this.c_card_visible = true
+    },
+    get_card() {
+      getcard(getToken(), this.listQuery).then(response => {
+        this.c_carditem = response.data
+        this.c_user_card = response.data
+      }).catch((error) => {
+        console.log(error)
       })
     },
-    handleFilter() {
-      this.listQuery.page = 1
-      this.getList()
-    },
-    handleSizeChange(val) {
-      this.listQuery.limit = val
-      this.getList()
-    },
-    handleCurrentChange(val) {
-      this.listQuery.page = val
-      this.getList()
-    },
-    handleModifyStatus(row, status) {
+    c_card_confirm() {
       this.$message({
-        message: '操作成功',
-        type: 'success'
-      })
-      row.status = status
-    },
-    resetTemp() {
-      this.temp = {
-        id: undefined,
-        importance: 1,
-        remark: '',
-        timestamp: new Date(),
-        title: '',
-        status: 'published',
-        type: ''
-      }
-    },
-    handleCreate() {
-      this.resetTemp()
-      this.dialogStatus = 'create'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
-    },
-    createData() {
-      this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
-          this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
-          this.temp.author = 'vue-element-admin'
-          createArticle(this.temp).then(() => {
-            this.list.unshift(this.temp)
-            this.dialogFormVisible = false
-            this.$notify({
-              title: '成功',
-              message: '创建成功',
-              type: 'success',
-              duration: 2000
-            })
-          })
-        }
-      })
-    },
-    handleUpdate(row) {
-      this.temp = Object.assign({}, row) // copy obj
-      this.temp.timestamp = new Date(this.temp.timestamp)
-      this.dialogStatus = 'update'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
-    },
-    updateData() {
-      this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
-          const tempData = Object.assign({}, this.temp)
-          tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
-          updateArticle(tempData).then(() => {
-            for (const v of this.list) {
-              if (v.id === this.temp.id) {
-                const index = this.list.indexOf(v)
-                this.list.splice(index, 1, this.temp)
-                break
-              }
-            }
-            this.dialogFormVisible = false
-            this.$notify({
-              title: '成功',
-              message: '更新成功',
-              type: 'success',
-              duration: 2000
-            })
-          })
-        }
-      })
-    },
-    handleDelete(row) {
-      this.$notify({
-        title: '成功',
-        message: '删除成功',
         type: 'success',
-        duration: 2000
+        message: '已完成該筆資料修改'
       })
-      const index = this.list.indexOf(row)
-      this.list.splice(index, 1)
+      this.c_card_visible = false
     },
-    handleFetchPv(pv) {
-      fetchPv(pv).then(response => {
-        this.pvData = response.data.pvData
-        this.dialogPvVisible = true
+    c_card_cal() {
+      this.$message({
+        type: 'info',
+        message: '已取消修改'
       })
+      this.c_card_visible = false
     },
-    handleDownload() {
-      this.downloadLoading = true
-      import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
-        const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
-        const data = this.formatJson(filterVal, this.list)
-        excel.export_json_to_excel({
-          header: tHeader,
-          data,
-          filename: 'table-list'
+    c_card_del() {
+      this.$confirm('你真的要刪除該筆資料嗎？', '警告', {
+        cancelButtonText: '取消',
+        confirmButtonText: '確認',
+        type: 'warning'
+      }).then(() => {
+        this.$confirm('請在確認一次是否要刪除該筆資料', '警告', {
+          cancelButtonText: '取消',
+          confirmButtonText: '確認',
+          type: 'warning'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '刪除成功'
+          })
+          this.c_card_visible = false
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消刪除'
+          })
+          this.c_card_visible = false
         })
-        this.downloadLoading = false
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消刪除'
+        })
+        this.c_card_visible = false
       })
     },
-    formatJson(filterVal, jsonData) {
-      return jsonData.map(v => filterVal.map(j => {
-        if (j === 'timestamp') {
-          return parseTime(v[j])
-        } else {
-          return v[j]
-        }
-      }))
+    filterHandler(value, row, column) {
+      const property = column['property']
+      return row[property] === value
     }
   }
 }
 </script>
+<style lang="scss">
+.table-expand {
+  font-size: 0;
+}
+.table-expand label {
+  width: 90px;
+  color: #99a9bf;
+}
+.table-expand .el-form-item {
+  margin-right: 0;
+  margin-bottom: 0;
+  width: 100%;
+}
+
+.table-card {
+  font-size: 0;
+}
+.table-card label {
+  width: 90px;
+  color: #99a9bf;
+}
+.table-card .el-form-item {
+  margin-right: 0;
+  //margin-bottom: 0;
+  width: 50%;
+}
+</style>
+

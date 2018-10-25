@@ -4,7 +4,7 @@ module.exports = {
   "plugins": {
     "postcss-import": {},
     "postcss-url": {},
-    //編輯目標瀏覽器:使用package.json中的"browserslist"
+    // to edit target browsers: use "browserslist" field in package.json
     "autoprefixer": {}
   }
 }

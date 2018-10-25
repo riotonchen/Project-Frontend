@@ -33,7 +33,7 @@ export default {
       const { params } = this.$route
       let matched = this.$route.matched.filter(item => {
         if (item.name) {
-          // 解決這個問題https://github.com/PanJiaChen/vue-element-admin/issues/561
+          // To solve this problem https://github.com/PanJiaChen/vue-element-admin/issues/561
           var toPath = pathToRegexp.compile(item.path)
           item.path = toPath(params)
           return true
