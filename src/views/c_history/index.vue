@@ -130,7 +130,7 @@
         </el-form>
 
         <span slot="footer" class="invoice_dialog_footer">
-          <el-button type="danger" @click="c_history_del()">刪除</el-button>
+          <el-button type="danger" plain @click="c_history_del()">刪除</el-button>
           <el-button type="primary" @click="c_history_confirm()">確定</el-button>
           <el-button type="info" plain @click="c_history_cal()">取消</el-button>
         </span>

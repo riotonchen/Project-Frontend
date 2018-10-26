@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function getaccount(token) {
+export function getaccount(token, query) {
   const data = {
     token
   }
@@ -16,6 +16,7 @@ export function getaccount(token) {
     headers: {
       Authorization: 'JWT ' + token
     },
-    data
+    data,
+    params: query
   })
 }

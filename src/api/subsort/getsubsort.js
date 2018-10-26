@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function getsubsort(token, sort_id) {
+export function getsubsort(token, sort_id, query) {
   const data = {
     token,
     sort_id
@@ -17,6 +17,7 @@ export function getsubsort(token, sort_id) {
     headers: {
       Authorization: 'JWT ' + token
     },
-    data
+    data,
+    params: query
   })
 }

@@ -11,7 +11,9 @@ export default {
     c_category: '分類管理',
     c_connection: '聯絡我們',
     c_accounting: '開始記帳',
-    c_cardmanager: '卡片管理'
+    c_cardmanager: '卡片管理',
+    c_accountmanager: '帳戶管理',
+    c_categorymanager: '類別管理'
   },
   navbar: {
     logOut: '登出',

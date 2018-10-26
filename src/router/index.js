@@ -186,7 +186,7 @@ export const asyncRouterMap = [{
     name: 'c_accountmanager',
     meta: {
       title: '帳戶管理',
-      icon: 'user'
+      icon: 'accountmanage'
     }
   }]
 },

@@ -37,7 +37,7 @@
         <span class="svg-container">
           <svg-icon icon-class="star" />
         </span>
-        <el-select v-model="loginForm.membertype_id" clearable placeholder="請選擇會員類別" @keyup.enter.native="handleLogin">
+        <el-select v-model="loginForm.membertype_id" placeholder="請選擇會員類別" @keyup.enter.native="handleLogin">
           <el-option v-for="item in membertype" :key="item.key" :label="item.label" :value="item.key" />
         </el-select>
       </el-form-item>
