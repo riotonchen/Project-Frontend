@@ -272,10 +272,6 @@ export default {
     }
   },
   methods: {
-    // test table
-    formatter(row, column) {
-      return row.address
-    },
     get_sort() {
       if (this.c_payorin === 0) {
         getsort_pay(getToken()).then(response => {

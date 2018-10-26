@@ -33,7 +33,7 @@
       </el-table>
     </div>
     <div class="dialog_container">
-      <el-dialog :visible.sync="c_card_visible" width="80vw" title="編輯">
+      <el-dialog :visible.sync="c_card_visible" width="80vw" title="子分類">
         <el-form :model="c_card_edit" label-position="left" inline class="table-card">
           <el-form-item>
             <span>以下如不修改保持空白即可</span>
@@ -50,7 +50,7 @@
         </el-form>
 
         <span slot="footer" class="invoice_dialog_footer">
-          <el-button type="danger" @click="c_card_del()">刪除</el-button>
+          <el-button type="danger" plain @click="c_card_del()">刪除</el-button>
           <el-button type="primary" @click="c_card_confirm()">確定</el-button>
           <el-button type="info" plain @click="c_card_cal()">取消</el-button>
         </span>
