@@ -8,14 +8,16 @@
       <div class="connection_form">
         <el-form ref="form" :label-position="labelPosition" :model="form">
           <el-form-item :label="$t('c_connection.subject')">
-            <el-input v-model="form.mail1" style="width:40vw" />
+            <el-input v-model="form.mail1" :placeholder="$t('c_connection.h3')" style="width:40vw" />
           </el-form-item>
           <el-form-item :label="$t('c_connection.contents')">
-            <el-input v-model="form.desc" type="textarea" style="width:40vw" />
+            <el-input v-model="form.desc" :autosize="{ minRows: 6, maxRows:1}" :placeholder="$t('c_connection.h2')" type="textarea" style="width:40vw" />
+
           </el-form-item>
+
         </el-form>
-        <el-button type="primary " class="sentout" @click="onSubmit">{{ $t('c_connection.sent') }}</el-button>
-        <p class="connection_h1">{{ $t('c_connection.h1') }}</p>
+        <el-button type="primary " class="sentout" @click="open">{{ $t('c_connection.sent') }}</el-button>
+
       </div>
     </el-card>
   </div>
@@ -45,11 +47,14 @@ export default {
     }
   },
   methods: {
-    onSubmit() {
-      console.log('submit!')
+    open() {
+      this.$alert('我們將在問題送出後3~5工作天內進行回覆', {
+
+        confirmButtonText: '確定'
+
+      })
     }
   }
-
 }
 </script>
 <style rel="stylesheet/scss" lang="scss" >

@@ -15,14 +15,6 @@ export default {
     c_accountmanager: 'Account Manage',
     c_categorymanager: 'Category Manage'
   },
-  navbar: {
-    logOut: 'Log Out',
-    dashboard: 'Dashboard',
-    github: 'Github',
-    screenfull: 'Screenfull',
-    theme: 'Theme',
-    size: 'Global Size'
-  },
   login: {
     title: 'Login Form',
     logIn: 'Log in',
@@ -31,6 +23,56 @@ export default {
     any: 'any',
     thirdparty: 'Or connect with',
     thirdpartyTips: 'Can not be simulated on local, so please combine you own business simulation! ! !'
+  },
+  c_project: {
+    word: 'Please enter the content',
+    search: 'Seach',
+    data: 'Add',
+    name: 'Project Name',
+    expenditure: 'Total Project Expenditure',
+    income: 'Total Project Income',
+    action: 'Action',
+    edit: 'Edit',
+    delete: 'Delete',
+    cancel: 'Cancel',
+    confirm: 'confirm'
+
+  },
+  c_connection: {
+    subject: 'Subject',
+    contents: 'contents',
+    sent: 'Sent',
+    h1: 'We will respond within 3~5 working days after the problem is sent.'
+  },
+  c_category: {
+    incomespend: 'Income or Spend',
+    addmainsort: 'Add new main category',
+    add: 'Add',
+    mainsortname: 'Main-name',
+    amount: 'Please enter',
+    confirm: 'Confirm',
+    cancel: 'Cancel',
+    name: 'Name',
+    budgetthismonth: 'Budget this month',
+    spendthismonth: 'Spend this month',
+    monthbalance: "Month's balance",
+    operation: 'Operation',
+    advanced: 'Advanced',
+    subclass: 'Sub class',
+    edit: 'Edit',
+    addsubclass: 'Add new sub class',
+    notmodify: 'If you do not modify the following，just keep blank.',
+    subclassname: 'Sub-name',
+    delete: 'Delete'
+  },
+
+  navbar: {
+    logOut: 'Log Out',
+    dashboard: 'Dashboard',
+    github: 'Github',
+    screenfull: 'Screenfull',
+    theme: 'Theme',
+    size: 'Global Size'
   },
   documentation: {
     documentation: 'Documentation',

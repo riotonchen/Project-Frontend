@@ -7,16 +7,16 @@
 
       <el-main>
 
-        <el-table :data="tableData" height="60vh" style="width:100%">
+        <el-table ref="accountingform" :data="tableData" :model="accountingtable" :rules="accountingRules" height="60vh" style="width:100%">
 
-          <el-table-column :label="$t('c_accounting_view.papertime')" width="135rem">
+          <el-table-column :label="$t('c_accounting_view.purchasingtime')" width="135rem">
             <template slot-scope="scope">
-              <el-input v-model="input" :placeholder="$t('c_accounting_view.amount')" class="accounting" />
+              <el-date-picker v-model="value1" type="date" placeholder="選擇日期" class="accounting" />
               <span style="margin-left: 10px">{{ scope.row.papertime }}</span>
             </template>
           </el-table-column>
 
-          <el-table-column :label="$t('c_accounting_view.accountname')" width="120rem">
+          <el-table-column :label="$t('c_accounting_view.account')" width="120rem">
             <template slot-scope="scope">
               <el-select v-model="value" :placeholder="$t('c_accounting_view.choose')" class="accounting">
                 <el-option v-for="item in options1" :key="item.value" :label="item.label" :value="item.value" />
@@ -31,7 +31,7 @@
 
               <div class="block">
                 <span class="demonstration" />
-                <el-cascader :options="options" placeholder="試試搜索" filterable />
+                <el-cascader :options="options" placeholder="試試搜索" filterable class="accounting" />
 
                 <span style="margin-left: 10px">{{ scope.row.account }}</span>
               </div>
@@ -48,22 +48,23 @@
             </template>
           </el-table-column>
 
-          <el-table-column :label="$t('c_accounting_view.paper')" width="140rem">
+          <el-table-column :label="$t('c_accounting_view.invoice')" width="140rem" prop="invoice">
             <template slot-scope="scope">
-              <el-input v-model="input" :placeholder="$t('xx-00000000')" class="accounting" />
-              <span style="margin-left: 10px">{{ scope.row.paper }}</span>
+              <el-input v-model="accountingtable.invoice" :placeholder="$t('XX00000000')" class="accounting" name="invoice" />
+              <span style="margin-left: 10px">{{ scope.row.invoice }}</span>
             </template>
           </el-table-column>
 
-          <el-table-column :label="$t('c_accounting_view.money')" width="120rem">
+          <el-table-column :label="$t('c_accounting_view.money')" width="120rem" prop="money">
             <template slot-scope="scope">
-              <el-input v-model="input" :placeholder="$t('c_accounting_view.amount')" class="accounting" />
+              <el-input v-model="accountingtable.money" :placeholder="$t('c_accounting_view.amount')" class="accounting" name="money" />
               <span style="margin-left: 10px">{{ scope.row.money }}</span>
+
             </template>
           </el-table-column>
           <el-table-column :label="$t('c_accounting_view.other')" width="200rem">
             <template slot-scope="scope">
-              <el-input v-model="input" :placeholder="$t('c_accounting_view.other2')" class="accounting" />
+              <el-input v-model="accountingtable.remarks" :placeholder="$t('c_accounting_view.other2')" class="accounting" prop="remarks" />
               <span style="margin-left: 10px">{{ scope.row.remarks }}</span>
             </template>
           </el-table-column>
@@ -91,9 +92,54 @@
 
 </template>
 <script>
+import { validinvoice } from '@/utils/validate'
 export default {
   data() {
+    const isvalidinvoice = (rule, value, callback) => {
+      if (!validinvoice(value)) {
+        callback(new Error('英文字需大寫且數字需等於8碼'))
+      } else {
+        callback()
+      }
+    }
+    const Validatemoney = (rule, value, callback) => { /* 金額只能輸入數字*/
+      if (!Validatemoney(value)) {
+        callback(new Error('只能輸入數字'))
+      } else {
+        callback()
+      }
+    }
+    const accountingremarks = (rule, value, callback) => { /* 備註:中英*/
+      if (value.length > 64) { /* 上限64*/
+        callback(new Error('不能超過64個字符'))
+      } else {
+        callback()
+      }
+    }
     return {
+      accountingtable: {
+        invoice: '',
+        money: '',
+        remarks: ''
+      },
+      accountingformRules: {
+        invoice: [{ trigger: 'blur', validator: isvalidinvoice }],
+        money: [{ trigger: 'blur', validator: Validatemoney }],
+        remarks: [{ trigger: 'blur', validator: accountingremarks }]
+      },
+      pickerOptions1: {
+        disabledDate(time) {
+          return time.getTime() > Date.now()
+        },
+        shortcuts: [{
+          text: '今天',
+          onClick(picker) {
+            picker.$emit('pick', new Date())
+          }
+        }]
+      },
+      value1: '',
+
       options: [{
         value: 'zhinan',
         label: '收入',
@@ -326,7 +372,7 @@ export default {
       value3: '',
       formLabelAlign: {
         papertime: '',
-        paper: '',
+        invoice: '',
         money: '',
         other: ''
       },
@@ -336,12 +382,13 @@ export default {
         money: '',
         class: '',
         project: '',
-        paper: '',
+        invoice: '',
         remarks: ''
       }]
     }
   },
   methods: {
+
     handleEdit(index, row) {
       console.log(index, row)
     },

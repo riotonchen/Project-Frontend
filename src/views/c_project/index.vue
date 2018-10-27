@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input :placeholder="$t('c_project.word')" v-model="listQuery.title" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input :placeholder="$t('c_project.word')" v-model="listQuery.title" style="width: 200px;" class="filter-item" maxlength="10" @keyup.enter.native="handleFilter" />
       <!--
       <el-select v-model="listQuery.importance" :placeholder="$t('table.importance')" clearable style="width: 90px" class="filter-item">
         <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
@@ -30,6 +30,7 @@
           <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
+
       <el-table-column :label="$t('c_project.expenditure')" height="25vh" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
@@ -41,6 +42,7 @@
           <el-tag>{{ scope.row.type | typeFilter }}</el-tag>
         </template>
       </el-table-column>
+
       <!--
       <el-table-column :label="$t('table.author')" width="110px" align="center">
         <template slot-scope="scope">
@@ -75,6 +77,7 @@
       <el-table-column :label="$t('c_project.action')" align="center" height="25vh" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('c_project.edit') }}</el-button>
+
           <!--
           <el-button v-if="scope.row.status!='published'" size="mini" type="success" @click="handleModifyStatus(scope.row,'published')">{{ $t('table.publish') }}
           </el-button>
@@ -84,8 +87,7 @@
           <el-button v-if="scope.row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{ $t('table.delete') }}
           </el-button>
            -->
-          <el-button size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{ $t('c_project.delete') }}
-          </el-button>
+
         </template>
       </el-table-column>
 
@@ -96,18 +98,13 @@
     </div>
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
         <el-form-item :label="$t('c_project.name')" prop="type">
-          <el-select v-model="temp.type" class="filter-item" placeholder="Please select">
-            <el-input v-model="temp.title" />
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('c_project.expenditure')" prop="timestamp">
           <el-input v-model="temp.title" />
+
         </el-form-item>
-        <el-form-item :label="$t('c_project.income')" prop="title">
-          <el-input v-model="temp.title" />
-        </el-form-item>
+
         <!--
         <el-form-item :label="$t('table.status')">
           <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
@@ -124,8 +121,10 @@
        -->
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">{{ $t('c_project.cancel') }}</el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">{{ $t('確定') }}</el-button>
+        <el-button type="danger" @click="c_project_del()">{{ $t('c_project.delete') }}</el-button>
+        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">{{ $t('c_project.confirm') }}</el-button>
+        <el-button @click="c_project_cal()">{{ $t('c_project.cancel') }}</el-button>
+
       </div>
 
     </el-dialog>
@@ -164,6 +163,7 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
 export default {
   name: 'ComplexTable',
   directives: {
+
     waves
   },
   filters: {
@@ -179,6 +179,7 @@ export default {
       return calendarTypeKeyValue[type]
     }
   },
+
   data() {
     return {
       tableKey: 0,
@@ -187,7 +188,7 @@ export default {
       listLoading: true,
       listQuery: {
         page: 1,
-        limit: 20,
+        limit: 10,
         importance: undefined,
         title: undefined,
         type: undefined,
@@ -220,13 +221,19 @@ export default {
         timestamp: [{ type: 'date', message: 'timestamp is required', trigger: 'change' }],
         title: [{ message: 'title is required', trigger: 'blur' }]
       },
-      downloadLoading: false
+      downloadLoading: false,
+
+      input: ''
+
     }
   },
+
   created() {
     this.getList()
   },
+
   methods: {
+
     getList() {
       this.listLoading = true
       fetchList(this.listQuery).then(response => {
@@ -277,6 +284,7 @@ export default {
         this.$refs['dataForm'].clearValidate()
       })
     },
+
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
@@ -295,6 +303,7 @@ export default {
         }
       })
     },
+
     handleUpdate(row) {
       this.temp = Object.assign({}, row) // copy obj
       this.temp.timestamp = new Date(this.temp.timestamp)
@@ -366,7 +375,47 @@ export default {
           return v[j]
         }
       }))
+    },
+
+    c_project_cal() {
+      this.$message({
+        type: 'info',
+        message: '已取消修改'
+      })
+      this.c_project_visible = false
+    },
+    c_project_del() {
+      this.$confirm('你真的要刪除該筆資料嗎？', '警告', {
+        cancelButtonText: '取消',
+        confirmButtonText: '確認',
+        type: 'warning'
+      }).then(() => {
+        this.$confirm('請在確認一次是否要刪除該筆資料', '警告', {
+          cancelButtonText: '取消',
+          confirmButtonText: '確認',
+          type: 'warning'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '刪除成功'
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消刪除'
+          })
+          this.c_project_visible = false
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消刪除'
+        })
+        this.c_project_visible = false
+      })
     }
+
   }
 }
+
 </script>

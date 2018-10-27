@@ -9,23 +9,23 @@
       </el-select>
     </div>
     <div class="history_table_container">
-      <el-table :data="c_user_card" stripe style="width: 100%;min-width:20rem;max-width:33rem;" max-height="470" fit sortable>
-        <el-table-column prop="id" label="編號" width="70">
+      <el-table :data="c_user_card" stripe style="width: 100%;" max-height="470" fit sortable>
+        <el-table-column prop="id" label="編號" align="center">
           <template slot-scope="scope">
             <span>{{ scope.row.id }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="name" label="姓名" width="150">
+        <el-table-column prop="name" label="姓名" align="center">
           <template slot-scope="scope">
             <span>{{ scope.row.name }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="number" label="條碼編號" width="200">
+        <el-table-column prop="number" label="條碼編號" align="center">
           <template slot-scope="scope">
             <span>{{ scope.row.number }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="">
+        <el-table-column label="操作" align="center">
           <template slot-scope="scope">
             <el-button type="primary" @click="handle_edit(scope.$index,scope.row)">編輯</el-button>
           </template>

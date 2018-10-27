@@ -40,6 +40,7 @@ export default {
     password: '密碼',
     doublepswd: '請再次輸入密碼'
   },
+
   documentation: {
     documentation: '文檔',
     github: 'Github 地址'
@@ -118,6 +119,7 @@ export default {
     closeOthers: '關閉其它',
     closeAll: '關閉所有'
   },
+
   profile_edit: {
     email: '信箱',
     name: '姓名',
@@ -145,18 +147,27 @@ export default {
     cancel: '取消',
     confirm: '確定'
   },
-  c_category_view: {
-    category: '分類',
-    subclass: '子分類',
-    content: '請輸入內容',
-    search: '搜尋',
-    add: '新增一筆',
-    categorybudget: '分類預算',
-    operating: '操作',
-    edit: '編輯',
-    delete: '刪除',
+  c_category: {
+    incomespend: '收支出',
+    addmainsort: '新增主類別',
+    add: '新增',
+    mainsortname: '主類別名稱',
+    amount: '請輸入',
+    confirm: '確定',
     cancel: '取消',
-    confirm: '確定'
+    name: '名稱',
+    budgetthismonth: '本月預算',
+    spendthismonth: '本月花費',
+    monthbalance: '本月餘額',
+    operation: '操作',
+    advanced: '進階',
+    subclass: '子分類',
+    editass: '新增子分類',
+    notmodify: '以下如不修改保持空白即可',
+    subclassname: '子分類名稱',
+    delete: '刪除',
+    edit: '編輯',
+    addsubclass: '新增子類別'
   },
   c_connection: {
     subject: '主旨',
