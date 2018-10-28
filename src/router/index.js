@@ -108,7 +108,7 @@ export const asyncRouterMap = [{
         import('@/views/c_profile_view/index'),
     name: 'c_profile_view',
     meta: {
-      title: 'profile_view',
+      title: 'c_profile_view',
       icon: 'user'
     }
   }]
@@ -125,13 +125,13 @@ export const asyncRouterMap = [{
         import('@/views/c_profile_edit/index'),
     name: 'c_profile_edit',
     meta: {
-      title: 'profile_edit',
+      title: 'c_profile_edit',
       icon: 'user'
     }
   }]
 },
 {
-  path: '/account',
+  path: '/accounting',
   component: Layout,
   redirect: 'noredirect',
   children: [{
@@ -141,7 +141,7 @@ export const asyncRouterMap = [{
     name: 'c_accounting',
     meta: {
       title: 'c_accounting',
-      icon: 'user'
+      icon: 'calculator'
     }
   }]
 },
@@ -170,8 +170,8 @@ export const asyncRouterMap = [{
         import('@/views/c_information/index'),
     name: 'c_information',
     meta: {
-      title: '優惠資訊',
-      icon: 'user'
+      title: 'c_information',
+      icon: 'informations'
     }
   }]
 },
@@ -185,8 +185,8 @@ export const asyncRouterMap = [{
         import('@/views/c_accountmanager/index'),
     name: 'c_accountmanager',
     meta: {
-      title: '帳戶管理',
-      icon: 'accountmanage'
+      title: 'c_accountmanager',
+      icon: 'accounts'
     }
   }]
 },
@@ -198,7 +198,7 @@ export const asyncRouterMap = [{
     path: '',
     component: () =>
         import('@/views/c_card/index'),
-    name: 'c_card',
+    name: 'c_cardmanager',
     meta: {
       title: 'c_cardmanager',
       icon: 'creditcard'
@@ -215,8 +215,8 @@ export const asyncRouterMap = [{
         import('@/views/c_category/index'),
     name: 'c_category',
     meta: {
-      title: '分類管理 ',
-      icon: 'user'
+      title: 'c_category ',
+      icon: 'folder'
     }
   }]
 },
@@ -228,10 +228,10 @@ export const asyncRouterMap = [{
     path: '',
     component: () =>
         import('@/views/c_project/index'),
-    name: 'c_project',
+    name: 'c_projectmanager',
     meta: {
-      title: '專案管理 ',
-      icon: 'user'
+      title: 'c_projectmanager ',
+      icon: 'teamwork'
     }
   }]
 },
@@ -246,7 +246,7 @@ export const asyncRouterMap = [{
     name: 'c_connection',
     meta: {
       title: '聯絡我們',
-      icon: 'user'
+      icon: 'support'
     }
   }]
 },

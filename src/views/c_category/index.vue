@@ -6,17 +6,18 @@
     </title>
     <!--搜尋分類-->
     <div class="filter_container">
-      <el-select v-model="c_payorin" :placeholder="$t('c_category.incomespend')" filterable clearable style="width: 25vw;max-width:10.5rem;min-width:8.5rem;">
+      <el-select v-model="c_payorin" :placeholder="$t('c_category.incomespend')" filterable clearable style="width: 10vw;max-width:8rem;min-width:5rem;">
         <el-option v-for="payorin in c_pay_in" :key="payorin.value" :label="payorin.label" :value="payorin.value" />
       </el-select>
+      <el-date-picker v-model="startenddate" align="center" type="month" style="width: 10vw;min-width:5rem;max-width:8rem;" />
 
       <!--新增主分類-->
       <span slot="footer" class="invoice_dialog_footer">
-        <el-button type="primary" @click="add_sort_visiable()">{{ $t('c_category.addmainsort') }}</el-button>
+        <el-button type="primary" @click="handle_add_mainsort()">{{ $t('c_category.addmainsort') }}</el-button>
       </span>
 
       <!--新增主類別之表單-->
-      <el-dialog :visible.sync="c_category_mainadd_visible" :title="$t('c_category.add')" width="80vw">
+      <el-dialog :visible.sync="c_category_add1_visible" :title="$t('c_category.add')" width="80vw">
 
         <el-form :model="c_category_add" :rules="c_category_add_rules" label-position="left" inline class="table-account">
           <el-form-item :label="$t('c_category.mainsortname')" prop="name">
@@ -25,33 +26,27 @@
         </el-form>
 
         <span slot="footer" class="invoice_dialog_footer">
-          <el-button type="primary" @click="c_category_addsuccess()">{{ $t('c_category.confirm') }}</el-button>
-          <el-button type="info" plain @click="c_category_addcal()">{{ $t('c_category.cancel') }}</el-button>
+          <el-button type="primary" @click="c_category_confirm()">{{ $t('c_category.confirm') }}</el-button>
+          <el-button type="info" plain @click="c_category_cal()">{{ $t('c_category.cancel') }}</el-button>
         </span>
       </el-dialog>
 
       <!--外層表單設計之表格-->
       <div class="category_table_container">
         <el-table :data="c_user_category" stripe style="width: 100%;" max-height="470" fit>
-          <el-table-column type="index" align="center" />
           <el-table-column :label="$t('c_category.name')" prop="name" align="center">
             <template slot-scope="scope">
               <span>{{ scope.row.name }}</span>
             </template>
           </el-table-column>
-          <el-table-column :label="$t('c_category.budgetthismonth')" prop="allin" align="center">
+          <el-table-column :label="$t('c_category.totalincome')" prop="allin" align="center">
             <template slot-scope="scope">
-              <span>{{ scope.row.budgetthismonth }}</span>
+              <span>{{ scope.row.allin }}</span>
             </template>
           </el-table-column>
-          <el-table-column :label="$t('c_category.spendthismonth')" prop="allout" align="center">
+          <el-table-column :label="$t('c_category.totalspend')" prop="allout" align="center">
             <template slot-scope="scope">
-              <span>{{ scope.row.spendthismonth }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column :label="$t('c_category.monthbalance')" prop="allout" align="center">
-            <template slot-scope="scope">
-              <span>{{ scope.row.monthbalance }}</span>
+              <span>{{ scope.row.allout }}</span>
             </template>
           </el-table-column>
 
@@ -68,27 +63,21 @@
         <el-dialog :visible.sync="c_category_visible" :title="$t('c_category.subclass')" width="80vw">
           <!--搜尋子分類-->
           <div class="filter_container">
-            <el-select v-model="c_subsort" :placeholder="$t('c_category.subclass')" filterable clearable style="width: 25vw;max-width:7.5rem;min-width:6.5rem;">
+            <el-select v-model="c_subsort" :placeholder="$t('c_category.subclass')" filterable style="width: 25vw;max-width:7.5rem;min-width:6.5rem;">
               <el-option v-for="subsort in c_subsort_in_item" :key="subsort.id" :label="subsort.name" :value="subsort.id" />
             </el-select>
 
             <!--新增子分類-->
             <span slot="footer" class="invoice_dialog_footer">
-              <el-button type="primary" @click="add_subsort_visiable()">{{ $t('c_category.addsubclass') }}</el-button>
+              <el-button type="primary" @click="handle_add_subsort()">{{ $t('c_category.addsubclass') }}</el-button>
             </span>
 
             <!--內層表單設計之表格-->
             <div class="subsort_table_container">
               <el-table :data="c_user_subsort" stripe style="width: 100%;" max-height="300" fit>
-                <el-table-column type="index" align="center" />
                 <el-table-column :label="$t('c_category.name')" prop="name" align="center">
                   <template slot-scope="scope">
                     <span>{{ scope.row.name }}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column :label="$t('c_category.spendthismonth')" prop="spendthismonth1" align="center">
-                  <template slot-scope="scope">
-                    <span>{{ scope.row.spendthismonth1 }}</span>
                   </template>
                 </el-table-column>
                 <el-table-column :label="$t('c_category.operation')" align="center">
@@ -111,7 +100,6 @@
               <span />
             </el-form-item>
             <el-form-item :label="$t('c_category.subclassname')" prop="name">
-              <!--<el-input v-model="c_category_edit.name" :placeholder="c_category_name_p" name="name" clearable />-->
               <el-input v-model="c_category_edit.name" :placeholder="c_category_name_p" name="name" clearable />
             </el-form-item>
             <el-form-item>
@@ -130,7 +118,7 @@
 
         </el-dialog>
         <!--新增子分類之表單-->
-        <el-dialog :visible.sync="c_category_subadd_visible" :title="$t('c_category.add')" width="80vw">
+        <el-dialog :visible.sync="c_category_add_visible" :title="$t('c_category.add')" width="80vw">
 
           <el-form :model="c_category_edit" :rules="c_category_edit_rules" label-position="left" inline class="table-account">
             <el-form-item :label="$t('c_category.subclassname')" prop="subname">
@@ -139,8 +127,8 @@
           </el-form>
 
           <span slot="footer" class="invoice_dialog_footer">
-            <el-button type="primary" @click="c_category_addsuccess()">{{ $t('c_category.confirm') }}</el-button>
-            <el-button type="info" plain @click="c_category_addcal()">{{ $t('c_category.cancel') }}</el-button>
+            <el-button type="primary" @click="c_category_confirm()">{{ $t('c_category.confirm') }}</el-button>
+            <el-button type="info" plain @click="c_category_cal()">{{ $t('c_category.cancel') }}</el-button>
           </span>
 
         </el-dialog>
@@ -190,6 +178,7 @@ export default {
       c_subsort: '',
       c_project: '',
       c_account: '',
+      c_category_name_p: '',
       c_category_edit: {
         name: '',
         subname: ''
@@ -206,8 +195,8 @@ export default {
       c_subsort_disable: true,
       c_category_visible: false,
       c_category_two_visible: false,
-      c_category_subadd_visible: false,
-      c_category_mainadd_visible: false,
+      c_category_add_visible: false,
+      c_category_add1_visible: false,
       c_pay_in: [{ label: '支出', value: 0 }, { label: '收入', value: 1 }],
       c_user_category: null,
       c_user_subsort: null,
@@ -311,35 +300,17 @@ export default {
       this.c_category_name_p = row.name
       this.c_category_edit.name = row.name
     },
-    add_subsort_visiable() {
-      this.c_category_subadd_visible = true
+    handle_add_subsort() {
+      this.c_category_add_visible = true
     },
-    add_sort_visiable() {
-      this.c_category_mainadd_visible = true
+    handle_add_mainsort() {
+      this.c_category_add1_visible = true
+      this.c_category_name_p = name
     },
 
     // 待調整
     handle_filter() {
 
-    },
-    c_category_addsuccess() {
-      this.$message({
-        type: 'success',
-        message: '已完成項目新增'
-      })
-      this.c_category_visible = false
-      this.c_category_two_visible = false
-      this.c_category_subadd_visible = false
-      this.c_category_mainadd_visible = false
-    },
-    c_category_addcal() {
-      this.$message({
-        type: 'info',
-        message: '已取消新增'
-      })
-      this.c_category_two_visible = false
-      this.c_category_subadd_visible = false
-      this.c_category_mainadd_visible = false
     },
     c_category_confirm() {
       this.$message({
@@ -348,8 +319,8 @@ export default {
       })
       this.c_category_visible = false
       this.c_category_two_visible = false
-      this.c_category_subadd_visible = false
-      this.c_category_mainadd_visible = false
+      this.c_category_add_visible = false
+      this.c_category_add1_visible = false
     },
     c_category_cal() {
       this.$message({
@@ -357,8 +328,8 @@ export default {
         message: '已取消修改'
       })
       this.c_category_two_visible = false
-      this.c_category_subadd_visible = false
-      this.c_category_mainadd_visible = false
+      this.c_category_add_visible = false
+      this.c_category_add1_visible = false
     },
     c_category_del() {
       this.$confirm('你真的要刪除該筆分類相關嗎？', '警告', {
@@ -377,16 +348,16 @@ export default {
           })
           this.c_category_visible = false
           this.c_category_two_visible = false
-          this.c_category_subadd_visible = false
-          this.c_category_mainadd_visible = false
+          this.c_category_add_visible = false
+          this.c_category_add1_visible = false
         }).catch(() => {
           this.$message({
             type: 'info',
             message: '已取消刪除'
           })
           this.c_category_two_visible = false
-          this.c_category_subadd_visible = false
-          this.c_category_mainadd_visible = false
+          this.c_category_add_visible = false
+          this.c_category_add1_visible = false
         })
       }).catch(() => {
         this.$message({
@@ -394,8 +365,8 @@ export default {
           message: '已取消刪除'
         })
         this.c_category_two_visible = false
-        this.c_category_subadd_visible = false
-        this.c_category_mainadd_visible = false
+        this.c_category_add_visible = false
+        this.c_category_add1_visible = false
       })
     }
   }
@@ -427,6 +398,18 @@ export default {
   width: 100%;
 }
 
+.table-invoice {
+  font-size: 0;
+}
+.table-invoice label {
+  width: 90px;
+  color: #99a9bf;
+}
+.table-invoice .el-form-item {
+  margin-right: 0;
+  //margin-bottom: 0;
+  width: 50%;
+}
 .table-category {
   font-size: 0;
 }

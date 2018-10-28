@@ -11,15 +11,15 @@
 
           <el-table-column :label="$t('c_accounting_view.purchasingtime')" width="135rem">
             <template slot-scope="scope">
-              <el-date-picker v-model="value1" type="date" placeholder="選擇日期" class="accounting" />
-              <span style="margin-left: 10px">{{ scope.row.papertime }}</span>
+              <el-date-picker v-model="c_purchasingtime" type="date" placeholder="選擇日期" class="accounting" />
+              <span style="margin-left: 10px">{{ scope.row.c_purchasingtime }}</span>
             </template>
           </el-table-column>
 
           <el-table-column :label="$t('c_accounting_view.account')" width="120rem">
             <template slot-scope="scope">
-              <el-select v-model="value" :placeholder="$t('c_accounting_view.choose')" class="accounting">
-                <el-option v-for="item in options1" :key="item.value" :label="item.label" :value="item.value" />
+              <el-select v-model="c_account" :placeholder="$t('c_accounting_view.choose')" class="accounting">
+                <el-option v-for="item in accountoptions" :key="item.value" :label="item.label" :value="item.value" />
               </el-select>
               <span style="margin-left: 10px">{{ scope.row.account }}</span>
             </template>
@@ -31,7 +31,7 @@
 
               <div class="block">
                 <span class="demonstration" />
-                <el-cascader :options="options" placeholder="試試搜索" filterable class="accounting" />
+                <el-cascader :options="classoptions" placeholder="請選擇" filterable class="accounting" />
 
                 <span style="margin-left: 10px">{{ scope.row.account }}</span>
               </div>
@@ -41,8 +41,8 @@
 
           <el-table-column :label="$t('c_accounting_view.project')" width="120rem">
             <template slot-scope="scope">
-              <el-select v-model="value" :placeholder="$t('c_accounting_view.choose')" class="accounting">
-                <el-option v-for="item in options2" :key="item.value" :label="item.label" :value="item.value" />
+              <el-select v-model="c_project" :placeholder="$t('c_accounting_view.choose')" class="accounting">
+                <el-option v-for="item in projectoptions" :key="item.value" :label="item.label" :value="item.value" />
               </el-select>
               <span style="margin-left: 10px">{{ scope.row.project }}</span>
             </template>
@@ -62,9 +62,9 @@
 
             </template>
           </el-table-column>
-          <el-table-column :label="$t('c_accounting_view.other')" width="200rem">
+          <el-table-column :label="$t('c_accounting_view.remark')" width="200rem">
             <template slot-scope="scope">
-              <el-input v-model="accountingtable.remarks" :placeholder="$t('c_accounting_view.other2')" class="accounting" prop="remarks" />
+              <el-input v-model="accountingtable.remarks" :placeholder="$t('c_accounting_view.addremark')" class="accounting" prop="remarks" />
               <span style="margin-left: 10px">{{ scope.row.remarks }}</span>
             </template>
           </el-table-column>
@@ -138,236 +138,236 @@ export default {
           }
         }]
       },
-      value1: '',
+      c_purchasingtime: '',
 
-      options: [{
-        value: 'zhinan',
-        label: '收入',
+      classoptions: [{
+        value: '',
+        label: '',
         children: [{
-          value: 'shejiyuanze',
-          label: '食品酒水',
+          value: '',
+          label: '',
           children: [{
-            value: 'yizhi',
-            label: '飲料'
+            value: '',
+            label: ''
           }, {
-            value: 'fankui',
-            label: '酒'
+            value: '',
+            label: ''
           }, {
-            value: 'xiaolv',
-            label: '早餐'
+            value: '',
+            label: ''
           }, {
-            value: 'kekong',
-            label: '零食'
+            value: '',
+            label: ''
           }]
         }, {
-          value: 'daohang',
-          label: '行車交通',
+          value: '',
+          label: '',
           children: [{
-            value: 'cexiangdaohang',
-            label: '公車'
+            value: '',
+            label: ''
           }, {
-            value: 'dingbudaohang',
-            label: '摩托車'
+            value: '',
+            label: ''
           }]
         }]
       }, {
-        value: 'zujian',
-        label: '支出',
+        value: '',
+        label: '',
         children: [{
-          value: 'basic',
-          label: 'Basic',
+          value: '',
+          label: '',
           children: [{
-            value: 'layout',
-            label: 'Layout 布局'
+            value: '',
+            label: ''
           }, {
-            value: 'color',
-            label: 'Color 色彩'
+            value: '',
+            label: ''
           }, {
-            value: 'typography',
-            label: 'Typography 字体'
+            value: '',
+            label: ''
           }, {
-            value: 'icon',
-            label: 'Icon 图标'
+            value: '',
+            label: ''
           }, {
-            value: 'button',
-            label: 'Button 按钮'
+            value: '',
+            label: ''
           }]
         }, {
-          value: 'form',
-          label: 'Form',
+          value: '',
+          label: '',
           children: [{
-            value: 'radio',
-            label: 'Radio 单选框'
+            value: '',
+            label: ''
           }, {
-            value: 'checkbox',
-            label: 'Checkbox 多选框'
+            value: '',
+            label: ''
           }, {
-            value: 'input',
-            label: 'Input 输入框'
+            value: '',
+            label: ''
           }, {
-            value: 'input-number',
-            label: 'InputNumber 计数器'
+            value: '',
+            label: ''
           }, {
-            value: 'select',
-            label: 'Select 选择器'
+            value: '',
+            label: ''
           }, {
-            value: 'cascader',
-            label: 'Cascader 级联选择器'
+            value: '',
+            label: ''
           }, {
-            value: 'switch',
-            label: 'Switch 开关'
+            value: '',
+            label: ''
           }, {
-            value: 'slider',
-            label: 'Slider 滑块'
+            value: '',
+            label: ''
           }, {
-            value: 'time-picker',
-            label: 'TimePicker 时间选择器'
+            value: '',
+            label: ''
           }, {
-            value: 'date-picker',
-            label: 'DatePicker 日期选择器'
+            value: '',
+            label: ''
           }, {
-            value: 'datetime-picker',
-            label: 'DateTimePicker 日期时间选择器'
+            value: '',
+            label: ''
           }, {
-            value: 'upload',
-            label: 'Upload 上传'
+            value: '',
+            label: ''
           }, {
-            value: 'rate',
-            label: 'Rate 评分'
+            value: '',
+            label: ''
           }, {
-            value: 'form',
-            label: 'Form 表单'
+            value: '',
+            label: ''
           }]
         }, {
-          value: 'data',
-          label: 'Data',
+          value: '',
+          label: '',
           children: [{
-            value: 'table',
-            label: 'Table 表格'
+            value: '',
+            label: ''
           }, {
-            value: 'tag',
-            label: 'Tag 标签'
+            value: '',
+            label: ''
           }, {
-            value: 'progress',
-            label: 'Progress 进度条'
+            value: '',
+            label: ''
           }, {
-            value: 'tree',
-            label: 'Tree 树形控件'
+            value: '',
+            label: ''
           }, {
-            value: 'pagination',
-            label: 'Pagination 分页'
+            value: '',
+            label: ''
           }, {
-            value: 'badge',
-            label: 'Badge 标记'
+            value: '',
+            label: ''
           }]
         }, {
-          value: 'notice',
-          label: 'Notice',
+          value: '',
+          label: '',
           children: [{
-            value: 'alert',
-            label: 'Alert 警告'
+            value: '',
+            label: ''
           }, {
-            value: 'loading',
-            label: 'Loading 加载'
+            value: '',
+            label: ''
           }, {
-            value: 'message',
-            label: 'Message 消息提示'
+            value: '',
+            label: ''
           }, {
-            value: 'message-box',
-            label: 'MessageBox 弹框'
+            value: '',
+            label: ''
           }, {
-            value: 'notification',
-            label: 'Notification 通知'
+            value: '',
+            label: ''
           }]
         }, {
-          value: 'navigation',
-          label: 'Navigation',
+          value: '',
+          label: '',
           children: [{
-            value: 'menu',
-            label: 'NavMenu 导航菜单'
+            value: '',
+            label: ''
           }, {
-            value: 'tabs',
-            label: 'Tabs 标签页'
+            value: '',
+            label: ''
           }, {
-            value: 'breadcrumb',
-            label: 'Breadcrumb 面包屑'
+            value: '',
+            label: ''
           }, {
-            value: 'dropdown',
-            label: 'Dropdown 下拉菜单'
+            value: '',
+            label: ''
           }, {
-            value: 'steps',
-            label: 'Steps 步骤条'
+            value: '',
+            label: ''
           }]
         }, {
-          value: 'others',
-          label: 'Others',
+          value: '',
+          label: '',
           children: [{
-            value: 'dialog',
-            label: 'Dialog 对话框'
+            value: '',
+            label: ''
           }, {
-            value: 'tooltip',
-            label: 'Tooltip 文字提示'
+            value: '',
+            label: ''
           }, {
-            value: 'popover',
-            label: 'Popover 弹出框'
+            value: '',
+            label: ''
           }, {
-            value: 'card',
-            label: 'Card 卡片'
+            value: '',
+            label: ''
           }, {
-            value: 'carousel',
-            label: 'Carousel 走马灯'
+            value: '',
+            label: ''
           }, {
-            value: 'collapse',
-            label: 'Collapse 折叠面板'
+            value: '',
+            label: ''
           }]
         }]
       }, {
-        value: 'ziyuan',
-        label: '其他',
+        value: '',
+        label: '',
         children: [{
-          value: 'axure',
-          label: 'Axure Components'
+          value: '',
+          label: ''
         }, {
-          value: 'sketch',
-          label: 'Sketch Templates'
+          value: '',
+          label: ''
         }, {
-          value: 'jiaohu',
-          label: '组件交互文档'
+          value: '',
+          label: ''
         }]
       }],
-      value: '',
-      options1: [{
-        value: '选项1',
-        label: '現金'
+      c_account: '',
+      accountoption: [{
+        value: '',
+        label: ''
       }, {
-        value: '选项2',
-        label: '信用卡'
+        value: '',
+        label: ''
       }, {
-        value: '选项3',
-        label: '悠遊卡'
+        value: '',
+        label: ''
       }, {
-        value: '选项4',
-        label: '一卡通'
+        value: '',
+        label: ''
       }, {
-        value: '选项5',
-        label: '分類5'
+        value: '',
+        label: ''
       }],
-      value2: '',
-      options2: [{
-        value: '选项1',
-        label: '無專案'
+      c_project: '',
+      projectoptions: [{
+        value: '',
+        label: ''
       }, {
-        value: '选项2',
-        label: '出差'
+        value: '',
+        label: ''
       }, {
-        value: '选项3',
-        label: '家庭'
+        value: '',
+        label: ''
       }, {
-        value: '选项4',
-        label: '旅遊'
+        value: '',
+        label: ''
       }, {
-        value: '选项5',
-        label: '情侶'
+        value: '',
+        label: ''
       }],
       value3: '',
       formLabelAlign: {

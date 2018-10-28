@@ -1,16 +1,16 @@
 import request from '@/utils/request'
 
-export function patchcard_modify(token, id, name, number, renew_time) {
+export function patchcard_modify(token, id, name, balance, renew_time) {
   const data = {
     token,
     id,
     name,
-    number,
+    balance,
     syncstatus: 0,
     renew_time
   }
   console.log(typeof (data), data)
-  var requ_url = 'https://www.177together.com/api/card/' + id + '/'
+  var requ_url = 'https://www.177together.com/api/account/' + id + '/'
 
   return request({
 

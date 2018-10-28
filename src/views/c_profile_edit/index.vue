@@ -1,39 +1,50 @@
 <template>
   <div class="personal_edit_container">
     <title>
-      {{ $t('route.profile_edit') }}
+      {{ $t('route.c_profile_edit') }}
     </title>
+    <div class="personal_edit_form">
 
-    <el-card class="box-card">
-      <div class="personal_edit_form">
-        <el-form ref="profile_edit_form" :model="profile_edit_form" :rules="profile_edit_form_rules">
-          <el-form-item label="Email：">
-            <el-input v-model="profile_edit_form.account" type="text" class="useraccountin" readonly />
-          </el-form-item>
-          <el-form-item label="姓名：" prop="name">
-            <el-input v-model="profile_edit_form.name" placeholder="上限25個中英數字" name="name" />
-          </el-form-item>
-          <el-form-item label="ToID：" prop="toid">
-            <el-input v-model="profile_edit_form.toid" placeholder="ToID 只限定於 8 碼" name="toid" />
-          </el-form-item>
-          <el-form-item label="新密碼：" prop="pswd">
-            <el-input v-model="profile_edit_form.pswd" type="password" placeholder="如不修改，空白即可" name="pswd" />
-          </el-form-item>
-          <el-form-item label="密碼再次輸入：" prop="pswd2">
-            <el-input v-model="profile_edit_form.pswd2" type="password" placeholder="如不修改，空白即可" name="pswd2" />
-          </el-form-item>
-          <el-form-item>
-            <el-button :loading="loadingprofile_view_send" type="primary" style="width:20%;margin-top:1.5vh;margin-left:0px" @click.native.prevent="handleprofile_edit">
-              確認
-            </el-button>
-            <el-button :loading="loadingprofile_view_cancal" type="info" style="width:20%;margin-top:1.5vh;margin-left:20px" @click.native.prevent="goprofile_view">
-              取消
-            </el-button>
-          </el-form-item>
-        </el-form>
-      </div>
-    </el-card>
-
+      <el-form :model="profile_edit_form" :rules="profile_edit_form_rules" label-position="left" inline class="personal_edit">
+        <el-form-item :label="$t('c_profile_edit.email')">
+          <el-input v-model="profile_edit_form.account" type="text" class="useraccountin" readonly />
+        </el-form-item>
+        <el-form-item :label="$t('c_profile_edit.name')" prop="name">
+          <el-input v-model="profile_edit_form.name" :placeholder="$t('c_profile_edit.h1')" name="name" />
+        </el-form-item>
+        <el-form-item label="ToID" prop="toid">
+          <el-input v-model="profile_edit_form.toid" :placeholder="$t('c_profile_edit.h2')" name="toid" />
+        </el-form-item>
+        <el-form-item :label="$t('c_profile_edit.newpswd')" prop="pswd">
+          <el-input v-model="profile_edit_form.pswd" :placeholder="$t('c_profile_edit.h3')" type="password" name="pswd" />
+        </el-form-item>
+        <el-form-item :label="$t('c_profile_edit.input')" prop="pswd2">
+          <el-input v-model="profile_edit_form.pswd2" :placeholder="$t('c_profile_edit.h3')" type="password" name="pswd2" />
+        </el-form-item>
+        <el-form-item>
+          <span />
+        </el-form-item>
+        <el-form-item>
+          <span />
+        </el-form-item>
+        <el-form-item>
+          <span />
+        </el-form-item>
+        <el-form-item>
+          <span />
+        </el-form-item>
+        <el-form-item>
+          <span />
+        </el-form-item>
+        <el-form-item>
+          <span />
+        </el-form-item>
+        <el-form-item>
+          <el-button :loading="loadingprofile_view_send" type="primary" @click.native.prevent="handleprofile_edit">{{ $t('c_profile_edit.confirm') }}</el-button>
+          <el-button :loading="loadingprofile_view_cancal" type="info" @click.native.prevent="goprofile_view">{{ $t('c_profile_edit.cancel') }}</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
   </div>
 </template>
 <script>
@@ -98,10 +109,10 @@ export default {
         pswd2: ''
       },
       profile_edit_form_rules: {
-        name: [{ required: false, trigger: 'blur', validator: validatename }],
-        toid: [{ required: false, trigger: 'blur', validator: _validatetoid }],
-        pswd: [{ required: false, trigger: 'blur', validator: validatePassword }],
-        pswd2: [{ required: false, trigger: 'blur', validator: validatedoublepswd }]
+        name: [{ required: false, trigger: 'change', validator: validatename }],
+        toid: [{ required: false, trigger: 'change', validator: _validatetoid }],
+        pswd: [{ required: false, trigger: 'change', validator: validatePassword }],
+        pswd2: [{ required: false, trigger: 'change', validator: validatedoublepswd }]
       }
     }
   },
@@ -177,6 +188,7 @@ export default {
                     message: h('b', { style: 'color: teal' }, '你的ToID已經被使用過，請再重新輸入一次！(3秒後幫你刷空資料)')
                   })
                   console.log(this.imageUrl)
+
                   setTimeout(() => {
                     location.reload()
                   }, 3000)
@@ -202,27 +214,28 @@ export default {
 
 </script>
 <style rel="stylesheet/scss" lang="scss" >
-.box-card {
+.personal_edit_form {
   width: 85%;
   height: 82vh;
-  margin: 2% auto;
-  position: relative;
-}
-.personal_edit_form {
-  margin-top: 3vh;
-  width: 40%;
-  position: absolute;
-}
-.personal_edit_form label {
-  font-size: 1vw !important;
-}
-
-.personal_edit_chk {
-  padding-top: 68vh;
-  position: absolute;
+  margin: 5vh 3vw;
 }
 .useraccountin input {
   border: 0;
   font-family: "Microsoft JhengHei";
+}
+
+.personal_edit {
+  font-size: 0;
+}
+.personal_edit label {
+  width: 100px;
+  color: #99a9bf;
+}
+
+.personal_edit .el-form-item {
+  margin-top: 0;
+  margin-right: 0;
+  //margin-bottom: 0;
+  width: 100%;
 }
 </style>

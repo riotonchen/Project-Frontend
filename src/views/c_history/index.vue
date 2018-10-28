@@ -8,7 +8,7 @@
     <div class="filter_container">
       <el-row class="date_seletor">
         <el-col :xs="6" :sm="3" :md="2" :lg="2" :xl="1" class="selector_title">
-          <span>用時間篩選</span>
+          <span>{{ $t('c_history.selecttime') }}</span>
         </el-col>
         <el-col :xs="24" :sm="15" :md="9" :lg="8" :xl="6">
           <el-date-picker v-model="startenddate" :start-placeholder="$t('c_history.startdate')" :end-placeholder="$t('c_history.enddate')" range-separator="-" align="center" type="daterange" style="width: 40vw;min-width:15rem;max-width:23rem;" />
@@ -16,36 +16,36 @@
       </el-row>
       <el-row class="class_seletor">
         <el-col :xs="6" :sm="3" :md="2" :lg="2" :xl="1" class="selector_title">
-          <span>用類別篩選</span>
+          <span>{{ $t('c_history.selectclass') }}</span>
         </el-col>
         <el-col :xs="24" :sm="15" :md="9" :lg="8" :xl="6">
-          <el-select v-model="c_payorin" filterable clearable placeholder="收支出" style="width: 25vw;max-width:7.5rem;min-width:5.5rem;">
+          <el-select v-model="c_payorin" :placeholder="$t('c_history.incomespend')" filterable clearable style="width: 25vw;max-width:7.5rem;min-width:5.5rem;">
             <el-option v-for="payorin in c_pay_in" :key="payorin.value" :label="payorin.label" :value="payorin.value" />
           </el-select>
-          <el-select v-model="c_sort" :disabled="c_sort_disable" filterable placeholder="主類別" style="width: 25vw;max-width:7.5rem;min-width:6.5rem;" @focus="get_sort()" @change="get_subsort()">
+          <el-select v-model="c_sort" :disabled="c_sort_disable" :placeholder="$t('c_history.mainsort')" filterable style="width: 25vw;max-width:7.5rem;min-width:6.5rem;" @focus="get_sort()" @change="get_subsort()">
             <el-option v-for="sort in c_sort_payorinitem" :key="sort.id" :label="sort.name" :value="sort.id" />
           </el-select>
-          <el-select v-model="c_subsort" :disabled="c_subsort_disable" filterable placeholder="子類別" style="width: 25vw;max-width:7.5rem;min-width:6.5rem;">
+          <el-select v-model="c_subsort" :disabled="c_subsort_disable" :placeholder="$t('c_history.subclass')" filterable style="width: 25vw;max-width:7.5rem;min-width:6.5rem;">
             <el-option v-for="subsort in c_subsort_payorinitem" :key="subsort.id" :label="subsort.name" :value="subsort.id" />
           </el-select>
         </el-col>
       </el-row>
       <el-row class="project_seletor">
         <el-col :xs="6" :sm="3" :md="2" :lg="2" :xl="1" class="selector_title">
-          <span>用專案篩選</span>
+          <span>{{ $t('c_history.selectproject') }}</span>
         </el-col>
         <el-col :xs="24" :sm="12" :md="9" :lg="8" :xl="6">
-          <el-select v-model="c_project" filterable placeholder="專案" style="width: 25vw;max-width:13.2rem;min-width:11.8rem;" @focus="get_project()">
+          <el-select v-model="c_project" :placeholder="$t('c_history.project')" filterable style="width: 25vw;max-width:13.2rem;min-width:11.8rem;" @focus="get_project()">
             <el-option v-for="project in c_projectitem" :key="project.id" :label="project.name" :value="project.id" />
           </el-select>
         </el-col>
       </el-row>
       <el-row class="account_seletor">
         <el-col :xs="6" :sm="3" :md="2" :lg="2" :xl="1" class="selector_title">
-          <span>用帳戶篩選</span>
+          <span>{{ $t('c_history.selectaccount') }}</span>
         </el-col>
         <el-col :xs="24" :sm="15" :md="9" :lg="8" :xl="6">
-          <el-select v-model="c_account" filterable placeholder="帳戶" style="width: 25vw;max-width:13.2rem;min-width:11.8rem;" @focus="get_account()">
+          <el-select v-model="c_account" :placeholder="$t('c_history.account')" filterable style="width: 25vw;max-width:13.2rem;min-width:11.8rem;" @focus="get_account()">
             <el-option v-for="account in c_accountitem" :key="account.id" :label="account.name" :value="account.id" />
           </el-select>
         </el-col>
@@ -58,51 +58,51 @@
         <el-table-column type="expand">
           <template slot-scope="props">
             <el-form label-position="left" inline class="table-expand">
-              <el-form-item label="備註">
+              <el-form-item :label="$t('c_history.note')">
                 <span>{{ props.row.comment }}</span>
               </el-form-item>
-              <el-form-item label="商品圖樣">
+              <el-form-item :label="$t('c_history.picture')">
                 <span>{{ props.row.picture }}</span>
               </el-form-item>
             </el-form>
           </template>
         </el-table-column>
-        <el-table-column prop="date" label="日期" sortable align="center" />
-        <el-table-column prop="invoice" label="發票" align="center" />
-        <el-table-column prop="payorin" label="收支出" align="center" />
-        <el-table-column prop="sort" label="分類" align="center" />
-        <el-table-column prop="subsort" label="子分類" align="center" />
-        <el-table-column prop="project" label="專案" align="center" />
-        <el-table-column prop="account" label="帳戶" align="center" />
-        <el-table-column prop="amount" label="金額" align="center" />
-        <el-table-column label="操作" align="center">
+        <el-table-column :label="$t('c_history.date')" prop="date" sortable align="center" />
+        <el-table-column :label="$t('c_history.receipt')" prop="invoice" align="center" />
+        <el-table-column :label="$t('c_history.incomespend')" prop="payorin" align="center" />
+        <el-table-column :label="$t('c_history.mainsort')" prop="sort" align="center" />
+        <el-table-column :label="$t('c_history.subclass')" prop="subsort" align="center" />
+        <el-table-column :label="$t('c_history.project')" prop="project" align="center" />
+        <el-table-column :label="$t('c_history.account')" prop="account" align="center" />
+        <el-table-column :label="$t('c_history.money')" prop="amount" align="center" />
+        <el-table-column :label="$t('c_history.operation')" align="center">
           <template slot-scope="scope">
-            <el-button type="primary" @click="handle_edit(scope.$index,scope.row)">編輯</el-button>
+            <el-button type="primary" @click="handle_edit(scope.$index,scope.row)">{{ $t('c_history.edit') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
     <div class="dialog_container">
-      <el-dialog :visible.sync="c_history_visible" width="80vw" title="編輯">
+      <el-dialog :visible.sync="c_history_visible" :title="$t('c_history.edit')" width="80vw">
         <el-form :model="c_history_edit" label-position="left" inline class="table-invoice">
           <el-form-item>
-            <span>以下如不修改保持空白即可</span>
+            <span>{{ $t('c_history.notmodify') }}</span>
           </el-form-item>
           <el-form-item>
             <span />
           </el-form-item>
-          <el-form-item label="日期">
+          <el-form-item :label="$t('c_history.date')">
             <el-date-picker v-model="c_history_edit.date" :placeholder="c_history_date_p" type="date" />
           </el-form-item>
-          <el-form-item label="發票號碼">
+          <el-form-item :label="$t('c_history.receiptnumber')">
             <el-input v-model="c_history_edit.invoice" :placeholder="c_history_invoice_p" clearable />
           </el-form-item>
-          <el-form-item label="帳戶">
+          <el-form-item :label="$t('c_history.account')">
             <el-select v-model="c_history_edit.account" :placeholder="c_history_account_p" filterable style="width: 25vw;max-width:13.2rem;min-width:11.8rem;" @focus="get_account()">
               <el-option v-for="account in c_accountitem" :key="account.id" :label="account.name" :value="account.id" />
             </el-select>
           </el-form-item>
-          <el-form-item label="金額">
+          <el-form-item :label="$t('c_history.money')">
             <el-input v-model="c_history_edit.amount" :placeholder="c_history_amount_p" clearable />
           </el-form-item>
           <hr>
@@ -112,27 +112,27 @@
           <el-form-item>
             <span />
           </el-form-item>
-          <el-form-item label="收支出">
-            <el-select v-model="c_history_edit.payorin" filterable placeholder="收支出" style="width: 25vw;max-width:7.5rem;min-width:6.5rem;">
+          <el-form-item :label="$t('c_history.incomespend')">
+            <el-select v-model="c_history_edit.payorin" :placeholder="$t('c_history.incomespend')" filterable style="width: 25vw;max-width:7.5rem;min-width:6.5rem;">
               <el-option v-for="payorin in c_pay_in" :key="payorin.value" :label="payorin.label" :value="payorin.value" />
             </el-select>
           </el-form-item>
-          <el-form-item label="主類別">
-            <el-select v-model="c_history_edit.sort" :disabled="c_sort_disable" filterable placeholder="主類別" style="width: 25vw;max-width:7.5rem;min-width:6.5rem;" @focus="get_sort()" @change="get_subsort()">
+          <el-form-item :label="$t('c_history.mainsort')">
+            <el-select v-model="c_history_edit.sort" :disabled="c_sort_disable" :placeholder="$t('c_history.mainsort')" filterable style="width: 25vw;max-width:7.5rem;min-width:6.5rem;" @focus="get_sort()" @change="get_subsort()">
               <el-option v-for="sort in c_sort_payorinitem" :key="sort.id" :label="sort.name" :value="sort.id" />
             </el-select>
           </el-form-item>
-          <el-form-item label="子類別">
-            <el-select v-model="c_history_edit.subsort" :disabled="c_subsort_disable" filterable placeholder="子類別" style="width: 25vw;max-width:7.5rem;min-width:6.5rem;">
+          <el-form-item :label="$t('c_history.subclass')">
+            <el-select v-model="c_history_edit.subsort" :disabled="c_subsort_disable" :placeholder="$t('c_history.subclass')" filterable style="width: 25vw;max-width:7.5rem;min-width:6.5rem;">
               <el-option v-for="subsort in c_subsort_payorinitem" :key="subsort.id" :label="subsort.name" :value="subsort.id" />
             </el-select>
           </el-form-item>
         </el-form>
 
         <span slot="footer" class="invoice_dialog_footer">
-          <el-button type="danger" plain @click="c_history_del()">刪除</el-button>
-          <el-button type="primary" @click="c_history_confirm()">確定</el-button>
-          <el-button type="info" plain @click="c_history_cal()">取消</el-button>
+          <el-button type="danger" plain @click="c_history_del()">{{ $t('c_history.delete') }}</el-button>
+          <el-button type="primary" @click="c_history_confirm()">{{ $t('c_history.confirm') }}</el-button>
+          <el-button type="info" plain @click="c_history_cal()">{{ $t('c_history.cancel') }}</el-button>
         </span>
 
       </el-dialog>
@@ -546,7 +546,7 @@ export default {
   font-size: 0;
 }
 .table-invoice label {
-  width: 90px;
+  width: 100px;
   color: #99a9bf;
 }
 .table-invoice .el-form-item {

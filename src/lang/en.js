@@ -1,10 +1,11 @@
 export default {
   route: {
+    home: '177 Together',
     dashboard: 'Dashboard',
     page401: '401',
     page404: '404',
-    profile_view: 'Profile Info',
-    profile_edit: 'Edit Profile',
+    c_profile_view: 'Profile Info',
+    c_profile_edit: 'Edit Profile',
     c_history: 'History Record',
     c_information: 'Offer information',
     c_card: 'Card Manage',
@@ -13,7 +14,8 @@ export default {
     c_accounting: 'Start Accounting',
     c_cardmanager: 'Card Manage',
     c_accountmanager: 'Account Manage',
-    c_categorymanager: 'Category Manage'
+    c_categorymanager: 'Category Manage',
+    c_projectmanager: 'Project Manage'
   },
   login: {
     title: 'Login Form',
@@ -42,7 +44,9 @@ export default {
     subject: 'Subject',
     contents: 'contents',
     sent: 'Sent',
-    h1: 'We will respond within 3~5 working days after the problem is sent.'
+    h1: 'We will respond within 3~5 working days after the problem is sent.',
+    h2: '10 words at the most',
+    h3: '140 words at the most'
   },
   c_category: {
     incomespend: 'Income or Spend',
@@ -61,9 +65,109 @@ export default {
     subclass: 'Sub class',
     edit: 'Edit',
     addsubclass: 'Add new sub class',
-    notmodify: 'If you do not modify the following，just keep blank.',
+    notmodify: 'If you do not modify the following, just keep blank.',
     subclassname: 'Sub-name',
-    delete: 'Delete'
+    delete: 'Delete',
+    totalincome: 'Total income',
+    totalspend: 'Total spend'
+  },
+  c_accountmanager_view: {
+    accountname: 'Account',
+    number: 'Number',
+    search: 'Search',
+    word: 'Please enter the content',
+    addnewaccount: 'Add a new amount of data',
+    startmoney: 'Initial amount',
+    finallymoney: 'Finally amount',
+    operating: 'Operation',
+    edit: 'Edit',
+    delete: 'Delete',
+    choose: 'Please select',
+    cancel: 'Cancel',
+    confirm: 'Confirm',
+    blank: 'If you do not need to modify, please keep balnk.',
+    add: 'Add Account',
+    accounttype: 'Account Type'
+  },
+  c_card_view: {
+    name: 'Name',
+    content: 'Please enter the content',
+    search: 'Search',
+    add: 'Add',
+    cardname: 'Cardname',
+    cardnumber: 'Cardnumber',
+    cardcode: 'Cardcode',
+    codenumber: 'Codenumder',
+    operating: 'Operating',
+    edit: 'Edit',
+    delete: 'Delete',
+    cancel: 'Cancel',
+    confirm: 'Confirm',
+    blank: 'If ypu do not need to modify, please keep balnk.'
+  },
+  c_accounting_view: {
+    income: 'Income',
+    spend: 'Spend',
+    account: 'Account',
+    accountname: 'Accountname',
+    name: 'Please enter your account name',
+    purchasingtime: 'PurchasingTime',
+    invoicetime: 'Receipt Date',
+    class: 'Classification',
+    choose: 'Please select',
+    categories: 'Sub-categories',
+    project: 'Project',
+    money: 'Money',
+    invoice: 'Invoice',
+    remark: 'Registration',
+    addremark: 'New registration',
+    amount: 'Please enter',
+    data: 'Add a new amount of data',
+    send: 'Send out'
+
+  },
+  c_profile_view: {
+    email: 'Email',
+    name: 'Name',
+    alter: 'Modify'
+  },
+  c_profile_edit: {
+    email: 'Email',
+    name: 'Name',
+    newpswd: 'Password',
+    toid_ipt: 'Please enter 8 numbers',
+    password_ipt: 'If not modified, blank',
+    input: 'Pswd Again',
+    confirm: 'Confirm',
+    cancel: 'Cancel',
+    h1: '25 words at the most',
+    h2: '8 digit numbers at the most',
+    h3: 'If u dont edit, leave the space'
+  },
+  c_history: {
+    startdate: 'Start Date',
+    enddate: 'End Date',
+    selecttime: 'Select date ',
+    selectclass: 'Select category',
+    incomespend: 'In or pay',
+    mainsort: 'Main sort',
+    subclass: 'Sub class',
+    selectproject: 'Select project',
+    project: 'Project',
+    selectaccount: 'Select account',
+    account: 'Account',
+    note: 'Note',
+    picture: 'Product pictures',
+    date: 'Data',
+    receipt: 'Receipt',
+    money: 'Money',
+    operation: 'Operation',
+    edit: 'Edit',
+    notmodify: 'If you do not modify the following, just keep blank',
+    receiptnumber: 'Receipt num',
+    delete: 'Delete',
+    confirm: 'Confirm',
+    cancel: 'Cancel'
   },
 
   navbar: {

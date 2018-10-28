@@ -4,55 +4,51 @@
       {{ $t('route.c_cardmanager') }}
     </title>
     <div class="filter-container">
-      <el-select v-model="listQuery.id" placeholder="票卡名稱" clearable filterable style="width: 25vw;max-width:7.5rem;min-width:5.5rem;" @focus="get_cardlist()" @change="get_cardlist()">
+      <el-select v-model="listQuery.id" :placeholder="$t('c_card_view.cardname')" clearable filterable style="width: 25vw;max-width:7.5rem;min-width:5.5rem;" @focus="get_cardlist()" @change="get_cardlist()">
         <el-option v-for="card in c_cardlist" :key="card.id" :label="card.name" :value="card.id" />
       </el-select>
     </div>
-    <div class="history_table_container">
+    <div class="card_table_container">
       <el-table :data="c_user_card" stripe style="width: 100%;" max-height="470" fit sortable>
-        <el-table-column prop="id" label="編號" align="center">
-          <template slot-scope="scope">
-            <span>{{ scope.row.id }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="name" label="姓名" align="center">
+        <el-table-column type="index" align="center" />
+        <el-table-column :label="$t('c_card_view.name')" prop="name" align="center">
           <template slot-scope="scope">
             <span>{{ scope.row.name }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="number" label="條碼編號" align="center">
+        <el-table-column :label="$t('c_card_view.codenumber')" prop="number" align="center">
           <template slot-scope="scope">
             <span>{{ scope.row.number }}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
-            <el-button type="primary" @click="handle_edit(scope.$index,scope.row)">編輯</el-button>
+            <el-button type="primary" plain @click="handle_edit(scope.$index,scope.row)">{{ $t('c_card_view.edit') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
     <div class="dialog_container">
       <el-dialog :visible.sync="c_card_visible" width="80vw" title="子分類">
-        <el-form :model="c_card_edit" label-position="left" inline class="table-card">
+        <el-form ref="c_card_edit" :model="c_card_edit" :rules="c_card_edit_rules" label-position="left" inline class="table-card">
           <el-form-item>
-            <span>以下如不修改保持空白即可</span>
+            <span>{{ $t('c_card_view.blank') }}</span>
           </el-form-item>
           <el-form-item>
             <span />
           </el-form-item>
-          <el-form-item label="卡片名稱">
-            <el-input v-model="c_card_edit.name" :placeholder="c_card_name_p" clearable />
+          <el-form-item :label="$t('c_card_view.name')" prop="name">
+            <el-input v-model="c_card_edit.name" :placeholder="c_card_name_p" clearable name="name" @focus="clean_name()" />
           </el-form-item>
-          <el-form-item label="條碼編號">
-            <el-input v-model="c_card_edit.number" :placeholder="c_card_number_p" clearable />
+          <el-form-item :label="$t('c_card_view.codenumber')" prop="number">
+            <el-input v-model="c_card_edit.number" :placeholder="c_card_number_p" clearable name="number" @focus="clean_number()" />
           </el-form-item>
         </el-form>
 
         <span slot="footer" class="invoice_dialog_footer">
-          <el-button type="danger" plain @click="c_card_del()">刪除</el-button>
-          <el-button type="primary" @click="c_card_confirm()">確定</el-button>
-          <el-button type="info" plain @click="c_card_cal()">取消</el-button>
+          <el-button type="danger" plain @click.native.prevent="c_card_del()">{{ $t('c_card_view.delete') }}</el-button>
+          <el-button type="primary" @click.native.prevent="c_card_confirm()">{{ $t('c_card_view.confirm') }}</el-button>
+          <el-button type="info" plain @click.native.prevent="c_card_cal()">{{ $t('c_card_view.cancel') }}</el-button>
         </span>
 
       </el-dialog>
@@ -64,8 +60,9 @@
 
 import waves from '@/directive/waves' // 水波紋指令
 import { getcard } from '@/api/card/getcard'
-import { patchcard } from '@/api/card/patchcard'
+import { patchcard_modify, patchcard_del } from '@/api/card/patchcard'
 import { getToken } from '@/utils/auth'
+import { formatdate } from '@/utils/index'
 
 export default {
   name: 'CCard',
@@ -73,36 +70,59 @@ export default {
     waves
   },
   data() {
+    const validecardnamelength = (rule, value, callback) => {
+      if (value.length > 10) {
+        callback(new Error('卡片名稱至多10碼'))
+      } else {
+        callback()
+      }
+    }
+    const validecardnumberlength = (rule, value, callback) => {
+      if (value.length > 100) {
+        callback(new Error('條碼編號上限為100字，如持有卡更長，請聯繫我們'))
+      } else {
+        callback()
+      }
+    }
     return {
       listQuery: {
         id: undefined
       },
-      c_card_time: '',
       c_card_id: '',
       c_card_name_p: '',
       c_card_number_p: '',
       c_cardlist: [],
       c_carditem: [],
       c_user_card: null,
+      c_card_visible: false,
       c_card_edit: {
         name: '',
         number: ''
       },
-      c_card_visible: false
+      c_card_edit_rules: {
+        name: [{ required: false, trigger: 'change', validator: validecardnamelength }],
+        number: [{ required: false, trigger: 'change', validator: validecardnumberlength }]
+      }
     }
   },
   watch: {
-
   },
   created() {
     this.get_cardlist()
-    this.get_card()
   },
   methods: {
+    clean_name() {
+      this.c_card_edit.name = ''
+    },
+    clean_number() {
+      this.c_card_edit.number = ''
+    },
     handle_edit(index, row) {
       this.c_card_id = row.id
       this.c_card_name_p = row.name
+      this.c_card_edit.name = row.name
       this.c_card_number_p = row.number
+      this.c_card_edit.number = row.number
       this.c_card_visible = true
     },
     get_cardlist() {
@@ -122,15 +142,22 @@ export default {
       })
     },
     c_card_confirm() {
-      patchcard(getToken(), this.c_card_id, this.c_card_edit.name, this.c_card_edit.number, this.c_card_time)
-        .then(() => {})
+      const date = formatdate('yyyy-mm-dd HH:MM:ss.l')
+      patchcard_modify(getToken(), this.c_card_id, this.c_card_edit.name, this.c_card_edit.number, date)
+        .then(() => {
+          this.$message({
+            type: 'success',
+            message: '卡片相關更新成功'
+          })
+          this.get_card()
+        })
         .catch((error) => {
           console.log(error)
+          this.$message({
+            type: 'error',
+            message: '發生一點錯誤，請稍後再做修改'
+          })
         })
-      this.$message({
-        type: 'success',
-        message: '已完成該卡片資料資料修改'
-      })
       this.c_card_visible = false
     },
     c_card_cal() {
@@ -151,9 +178,19 @@ export default {
           confirmButtonText: '確認',
           type: 'warning'
         }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '刪除成功'
+          const date = formatdate('yyyy-mm-dd HH:MM:ss.l')
+          patchcard_del(getToken(), this.c_card_id, date).then(() => {
+            this.$message({
+              type: 'success',
+              message: '刪除成功'
+            })
+            this.get_card()
+          }).catch((error) => {
+            console.log(error)
+            this.$message({
+              type: 'error',
+              message: '發生一點錯誤，請稍後再做修改'
+            })
           })
           this.c_card_visible = false
         }).catch(() => {
@@ -196,7 +233,7 @@ export default {
   font-size: 0;
 }
 .table-card label {
-  width: 90px;
+  width: 100px;
   color: #99a9bf;
 }
 .table-card .el-form-item {

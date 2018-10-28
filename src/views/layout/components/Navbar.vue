@@ -31,7 +31,7 @@
         <el-dropdown-menu slot="dropdown">
           <router-link to="/">
             <el-dropdown-item>
-              {{ $t('navbar.bdashboard') }}
+              {{ $t('navbar.dashboard') }}
             </el-dropdown-item>
           </router-link>
           <!--

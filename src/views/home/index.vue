@@ -1,7 +1,7 @@
 <template>
   <div>
     <title>
-      首頁
+      {{ $t('route.home') }}
     </title>
     <div class="home1-container">
       <el-row class="navbar">
