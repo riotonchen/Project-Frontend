@@ -8,7 +8,7 @@ export function patchsubsort_update(token, id, name, renew_time) {
     syncstatus: 0,
     renew_time
   }
-  var requ_url = 'https://www.177together.com/api/sort/' + id + '/'
+  var requ_url = 'https://www.177together.com/api/subsort/' + id + '/'
 
   return request({
 
@@ -28,7 +28,7 @@ export function patchsubsort_delete(token, id, renew_time) {
     syncstatus: 3,
     renew_time
   }
-  var requ_url = 'https://www.177together.com/api/sort/' + id + '/'
+  var requ_url = 'https://www.177together.com/api/subsort/' + id + '/'
 
   return request({
 

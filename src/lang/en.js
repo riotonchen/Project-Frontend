@@ -71,7 +71,7 @@ export default {
     totalincome: 'Total income',
     totalspend: 'Total spend'
   },
-  c_accountmanager_view: {
+  c_accountmanager: {
     accountname: 'Account',
     number: 'Number',
     search: 'Search',

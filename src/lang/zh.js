@@ -110,7 +110,7 @@ export default {
     addremark: '新增備註'
 
   },
-  c_accountmanager_view: {
+  c_accountmanager: {
     project: '帳戶類型',
     search: '搜尋',
     word: '請輸入內容',

@@ -5,57 +5,77 @@
       {{ $t('route.c_accountmanager') }}
     </title>
     <div class="filter-container">
-      <el-select v-model="c_account_options" :placeholder="$t('c_accountmanager_view.accountname')" clearable filterable style="width: 25vw;max-width:10rem;min-width:8.5rem;" @focus="get_account()" @change="get_accountsingledata()">
+      <el-select v-model="c_account_options" :placeholder="$t('c_accountmanager.accountname')" clearable filterable style="width: 25vw;max-width:10rem;min-width:8.5rem;" @focus="get_account()" @change="get_accountsingledata()">
         <el-option v-for="account in c_accountitem" :key="account.id" :label="account.name" :value="account.id" />
       </el-select>
-      <el-button type="primary" @click.native.prevent="">{{ $t('c_accountmanager_view.add') }}</el-button>
+      <el-button type="primary" @click.native.prevent="c_account_add()">{{ $t('c_accountmanager.add') }}</el-button>
     </div>
     <div class="history_table_container">
       <el-table :data="c_account_list" stripe style="width: 100%;" max-height="500" fit sortable>
         <el-table-column type="index" align="center" />
-        <el-table-column :label="$t('c_accountmanager_view.accountname')" prop="name" align="center">
+        <el-table-column :label="$t('c_accountmanager.accountname')" prop="name" align="center">
           <template slot-scope="scope">
             <span>{{ scope.row.name }}</span>
           </template>
         </el-table-column>
-        <el-table-column :label="$t('c_accountmanager_view.accounttype')" prop="accounttype_id" align="center">
+        <el-table-column :label="$t('c_accountmanager.accounttype')" prop="accounttype_id" align="center">
           <template slot-scope="scope">
-            <span>{{ scope.row.accounttype_id }}</span>
+            <el-tag :type="scope.row.accounttype_id.name==='現金'?'primary':scope.row.accounttype_id.name==='資產'?'success':scope.row.accounttype_id.name==='儲值卡'?'warning':'danger'">
+              <span>{{ scope.row.accounttype_id.name }}</span>
+            </el-tag>
           </template>
         </el-table-column>
-        <el-table-column :label="$t('c_accountmanager_view.finallymoney')" prop="number" align="center">
+        <el-table-column :label="$t('c_accountmanager.finallymoney')" prop="number" align="center">
           <template slot-scope="scope">
             <span>{{ scope.row.balance }}</span>
           </template>
         </el-table-column>
-        <el-table-column :label="$t('c_accountmanager_view.operating')" align="center">
+        <el-table-column :label="$t('c_accountmanager.operating')" align="center">
           <template slot-scope="scope">
-            <el-button type="primary" plain @click.native.prevent="handle_edit(scope.$index,scope.row)">{{ $t('c_accountmanager_view.edit') }}</el-button>
+            <el-button type="primary" plain @click.native.prevent="handle_edit(scope.$index,scope.row)">{{ $t('c_accountmanager.edit') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
     <div class="dialog_container">
-      <el-dialog :visible.sync="c_account_visible" :title="$t('c_accountmanager_view.operating')" width="80vw" align="edit">
-        <el-form :model="c_account_edit" label-position="left" inline class="table-account">
+      <el-dialog :visible.sync="c_account_visible" :title="$t('c_accountmanager.operating')" width="80vw">
+        <el-form :model="c_account_edit" label-position="left" inline class="table_account">
           <el-form-item>
-            <span>{{ $t('c_accountmanager_view.blank') }}</span>
+            <span>{{ $t('c_accountmanager.blank') }}</span>
           </el-form-item>
           <el-form-item>
             <span />
           </el-form-item>
-          <el-form-item :label="$t('c_accountmanager_view.accountname')">
+          <el-form-item :label="$t('c_accountmanager.accountname')">
             <el-input v-model="c_account_edit.name" :placeholder="c_account_name_p" clearable @focus="clean_name()" />
           </el-form-item>
-          <el-form-item :label="$t('c_accountmanager_view.finallymoney')">
+          <el-form-item :label="$t('c_accountmanager.finallymoney')">
             <el-input v-model="c_account_edit.balance" :placeholder="c_account_balance_p" clearable @focus="clean_balance()" />
           </el-form-item>
         </el-form>
 
         <span slot="footer">
-          <el-button type="danger" plain @click.native.prevent="c_account_del()">{{ $t('c_accountmanager_view.delete') }}</el-button>
-          <el-button type="primary" @click.native.prevent="c_account_confirm()">{{ $t('c_accountmanager_view.confirm') }}</el-button>
-          <el-button type="info" plain @click.native.prevent="c_account_cal()">{{ $t('c_accountmanager_view.cancel') }}</el-button>
+          <el-button type="danger" plain @click.native.prevent="c_account_del()">{{ $t('c_accountmanager.delete') }}</el-button>
+          <el-button type="primary" @click.native.prevent="c_account_confirm()">{{ $t('c_accountmanager.confirm') }}</el-button>
+          <el-button type="info" plain @click.native.prevent="c_account_cal()">{{ $t('c_accountmanager.cancel') }}</el-button>
+        </span>
+
+      </el-dialog>
+      <el-dialog :visible.sync="c_account_add_visible" :title="$t('c_accountmanager.add')" width="80vw">
+        <el-form :model="c_account_addn" label-position="left" inline class="table_account_add">
+          <el-form-item :label="$t('c_accountmanager.accountname')">
+            <el-input v-model="c_account_addn.name" clearable />
+          </el-form-item>
+          <el-form-item :label="$t('c_accountmanager.accounttype')">
+            <el-select v-model="c_account_addn.type" clearable filterable>
+              <el-option v-for="type in c_accounttypeitem" :key="type.accounttype_id" :label="type.name" :value="type.accounttype_id" />
+            </el-select>
+          </el-form-item>
+        </el-form>
+
+        <span slot="footer">
+          <el-button type="primary" @click.native.prevent="c_account_add_confirm()">{{ $t('c_accountmanager.confirm') }}</el-button>
+          <el-button type="info" plain @click.native.prevent="c_account_cal()">{{ $t('c_accountmanager.cancel') }}</el-button>
         </span>
 
       </el-dialog>
@@ -65,6 +85,7 @@
 
 <script>
 import waves from '@/directive/waves' // 水波紋指令
+import { postaccount } from '@/api/account/postaccount'
 import { getaccount, getaccounttype, getaccountsingledata } from '@/api/account/getaccount'
 import { patchaccount_modify, patchaccount_del } from '@/api/account/patchaccount'
 import { getToken } from '@/utils/auth'
@@ -82,13 +103,19 @@ export default {
       c_account_balance_p: null,
       c_accountitem: [],
       c_account_list: [],
+      c_accounttypeitem: [],
+      c_account_addn: {
+        name: null,
+        type: null
+      },
       c_account_edit: {
         id: null,
         name: null,
         balance: null,
         accounttypr_id: null
       },
-      c_account_visible: false
+      c_account_visible: false,
+      c_account_add_visible: false
     }
   },
   created() {
@@ -137,10 +164,29 @@ export default {
         })
       }
     },
-    /* 尚未處理 */
+    c_account_add() {
+      this.c_account_add_visible = true
+    },
+    c_account_add_confirm() {
+      postaccount(getToken(), this.c_account_addn.name, this.c_account_addn.type).then(() => {
+        this.$message({
+          type: 'success',
+          message: '帳戶新增成功'
+        })
+        this.get_account()
+      }).catch((error) => {
+        console.log(error)
+        this.$message({
+          type: 'error',
+          message: '發生一點錯誤，請稍後再做新增'
+        })
+      })
+      this.c_account_add_visible = false
+    },
     get_accounttype() {
       getaccounttype(getToken()).then((response) => {
         console.log(response.data.name)
+        this.c_accounttypeitem = response.data
       })
     },
     c_account_confirm() {
@@ -168,6 +214,7 @@ export default {
         message: '已取消修改'
       })
       this.c_account_visible = false
+      this.c_account_add_visible = false
     },
     c_account_del() {
       this.$confirm('你真的要刪除該帳戶資料資料嗎？', '警告', {
@@ -214,17 +261,30 @@ export default {
 }
 </script>
 <style lang="scss">
-.table-account {
+.table_account {
   font-size: 0;
 }
-.table-account label {
+.table_account label {
   width: 90px;
   color: #99a9bf;
 }
-.table-account .el-form-item {
+.table_account .el-form-item {
   margin-right: 0;
   //margin-bottom: 0;
   width: 100%;
+}
+
+.table_account_add {
+  font-size: 0;
+}
+.table_account_add label {
+  width: 90px;
+  color: #99a9bf;
+}
+.table_account_add .el-form-item {
+  margin-right: 0;
+  //margin-bottom: 0;
+  width: 50%;
 }
 </style>
 

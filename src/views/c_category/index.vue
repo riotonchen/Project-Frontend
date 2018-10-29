@@ -258,6 +258,15 @@ export default {
       }
     }
   },
+  watch: {
+    c_sort_payorin: function() {
+      if (this.c_sort_payorin === null || this.c_sort_payorin === '') {
+        this.c_sort_disable = true
+      } else {
+        this.c_sort_disable = false
+      }
+    }
+  },
   created() {
     this.get_sort()
   },
@@ -278,7 +287,6 @@ export default {
       } else {
         getsort_all(getToken()).then(response => {
           this.c_category_list = response.data
-          this.c_sort_disable = false
         }).catch((error) => {
           console.log(error)
         })
@@ -457,6 +465,9 @@ export default {
         message: '已取消修改'
       })
       this.c_category_two_visible = false
+      this.c_category_sort_add_visible = false
+      this.c_category_editsort_visible = false
+      this.c_category_subsort_table_visible = false
     },
     c_category_subsort_del() {
       this.$confirm('你真的要刪除該筆分類相關嗎？', '警告', {
