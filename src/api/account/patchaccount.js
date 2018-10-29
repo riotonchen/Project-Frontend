@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function patchcard_modify(token, id, name, balance, renew_time) {
+export function patchaccount_modify(token, id, name, balance, renew_time) {
   const data = {
     token,
     id,
@@ -22,14 +22,14 @@ export function patchcard_modify(token, id, name, balance, renew_time) {
     data
   })
 }
-export function patchcard_del(token, id, renew_time) {
+export function patchaccount_del(token, id, renew_time) {
   const data = {
     token,
     id,
     syncstatus: 3,
     renew_time
   }
-  var requ_url = 'https://www.177together.com/api/card/' + id + '/'
+  var requ_url = 'https://www.177together.com/api/account/' + id + '/'
 
   return request({
 

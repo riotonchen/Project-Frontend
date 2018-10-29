@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function patchsort_update(token, id, name, renew_time) {
+export function patchsubsort_update(token, id, name, renew_time) {
   const data = {
     token,
     id,
@@ -21,7 +21,7 @@ export function patchsort_update(token, id, name, renew_time) {
   })
 }
 
-export function patchsort_delete(token, id, renew_time) {
+export function patchsubsort_delete(token, id, renew_time) {
   const data = {
     token,
     id,

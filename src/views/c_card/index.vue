@@ -9,7 +9,7 @@
       </el-select>
     </div>
     <div class="card_table_container">
-      <el-table :data="c_user_card" stripe style="width: 100%;" max-height="470" fit sortable>
+      <el-table :data="c_user_card" stripe style="width: 100%;" max-height="500" fit sortable>
         <el-table-column type="index" align="center" />
         <el-table-column :label="$t('c_card_view.name')" prop="name" align="center">
           <template slot-scope="scope">

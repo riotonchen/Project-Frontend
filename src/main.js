@@ -17,7 +17,7 @@ import i18n from './lang' // 國際化
 import './icons' // 圖標
 import './errorLog' // error log
 import './permission' // 權限控制
-import './mock' // simulation data
+// import './mock' // simulation data
 import axios from 'axios'
 import * as filters from './filters' // 全局過濾器
 import ElementUI from 'element-ui'

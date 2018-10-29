@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function getsubsort(token, sort_id, query) {
+export function getsubsort(token, sort_id) {
   const data = {
     token,
     sort_id
@@ -17,7 +17,23 @@ export function getsubsort(token, sort_id, query) {
     headers: {
       Authorization: 'JWT ' + token
     },
-    data,
-    params: query
+    data
+  })
+}
+
+export function getsinglesubsort(token, subsort_id) {
+  const data = {
+    token
+  }
+  var requ_url = 'https://www.177together.com/api/subsort/' + subsort_id + '/'
+
+  return request({
+
+    url: requ_url,
+    method: 'get',
+    headers: {
+      Authorization: 'JWT ' + token
+    },
+    data
   })
 }

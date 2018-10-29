@@ -1,17 +1,19 @@
 import request from '@/utils/request'
 
-export function postproject(token, member_id, name, type, sort_id) {
-  const data = {
-    token,
-    member_id,
-    name,
-    type,
-    sort_id
-  }
+export function postsubsort(token, id, sort_id, name, type) {
   var jwtDecode = require('jwt-decode')
   var decoded = jwtDecode(token)
-  var user_id = decoded.user_id
-  var requ_url = 'https://www.177together.com/api/subsort/?member_id=' + user_id + '/'
+  var member_id = decoded.user_id
+  const data = {
+    token,
+    sort_id,
+    member_id,
+    name,
+    myorder: 0,
+    type,
+    syncstatus: 2
+  }
+  var requ_url = 'https://www.177together.com/api/subsort/' + id + '/'
 
   return request({
 

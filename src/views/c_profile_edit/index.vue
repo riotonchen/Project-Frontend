@@ -5,7 +5,7 @@
     </title>
     <div class="personal_edit_form">
 
-      <el-form :model="profile_edit_form" :rules="profile_edit_form_rules" label-position="left" inline class="personal_edit">
+      <el-form ref="profile_edit_form" :model="profile_edit_form" :rules="profile_edit_form_rules" label-position="left" inline class="personal_edit">
         <el-form-item :label="$t('c_profile_edit.email')">
           <el-input v-model="profile_edit_form.account" type="text" class="useraccountin" readonly />
         </el-form-item>

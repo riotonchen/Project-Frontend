@@ -1,16 +1,17 @@
 <template>
+  <!--修改刪除新增未寫-->
   <div class="app-container">
     <title>
       {{ $t('route.c_accountmanager') }}
     </title>
     <div class="filter-container">
-      <el-select v-model="listQuery.id" :placeholder="$t('c_accountmanager_view.accountname')" clearable filterable style="width: 25vw;max-width:10rem;min-width:8.5rem;" @focus="get_account()" @change="get_account()">
+      <el-select v-model="c_account_options" :placeholder="$t('c_accountmanager_view.accountname')" clearable filterable style="width: 25vw;max-width:10rem;min-width:8.5rem;" @focus="get_account()" @change="get_accountsingledata()">
         <el-option v-for="account in c_accountitem" :key="account.id" :label="account.name" :value="account.id" />
       </el-select>
       <el-button type="primary" @click.native.prevent="">{{ $t('c_accountmanager_view.add') }}</el-button>
     </div>
     <div class="history_table_container">
-      <el-table :data="c_user_account" stripe style="width: 100%;" max-height="470" fit sortable>
+      <el-table :data="c_account_list" stripe style="width: 100%;" max-height="500" fit sortable>
         <el-table-column type="index" align="center" />
         <el-table-column :label="$t('c_accountmanager_view.accountname')" prop="name" align="center">
           <template slot-scope="scope">
@@ -64,8 +65,8 @@
 
 <script>
 import waves from '@/directive/waves' // 水波紋指令
-import { getaccount, getaccounttype } from '@/api/account/getaccount'
-import { patchcard_modify, patchcard_del } from '@/api/account/patchaccount'
+import { getaccount, getaccounttype, getaccountsingledata } from '@/api/account/getaccount'
+import { patchaccount_modify, patchaccount_del } from '@/api/account/patchaccount'
 import { getToken } from '@/utils/auth'
 import { formatdate } from '@/utils/index'
 
@@ -76,18 +77,16 @@ export default {
   },
   data() {
     return {
-      listQuery: {
-        id: undefined
-      },
-      c_account_name_p: '',
-      c_account_balance_p: '',
+      c_account_options: null,
+      c_account_name_p: null,
+      c_account_balance_p: null,
       c_accountitem: [],
-      c_user_account: null,
+      c_account_list: [],
       c_account_edit: {
-        id: '',
-        name: '',
-        balance: '',
-        accounttypr_id: ''
+        id: null,
+        name: null,
+        balance: null,
+        accounttypr_id: null
       },
       c_account_visible: false
     }
@@ -120,11 +119,23 @@ export default {
       })
     },
     get_account() {
-      getaccount(getToken(), this.listQuery).then(response => {
-        this.c_user_account = response.data
+      getaccount(getToken()).then(response => {
+        this.c_account_list = response.data
       }).catch((error) => {
         console.log(error)
       })
+    },
+    get_accountsingledata() {
+      if (this.c_account_options === '') {
+        this.get_account()
+      } else {
+        getaccountsingledata(getToken(), this.c_account_options).then((response) => {
+          this.c_account_list = []
+          this.c_account_list.push(response.data)
+        }).catch((error) => {
+          console.log(error)
+        })
+      }
     },
     /* 尚未處理 */
     get_accounttype() {
@@ -134,7 +145,7 @@ export default {
     },
     c_account_confirm() {
       const date = formatdate('yyyy-mm-dd HH:MM:ss.l')
-      patchcard_modify(getToken(), this.c_account_edit.id, this.c_account_edit.name, this.c_account_edit.balance, date)
+      patchaccount_modify(getToken(), this.c_account_edit.id, this.c_account_edit.name, this.c_account_edit.balance, date)
         .then(() => {
           this.$message({
             type: 'success',
@@ -170,7 +181,7 @@ export default {
           type: 'warning'
         }).then(() => {
           const date = formatdate('yyyy-mm-dd HH:MM:ss.l')
-          patchcard_del(getToken(), this.c_account_edit.id, date).then(() => {
+          patchaccount_del(getToken(), this.c_account_edit.id, date).then(() => {
             this.$message({
               type: 'success',
               message: '刪除成功'

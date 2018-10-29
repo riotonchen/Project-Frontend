@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function getaccount(token, query) {
+export function getaccount(token) {
   const data = {
     token
   }
@@ -16,8 +16,23 @@ export function getaccount(token, query) {
     headers: {
       Authorization: 'JWT ' + token
     },
-    data,
-    params: query
+    data
+  })
+}
+export function getaccountsingledata(token, account_id) {
+  const data = {
+    token
+  }
+  var requ_url = 'https://www.177together.com/api/account/' + account_id + '/'
+
+  return request({
+
+    url: requ_url,
+    method: 'get',
+    headers: {
+      Authorization: 'JWT ' + token
+    },
+    data
   })
 }
 
