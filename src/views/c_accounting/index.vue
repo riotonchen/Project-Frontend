@@ -66,7 +66,7 @@
           </el-form>
           <el-row>
             <el-col :span="24">
-              <el-button type="primary" class="btn_add" @click.native.prevent="add_new('accounting')">完成新增</el-button>
+              <el-button type="primary" class="btn_add" @click.native.prevent="add_new_done()">完成新增</el-button>
               <el-button type="info" plain class="btn_add" @click.native.prevent="add_new()">再新增一筆</el-button>
             </el-col>
           </el-row>
@@ -208,7 +208,12 @@ export default {
     clean_form(refname) {
       this.$refs[refname].resetFields()
     },
-
+    add_new_done() {
+      this.add_new()
+      setTimeout(() => {
+        this.$router.push({ path: this.redirect || '/history' })
+      }, 2000)
+    },
     add_new() {
       this.account_table_load = true
       if ((this.c_accountting_add.invoice).length < 1) {

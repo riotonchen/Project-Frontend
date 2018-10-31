@@ -4,46 +4,28 @@
       {{ $t('route.c_profile_edit') }}
     </title>
     <div class="personal_edit_form">
+      <el-card>
+        <el-form ref="profile_edit_form" :model="profile_edit_form" :rules="profile_edit_form_rules" label-position="left" inline class="personal_edit">
+          <el-form-item :label="$t('c_profile_edit.email')">
+            <el-input v-model="profile_edit_form.account" type="textarea" autosize readonly />
+          </el-form-item>
+          <el-form-item :label="$t('c_profile_edit.name')" prop="name">
+            <el-input v-model="profile_edit_form.name" :placeholder="$t('c_profile_edit.h1')" name="name" />
+          </el-form-item>
+          <el-form-item label="ToID" prop="toid">
+            <el-input v-model="profile_edit_form.toid" :placeholder="$t('c_profile_edit.h2')" name="toid" />
+          </el-form-item>
+          <el-form-item :label="$t('c_profile_edit.newpswd')" prop="pswd">
+            <el-input v-model="profile_edit_form.pswd" :placeholder="$t('c_profile_edit.h3')" type="password" name="pswd" />
+          </el-form-item>
+          <el-form-item :label="$t('c_profile_edit.input')" prop="pswd2">
+            <el-input v-model="profile_edit_form.pswd2" :placeholder="$t('c_profile_edit.h3')" type="password" name="pswd2" />
+          </el-form-item>
+          <el-button :loading="loadingprofile_view_send" type="primary" class="btn2" @click.native.prevent="handleprofile_edit">{{ $t('c_profile_edit.confirm') }}</el-button>
+          <el-button :loading="loadingprofile_view_cancal" type="info" class="btn" @click.native.prevent="goprofile_view">{{ $t('c_profile_edit.cancel') }}</el-button>
 
-      <el-form ref="profile_edit_form" :model="profile_edit_form" :rules="profile_edit_form_rules" label-position="left" inline class="personal_edit">
-        <el-form-item :label="$t('c_profile_edit.email')">
-          <el-input v-model="profile_edit_form.account" type="text" class="useraccountin" readonly />
-        </el-form-item>
-        <el-form-item :label="$t('c_profile_edit.name')" prop="name">
-          <el-input v-model="profile_edit_form.name" :placeholder="$t('c_profile_edit.h1')" name="name" />
-        </el-form-item>
-        <el-form-item label="ToID" prop="toid">
-          <el-input v-model="profile_edit_form.toid" :placeholder="$t('c_profile_edit.h2')" name="toid" />
-        </el-form-item>
-        <el-form-item :label="$t('c_profile_edit.newpswd')" prop="pswd">
-          <el-input v-model="profile_edit_form.pswd" :placeholder="$t('c_profile_edit.h3')" type="password" name="pswd" />
-        </el-form-item>
-        <el-form-item :label="$t('c_profile_edit.input')" prop="pswd2">
-          <el-input v-model="profile_edit_form.pswd2" :placeholder="$t('c_profile_edit.h3')" type="password" name="pswd2" />
-        </el-form-item>
-        <el-form-item>
-          <span />
-        </el-form-item>
-        <el-form-item>
-          <span />
-        </el-form-item>
-        <el-form-item>
-          <span />
-        </el-form-item>
-        <el-form-item>
-          <span />
-        </el-form-item>
-        <el-form-item>
-          <span />
-        </el-form-item>
-        <el-form-item>
-          <span />
-        </el-form-item>
-        <el-form-item>
-          <el-button :loading="loadingprofile_view_send" type="primary" @click.native.prevent="handleprofile_edit">{{ $t('c_profile_edit.confirm') }}</el-button>
-          <el-button :loading="loadingprofile_view_cancal" type="info" @click.native.prevent="goprofile_view">{{ $t('c_profile_edit.cancel') }}</el-button>
-        </el-form-item>
-      </el-form>
+        </el-form>
+      </el-card>
     </div>
   </div>
 </template>
@@ -215,25 +197,37 @@ export default {
 </script>
 <style rel="stylesheet/scss" lang="scss" >
 .personal_edit_form {
-  width: 85%;
-  height: 82vh;
-  margin: 5vh 3vw;
+  width: 60%;
+  margin: 15vh 20vw;
 }
-.useraccountin input {
-  border: 0;
-  font-family: "Microsoft JhengHei";
+.btn {
+  float: right;
+  margin-bottom: 1.875rem;
+  margin-right: 1.25rem;
 }
-
+.btn2 {
+  float: right;
+  margin-bottom: 1.875rem;
+}
 .personal_edit {
   font-size: 0;
 }
 .personal_edit label {
-  width: 100px;
+  width: 90px;
   color: #99a9bf;
+  font-size: 0.8vw;
 }
-
+.personal_edit input {
+  font-family: "Microsoft JhengHei";
+  width: 100%;
+}
+.personal_edit textarea {
+  font-family: "Microsoft JhengHei";
+  border: 0;
+  width: 100%;
+  padding-top: 0.65rem;
+}
 .personal_edit .el-form-item {
-  margin-top: 0;
   margin-right: 0;
   //margin-bottom: 0;
   width: 100%;

@@ -21,7 +21,7 @@
 
       <!--外層表單設計之表格-->
       <div class="category_table_container">
-        <el-table :data="c_category_list" stripe style="width: 100%;" max-height="500" fit>
+        <el-table v-loading.fullscreen.lock="view_loading" :data="c_category_list" element-loading-text="資料取得中，請稍後..." element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.9)" stripe style="width: 100%;" max-height="500" fit>
           <el-table-column :label="$t('c_category.name')" prop="name" align="center">
             <template slot-scope="scope">
               <span>{{ scope.row.name }}</span>
@@ -247,6 +247,7 @@ export default {
       c_category_two_visible: false,
       c_category_subsort_table_visible: false,
       c_category_sort_add_visible: false,
+      view_loading: true,
       c_pay_in: [{ label: '支出', value: 0 }, { label: '收入', value: 1 }],
       c_category_list: [],
       c_category_add_rules: {
@@ -268,9 +269,15 @@ export default {
     }
   },
   created() {
-    this.get_sort()
+    this.page_load()
   },
   methods: {
+    page_load() {
+      setTimeout(() => {
+        this.view_loading = false
+        this.get_sort()
+      }, 1000)
+    },
     clean_name() {
       this.c_subsort_edit.name = ''
     },

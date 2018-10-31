@@ -41,13 +41,13 @@
         <span class="svg-container">
           <svg-icon icon-class="star" />
         </span>
-        <el-select v-model="signupForm.membertype_id" clearable placeholder="請選擇會員類別">
+        <el-select v-model="signupForm.membertype_id" clearable placeholder="請選擇會員類別" style="width:88%;">
           <el-option v-for="item in membertype" :key="item.key" :label="item.label" :value="item.key" />
         </el-select>
       </el-form-item>
 
-      <el-button :loading="loadingsend" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleSignup">{{ $t('signup.signUP') }}</el-button>
-      <el-button :loading="loadinghome" type="primary" style="width:100%;margin-bottom:-200px;margin-left:0px" @click.native.prevent="gohome">回首頁</el-button>
+      <el-button :loading="loadingsend" type="primary" style="width:100%;margin-bottom:15px;" @click.native.prevent="handleSignup">{{ $t('signup.signUP') }}</el-button>
+      <el-button :loading="loadinghome" type="primary" style="width:100%;margin-left:0px" @click.native.prevent="gohome">回首頁</el-button>
 
     </el-form>
   </div>
@@ -103,10 +103,10 @@ export default {
         membertype_id: '2'
       },
       signupRules: {
-        username: [{ required: true, trigger: 'blur', validator: isvalidateEmail }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }],
-        doublepswd: [{ required: true, trigger: 'blur', validator: validatedoublepswd }],
-        membertype_id: [{ required: true, trigger: 'blur', validator: validateMembertype }]
+        username: [{ required: true, trigger: 'change', validator: isvalidateEmail }],
+        password: [{ required: true, trigger: 'change', validator: validatePassword }],
+        doublepswd: [{ required: true, trigger: 'change', validator: validatedoublepswd }],
+        membertype_id: [{ required: true, trigger: 'change', validator: validateMembertype }]
       },
       passwordType: 'password',
       loadingsend: false,
@@ -273,7 +273,7 @@ $light_gray: #eee;
     width: 520px;
     max-width: 100%;
     padding: 35px 35px 15px 35px;
-    margin: 120px auto;
+    margin: 7vh auto;
   }
   .tips {
     font-size: 14px;

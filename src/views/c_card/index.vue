@@ -1,15 +1,15 @@
 <template>
-  <div class="app-container">
+  <div class="card_container">
     <title>
       {{ $t('route.c_cardmanager') }}
     </title>
-    <div class="filter-container">
+    <div class="filter_container">
       <el-select v-model="listQuery.id" :placeholder="$t('c_card_view.cardname')" clearable filterable style="width: 25vw;max-width:7.5rem;min-width:5.5rem;" @focus="get_cardlist()" @change="get_cardlist()">
         <el-option v-for="card in c_cardlist" :key="card.id" :label="card.name" :value="card.id" />
       </el-select>
     </div>
     <div class="card_table_container">
-      <el-table :data="c_user_card" stripe style="width: 100%;" max-height="500" fit sortable>
+      <el-table v-loading.fullscreen.lock="view_loading" :data="c_user_card" stripe style="width: 100%;" max-height="500" fit sortable element-loading-text="資料取得中，請稍後..." element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.9)">
         <el-table-column type="index" align="center" />
         <el-table-column :label="$t('c_card_view.name')" prop="name" align="center">
           <template slot-scope="scope">
@@ -45,7 +45,7 @@
           </el-form-item>
         </el-form>
 
-        <span slot="footer" class="invoice_dialog_footer">
+        <span slot="footer" class="card_dialog_footer">
           <el-button type="danger" plain @click.native.prevent="c_card_del()">{{ $t('c_card_view.delete') }}</el-button>
           <el-button type="primary" @click.native.prevent="c_card_confirm()">{{ $t('c_card_view.confirm') }}</el-button>
           <el-button type="info" plain @click.native.prevent="c_card_cal()">{{ $t('c_card_view.cancel') }}</el-button>
@@ -102,15 +102,22 @@ export default {
       c_card_edit_rules: {
         name: [{ required: false, trigger: 'change', validator: validecardnamelength }],
         number: [{ required: false, trigger: 'change', validator: validecardnumberlength }]
-      }
+      },
+      view_loading: true
     }
   },
   watch: {
   },
   created() {
-    this.get_cardlist()
+    this.page_load()
   },
   methods: {
+    page_load() {
+      setTimeout(() => {
+        this.view_loading = false
+        this.get_cardlist()
+      }, 100)
+    },
     clean_name() {
       this.c_card_edit.name = ''
     },
@@ -212,19 +219,9 @@ export default {
 }
 </script>
 <style lang="scss">
-.table_expand {
-  font-size: 0;
+.card_container {
+  padding: 20px;
 }
-.table_expand label {
-  width: 90px;
-  color: #99a9bf;
-}
-.table_expand .el-form-item {
-  margin-right: 0;
-  margin-bottom: 0;
-  width: 100%;
-}
-
 .table_card {
   font-size: 0;
 }

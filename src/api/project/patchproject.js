@@ -1,16 +1,14 @@
 import request from '@/utils/request'
 
-export function patchproject_update(token, member_id, name, syncstatus) {
+export function patchproject_update(token, id, name, renew_time) {
   const data = {
     token,
-    member_id,
+    id,
     name,
-    syncstatus
+    syncstatus: 0,
+    renew_time
   }
-  var jwtDecode = require('jwt-decode')
-  var decoded = jwtDecode(token)
-  var user_id = decoded.user_id
-  var requ_url = 'https://www.177together.com/api/project/' + user_id + '/'
+  var requ_url = 'https://www.177together.com/api/project/' + id + '/'
 
   return request({
 
@@ -23,17 +21,14 @@ export function patchproject_update(token, member_id, name, syncstatus) {
   })
 }
 
-export function patchproject_delete(token, member_id, name, syncstatus) {
+export function patchproject_delete(token, id, renew_time) {
   const data = {
     token,
-    member_id,
-    name,
-    syncstatus
+    id,
+    syncstatus: 3,
+    renew_time
   }
-  var jwtDecode = require('jwt-decode')
-  var decoded = jwtDecode(token)
-  var user_id = decoded.user_id
-  var requ_url = 'https://www.177together.com/api/project/' + user_id + '/'
+  var requ_url = 'https://www.177together.com/api/project/' + id + '/'
 
   return request({
 

@@ -1,22 +1,18 @@
 import request from '@/utils/request'
 
-export function postcard(token, member_id, name, number) {
+export function getaccounting_all(token) {
   const data = {
-    token,
-    member_id,
-    name,
-    number,
-    syncstatus: 2
+    token
   }
   var jwtDecode = require('jwt-decode')
   var decoded = jwtDecode(token)
   var user_id = decoded.user_id
-  var requ_url = 'https://www.177together.com/api/card/?member_id=' + user_id + '/'
+  var requ_url = 'https://www.177together.com/api/accounting/?member_id=' + user_id + '&syncstatus_not=3'
 
   return request({
 
     url: requ_url,
-    method: 'post',
+    method: 'get',
     headers: {
       Authorization: 'JWT ' + token
     },

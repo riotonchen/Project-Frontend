@@ -37,7 +37,7 @@
         <span class="svg-container">
           <svg-icon icon-class="star" />
         </span>
-        <el-select v-model="loginForm.membertype_id" placeholder="請選擇會員類別" @keyup.enter.native="handleLogin">
+        <el-select v-model="loginForm.membertype_id" placeholder="請選擇會員類別" style="width:88%;" @keyup.enter.native="handleLogin">
           <el-option v-for="item in membertype" :key="item.key" :label="item.label" :value="item.key" />
         </el-select>
       </el-form-item>
@@ -261,7 +261,7 @@ $light_gray: #eee;
     width: 520px;
     max-width: 100%;
     padding: 35px 35px 15px 35px;
-    margin: 120px auto;
+    margin: 10vh auto;
   }
   .tips {
     font-size: 14px;

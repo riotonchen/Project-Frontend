@@ -177,11 +177,9 @@ export default {
                     message: h('b', { style: 'color: teal' }, '你的ToID已經被使用過，請再重新輸入一次！(3秒後幫你刷空資料)')
                   })
                   console.log(this.imageUrl)
-                  /*
                   setTimeout(() => {
-                    location.reload()
+                    this.$router.push({ path: this.redirect || '/profile/profile-edit' })
                   }, 3000)
-                  */
                 } else {
                   const h = this.$createElement
                   this.$notify.error({
@@ -191,7 +189,7 @@ export default {
                     showClose: false
                   })
                   setTimeout(() => {
-                    location.reload()
+                    this.$router.push({ path: this.redirect || '/profile/profile-edit' })
                   }, 5000)
                 }
               })

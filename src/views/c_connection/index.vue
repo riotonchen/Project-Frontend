@@ -4,21 +4,19 @@
       {{ $t('router.c_connection') }}
 
     </title>
-    <el-card>
-      <div class="connection_form">
-        <el-form ref="connection_edit" :label-position="labelPosition" :rules="connection_rules" :model="connection_edit">
-          <el-form-item :label="$t('c_connection.subject')" prop="subject">
-            <el-input v-model="connection_edit.subject" :placeholder="$t('c_connection.h2')" style="width:40vw" name="subject" />
-          </el-form-item>
-          <el-form-item :label="$t('c_connection.contents')" prop="content">
-            <el-input v-model="connection_edit.content" :autosize="{ minRows: 6, maxRows:1}" :placeholder="$t('c_connection.h3')" type="textarea" style="width:40vw" name="content" />
+    <el-card class="connection_form">
+      <el-form ref="connection_edit" :label-position="labelPosition" :rules="connection_rules" :model="connection_edit">
+        <el-form-item :label="$t('c_connection.subject')" prop="subject">
+          <el-input v-model="connection_edit.subject" :placeholder="$t('c_connection.h2')" style="width:40vw" name="subject" />
+        </el-form-item>
+        <el-form-item :label="$t('c_connection.contents')" prop="content">
+          <el-input v-model="connection_edit.content" :autosize="{ minRows: 6, maxRows:1}" :placeholder="$t('c_connection.h3')" type="textarea" style="width:40vw" name="content" />
 
-          </el-form-item>
+        </el-form-item>
 
-        </el-form>
-        <el-button type="primary " class="sentout" @click="open">{{ $t('c_connection.sent') }}</el-button>
+      </el-form>
+      <el-button type="primary " class="sentout" @click="open">{{ $t('c_connection.sent') }}</el-button>
 
-      </div>
     </el-card>
   </div>
 
@@ -84,24 +82,24 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" >
-.connection_h1 {
-  font-size: 1.5vw;
-  margin-top: 10vh;
-}
-.box-card {
-  width: 80%;
-  height: 82vh;
-  margin: 2% auto;
-}
 .connection_form {
-  padding-top: 7vh;
-  padding-left: 10vw;
+  margin: 18vh 8vw;
+  width: 80vw;
 }
 .connection_form label {
-  font-size: 1.6vw !important;
+  font-size: 1.6vw;
+  color: #99a9bf;
+  width: 90px;
+}
+.connection_form input {
+  width: 50vw;
+}
+.connection_form textarea {
+  width: 50vw;
 }
 .sentout {
-  margin-top: 4vh !important;
-  margin-left: 61.5%;
+  float: right;
+  margin-bottom: 2vh;
+  margin-right: 1vw;
 }
 </style>

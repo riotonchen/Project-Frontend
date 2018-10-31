@@ -1,10 +1,10 @@
 <template>
   <!--修改刪除新增未寫-->
-  <div class="app-container">
+  <div class="accountma_container">
     <title>
       {{ $t('route.c_accountmanager') }}
     </title>
-    <div class="filter-container">
+    <div class="filter_container">
       <el-select v-model="c_account_type" :placeholder="$t('c_accountmanager.project')" filterable clearable style="width: 10vw;max-width:8rem;min-width:5rem;" @focus="get_account()" @change="get_account()">
         <el-option v-for="type in c_account_type_options" :key="type.accounttype_id" :label="type.name" :value="type.accounttype_id" />
       </el-select>
@@ -16,7 +16,7 @@
       </el-button>
     </div>
     <div class="account_table_container">
-      <el-table :data="c_account_data" stripe style="width: 100%;" max-height="550" fit>
+      <el-table v-loading.fullscreen.lock="view_loading" :data="c_account_data" element-loading-text="資料取得中，請稍後..." element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.9)" stripe style="width: 100%;" max-height="550" fit>
         <el-table-column type="index" align="center" />
         <el-table-column :label="$t('c_accountmanager.accountname')" prop="name" align="center">
           <template slot-scope="scope">
@@ -126,7 +126,8 @@ export default {
       },
       c_account_name_visible: true,
       c_category_add_visible: false,
-      c_category_configure_visible: false
+      c_category_configure_visible: false,
+      view_loading: true
     }
   },
   watch: {
@@ -138,10 +139,16 @@ export default {
     }
   },
   created() {
-    this.get_account()
-    this.get_accounttype()
+    this.page_load()
   },
   methods: {
+    page_load() {
+      setTimeout(() => {
+        this.view_loading = false
+        this.get_account()
+        this.get_accounttype()
+      }, 1000)
+    },
     get_account() {
       if (this.c_account_type - 1 < 0) {
         this.c_account_name_visible = true
@@ -275,17 +282,8 @@ export default {
 }
 </script>
 <style lang="scss">
-.table_account {
-  font-size: 0;
-}
-.table_account label {
-  width: 90px;
-  color: #99a9bf;
-}
-.table_account .el-form-item {
-  margin-right: 0;
-  //margin-bottom: 0;
-  width: 100%;
+.accountma_container {
+  padding: 20px;
 }
 
 .table_account_add {

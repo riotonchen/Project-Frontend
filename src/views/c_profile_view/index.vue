@@ -3,11 +3,11 @@
     <title>
       {{ $t('route.c_profile_view') }}
     </title>
-    <div class="box-card">
-      <div class="userinfo">
+    <div class="card_info">
+      <el-card body-style="padding:3.125rem">
         <el-form :model="infoform" label-position="left" inline class="personal_view">
           <el-form-item :label="$t('c_profile_view.email')">
-            <el-input v-model="infoform.useraccount" type="text" readonly />
+            <el-input v-model="infoform.useraccount" type="textarea" autosize readonly />
           </el-form-item>
           <el-form-item :label="$t('c_profile_view.name')" class="label2">
             <el-input v-model="infoform.username" type="text" readonly />
@@ -15,46 +15,12 @@
           <el-form-item label="ToID" class="label3">
             <el-input v-model="infoform.usertoid" type="text" readonly />
           </el-form-item>
-          <el-form-item>
-            <span />
-          </el-form-item>
-          <el-form-item>
-            <span />
-          </el-form-item>
-          <el-form-item>
-            <span />
-          </el-form-item>
-          <el-form-item>
-            <span />
-          </el-form-item>
-          <el-form-item>
-            <span />
-          </el-form-item>
-          <el-form-item>
-            <span />
-          </el-form-item>
-          <el-form-item>
-            <span />
-          </el-form-item>
-          <el-form-item>
-            <span />
-          </el-form-item>
-          <el-form-item>
-            <span />
-          </el-form-item>
-          <el-form-item>
-            <span />
-          </el-form-item>
-          <el-form-item>
-            <span />
-          </el-form-item>
-          <el-form-item>
-            <el-button :loading="loadingprofile_edit" type="primary" @click.native.prevent="goprofile_edit">
-              {{ $t('c_profile_view.alter') }}
-            </el-button>
-          </el-form-item>
+
+          <el-button :loading="loadingprofile_edit" type="primary" class="btn" @click.native.prevent="goprofile_edit">
+            {{ $t('c_profile_view.alter') }}
+          </el-button>
         </el-form>
-      </div>
+      </el-card>
     </div>
   </div>
 </template>
@@ -99,22 +65,34 @@ export default {
 
 </script>
 <style rel="stylesheet/scss" lang="scss" >
-.box-card {
-  width: 85%;
-  height: 82vh;
-  margin: 5vh 3vw;
+.card_info {
+  width: 60%;
+  margin: 15vh 20vw;
+}
+
+.btn {
+  float: right;
+  margin-bottom: 1.875rem;
 }
 
 .personal_view {
   font-size: 0;
 }
 .personal_view label {
-  width: 100px;
+  width: 90px;
   color: #99a9bf;
+  font-size: 1.2vw;
 }
 .personal_view input {
   font-family: "Microsoft JhengHei";
   border: 0;
+  width: 100vw;
+}
+.personal_view textarea {
+  font-family: "Microsoft JhengHei";
+  border: 0;
+  width: 100vw;
+  padding-top: 1.25rem;
 }
 .personal_view .el-form-item {
   margin-right: 0;

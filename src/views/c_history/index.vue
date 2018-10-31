@@ -57,7 +57,7 @@
       <el-table :data="c_user_history" :default-sort="{prop: 'date', order: 'descending'}" stripe style="width: 100%;" max-height="470" fit>
         <el-table-column type="expand">
           <template slot-scope="props">
-            <el-form label-position="left" inline class="table-expand">
+            <el-form label-position="left" inline class="table_expand">
               <el-form-item :label="$t('c_history.note')">
                 <span>{{ props.row.comment }}</span>
               </el-form-item>
@@ -67,13 +67,13 @@
             </el-form>
           </template>
         </el-table-column>
-        <el-table-column :label="$t('c_history.date')" prop="date" sortable align="center" />
-        <el-table-column :label="$t('c_history.receipt')" prop="invoice" align="center" />
-        <el-table-column :label="$t('c_history.incomespend')" prop="payorin" align="center" />
-        <el-table-column :label="$t('c_history.mainsort')" prop="sort" align="center" />
-        <el-table-column :label="$t('c_history.subclass')" prop="subsort" align="center" />
-        <el-table-column :label="$t('c_history.project')" prop="project" align="center" />
-        <el-table-column :label="$t('c_history.account')" prop="account" align="center" />
+        <el-table-column :label="$t('c_history.date')" prop="purchasedate" sortable align="center" />
+        <el-table-column :label="$t('c_history.receipt')" prop="invoice_id" align="center" />
+        <el-table-column :label="$t('c_history.incomespend')" prop="type" align="center" />
+        <el-table-column :label="$t('c_history.mainsort')" prop="sort_id" align="center" />
+        <el-table-column :label="$t('c_history.subclass')" prop="subsort_id" align="center" />
+        <el-table-column :label="$t('c_history.project')" prop="project_id" align="center" />
+        <el-table-column :label="$t('c_history.account')" prop="account_id" align="center" />
         <el-table-column :label="$t('c_history.money')" prop="amount" align="center" />
         <el-table-column :label="$t('c_history.operation')" align="center">
           <template slot-scope="scope">
@@ -84,7 +84,7 @@
     </div>
     <div class="dialog_container">
       <el-dialog :visible.sync="c_history_visible" :title="$t('c_history.edit')" width="80vw">
-        <el-form :model="c_history_edit" label-position="left" inline class="table-invoice">
+        <el-form :model="c_history_edit" label-position="left" inline class="table_history">
           <el-form-item>
             <span>{{ $t('c_history.notmodify') }}</span>
           </el-form-item>
@@ -144,6 +144,7 @@
 // import { parseTime } from '@/utils'
 
 import waves from '@/directive/waves' // 水波紋指令
+import { getaccounting_all } from '@/api/accounting/getaccounting'
 import { getsort_pay, getsort_in } from '@/api/sort/getsort'
 import { getsubsort } from '@/api/subsort/getsubsort'
 import { getproject } from '@/api/project/getproject'
@@ -185,64 +186,7 @@ export default {
       c_subsort_disable: true,
       c_history_visible: false,
       c_pay_in: [{ label: '支出', value: 0 }, { label: '收入', value: 1 }],
-      c_user_history: [
-        // test data
-        {
-          date: '2016-05-22',
-          invoice: 'EV-89658002',
-          payorin: '支出',
-          sort: '吃吃吃',
-          subsort: '早餐',
-          project: '團遊',
-          account: '現金',
-          amount: '500',
-          comment: '幹，nfjqbcbhjgzd554654',
-          picture: '我是圖片'
-        }, {
-          date: '2016-09-02',
-          invoice: 'EV-89658002',
-          payorin: '支出',
-          sort: '出去玩',
-          subsort: '劍湖山',
-          project: '單身旅行',
-          account: '耶耶耶耶耶',
-          amount: '5867600',
-          comment: '幹，huihqfqkhfowi',
-          picture: '我是圖片'
-        }, {
-          date: '2016-07-02',
-          invoice: 'EV-89658002',
-          payorin: '支出',
-          sort: '吃吃吃',
-          subsort: '早餐',
-          project: '不要不要',
-          account: '美國運東',
-          amount: '50887660',
-          comment: '幹，164165feqfbh',
-          picture: '我是圖片'
-        }, {
-          date: '2016-05-05',
-          invoice: 'EV-89658002',
-          payorin: '支出',
-          sort: '阿咧咧',
-          subsort: '出去玩',
-          project: '團遊',
-          account: '老子沒錢',
-          amount: '9000',
-          comment: 'dqwfegeqqwd ',
-          picture: '我是圖片'
-        }, {
-          date: '2086-05-02',
-          invoice: 'EV-89658002',
-          payorin: '支出',
-          sort: '喝寶寶',
-          subsort: '爽拉拉拉',
-          project: '與左右手的旅行',
-          account: '玉山信用卡',
-          amount: '8156610',
-          comment: 'dnwiuqg56461',
-          picture: '我是圖片'
-        }]
+      c_user_history: []
     }
   },
   watch: {
@@ -275,7 +219,16 @@ export default {
       }
     }
   },
+  created() {
+    this.get_getaccounting_all()
+  },
   methods: {
+    get_getaccounting_all() {
+      getaccounting_all(getToken()).then((response) => {
+        this.c_user_history = response.data
+        console.log(response.data)
+      })
+    },
     get_sort() {
       if (this.c_payorin === 0) {
         getsort_pay(getToken()).then(response => {
@@ -317,9 +270,9 @@ export default {
       })
     },
     handle_edit(index, row) {
-      this.c_history_date_p = row.date
-      this.c_history_invoice_p = row.invoice
-      this.c_history_account_p = row.account
+      this.c_history_date_p = row.purchasedate
+      this.c_history_invoice_p = row.invoice_id
+      this.c_history_account_p = row.account_id
       this.c_history_amount_p = row.amount
       this.c_history_visible = true
     },
@@ -371,152 +324,6 @@ export default {
         this.c_history_visible = false
       })
     }
-    /*
-    getList() {
-      this.listLoading = true
-      fetchList(this.listQuery).then(response => {
-        this.list = response.data.items
-        this.total = response.data.total
-
-        // Just to simulate the time of the request
-        setTimeout(() => {
-          this.listLoading = false
-        }, 1.5 * 1000)
-      })
-    },
-
-    handleFilter() {
-      this.listQuery.page = 1
-      this.getList()
-    },
-    handleSizeChange(val) {
-      this.listQuery.limit = val
-      this.getList()
-    },
-    handleCurrentChange(val) {
-      this.listQuery.page = val
-      this.getList()
-    },
-
-    handleModifyStatus(row, status) {
-      this.$message({
-        message: '操作成功',
-        type: 'success'
-      })
-      row.status = status
-    },
-
-    resetTemp() {
-      this.temp = {
-        id: undefined,
-        importance: 1,
-        remark: '',
-        timestamp: new Date(),
-        title: '',
-        status: 'published',
-        type: ''
-      }
-    },
-    handleCreate() {
-      this.resetTemp()
-      this.dialogStatus = 'create'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
-    },
-
-    createData() {
-      this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
-          this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
-          this.temp.author = 'vue-element-admin'
-          createArticle(this.temp).then(() => {
-            this.list.unshift(this.temp)
-            this.dialogFormVisible = false
-            this.$notify({
-              title: '成功',
-              message: '創建成功',
-              type: 'success',
-              duration: 2000
-            })
-          })
-        }
-      })
-    },
-    handleUpdate(row) {
-      this.temp = Object.assign({}, row) // copy obj
-      this.temp.timestamp = new Date(this.temp.timestamp)
-      this.dialogStatus = 'update'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
-    },
-    updateData() {
-      this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
-          const tempData = Object.assign({}, this.temp)
-          tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
-          updateArticle(tempData).then(() => {
-            for (const v of this.list) {
-              if (v.id === this.temp.id) {
-                const index = this.list.indexOf(v)
-                this.list.splice(index, 1, this.temp)
-                break
-              }
-            }
-            this.dialogFormVisible = false
-            this.$notify({
-              title: '成功',
-              message: '更新成功',
-              type: 'success',
-              duration: 2000
-            })
-          })
-        }
-      })
-    },
-    handleDelete(row) {
-      this.$notify({
-        title: '成功',
-        message: '删除成功',
-        type: 'success',
-        duration: 2000
-      })
-      const index = this.list.indexOf(row)
-      this.list.splice(index, 1)
-    },
-    handleFetchPv(pv) {
-      fetchPv(pv).then(response => {
-        this.pvData = response.data.pvData
-        this.dialogPvVisible = true
-      })
-    },
-    handleDownload() {
-      this.downloadLoading = true
-      import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
-        const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
-        const data = this.formatJson(filterVal, this.list)
-        excel.export_json_to_excel({
-          header: tHeader,
-          data,
-          filename: 'table-list'
-        })
-        this.downloadLoading = false
-      })
-    },
-    formatJson(filterVal, jsonData) {
-      return jsonData.map(v => filterVal.map(j => {
-        if (j === 'timestamp') {
-          return parseTime(v[j])
-        } else {
-          return v[j]
-        }
-      }))
-    }
-      */
   }
 }
 </script>
@@ -533,30 +340,34 @@ export default {
   padding: 20px;
 }
 
-.table-expand {
+.table_expand {
   font-size: 0;
 }
-.table-expand label {
+.table_expand label {
   width: 90px;
   color: #99a9bf;
 }
-.table-expand .el-form-item {
+.table_expand .el-form-item {
   margin-right: 0;
   margin-bottom: 0;
   width: 100%;
 }
 
-.table-invoice {
+.table_history {
   font-size: 0;
 }
-.table-invoice label {
+.table_history label {
   width: 100px;
   color: #99a9bf;
 }
-.table-invoice .el-form-item {
+.table_history .el-form-item {
   margin-right: 0;
   //margin-bottom: 0;
   width: 50%;
+}
+
+.history_table_container {
+  background-color: rgb(240, 242, 245);
 }
 </style>
 
