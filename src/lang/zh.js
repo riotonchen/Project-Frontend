@@ -128,12 +128,13 @@ export default {
     number: '編號',
     addnewaccount: '新增帳戶',
     startmoney: '初始金額',
-    finallymoney: '剩餘金額',
+    finallymoney: '餘額',
     operating: '操作',
     cancel: '取消',
     blank: '以下如不修改保持空白即可',
     add: '新增帳戶',
-    accounttype: '帳戶類型'
+    accounttype: '帳戶類型',
+    configure: '修改帳戶'
   },
   c_project: {
     word: '請輸入內容',

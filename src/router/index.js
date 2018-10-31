@@ -5,7 +5,7 @@ Vue.use(Router)
 
 /* Layout */
 import Layout from '@/views/layout/Layout'
-import tableRouter from '@/router/modules/table'
+// import tableRouter from '@/router/modules/table'
 
 /**
 * hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
@@ -50,7 +50,7 @@ export const constantRouterMap = [{
   hidden: true
 },
 {
-  path: '/signup',
+  path: '/member_signup',
   component: () =>
       import('@/views/signup/index'),
   hidden: true
@@ -235,6 +235,7 @@ export const asyncRouterMap = [{
     }
   }]
 },
+
 {
   path: '/report',
   component: Layout,
@@ -250,7 +251,52 @@ export const asyncRouterMap = [{
     }
   }]
 },
-tableRouter,
+{
+  path: '/admin_signup',
+  component: Layout,
+  redirect: 'noredirect',
+  children: [{
+    path: '',
+    component: () =>
+        import('@/views/a_signup/index'),
+    name: 'a_signup',
+    meta: {
+      title: 'a_signup ',
+      icon: 'user'
+    }
+  }]
+},
+{
+  path: '/profile/admin-profile-view',
+  component: Layout,
+  redirect: 'noredirect',
+  children: [{
+    path: '',
+    component: () =>
+        import('@/views/a_profile_view/index'),
+    name: 'a_profile_view',
+    meta: {
+      title: 'a_profile_view',
+      icon: 'user'
+    }
+  }]
+},
+{
+  path: '/profile/admin-profile-edit',
+  component: Layout,
+  redirect: 'noredirect',
+  children: [{
+    path: '',
+    component: () =>
+        import('@/views/a_profile_edit/index'),
+    name: 'a_profile_edit',
+    meta: {
+      title: 'a_profile_edit',
+      icon: 'user'
+    }
+  }]
+},
+  // tableRouter,
 
 {
   path: '*',

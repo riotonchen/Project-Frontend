@@ -12,3 +12,16 @@ export function Postsignup(account, password, membertype) {
     data
   })
 }
+
+export function Post_a_signup(account, password) {
+  const data = {
+    account,
+    password,
+    membertype: 1
+  }
+  return request({
+    url: 'https://www.177together.com/api/member/',
+    method: 'post',
+    data
+  })
+}

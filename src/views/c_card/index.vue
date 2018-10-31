@@ -23,14 +23,14 @@
         </el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
-            <el-button type="primary" plain @click="handle_edit(scope.$index,scope.row)">{{ $t('c_card_view.edit') }}</el-button>
+            <el-button type="primary" plain @click.native.prevent="handle_edit(scope.$index,scope.row)">{{ $t('c_card_view.edit') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
     <div class="dialog_container">
       <el-dialog :visible.sync="c_card_visible" width="80vw" title="子分類">
-        <el-form ref="c_card_edit" :model="c_card_edit" :rules="c_card_edit_rules" label-position="left" inline class="table-card">
+        <el-form ref="c_card_edit" :model="c_card_edit" :rules="c_card_edit_rules" label-position="left" inline class="table_card">
           <el-form-item>
             <span>{{ $t('c_card_view.blank') }}</span>
           </el-form-item>
@@ -163,7 +163,7 @@ export default {
     c_card_cal() {
       this.$message({
         type: 'info',
-        message: '已取消修改'
+        message: '已取消動作'
       })
       this.c_card_visible = false
     },
@@ -207,36 +207,32 @@ export default {
         })
         this.c_card_visible = false
       })
-    },
-    filterHandler(value, row, column) {
-      const property = column['property']
-      return row[property] === value
     }
   }
 }
 </script>
 <style lang="scss">
-.table-expand {
+.table_expand {
   font-size: 0;
 }
-.table-expand label {
+.table_expand label {
   width: 90px;
   color: #99a9bf;
 }
-.table-expand .el-form-item {
+.table_expand .el-form-item {
   margin-right: 0;
   margin-bottom: 0;
   width: 100%;
 }
 
-.table-card {
+.table_card {
   font-size: 0;
 }
-.table-card label {
+.table_card label {
   width: 100px;
   color: #99a9bf;
 }
-.table-card .el-form-item {
+.table_card .el-form-item {
   margin-right: 0;
   //margin-bottom: 0;
   width: 50%;

@@ -20,7 +20,7 @@
         </el-col>
         <el-col :xs="9" :sm="9" :md="9" :lg="10" :xl="9">
           <div class="signup">
-            <router-link to="/signup">
+            <router-link to="/member_signup">
               註冊
             </router-link>
           </div>

@@ -147,7 +147,7 @@ import waves from '@/directive/waves' // 水波紋指令
 import { getsort_pay, getsort_in } from '@/api/sort/getsort'
 import { getsubsort } from '@/api/subsort/getsubsort'
 import { getproject } from '@/api/project/getproject'
-import { getaccount } from '@/api/account/getaccount'
+import { getaccount_all } from '@/api/account/getaccount'
 import { getToken } from '@/utils/auth'
 
 export default {
@@ -249,6 +249,11 @@ export default {
     c_payorin: function(newc_payorin, oldc_payorin) {
       if (oldc_payorin === '') {
         this.c_sort_disable = false
+      } else if (newc_payorin !== 1 && newc_payorin !== 0) {
+        this.c_sort_disable = true
+        this.c_subsort_disable = true
+        this.c_sort = ''
+        this.c_subsort = ''
       } else if (newc_payorin !== oldc_payorin) {
         this.c_sort = ''
         this.c_subsort = ''
@@ -260,7 +265,6 @@ export default {
         this.c_subsort_disable = false
       } else if (newc_sort !== oldc_sort) {
         this.c_subsort = ''
-        this.get_subsort()
       }
     },
     c_subsort: function(newc_subsort, oldc_subsort) {
@@ -306,7 +310,7 @@ export default {
       })
     },
     get_account() {
-      getaccount(getToken()).then(response => {
+      getaccount_all(getToken()).then(response => {
         this.c_accountitem = response.data
       }).catch((error) => {
         console.log(error)

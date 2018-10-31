@@ -6,6 +6,12 @@ export function formatdate(strformat) {
   return datestr
 }
 
+export function formatdate_inc_time(time, strformat) {
+  const dateformat = require('dateformat')
+  const datestr = dateformat(time, strformat)
+  return datestr
+}
+
 export function parseTime(time, cFormat) {
   if (arguments.length === 0) {
     return null

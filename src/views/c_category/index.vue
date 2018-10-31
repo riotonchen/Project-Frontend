@@ -16,7 +16,7 @@
 
       <!--新增主分類-->
       <span slot="footer" class="invoice_dialog_footer">
-        <el-button type="primary" @click="handle_add_mainsort()">{{ $t('c_category.addmainsort') }}</el-button>
+        <el-button type="primary" @click.native.prevent="handle_add_mainsort()">{{ $t('c_category.addmainsort') }}</el-button>
       </span>
 
       <!--外層表單設計之表格-->
@@ -40,8 +40,8 @@
 
           <el-table-column :label="$t('c_category.operation')" align="center">
             <template slot-scope="scope">
-              <el-button type="info" plain @click="handle_edit_sort(scope.$index,scope.row)">{{ $t('c_category.edit') }}</el-button>
-              <el-button type="primary" plain @click="handle_edit_subsort(scope.$index,scope.row)">{{ $t('c_category.advanced') }}</el-button>
+              <el-button type="info" plain @click.native.prevent="handle_edit_sort(scope.$index,scope.row)">{{ $t('c_category.edit') }}</el-button>
+              <el-button type="primary" plain @click.native.prevent="handle_edit_subsort(scope.$index,scope.row)">{{ $t('c_category.advanced') }}</el-button>
             </template>
           </el-table-column>
 
@@ -70,9 +70,9 @@
         </el-form>
 
         <span slot="footer" class="invoice_dialog_footer">
-          <el-button type="danger" plain @click="c_category_sort_del()">{{ $t('c_category.delete') }}</el-button>
-          <el-button type="primary" @click="c_category_sort_confirm()">{{ $t('c_category.confirm') }}</el-button>
-          <el-button type="info" plain @click="c_category_cal()">{{ $t('c_category.cancel') }}</el-button>
+          <el-button type="danger" plain @click.native.prevent="c_category_sort_del()">{{ $t('c_category.delete') }}</el-button>
+          <el-button type="primary" @click.native.prevent="c_category_sort_confirm()">{{ $t('c_category.confirm') }}</el-button>
+          <el-button type="info" plain @click.native.prevent="c_category_cal()">{{ $t('c_category.cancel') }}</el-button>
         </span>
 
       </el-dialog>
@@ -92,8 +92,8 @@
         </el-form>
 
         <span slot="footer" class="invoice_dialog_footer">
-          <el-button type="primary" @click="c_category_sortadd()">{{ $t('c_category.confirm') }}</el-button>
-          <el-button type="info" plain @click="c_category_cal()">{{ $t('c_category.cancel') }}</el-button>
+          <el-button type="primary" @click.native.prevent="c_category_sortadd()">{{ $t('c_category.confirm') }}</el-button>
+          <el-button type="info" plain @click.native.prevent="c_category_cal()">{{ $t('c_category.cancel') }}</el-button>
         </span>
       </el-dialog>
 
@@ -106,7 +106,7 @@
 
           <!--新增子分類-->
           <span slot="footer" class="invoice_dialog_footer">
-            <el-button type="primary" @click="visible_subsort_table()">{{ $t('c_category.addsubclass') }}</el-button>
+            <el-button type="primary" @click.native.prevent="visible_subsort_table()">{{ $t('c_category.addsubclass') }}</el-button>
           </span>
 
           <!--內層表單設計之表格-->
@@ -119,7 +119,7 @@
               </el-table-column>
               <el-table-column :label="$t('c_category.operation')" align="center">
                 <template slot-scope="scope">
-                  <el-button type="primary" plain @click="handle_in_edit(scope.$index,scope.row)">{{ $t('c_category.edit') }}</el-button>
+                  <el-button type="primary" plain @click.native.prevent="handle_in_edit(scope.$index,scope.row)">{{ $t('c_category.edit') }}</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -148,9 +148,9 @@
         </el-form>
 
         <span slot="footer" class="invoice_dialog_footer">
-          <el-button type="danger" plain @click="c_category_subsort_del()">{{ $t('c_category.delete') }}</el-button>
-          <el-button type="primary" @click="c_category_subsort_confirm()">{{ $t('c_category.confirm') }}</el-button>
-          <el-button type="info" plain @click="c_category_cal()">{{ $t('c_category.cancel') }}</el-button>
+          <el-button type="danger" plain @click.native.prevent="c_category_subsort_del()">{{ $t('c_category.delete') }}</el-button>
+          <el-button type="primary" @click.native.prevent="c_category_subsort_confirm()">{{ $t('c_category.confirm') }}</el-button>
+          <el-button type="info" plain @click.native.prevent="c_category_cal()">{{ $t('c_category.cancel') }}</el-button>
         </span>
 
       </el-dialog>
@@ -164,8 +164,8 @@
         </el-form>
 
         <span slot="footer" class="invoice_dialog_footer">
-          <el-button type="primary" @click="c_category_subsortadd()">{{ $t('c_category.confirm') }}</el-button>
-          <el-button type="info" plain @click="c_category_cal()">{{ $t('c_category.cancel') }}</el-button>
+          <el-button type="primary" @click.native.prevent="c_category_subsortadd()">{{ $t('c_category.confirm') }}</el-button>
+          <el-button type="info" plain @click.native.prevent="c_category_cal()">{{ $t('c_category.cancel') }}</el-button>
         </span>
 
       </el-dialog>
@@ -462,7 +462,7 @@ export default {
     c_category_cal() {
       this.$message({
         type: 'info',
-        message: '已取消修改'
+        message: '已取消動作'
       })
       this.c_category_two_visible = false
       this.c_category_sort_add_visible = false
