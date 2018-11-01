@@ -6,8 +6,8 @@
     </title>
     <div class="table_container">
       <transition name="el-fade-in">
-        <el-card v-loading="account_table_load" v-show="account_table_1" element-loading-text="該筆資料送出中" element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.8)" class="account_table" shadow="always">
-          <el-form ref="accounting" :model="c_accountting_add" label-position="left" inline class="table_account_add">
+        <el-card v-loading="account_table_load" v-show="account_table" element-loading-text="該筆資料送出中" element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.8)" class="account_table" shadow="always">
+          <el-form ref="accounting" :model="c_accountting_add" :rules="accounting_rules" validate-on-rule-change hide-required-asterisk label-position="left" inline class="table_account_add">
             <el-form-item label="發票日期" prop="date">
               <el-date-picker v-model="c_accountting_add.date" type="date" placeholder="請選擇日期" style="width:20vw;min-width:7.5rem;max-width:15rem;" />
             </el-form-item>
@@ -86,14 +86,75 @@ import { postaccounting_niv, postaccounting_yiv } from '@/api/accounting/postacc
 import { postinvoice } from '@/api/invoice/postinvoice'
 import { postmemberinvoice } from '@/api/memberinvoice/postmemberinvoice'
 import { formatdate_inc_time } from '@/utils/index'
+import { validinvoice, validnum4, validdouble } from '@/utils/validate'
+import { formatdate } from '@/utils/index'
 
 export default {
   name: 'CAccounting',
 
   data() {
+    const valid_date = (rule, value, callback) => {
+      if (value === '' || value === null) {
+        return callback(new Error('日期不能為空'))
+      }
+    }
+    const valid_invoice = (rule, value, callback) => {
+      if (!validinvoice(value)) {
+        return callback(new Error('發票格式為AA00000000'))
+      }
+    }
+    const valid_randon = (rule, value, callback) => {
+      if (value.length < 1) {
+        return callback(new Error('隨機碼不能為空'))
+      } else if (!validnum4(value)) {
+        return callback(new Error('隨機碼只有數字4位'))
+      }
+    }
+    const valid_account = (rule, value, callback) => {
+      if (value === '' || value === null) {
+        return callback(new Error('帳戶不能為空'))
+      }
+    }
+    const valid_payorin = (rule, value, callback) => {
+      if (value === '' || value === null) {
+        return callback(new Error('收支出不能為空'))
+      }
+    }
+    const valid_sort = (rule, value, callback) => {
+      if (value === '' || value === null) {
+        return callback(new Error('主分類不能為空'))
+      }
+    }
+    const valid_subsort = (rule, value, callback) => {
+      if (value === '' || value === null) {
+        return callback(new Error('子分類不能為空'))
+      }
+    }
+    const valid_amount = (rule, value, callback) => {
+      if (!validdouble(value)) {
+        return callback(new Error('金額只有數字(可有小數點)'))
+      }
+    }
+    const valid_comment = (rule, value, callback) => {
+      if (value.length > 64) {
+        return callback(new Error('最多只能輸入64個字'))
+      }
+    }
     return {
+      accounting_rules: {
+        date: [{ required: true, trigger: 'change', validator: valid_date }],
+        invoice: [{ required: true, trigger: 'change', validator: valid_invoice }],
+        randon: [{ required: true, trigger: 'change', validator: valid_randon }],
+        account: [{ required: true, trigger: 'change', validator: valid_account }],
+        payorin: [{ required: true, trigger: 'change', validator: valid_payorin }],
+        sort: [{ required: true, trigger: 'change', validator: valid_sort }],
+        subsort: [{ required: true, trigger: 'change', validator: valid_subsort }],
+        project: [{ required: true, trigger: 'change', validator: valid_randon }],
+        amount: [{ required: true, trigger: 'change', validator: valid_amount }],
+        comment: [{ required: true, trigger: 'change', validator: valid_comment }]
+      },
       c_accountting_add: {
-        date: null,
+        date: formatdate('yyyy-mm-dd'),
         invoice: '',
         randon: '',
         account: null,
@@ -104,7 +165,7 @@ export default {
         amount: null,
         comment: null
       },
-      account_table_1: true,
+      account_table: true,
       c_pay_in: [{ label: '支出', value: 0 }, { label: '收入', value: 1 }],
       c_test_payin: [],
       c_sort_payorinitem: [],
@@ -115,6 +176,7 @@ export default {
       c_subsort_disable: true,
       c_randon_disable: true,
       account_table_load: false
+
     }
   },
   watch: {
@@ -315,21 +377,15 @@ export default {
 </script>
 <style lang="scss">
 .table_container {
-  width: 90vw;
-  padding-top: 4vh;
-  padding-left: 8.5vw;
-}
-.account_table {
-  float: left;
-  display: flex;
+  width: 80%;
+  margin: 5vh 10vw;
 }
 .btn_add {
   float: right;
-  margin: 10px;
+  margin-right: 1%;
 }
 .table_account_add {
   font-size: 0;
-  padding-top: 2vh;
 }
 .table_account_add label {
   width: 100px;

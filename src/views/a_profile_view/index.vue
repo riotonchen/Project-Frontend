@@ -1,34 +1,34 @@
 <template>
   <div class="personal_container">
     <title>
-      {{ $t('route.A_profile_view') }}
+      {{ $t('route.a_profile_view') }}
     </title>
-    <el-card class="box-card">
-      <div class="userinfo">
-        <el-form :model="infoform">
-          <el-form-item label="Email" class="label1">
-            <el-input v-model="infoform.useraccount" type="text" class="useraccountin" readonly />
+    <div class="card_info">
+      <el-card body-style="padding:3.125rem">
+        <el-form :model="infoform" label-position="left" inline class="personal_view">
+          <el-form-item :label="$t('a_profile_view.email')">
+            <el-input v-model="infoform.useraccount" type="textarea" autosize readonly />
           </el-form-item>
-          <el-form-item label="Name" class="label2">
-            <el-input v-model="infoform.username" type="text" class="username" readonly />
+          <el-form-item :label="$t('a_profile_view.name')" class="label2">
+            <el-input v-model="infoform.username" type="text" readonly />
           </el-form-item>
           <el-form-item label="ToID" class="label3">
-            <el-input v-model="infoform.usertoid" type="text" class="userntoid" readonly />
+            <el-input v-model="infoform.usertoid" type="text" readonly />
           </el-form-item>
-          <el-form-item>
-            <el-button :loading="loadingprofile_edit" type="primary" style="width:20%;margin-top:20vh;margin-left:0px" @click.native.prevent="goprofile_edit">
-              修改
-            </el-button>
-          </el-form-item>
+
+          <el-button :loading="loadingprofile_edit" type="primary" class="btn" @click.native.prevent="goprofile_edit">
+            {{ $t('a_profile_view.alter') }}
+          </el-button>
         </el-form>
-      </div>
-    </el-card>
+      </el-card>
+    </div>
   </div>
 </template>
 <script>
 import { getUserInfo } from '@/api/login'
 import { getToken } from '@/utils/auth'
 export default {
+  name: 'AProfileView',
   data() {
     return {
       labelPosition: 'right',
@@ -66,60 +66,37 @@ export default {
 
 </script>
 <style rel="stylesheet/scss" lang="scss" >
-.box-card {
+.card_info {
   width: 80%;
-  height: 82vh;
-  margin: 2% auto;
-  position: relative;
+  margin: 15vh 10vw;
 }
 
-.personal_btn a {
-  font-family: "Microsoft JhengHei";
+.btn {
+  float: right;
+  margin-bottom: 1.875rem;
 }
 
-.userinfo {
-  padding-top: 3vh;
-  padding-left: 5vw;
-  position: absolute;
+.personal_view {
+  font-size: 0;
 }
-.useraccountin {
-  padding-left: 2vw;
+.personal_view label {
+  width: 90px;
+  color: #99a9bf;
+  font-size: 1.2vw;
 }
-.username {
-  padding-left: 2vw;
-}
-.userntoid {
-  padding-left: 2vw;
-}
-.useraccountin input {
-  border: 0;
-  font-size: 1vw;
-  width: 30vw;
-  padding-top: 1vh;
+.personal_view input {
   font-family: "Microsoft JhengHei";
-}
-.username input {
   border: 0;
-  font-size: 1vw;
-  width: 30vw;
-  padding-top: 1vh;
-  font-family: "Microsoft JhengHei";
+  width: 130%;
 }
-.userntoid input {
+.personal_view textarea {
+  font-family: "Microsoft JhengHei";
   border: 0;
-  font-size: 1vw;
-  width: 30vw;
-  padding-top: 1vh;
-  font-family: "Microsoft JhengHei";
+  width: 130%;
+  padding-top: 1.25rem;
 }
-.label1 label {
-  font-size: 1.5vw;
-}
-.label2 label {
-  font-size: 1.5vw;
-}
-.label3 label {
-  font-size: 1.5vw;
+.personal_view .el-form-item {
+  width: 100%;
 }
 </style>
 

@@ -1,33 +1,33 @@
 <template>
   <div class="signup-container">
     <title>
-      管理員註冊
+      {{ $t('route.a_signup') }}
     </title>
     <el-card class="box_card">
       <el-form ref="signupForm" :model="signupForm" :rules="signupRules" inline class="table_card" auto-complete="on" label-position="left">
 
         <el-form-item>
-          <span>新建管理員帳號</span>
+          <span>{{ $t('a_signup.title') }}</span>
         </el-form-item>
         <el-form-item>
           <span />
         </el-form-item>
 
-        <el-form-item label="管理員信箱" prop="username">
-          <el-input v-model="signupForm.username" :placeholder="$t('signup.username')" style="width:30vw" name="username" type="text" auto-complete="on" @focus="clean_name()" />
+        <el-form-item :label="$t('a_signup.email')" prop="username">
+          <el-input v-model="signupForm.username" :placeholder="$t('a_signup.username')" style="width:30vw" name="username" type="text" auto-complete="on" @focus="clean_name()" />
         </el-form-item>
 
-        <el-form-item label="密碼" prop="password">
-          <el-input :type="passwordType" v-model="signupForm.password" :placeholder="$t('signup.password')" style="width:30vw" name="password" auto-complete="on" @focus="clean_number()" />
+        <el-form-item :label="$t('a_signup.password')" prop="password">
+          <el-input :type="passwordType" v-model="signupForm.password" :placeholder="$t('a_signup.password')" style="width:30vw" name="password" auto-complete="on" @focus="clean_number()" />
         </el-form-item>
 
-        <el-form-item label="請再次輸入密碼" prop="doublepswd">
-          <el-input :type="passwordType" v-model="signupForm.doublepswd" :placeholder="$t('signup.doublepswd')" style="width:30vw" name="doublepswd" auto-complete="on" @focus="clean_number()" />
+        <el-form-item :label="$t('a_signup.doublepswd')" prop="doublepswd">
+          <el-input :type="passwordType" v-model="signupForm.doublepswd" :placeholder="$t('a_signup.doublepswd')" style="width:30vw" name="doublepswd" auto-complete="on" @focus="clean_number()" />
         </el-form-item>
       </el-form>
 
       <div class="a_signup_bottun">
-        <el-button :loading="loadingsend" type="primary" @click.native.prevent="handleSignup">{{ $t('signup.signUP') }}</el-button>
+        <el-button :loading="loadingsend" type="primary" @click.native.prevent="handleSignup">{{ $t('a_signup.signUP') }}</el-button>
       </div>
 
     </el-card>
@@ -76,9 +76,9 @@ export default {
         doublepswd: ''
       },
       signupRules: {
-        username: [{ required: true, trigger: 'blur', validator: isvalidateEmail }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }],
-        doublepswd: [{ required: true, trigger: 'blur', validator: validatedoublepswd }]
+        username: [{ required: true, trigger: 'change', validator: isvalidateEmail }],
+        password: [{ required: true, trigger: 'change', validator: validatePassword }],
+        doublepswd: [{ required: true, trigger: 'change', validator: validatedoublepswd }]
       },
       passwordType: 'password',
       loadingsend: false,
@@ -111,11 +111,11 @@ export default {
               const h = this.$createElement
               this.$notify({
                 title: '註冊成功',
-                message: h('b', { style: 'color: teal' }, '恭喜你註冊成功，好好享受我們的服務吧！'),
+                message: h('b', { style: 'color: teal' }, '已新增一名管理員，請協助並告知管理員職責'),
                 position: 'top-left'
               })
               this.loadingsend = false
-              this.$router.push({ path: this.redirect || '/home' })
+              this.$router.push({ path: this.redirect || '/dashboard' })
             })
             .catch((error) => {
               console.log(error.response.data)

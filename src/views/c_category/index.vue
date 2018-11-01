@@ -22,6 +22,7 @@
       <!--外層表單設計之表格-->
       <div class="category_table_container">
         <el-table v-loading.fullscreen.lock="view_loading" :data="c_category_list" element-loading-text="資料取得中，請稍後..." element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.9)" stripe style="width: 100%;" max-height="500" fit>
+          <el-table-column type="index" align="center" />
           <el-table-column :label="$t('c_category.name')" prop="name" align="center">
             <template slot-scope="scope">
               <span>{{ scope.row.name }}</span>
@@ -276,7 +277,7 @@ export default {
       setTimeout(() => {
         this.view_loading = false
         this.get_sort()
-      }, 1000)
+      }, 500)
     },
     clean_name() {
       this.c_subsort_edit.name = ''

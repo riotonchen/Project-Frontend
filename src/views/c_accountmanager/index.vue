@@ -147,7 +147,7 @@ export default {
         this.view_loading = false
         this.get_account()
         this.get_accounttype()
-      }, 1000)
+      }, 500)
     },
     get_account() {
       if (this.c_account_type - 1 < 0) {

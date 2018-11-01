@@ -38,11 +38,6 @@ export function validateAlphabets(str) {
  * @param email
  * @returns {boolean}
  */
-export function validateEmail(email) {
-  const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-  return re.test(email)
-}
-
 export function validatemembet_type(str) {
   const re = /^[0-9]+$/
   return re.test(str)
@@ -52,7 +47,24 @@ export function validatetoid(str) {
   return re.test(str)
 }
 
+// Rioton
+export function validateEmail(email) {
+  const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  return re.test(email)
+}
 export function validinvoice(str) {
-  const re = /^([A-Z])-([0-9])$/
-  return re.test(str)
+  const reg = /^[A-Z]{2}\d{8}$/
+  return reg.test(str)
+}
+export function validnum4(str) {
+  const reg = /^\d{4}$/
+  return reg.test(str)
+}
+export function validnum(str) {
+  const reg = /^\d*$/
+  return reg.test(str)
+}
+export function validdouble(str) {
+  const reg = /^(-?\d+)(\.\d+)?$/
+  return reg.test(str)
 }

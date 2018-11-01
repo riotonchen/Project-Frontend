@@ -296,6 +296,36 @@ export const asyncRouterMap = [{
     }
   }]
 },
+{
+  path: '/feedback',
+  component: Layout,
+  redirect: 'noredirect',
+  children: [{
+    path: '',
+    component: () =>
+        import('@/views/a_feedbackmanage/index'),
+    name: 'a_feedbackmanage',
+    meta: {
+      title: 'a_feedbackmanage',
+      icon: 'user'
+    }
+  }]
+},
+{
+  path: '/membermanage/business',
+  component: Layout,
+  redirect: 'noredirect',
+  children: [{
+    path: '',
+    component: () =>
+        import('@/views/a_manage_business/index'),
+    name: 'a_manage_business',
+    meta: {
+      title: 'a_manage_business',
+      icon: 'user'
+    }
+  }]
+},
   // tableRouter,
 
 {

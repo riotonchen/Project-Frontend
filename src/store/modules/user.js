@@ -125,32 +125,44 @@ const user = {
             resolve()
           })
           .catch(error => {
-            console.log(error.response.data)
-            reject(error)
-            MessageBox.confirm(
-              '你的帳號，密碼，或著是會員類別輸入錯誤。',
-              '登入錯誤', {
-                confirmButtonText: '重新登入',
-                showCancelButton: false,
-                type: 'error',
-                beforeClose: (action, instance, done) => {
-                  if (action === 'confirm') {
-                    instance.confirmButtonLoading = true
-                    instance.confirmButtonText = '跳轉中'
-                    setTimeout(() => {
-                      done()
+            if (error === 'Account does not exists or parameter error.') {
+              reject(error)
+              MessageBox.confirm(
+                '你的帳號，密碼，或著是會員類別輸入錯誤。',
+                '登入錯誤', {
+                  confirmButtonText: '重新登入',
+                  showCancelButton: false,
+                  type: 'error',
+                  beforeClose: (action, instance, done) => {
+                    if (action === 'confirm') {
+                      instance.confirmButtonLoading = true
+                      instance.confirmButtonText = '跳轉中'
                       setTimeout(() => {
-                        instance.confirmButtonLoading = false
-                      }, 500)
-                    }, 800)
-                  } else {
-                    done()
+                        done()
+                        setTimeout(() => {
+                          instance.confirmButtonLoading = false
+                        }, 500)
+                      }, 800)
+                    } else {
+                      done()
+                    }
                   }
                 }
-              }
-            ).then(() => {
-              location.reload()
-            })
+              ).then(() => {
+                location.reload()
+              })
+            } else {
+              reject(error)
+              this.$notify.error({
+                title: 'ERROR',
+                message: '發生了一點錯誤請稍後再試試看，造成您的不便感到十分抱歉。'
+              })
+              setTimeout(() => {
+                setTimeout(() => {
+                  location.reload()
+                }, 1500)
+              }, 800)
+            }
           })
       })
     },

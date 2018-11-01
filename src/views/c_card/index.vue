@@ -116,7 +116,7 @@ export default {
       setTimeout(() => {
         this.view_loading = false
         this.get_cardlist()
-      }, 100)
+      }, 500)
     },
     clean_name() {
       this.c_card_edit.name = ''

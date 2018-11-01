@@ -72,7 +72,7 @@
 <script>
 
 import waves from '@/directive/waves' // 水波紋指令
-import { getproject } from '@/api/project/getproject'
+import { getproject, getproject_single } from '@/api/project/getproject'
 import { postproject } from '@/api/project/postproject'
 import { patchproject_update, patchproject_delete } from '@/api/project/patchproject'
 import { getToken } from '@/utils/auth'
@@ -96,7 +96,6 @@ export default {
       c_project_id: '',
       c_project_name_p: '',
       c_projectlist: [],
-      c_projectitem: [],
       c_user_project: null,
       c_project_visible: false,
       c_project_add_visible: false,
@@ -122,7 +121,7 @@ export default {
       setTimeout(() => {
         this.view_loading = false
         this.get_projectlist()
-      }, 1000)
+      }, 500)
     },
     clean_name() {
       this.c_project_edit.name = ''
@@ -145,12 +144,21 @@ export default {
       })
     },
     get_project() {
-      getproject(getToken()).then(response => {
-        this.c_projectitem = response.data
-        this.c_user_project = response.data
-      }).catch((error) => {
-        console.log(error)
-      })
+      console.log(this.c_project)
+      if (this.c_project === '' || this.c_project === null) {
+        getproject(getToken()).then(response => {
+          this.c_user_project = response.data
+        }).catch((error) => {
+          console.log(error)
+        })
+      } else {
+        getproject_single(getToken(), this.c_project).then(response => {
+          this.c_user_project = []
+          this.c_user_project.push(response.data)
+        }).catch((error) => {
+          console.log(error)
+        })
+      }
     },
     c_open_add_view() {
       this.c_project_add_visible = true

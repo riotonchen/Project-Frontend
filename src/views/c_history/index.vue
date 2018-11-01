@@ -67,14 +67,64 @@
             </el-form>
           </template>
         </el-table-column>
-        <el-table-column :label="$t('c_history.date')" prop="purchasedate" sortable align="center" />
-        <el-table-column :label="$t('c_history.receipt')" prop="invoice_id" align="center" />
-        <el-table-column :label="$t('c_history.incomespend')" prop="type" align="center" />
-        <el-table-column :label="$t('c_history.mainsort')" prop="sort_id" align="center" />
-        <el-table-column :label="$t('c_history.subclass')" prop="subsort_id" align="center" />
-        <el-table-column :label="$t('c_history.project')" prop="project_id" align="center" />
-        <el-table-column :label="$t('c_history.account')" prop="account_id" align="center" />
-        <el-table-column :label="$t('c_history.money')" prop="amount" align="center" />
+        <el-table-column :label="$t('c_history.date')" prop="purchasedate" sortable align="center">
+          <template slot-scope="scope">
+            <span>
+              {{ scope.row.purchasedate }}
+            </span>
+          </template>
+        </el-table-column>
+        <el-table-column :label="$t('c_history.receipt')" prop="invoice_id.number" align="center">
+          <template slot-scope="scope">
+            <span>
+              {{ scope.row.invoice_id.number }}
+            </span>
+          </template>
+        </el-table-column>
+        <el-table-column :label="$t('c_history.incomespend')" prop="type" align="center">
+          <template slot-scope="scope">
+            <el-tag :type="scope.row.type==='支出'?'danger':'primary'">
+              <span>
+                {{ scope.row.type }}
+              </span>
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column :label="$t('c_history.mainsort')" prop="sort_id.name" align="center">
+          <template slot-scope="scope">
+            <span>
+              {{ scope.row.sort_id.name }}
+            </span>
+          </template>
+        </el-table-column>
+        <el-table-column :label="$t('c_history.subclass')" prop="subsort_id.name" align="center">
+          <template slot-scope="scope">
+            <span>
+              {{ scope.row.subsort_id.name }}
+            </span>
+          </template>
+        </el-table-column>
+        <el-table-column :label="$t('c_history.project')" prop="project_id.name" align="center">
+          <template slot-scope="scope">
+            <span>
+              {{ scope.row.project_id.name }}
+            </span>
+          </template>
+        </el-table-column>
+        <el-table-column :label="$t('c_history.account')" prop="account_id.name" align="center">
+          <template slot-scope="scope">
+            <span>
+              {{ scope.row.account_id.name }}
+            </span>
+          </template>
+        </el-table-column>
+        <el-table-column :label="$t('c_history.money')" prop="amount" align="center">
+          <template slot-scope="scope">
+            <span>
+              {{ scope.row.amount }}
+            </span>
+          </template>
+        </el-table-column>
         <el-table-column :label="$t('c_history.operation')" align="center">
           <template slot-scope="scope">
             <el-button type="primary" @click="handle_edit(scope.$index,scope.row)">{{ $t('c_history.edit') }}</el-button>
@@ -226,7 +276,13 @@ export default {
     get_getaccounting_all() {
       getaccounting_all(getToken()).then((response) => {
         this.c_user_history = response.data
-        console.log(response.data)
+        this.c_user_history.forEach(function(element) {
+          if (element.type === false) {
+            element.type = '支出'
+          } else {
+            element.type = '收入'
+          }
+        })
       })
     },
     get_sort() {
@@ -271,8 +327,8 @@ export default {
     },
     handle_edit(index, row) {
       this.c_history_date_p = row.purchasedate
-      this.c_history_invoice_p = row.invoice_id
-      this.c_history_account_p = row.account_id
+      this.c_history_invoice_p = row.invoice_id.number
+      this.c_history_account_p = row.account_id.name
       this.c_history_amount_p = row.amount
       this.c_history_visible = true
     },

@@ -15,14 +15,20 @@
         </el-form-item>
 
       </el-form>
-      <el-button type="primary " class="sentout" @click="open">{{ $t('c_connection.sent') }}</el-button>
+      <el-button type="primary " class="sentout" @click="send()">{{ $t('c_connection.sent') }}</el-button>
 
     </el-card>
   </div>
 
 </template>
 <script>
+
+import { getToken } from '@/utils/auth'
+import { formatdate } from '@/utils/index'
+import { postfeedback } from '@/api/feedback/postfeedback'
+
 export default {
+
   data() {
     const valideSubjectlength = (rule, value, callback) => {
       if (value.length > 10) {
@@ -40,24 +46,6 @@ export default {
       }
     }
     return {
-      form: {
-        labelPosition: 'top',
-        formLabelAlign: {
-          name: '',
-          region: '',
-          type: ''
-        },
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
-
-      },
-
       connection_edit: {
         subject: '',
         content: ''
@@ -69,12 +57,23 @@ export default {
     }
   },
   methods: {
-    open() {
-      const h = this.$createElement
-
-      this.$notify({
-        title: '提醒',
-        message: h('i', { style: 'color: teal' }, '我們將在問題送出後3~5工作天內進行回覆')
+    send() {
+      const date = formatdate('yyyy-mm-dd HH:MM:ss.l')
+      postfeedback(getToken(), this.connection_edit.subject, this.connection_edit.content, date).then(() => {
+        const h = this.$createElement
+        this.$notify({
+          title: '提醒',
+          message: h('i', { style: 'color: teal' }, '我們將在問題送出後3~5工作天內進行回覆')
+        })
+        setTimeout(() => {
+          this.$router.push({ path: this.redirect || '/dashboard' })
+        }, 800)
+      }).catch((error) => {
+        console.log(error)
+        this.$message({
+          type: 'error',
+          message: '發生一點錯誤，請稍後送出一次'
+        })
       })
     }
   }

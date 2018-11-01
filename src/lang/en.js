@@ -15,7 +15,12 @@ export default {
     c_cardmanager: 'Card Manage',
     c_accountmanager: 'Account Manage',
     c_categorymanager: 'Category Manage',
-    c_projectmanager: 'Project Manage'
+    c_projectmanager: 'Project Manage',
+    a_profile_view: 'Manager Information',
+    a_profile_edit: 'Edit Manager',
+    a_signup: 'Manager Signup',
+    a_feedbackmanage: 'Feedback Manage'
+
   },
   login: {
     title: 'Login Form',
@@ -168,6 +173,46 @@ export default {
     delete: 'Delete',
     confirm: 'Confirm',
     cancel: 'Cancel'
+  },
+  a_profile_view: {
+    email: 'Email',
+    name: 'Name',
+    alter: 'Modify'
+  },
+  a_profile_edit: {
+    email: 'Email',
+    name: 'Name',
+    newpswd: 'Password',
+    toid_ipt: 'Please enter 8 numbers',
+    password_ipt: 'If not modified, blank',
+    input: 'Pswd Again',
+    confirm: 'Confirm',
+    cancel: 'Cancel',
+    h1: '25 words at the most',
+    h2: '8 digit numbers at the most',
+    h3: 'If u dont edit, leave the space'
+  },
+  a_signup: {
+    title: 'Create an Administrator account',
+    username: 'Account(Email)',
+    password: 'Password',
+    doublepswd: 'Please enter your password again',
+    signUP: 'Send Out',
+    email: 'Manager Email'
+  },
+  a_feebackmanager: {
+    memberaccount: 'Member Account',
+    date: 'Date',
+    problemnumber: 'Problem Number',
+    problemsubject: 'Problem Subject',
+    action: 'Action',
+    detailed: 'detailed',
+    subclassname: 'Subclass Name',
+    delete: 'Delete',
+    cancel: 'Cancel',
+    confirm: 'Confirm',
+    problemcontent: 'Problem Content',
+    reply: 'Reply'
   },
 
   navbar: {

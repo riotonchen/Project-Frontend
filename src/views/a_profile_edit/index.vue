@@ -1,39 +1,32 @@
 <template>
   <div class="personal_edit_container">
     <title>
-      {{ $t('route.A_profile_edit') }}
+      {{ $t('route.a_profile_edit') }}
     </title>
+    <div class="personal_edit_form">
+      <el-card>
+        <el-form ref="profile_edit_form" :model="profile_edit_form" :rules="profile_edit_form_rules" label-position="left" inline class="personal_edit">
+          <el-form-item :label="$t('a_profile_edit.email')">
+            <el-input v-model="profile_edit_form.account" type="textarea" autosize readonly />
+          </el-form-item>
+          <el-form-item :label="$t('a_profile_edit.name')" prop="name">
+            <el-input v-model="profile_edit_form.name" :placeholder="$t('a_profile_edit.h1')" name="name" />
+          </el-form-item>
+          <el-form-item label="ToID" prop="toid">
+            <el-input v-model="profile_edit_form.toid" :placeholder="$t('a_profile_edit.h2')" name="toid" />
+          </el-form-item>
+          <el-form-item :label="$t('a_profile_edit.newpswd')" prop="pswd">
+            <el-input v-model="profile_edit_form.pswd" :placeholder="$t('a_profile_edit.h3')" type="password" name="pswd" />
+          </el-form-item>
+          <el-form-item :label="$t('a_profile_edit.input')" prop="pswd2">
+            <el-input v-model="profile_edit_form.pswd2" :placeholder="$t('a_profile_edit.h3')" type="password" name="pswd2" />
+          </el-form-item>
+          <el-button :loading="loadingprofile_view_send" type="primary" class="btn2" @click.native.prevent="handleprofile_edit">{{ $t('a_profile_edit.confirm') }}</el-button>
+          <el-button :loading="loadingprofile_view_cancal" type="info" class="btn" @click.native.prevent="goprofile_view">{{ $t('a_profile_edit.cancel') }}</el-button>
 
-    <el-card class="box-card">
-      <div class="personal_edit_form">
-        <el-form ref="profile_edit_form" :model="profile_edit_form" :rules="profile_edit_form_rules">
-          <el-form-item :label="$t('A_profile_edit.email')">
-            <el-input v-model="profile_edit_form.account" type="text" class="useraccountin" readonly />
-          </el-form-item>
-          <el-form-item :label="$t('A_profile_edit.name')" prop="name">
-            <el-input v-model="profile_edit_form.name" placeholder="上限25個中英數字" name="name" />
-          </el-form-item>
-          <el-form-item label="ToID：" prop="toid">
-            <el-input v-model="profile_edit_form.toid" placeholder="ToID 只限定於 8 碼" name="toid" />
-          </el-form-item>
-          <el-form-item :label="$t('A_profile_edit.newpassword')" prop="pswd">
-            <el-input v-model="profile_edit_form.pswd" type="password" placeholder="如不修改，空白即可" name="pswd" />
-          </el-form-item>
-          <el-form-item :label="$t('A_profile_edit.input')" prop="pswd2">
-            <el-input v-model="profile_edit_form.pswd2" type="password" placeholder="如不修改，空白即可" name="pswd2" />
-          </el-form-item>
-          <el-form-item>
-            <el-button :loading="loadingprofile_view_send" type="primary" style="width:20%;margin-top:3vh;margin-left:0px" @click.native.prevent="handleprofile_edit">
-              {{ $t('A_profile_edit.confirm') }}
-            </el-button>
-            <el-button :loading="loadingprofile_view_cancal" type="info" style="width:20%;margin-top:3vh;margin-left:20px" class="personal_edit_cal" @click.native.prevent="goprofile_view">
-              {{ $t('A_profile_edit.cancel') }}
-            </el-button>
-          </el-form-item>
         </el-form>
-      </div>
-    </el-card>
-
+      </el-card>
+    </div>
   </div>
 </template>
 <script>
@@ -98,10 +91,10 @@ export default {
         pswd2: ''
       },
       profile_edit_form_rules: {
-        name: [{ required: false, trigger: 'blur', validator: validatename }],
-        toid: [{ required: false, trigger: 'blur', validator: _validatetoid }],
-        pswd: [{ required: false, trigger: 'blur', validator: validatePassword }],
-        pswd2: [{ required: false, trigger: 'blur', validator: validatedoublepswd }]
+        name: [{ required: false, trigger: 'change', validator: validatename }],
+        toid: [{ required: false, trigger: 'change', validator: _validatetoid }],
+        pswd: [{ required: false, trigger: 'change', validator: validatePassword }],
+        pswd2: [{ required: false, trigger: 'change', validator: validatedoublepswd }]
       }
     }
   },
@@ -177,8 +170,9 @@ export default {
                     message: h('b', { style: 'color: teal' }, '你的ToID已經被使用過，請再重新輸入一次！(3秒後幫你刷空資料)')
                   })
                   console.log(this.imageUrl)
+
                   setTimeout(() => {
-                    this.$router.push({ path: this.redirect || '/profile/profile-edit' })
+                    location.reload()
                   }, 3000)
                 } else {
                   const h = this.$createElement
@@ -189,7 +183,7 @@ export default {
                     showClose: false
                   })
                   setTimeout(() => {
-                    this.$router.push({ path: this.redirect || '/profile/profile-edit' })
+                    location.reload()
                   }, 5000)
                 }
               })
@@ -202,27 +196,38 @@ export default {
 
 </script>
 <style rel="stylesheet/scss" lang="scss" >
-.box-card {
-  width: 85%;
-  height: 82vh;
-  margin: 2% auto;
-  position: relative;
-}
 .personal_edit_form {
-  margin-top: 3vh;
-  width: 30vw;
-  position: absolute;
+  width: 80%;
+  margin: 15vh 10vw;
 }
-.personal_edit_form label {
-  font-size: 1vw !important;
+.btn {
+  float: right;
+  margin-bottom: 1.875rem;
+  margin-right: 1.25rem;
 }
-
-.personal_edit_chk {
-  padding-top: 68vh;
-  position: absolute;
+.btn2 {
+  float: right;
+  margin-bottom: 1.875rem;
 }
-.useraccountin input {
-  border: 0;
+.personal_edit {
+  font-size: 0;
+}
+.personal_edit label {
+  width: 90px;
+  color: #99a9bf;
+  font-size: 0.8vw;
+}
+.personal_edit input {
   font-family: "Microsoft JhengHei";
+  width: 130%;
+}
+.personal_edit textarea {
+  font-family: "Microsoft JhengHei";
+  border: 0;
+  width: 130%;
+  padding-top: 0.65rem;
+}
+.personal_edit .el-form-item {
+  width: 100%;
 }
 </style>

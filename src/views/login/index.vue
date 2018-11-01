@@ -95,9 +95,9 @@ export default {
         membertype_id: '2'
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: isvalidateEmail }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }],
-        membertype_id: [{ required: true, trigger: 'blur', validator: validateMembertype }]
+        username: [{ required: true, trigger: 'change', validator: isvalidateEmail }],
+        password: [{ required: true, trigger: 'change', validator: validatePassword }],
+        membertype_id: [{ required: true, trigger: 'change', validator: validateMembertype }]
       },
       passwordType: 'password',
       loadingsend: false,

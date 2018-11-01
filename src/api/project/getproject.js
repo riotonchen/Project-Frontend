@@ -19,3 +19,20 @@ export function getproject(token) {
     data
   })
 }
+
+export function getproject_single(token, id) {
+  const data = {
+    token
+  }
+  const requ_url = 'https://www.177together.com/api/project/' + id + '/'
+
+  return request({
+
+    url: requ_url,
+    method: 'get',
+    headers: {
+      Authorization: 'JWT ' + token
+    },
+    data
+  })
+}
