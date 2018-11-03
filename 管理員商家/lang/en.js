@@ -15,12 +15,7 @@ export default {
     c_cardmanager: 'Card Manage',
     c_accountmanager: 'Account Manage',
     c_categorymanager: 'Category Manage',
-    c_projectmanager: 'Project Manage',
-    a_profile_view: 'Manager Information',
-    a_profile_edit: 'Edit Manager',
-    a_signup: 'Manager Signup',
-    a_feedbackmanage: 'Feedback Manage'
-
+    c_projectmanager: 'Project Manage'
   },
   login: {
     title: 'Login Form',
@@ -95,7 +90,7 @@ export default {
     accounttype: 'Account Type'
   },
   c_card_view: {
-    name: 'Card Name',
+    name: 'Name',
     content: 'Please enter the content',
     search: 'Search',
     add: 'Add',
@@ -110,24 +105,26 @@ export default {
     confirm: 'Confirm',
     blank: 'If ypu do not need to modify, please keep balnk.'
   },
-  c_accounting: {
-    date: 'Invoice Date',
-    invoice: 'Invoice Number',
-    randon: 'Randon Number',
-    randonph: 'Randon(Not Required)',
-    payorin: 'Payorin',
+  c_accounting_view: {
+    income: 'Income',
+    spend: 'Spend',
     account: 'Account',
-    selectdate: 'Please Select Date',
-    finish: 'Finishing Add',
-    add: 'Add',
+    accountname: 'Accountname',
+    name: 'Please enter your account name',
+    purchasingtime: 'PurchasingTime',
     invoicetime: 'Receipt Date',
-    class: 'Class',
-    subsort: 'Subsort',
+    class: 'Classification',
+    choose: 'Please select',
+    categories: 'Sub-categories',
     project: 'Project',
     money: 'Money',
-    invoicenumber: 'Invoice Number(Not Required)',
+    invoice: 'Invoice',
     remark: 'Registration',
-    addremark: 'New registration'
+    addremark: 'New registration',
+    amount: 'Please enter',
+    data: 'Add a new amount of data',
+    send: 'Send out'
+
   },
   c_profile_view: {
     email: 'Email',
@@ -171,46 +168,6 @@ export default {
     delete: 'Delete',
     confirm: 'Confirm',
     cancel: 'Cancel'
-  },
-  a_profile_view: {
-    email: 'Email',
-    name: 'Name',
-    alter: 'Modify'
-  },
-  a_profile_edit: {
-    email: 'Email',
-    name: 'Name',
-    newpswd: 'Password',
-    toid_ipt: 'Please enter 8 numbers',
-    password_ipt: 'If not modified, blank',
-    input: 'Pswd Again',
-    confirm: 'Confirm',
-    cancel: 'Cancel',
-    h1: '25 words at the most',
-    h2: '8 digit numbers at the most',
-    h3: 'If u dont edit, leave the space'
-  },
-  a_signup: {
-    title: 'Create an Administrator account',
-    username: 'Account(Email)',
-    password: 'Password',
-    doublepswd: 'Please enter your password again',
-    signUP: 'Send Out',
-    email: 'Manager Email'
-  },
-  a_feebackmanager: {
-    memberaccount: 'Member Account',
-    date: 'Date',
-    problemnumber: 'Problem Number',
-    problemsubject: 'Problem Subject',
-    action: 'Action',
-    detailed: 'detailed',
-    subclassname: 'Subclass Name',
-    delete: 'Delete',
-    cancel: 'Cancel',
-    confirm: 'Confirm',
-    problemcontent: 'Problem Content',
-    reply: 'Reply'
   },
 
   navbar: {
@@ -292,5 +249,30 @@ export default {
     close: 'Close',
     closeOthers: 'Close Others',
     closeAll: 'Close All'
+  },
+  a_manage_business_view: {
+    businessmember: 'Businessmember',
+    number: 'Businessnumber',
+    name: 'Businessname',
+    id: 'Businessid',
+    operating: 'Operating',
+    detail: 'Detail',
+    activity: 'Activity',
+    princiapl: 'Princiapl',
+    taxID: 'TaxID',
+    telephone: 'Telephone number',
+    cellphone: 'Cellphone number',
+    extension: 'Extension number',
+    address: 'Address',
+    picture: 'Picture',
+    preferentialname: 'Preferential name',
+    preferentialcontent: 'Peferential content',
+    status: 'Status',
+    topshelf: 'Top shelf',
+    lowershelf: 'Lower shelf',
+    confirm: 'Confirm',
+    cancel: 'Cancel',
+    delete: 'Delete',
+    notmodify: 'If the following do not need to revise，please keep the blank space.'
   }
 }

@@ -7,13 +7,13 @@
       <el-card>
         <el-form ref="profile_edit_form" :model="profile_edit_form" :rules="profile_edit_form_rules" label-position="left" inline class="personal_edit">
           <el-form-item :label="$t('c_profile_edit.email')">
-            <el-input v-model="profile_edit_form.account" type="textarea" autosize readonly />
+            <el-input v-model="profile_edit_form.account" type="textarea" resize="none" readonly />
           </el-form-item>
           <el-form-item :label="$t('c_profile_edit.name')" prop="name">
-            <el-input v-model="profile_edit_form.name" :placeholder="$t('c_profile_edit.h1')" name="name" />
+            <el-input v-model="profile_edit_form.name" :placeholder="$t('c_profile_edit.h1')" name="name" @focus="clean_name()" />
           </el-form-item>
           <el-form-item label="ToID" prop="toid">
-            <el-input v-model="profile_edit_form.toid" :placeholder="$t('c_profile_edit.h2')" name="toid" />
+            <el-input v-model="profile_edit_form.toid" :placeholder="$t('c_profile_edit.h2')" name="toid" @focus="clean_toid()" />
           </el-form-item>
           <el-form-item :label="$t('c_profile_edit.newpswd')" prop="pswd">
             <el-input v-model="profile_edit_form.pswd" :placeholder="$t('c_profile_edit.h3')" type="password" name="pswd" />
@@ -68,7 +68,7 @@ export default {
       }
     }
     const validatedoublepswd = (rule, value, callback) => {
-      if (value === '') {
+      if (value === '' && (this.profile_edit_form.pswd).length < 1) {
         callback()
       } else if (value !== this.profile_edit_form.pswd) {
         callback(new Error('二次密碼不一樣，請再次輸入！'))
@@ -95,7 +95,8 @@ export default {
         toid: [{ required: false, trigger: 'change', validator: _validatetoid }],
         pswd: [{ required: false, trigger: 'change', validator: validatePassword }],
         pswd2: [{ required: false, trigger: 'change', validator: validatedoublepswd }]
-      }
+      },
+      redirect: undefined
     }
   },
   watch: {
@@ -110,11 +111,18 @@ export default {
     this.getinfo()
   },
   methods: {
-
+    clean_name() {
+      this.profile_edit_form.name = ''
+    },
+    clean_toid() {
+      this.profile_edit_form.toid = ''
+    },
     getinfo() {
       getUserInfo(getToken()).then(response => {
         const info = response.data
         this.profile_edit_form.account = info.account
+        this.profile_edit_form.name = info.name
+        this.profile_edit_form.toid = info.toid
       })
     },
     goprofile_view() {
@@ -198,7 +206,7 @@ export default {
 <style rel="stylesheet/scss" lang="scss" >
 .personal_edit_form {
   width: 60%;
-  margin: 15vh 20vw;
+  margin: 15vh 18vw;
 }
 .btn {
   float: right;
@@ -219,12 +227,12 @@ export default {
 }
 .personal_edit input {
   font-family: "Microsoft JhengHei";
-  width: 100%;
+  width: 130%;
 }
 .personal_edit textarea {
   font-family: "Microsoft JhengHei";
   border: 0;
-  width: 100%;
+  width: 130%;
   padding-top: 0.65rem;
 }
 .personal_edit .el-form-item {

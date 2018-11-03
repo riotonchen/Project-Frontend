@@ -116,12 +116,6 @@ export default {
     }
 
   },
-  created() {
-    window.addEventListener('hashchange', this.afterQRScan)
-  },
-  destroyed() {
-    window.removeEventListener('hashchange', this.afterQRScan)
-  },
   methods: {
     showPwd() {
       if (this.passwordType === 'password') {

@@ -70,13 +70,6 @@
           <el-form-item :label="$t('c_accountmanager.accountname')">
             <el-input v-model="c_category_configure.name" :placeholder="c_account_add_name_p" />
           </el-form-item>
-          <!--
-          <el-form-item :label="$t('c_accountmanager.accounttype')">
-            <el-select v-model="c_category_configure.type" :placeholder="$t('c_accountmanager.project')" filterable clearable>
-              <el-option v-for="type in c_account_type_options" :key="type.accounttype_id" :label="type.name" :value="type.accounttype_id" />
-            </el-select>
-          </el-form-item>
-          -->
           <el-form-item :label="$t('c_accountmanager.finallymoney')">
             <el-input v-model="c_category_configure.balance" :placeholder="c_account_add_balance_p" />
           </el-form-item>

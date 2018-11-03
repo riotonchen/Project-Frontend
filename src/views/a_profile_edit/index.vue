@@ -7,7 +7,7 @@
       <el-card>
         <el-form ref="profile_edit_form" :model="profile_edit_form" :rules="profile_edit_form_rules" label-position="left" inline class="personal_edit">
           <el-form-item :label="$t('a_profile_edit.email')">
-            <el-input v-model="profile_edit_form.account" type="textarea" autosize readonly />
+            <el-input v-model="profile_edit_form.account" type="textarea" resize="none" readonly />
           </el-form-item>
           <el-form-item :label="$t('a_profile_edit.name')" prop="name">
             <el-input v-model="profile_edit_form.name" :placeholder="$t('a_profile_edit.h1')" name="name" />

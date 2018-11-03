@@ -19,6 +19,16 @@
             <span>{{ scope.row.name }}</span>
           </template>
         </el-table-column>
+        <el-table-column label="總收入" prop="allin" align="center">
+          <template slot-scope="scope">
+            <span>{{ scope.row.allin }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="總支出" prop="allpay" align="center">
+          <template slot-scope="scope">
+            <span>{{ scope.row.allpay }}</span>
+          </template>
+        </el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
             <el-button type="primary" plain @click.native.prevent="handle_edit(scope.$index,scope.row)">{{ $t('c_card_view.edit') }}</el-button>
@@ -144,7 +154,6 @@ export default {
       })
     },
     get_project() {
-      console.log(this.c_project)
       if (this.c_project === '' || this.c_project === null) {
         getproject(getToken()).then(response => {
           this.c_user_project = response.data

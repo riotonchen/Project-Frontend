@@ -76,9 +76,16 @@
         </el-table-column>
         <el-table-column :label="$t('c_history.receipt')" prop="invoice_id.number" align="center">
           <template slot-scope="scope">
-            <span>
-              {{ scope.row.invoice_id.number }}
-            </span>
+            <div v-if=" scope.row.invoice_id==='-'">
+              <span>
+                {{ scope.row.invoice_id }}
+              </span>
+            </div>
+            <div v-else>
+              <span>
+                {{ scope.row.invoice_id.number }}
+              </span>
+            </div>
           </template>
         </el-table-column>
         <el-table-column :label="$t('c_history.incomespend')" prop="type" align="center">
@@ -134,26 +141,34 @@
     </div>
     <div class="dialog_container">
       <el-dialog :visible.sync="c_history_visible" :title="$t('c_history.edit')" width="80vw">
-        <el-form :model="c_history_edit" label-position="left" inline class="table_history">
+        <el-form ref="c_history_edit" :model="c_history_edit" label-position="left" inline class="table_history">
           <el-form-item>
             <span>{{ $t('c_history.notmodify') }}</span>
           </el-form-item>
           <el-form-item>
             <span />
           </el-form-item>
-          <el-form-item :label="$t('c_history.date')">
+          <el-form-item :label="$t('c_history.date')" prop="date">
             <el-date-picker v-model="c_history_edit.date" :placeholder="c_history_date_p" type="date" />
           </el-form-item>
-          <el-form-item :label="$t('c_history.receiptnumber')">
+          <el-form-item :label="$t('c_history.receiptnumber')" prop="invoice">
             <el-input v-model="c_history_edit.invoice" :placeholder="c_history_invoice_p" clearable />
           </el-form-item>
-          <el-form-item :label="$t('c_history.account')">
-            <el-select v-model="c_history_edit.account" :placeholder="c_history_account_p" filterable style="width: 25vw;max-width:13.2rem;min-width:11.8rem;" @focus="get_account()">
+          <el-form-item :label="$t('c_history.account')" prop="account">
+            <el-select v-model="c_history_edit.account" :placeholder="c_history_account_p" clearable filterable @focus="get_account()" @change="get_account()">
               <el-option v-for="account in c_accountitem" :key="account.id" :label="account.name" :value="account.id" />
             </el-select>
           </el-form-item>
-          <el-form-item :label="$t('c_history.money')">
+          <el-form-item :label="$t('c_history.money')" prop="amount">
             <el-input v-model="c_history_edit.amount" :placeholder="c_history_amount_p" clearable />
+          </el-form-item>
+          <el-form-item label="專案" prop="project">
+            <el-select v-model="c_history_edit.project" :placeholder="c_history_project_p" clearable filterable @focus="get_project()" @change="get_project()">
+              <el-option v-for="project in c_projectitem" :key="project.id" :label="project.name" :value="project.id" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="備註" prop="comment">
+            <el-input v-model="c_history_edit.comment" :placeholder="c_history_comment_p" clearable />
           </el-form-item>
           <hr>
           <el-form-item>
@@ -162,19 +177,19 @@
           <el-form-item>
             <span />
           </el-form-item>
-          <el-form-item :label="$t('c_history.incomespend')">
-            <el-select v-model="c_history_edit.payorin" :placeholder="$t('c_history.incomespend')" filterable style="width: 25vw;max-width:7.5rem;min-width:6.5rem;">
+          <el-form-item :label="$t('c_history.incomespend')" prop="payorin">
+            <el-select v-model="c_history_edit.payorin" :placeholder="$t('c_history.incomespend')" style="width: 25vw;max-width:7.5rem;min-width:6.5rem;" @change="get_confi_sort()">
               <el-option v-for="payorin in c_pay_in" :key="payorin.value" :label="payorin.label" :value="payorin.value" />
             </el-select>
           </el-form-item>
-          <el-form-item :label="$t('c_history.mainsort')">
-            <el-select v-model="c_history_edit.sort" :disabled="c_sort_disable" :placeholder="$t('c_history.mainsort')" filterable style="width: 25vw;max-width:7.5rem;min-width:6.5rem;" @focus="get_sort()" @change="get_subsort()">
-              <el-option v-for="sort in c_sort_payorinitem" :key="sort.id" :label="sort.name" :value="sort.id" />
+          <el-form-item :label="$t('c_history.mainsort')" prop="sort">
+            <el-select v-model="c_history_edit.sort" :disabled="c_sort_disable" :placeholder="$t('c_history.mainsort')" clearable filterable style="width: 25vw;max-width:7.5rem;min-width:6.5rem;" @focus="get_confi_sort()" @change="get_confi_subsort()">
+              <el-option v-for="sort in c_confi_sort_payorinitem" :key="sort.id" :label="sort.name" :value="sort.id" />
             </el-select>
           </el-form-item>
-          <el-form-item :label="$t('c_history.subclass')">
-            <el-select v-model="c_history_edit.subsort" :disabled="c_subsort_disable" :placeholder="$t('c_history.subclass')" filterable style="width: 25vw;max-width:7.5rem;min-width:6.5rem;">
-              <el-option v-for="subsort in c_subsort_payorinitem" :key="subsort.id" :label="subsort.name" :value="subsort.id" />
+          <el-form-item :label="$t('c_history.subclass')" prop="subsort">
+            <el-select v-model="c_history_edit.subsort" :disabled="c_confi_subsort_disable" :placeholder="$t('c_history.subclass')" clearable filterable style="width: 25vw;max-width:7.5rem;min-width:6.5rem;">
+              <el-option v-for="subsort in c_confi_subsort_payorinitem" :key="subsort.id" :label="subsort.name" :value="subsort.id" />
             </el-select>
           </el-form-item>
         </el-form>
@@ -191,15 +206,15 @@
 </template>
 <script>
 
-// import { parseTime } from '@/utils'
-
 import waves from '@/directive/waves' // 水波紋指令
 import { getaccounting_all } from '@/api/accounting/getaccounting'
 import { getsort_pay, getsort_in } from '@/api/sort/getsort'
 import { getsubsort } from '@/api/subsort/getsubsort'
 import { getproject } from '@/api/project/getproject'
 import { getaccount_all } from '@/api/account/getaccount'
+import { patchaccounting } from '@/api/accounting/patchaccounting'
 import { getToken } from '@/utils/auth'
+import { formatdate } from '@/utils/index'
 
 export default {
   name: 'CHistory',
@@ -216,30 +231,47 @@ export default {
       c_account: '',
       c_history_edit:
       {
+        id: '',
         date: '',
         invoice: '',
         account: '',
+        account_id: '',
         amount: '',
         payorin: '',
         sort: '',
-        subsort: ''
+        subsort: '',
+        project: '',
+        project_id: '',
+        comment: ''
       },
       c_history_date_p: '',
       c_history_invoice_p: '',
       c_history_account_p: '',
       c_history_amount_p: '',
+      c_history_comment_p: '',
+      c_history_project_p: '',
       c_sort_payorinitem: [],
       c_subsort_payorinitem: [],
       c_projectitem: [],
       c_accountitem: [],
-      c_sort_disable: true,
+      c_confi_sort_payorinitem: [],
+      c_confi_subsort_payorinitem: [],
+      c_sort_disable: false,
       c_subsort_disable: true,
+      c_confi_subsort_disable: true,
       c_history_visible: false,
       c_pay_in: [{ label: '支出', value: 0 }, { label: '收入', value: 1 }],
-      c_user_history: []
+      c_user_history: [],
+      redirect: undefined
     }
   },
   watch: {
+    $route: {
+      handler: function(route) {
+        this.redirect = route.query && route.query.redirect
+      },
+      immediate: true
+    },
     c_payorin: function(newc_payorin, oldc_payorin) {
       if (oldc_payorin === '') {
         this.c_sort_disable = false
@@ -267,7 +299,38 @@ export default {
       } else if (this.c_sort === '') {
         this.c_subsort_disable = true
       }
-    }
+    },
+    'c_history_edit.payorin': {
+      handler: function(newc_payorin, oldc_payorin) {
+        if (oldc_payorin === 0) {
+          this.c_confi_sort_disable = false
+        } else if (newc_payorin !== oldc_payorin) {
+          this.c_history_edit.sort = ''
+          this.c_history_edit.subsort = ''
+          this.get_confi_sort()
+        }
+      }
+    },
+    'c_history_edit.sort': {
+      handler: function(newc_sort, oldc_sort) {
+        console.log(newc_sort, oldc_sort)
+        if (oldc_sort === '') {
+          this.c_confi_subsort_disable = false
+        } else if (newc_sort !== oldc_sort) {
+          this.c_history_edit.subsort = ''
+        }
+      }
+    },
+    'c_history_edit.subsort': {
+      handler: function(newc_subsort, oldc_subsort) {
+        if (oldc_subsort === '') {
+          this.c_confi_subsort_disable = false
+        } else if (this.c_history_edit.sort === '') {
+          this.c_confi_subsort_disable = true
+        }
+      }
+    },
+    deep: true
   },
   created() {
     this.get_getaccounting_all()
@@ -275,12 +338,16 @@ export default {
   methods: {
     get_getaccounting_all() {
       getaccounting_all(getToken()).then((response) => {
+        this.c_user_history = []
         this.c_user_history = response.data
         this.c_user_history.forEach(function(element) {
           if (element.type === false) {
             element.type = '支出'
           } else {
             element.type = '收入'
+          }
+          if (element.invoice_id === null) {
+            element.invoice_id = '-'
           }
         })
       })
@@ -311,6 +378,32 @@ export default {
         console.log(error)
       })
     },
+    get_confi_sort() {
+      if (this.c_history_edit.payorin === 0 || this.c_history_edit.payorin === '支出') {
+        getsort_pay(getToken()).then(response => {
+          this.c_confi_sort_payorinitem = response.data
+        }).catch((error) => {
+          console.log(error)
+        })
+      } else {
+        getsort_in(getToken()).then(response => {
+          this.c_confi_sort_payorinitem = response.data
+        }).catch((error) => {
+          console.log(error)
+        })
+      }
+    },
+    get_confi_subsort() {
+      getsubsort(getToken(), this.c_history_edit.sort).then(response => {
+        if (this.c_history_edit.sort - 1 < 0) {
+          this.c_confi_subsort_disable = true
+        } else if (response.data.length !== 0) {
+          this.c_confi_subsort_payorinitem = response.data
+        }
+      }).catch((error) => {
+        console.log(error)
+      })
+    },
     get_project() {
       getproject(getToken()).then(response => {
         this.c_projectitem = response.data
@@ -326,20 +419,57 @@ export default {
       })
     },
     handle_edit(index, row) {
+      this.c_history_edit.id = row.id
+      this.c_history_edit.date = row.purchasedate
       this.c_history_date_p = row.purchasedate
+      this.c_history_edit.invoice = row.invoice_id.number
       this.c_history_invoice_p = row.invoice_id.number
+      this.c_history_edit.account = row.account_id.name
+      this.c_history_edit.account_id = row.account_id.id
       this.c_history_account_p = row.account_id.name
+      this.c_history_edit.amount = row.amount
       this.c_history_amount_p = row.amount
+      this.c_history_project_p = row.project_id.name
+      this.c_history_edit.project = row.project_id.name
+      this.c_history_edit.project_id = row.project_id.id
+      this.c_history_edit.comment = row.comment
+      this.c_history_comment_p = row.comment
+      this.c_history_edit.payorin = row.type
       this.c_history_visible = true
     },
-    handle_filter() {
-
-    },
     c_history_confirm() {
-      this.$message({
-        type: 'success',
-        message: '已完成該筆資料修改'
+      const date = formatdate('yyyy-mm-dd HH:MM:ss.l')
+      let revalue_payorin
+      if (this.c_history_edit.type === '支出' || this.c_history_edit.typw === 0) {
+        revalue_payorin = 0
+      } else {
+        revalue_payorin = 1
+      }
+      patchaccounting(getToken()
+        , this.c_history_edit.id
+        , this.c_history_edit.date
+        , this.c_history_edit.amount
+        , this.c_history_edit.comment
+        , revalue_payorin
+        , this.c_history_edit.sort
+        , this.c_history_edit.subsort
+        , this.c_history_edit.account_id
+        , this.c_history_edit.project_id
+        , this.c_history_edit.invoice
+        , date).then(() => {
+        this.$message({
+          type: 'success',
+          message: '已完成該筆資料修改'
+        })
+        this.get_getaccounting_all()
       })
+        .catch((error) => {
+          console.log(error)
+          this.$message({
+            type: 'error',
+            message: '發生一點錯誤，請稍後再做修改'
+          })
+        })
       this.c_history_visible = false
     },
     c_history_cal() {

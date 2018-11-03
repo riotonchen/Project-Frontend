@@ -285,7 +285,6 @@ export const asyncRouterMap = [{
   path: '/profile/admin-profile-edit',
   component: Layout,
   redirect: 'noredirect',
-  hidden: true,
   children: [{
     path: '',
     component: () =>
@@ -298,36 +297,34 @@ export const asyncRouterMap = [{
   }]
 },
 {
-  path: '/feedback',
+  path: '/a_manage',
   component: Layout,
-  redirect: 'noredirect',
+  redirect: 'a_manage/a_manage_user',
+  meta: {
+    title: '會員管理',
+    icon: 'user'
+  },
   children: [{
-    path: '',
+    path: 'a_manage_user',
     component: () =>
-        import('@/views/a_feedbackmanage/index'),
-    name: 'a_feedbackmanage',
+          import('@/views/a_manage/a_manage_user/index'),
+    name: 'a_manage_user',
     meta: {
-      title: 'a_feedbackmanage',
-      icon: 'user'
+      title: '普通會員'
     }
-  }]
-},
-{
-  path: '/membermanage/business',
-  component: Layout,
-  redirect: 'noredirect',
-  children: [{
-    path: '',
+  },
+  {
+    path: 'a_manage_business',
     component: () =>
-        import('@/views/a_manage_business/index'),
+          import('@/views/a_manage/a_manage_business/index'),
     name: 'a_manage_business',
     meta: {
-      title: 'a_manage_business',
-      icon: 'user'
+      title: '商家會員'
     }
-  }]
+  }
+  ]
 },
-// tableRouter,
+  // tableRouter,
 
 {
   path: '*',

@@ -15,13 +15,7 @@ export default {
     c_cardmanager: '卡片管理',
     c_accountmanager: '帳戶管理',
     c_categorymanager: '類別管理',
-    c_projectmanager: '專案管理',
-    a_profile_view: '管理員資訊',
-    a_profile_edit: '編輯資訊',
-    a_signup: '管理員註冊',
-    a_feedbackmanage: '回饋管理',
-    b_activity_add: '建立商家優惠資訊'
-
+    c_projectmanager: '專案管理'
   },
   c_profile_edit: {
     email: '信箱',
@@ -43,7 +37,7 @@ export default {
     alter: '修改'
   },
   c_card_view: {
-    name: '卡片名稱',
+    name: '姓名',
     content: '請輸入內容',
     search: '搜尋',
     add: '新增一筆',
@@ -92,7 +86,30 @@ export default {
     h2: '最多輸入10字',
     h3: '最多輸入140字'
   },
+  c_accounting_view: {
+    income: '收入',
+    spend: '支出',
+    accountname: '帳戶名稱',
+    name: '請輸入名稱',
+    papertime: '發票日期',
+    class: '分類',
+    choose: '請選擇',
+    categories: '子分類',
+    project: '專案',
+    money: '金額',
+    paper: '發票',
+    amount: '請輸入',
+    other: '備註',
+    other2: '新增備註',
+    data: '新增一筆',
+    send: '送出',
+    purchasingtime: '購買日期',
+    account: '帳戶',
+    invoice: '發票號碼',
+    remark: '備註',
+    addremark: '新增備註'
 
+  },
   c_accountmanager: {
     project: '帳戶類型',
     search: '搜尋',
@@ -157,95 +174,6 @@ export default {
     delete: '刪除',
     confirm: '確定',
     cancel: '取消'
-  },
-  a_profile_view: {
-    email: '信箱',
-    name: '姓名',
-    alter: '修改'
-  },
-  a_profile_edit: {
-    email: '信箱',
-    name: '姓名',
-    newpswd: '密碼',
-    toid_ipt: '請輸入8位數字',
-    password_ipt: '如不修改，空白即可',
-    input: '再次輸入',
-    confirm: '確 認',
-    cancel: '取 消',
-    h1: '上限25個中英數字',
-    h2: 'ToID 只限定於 8 碼',
-    h3: '如不修改，空白即可'
-  },
-  a_signup: {
-    title: '新建管理員帳號',
-    username: '帳號(電子信箱)',
-    password: '密碼',
-    doublepswd: '請再次輸入密碼',
-    signUP: '送出',
-    email: '管理員信箱'
-  },
-  a_feebackmanager: {
-    memberaccount: '會員帳號',
-    date: '日期',
-    problemnumber: '問題編號',
-    problemsubject: '問題主旨',
-    action: '操作',
-    detailed: '詳細',
-    subclassname: '子分類名稱',
-    delete: '刪除',
-    cancel: '取消',
-    confirm: '確認',
-    problemcontent: '問題內容',
-    reply: '回覆'
-  },
-  a_manage_business_view: {
-    businessmember: '商家會員',
-    number: '商家編號',
-    name: '商家名稱',
-    id: '商家帳號',
-    operating: '操作',
-    detail: '詳細資料',
-    activity: '活動紀錄',
-    princiapl: '負責人',
-    taxID: '統一編號',
-    telephone: '手機號碼',
-    cellphone: '電話號碼',
-    extension: '分機號碼',
-    address: '公司地址',
-    picture: '優惠照片',
-    preferentialname: '優惠名稱',
-    preferentialcontent: '優惠內容',
-    status: '狀態',
-    topshelf: '上架時間',
-    lowershelf: '下架時間',
-    confirm: '確定',
-    cancel: '取消',
-    delete: '刪除',
-    notmodify: '以下如不修改保持空白即可'
-  },
-  c_accounting: {
-    date: '發票日期',
-    invoice: '發票號碼',
-    randon: '隨機碼',
-    randonph: '隨機碼(非必填)',
-    payorin: '收支出',
-    accountname: '帳戶名稱',
-    selectdate: '請選擇日期',
-    finish: '完成新增',
-    add: '再新增一筆',
-    papertime: '發票日期',
-    class: '主分類',
-    subsort: '子分類',
-    project: '專案',
-    money: '金額',
-    paper: '發票',
-    amount: '請輸入',
-    other: '備註',
-    other2: '新增備註',
-    account: '帳戶',
-    invoicenumber: '發票號碼(非必填)',
-    remark: '備註',
-    addremark: '新增備註'
   },
 
   navbar: {
@@ -351,6 +279,31 @@ export default {
     close: '關閉',
     closeOthers: '關閉其它',
     closeAll: '關閉所有'
+  },
+  a_manage_business_view: {
+    businessmember: '商家會員',
+    number: '商家編號',
+    name: '商家名稱',
+    id: '商家帳號',
+    operating: '操作',
+    detail: '詳細資料',
+    activity: '活動紀錄',
+    princiapl: '負責人',
+    taxID: '統一編號',
+    telephone: '手機號碼',
+    cellphone: '電話號碼',
+    extension: '分機號碼',
+    address: '公司地址',
+    picture: '優惠照片',
+    preferentialname: '優惠名稱',
+    preferentialcontent: '優惠內容',
+    status: '狀態',
+    topshelf: '上架時間',
+    lowershelf: '下架時間',
+    confirm: '確定',
+    cancel: '取消',
+    delete: '刪除',
+    notmodify: '以下如不修改保持空白即可'
   }
 
 }

@@ -8,7 +8,7 @@
         <el-col :xs="3" :sm="3" :md="3" :lg="3" :xl="4" class="logo">
           <div>
             <router-link to="/">
-              <img src="../../assets/images/177.png" class="logoimg">
+              <img src="../../assets/images/177.svg" class="logoimg">
             </router-link>
           </div>
         </el-col>

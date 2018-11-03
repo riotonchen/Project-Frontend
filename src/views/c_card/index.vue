@@ -29,14 +29,8 @@
       </el-table>
     </div>
     <div class="dialog_container">
-      <el-dialog :visible.sync="c_card_visible" width="80vw" title="子分類">
-        <el-form ref="c_card_edit" :model="c_card_edit" :rules="c_card_edit_rules" label-position="left" inline class="table_card">
-          <el-form-item>
-            <span>{{ $t('c_card_view.blank') }}</span>
-          </el-form-item>
-          <el-form-item>
-            <span />
-          </el-form-item>
+      <el-dialog :visible.sync="c_card_visible" :title="$t('c_card_view.edit')" width="80vw">
+        <el-form ref="c_card_edit" :model="c_card_edit" :rules="c_card_edit_rules" hide-required-asterisk label-position="left" inline class="table_card">
           <el-form-item :label="$t('c_card_view.name')" prop="name">
             <el-input v-model="c_card_edit.name" :placeholder="c_card_name_p" clearable name="name" @focus="clean_name()" />
           </el-form-item>
@@ -71,14 +65,18 @@ export default {
   },
   data() {
     const validecardnamelength = (rule, value, callback) => {
-      if (value.length > 10) {
+      if (value.length < 1) {
+        callback(new Error('卡片名稱不可為空'))
+      } else if (value.length > 10) {
         callback(new Error('卡片名稱至多10碼'))
       } else {
         callback()
       }
     }
     const validecardnumberlength = (rule, value, callback) => {
-      if (value.length > 100) {
+      if (value.length < 1) {
+        callback(new Error('條碼編號不可為空'))
+      } else if (value.length > 100) {
         callback(new Error('條碼編號上限為100字，如持有卡更長，請聯繫我們'))
       } else {
         callback()
@@ -86,22 +84,22 @@ export default {
     }
     return {
       listQuery: {
-        id: undefined
+        id: ''
       },
       c_card_id: '',
       c_card_name_p: '',
       c_card_number_p: '',
       c_cardlist: [],
       c_carditem: [],
-      c_user_card: null,
+      c_user_card: [],
       c_card_visible: false,
       c_card_edit: {
         name: '',
         number: ''
       },
       c_card_edit_rules: {
-        name: [{ required: false, trigger: 'change', validator: validecardnamelength }],
-        number: [{ required: false, trigger: 'change', validator: validecardnumberlength }]
+        name: [{ required: true, trigger: 'change', validator: validecardnamelength }],
+        number: [{ required: true, trigger: 'change', validator: validecardnumberlength }]
       },
       view_loading: true
     }
@@ -149,23 +147,30 @@ export default {
       })
     },
     c_card_confirm() {
-      const date = formatdate('yyyy-mm-dd HH:MM:ss.l')
-      patchcard_modify(getToken(), this.c_card_id, this.c_card_edit.name, this.c_card_edit.number, date)
-        .then(() => {
-          this.$message({
-            type: 'success',
-            message: '卡片相關更新成功'
-          })
-          this.get_card()
-        })
-        .catch((error) => {
-          console.log(error)
-          this.$message({
-            type: 'error',
-            message: '發生一點錯誤，請稍後再做修改'
-          })
-        })
-      this.c_card_visible = false
+      this.$refs.c_card_edit.validate((valid) => {
+        if (valid) {
+          const date = formatdate('yyyy-mm-dd HH:MM:ss.l')
+          patchcard_modify(getToken(), this.c_card_id, this.c_card_edit.name, this.c_card_edit.number, date)
+            .then(() => {
+              this.$message({
+                type: 'success',
+                message: '卡片相關更新成功'
+              })
+              this.get_card()
+            })
+            .catch((error) => {
+              console.log(error)
+              this.$message({
+                type: 'error',
+                message: '發生一點錯誤，請稍後再做修改'
+              })
+            })
+          this.c_card_visible = false
+        } else {
+          console.log('error submit')
+          return false
+        }
+      })
     },
     c_card_cal() {
       this.$message({
@@ -175,44 +180,51 @@ export default {
       this.c_card_visible = false
     },
     c_card_del() {
-      this.$confirm('你真的要刪除該卡片資料嗎？', '警告', {
-        cancelButtonText: '取消',
-        confirmButtonText: '確認',
-        type: 'warning'
-      }).then(() => {
-        this.$confirm('請在確認一次是否要刪除該卡片資料資料', '警告', {
-          cancelButtonText: '取消',
-          confirmButtonText: '確認',
-          type: 'warning'
-        }).then(() => {
-          const date = formatdate('yyyy-mm-dd HH:MM:ss.l')
-          patchcard_del(getToken(), this.c_card_id, date).then(() => {
-            this.$message({
-              type: 'success',
-              message: '刪除成功'
+      this.$refs.c_card_edit.validate((valid) => {
+        if (valid) {
+          this.$confirm('你真的要刪除該卡片資料嗎？', '警告', {
+            cancelButtonText: '取消',
+            confirmButtonText: '確認',
+            type: 'warning'
+          }).then(() => {
+            this.$confirm('請在確認一次是否要刪除該卡片資料資料', '警告', {
+              cancelButtonText: '取消',
+              confirmButtonText: '確認',
+              type: 'warning'
+            }).then(() => {
+              const date = formatdate('yyyy-mm-dd HH:MM:ss.l')
+              patchcard_del(getToken(), this.c_card_id, date).then(() => {
+                this.$message({
+                  type: 'success',
+                  message: '刪除成功'
+                })
+                this.get_card()
+              }).catch((error) => {
+                console.log(error)
+                this.$message({
+                  type: 'error',
+                  message: '發生一點錯誤，請稍後再做修改'
+                })
+              })
+              this.c_card_visible = false
+            }).catch(() => {
+              this.$message({
+                type: 'info',
+                message: '已取消刪除'
+              })
+              this.c_card_visible = false
             })
-            this.get_card()
-          }).catch((error) => {
-            console.log(error)
+          }).catch(() => {
             this.$message({
-              type: 'error',
-              message: '發生一點錯誤，請稍後再做修改'
+              type: 'info',
+              message: '已取消刪除'
             })
+            this.c_card_visible = false
           })
-          this.c_card_visible = false
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消刪除'
-          })
-          this.c_card_visible = false
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消刪除'
-        })
-        this.c_card_visible = false
+        } else {
+          console.log('error submit')
+          return false
+        }
       })
     }
   }
