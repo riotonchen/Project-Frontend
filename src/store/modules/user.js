@@ -28,6 +28,7 @@ const user = {
     */
     id: '',
     toid: '',
+    status: '',
     account: '',
     identifier: '',
     membertype: [],

@@ -18,7 +18,7 @@ export default function openWindow(url, title, w, h) {
   const top = ((height / 2) - (h / 2)) + dualScreenTop
   const newWindow = window.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=yes, copyhistory=no, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left)
 
-  // 將重點放在新窗口上
+  // Puts focus on the newWindow
   if (window.focus) {
     newWindow.focus()
   }

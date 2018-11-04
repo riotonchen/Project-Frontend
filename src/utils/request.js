@@ -1,10 +1,9 @@
 import axios from 'axios'
-/*
+
 import {
-  Message,
-  MessageBox
+  Message
 } from 'element-ui'
-*/
+
 import store from '@/store'
 import {
   getToken
@@ -13,10 +12,12 @@ import {
 // create an axios instance
 const service = axios.create({
   baseURL: process.env.BASE_API, // api 的 base_url
-  timeout: 5000, // request timeout
+  timeout: 5000 // request timeout
+  /*
   headers: {
     'X-Requested-With': 'XMLHttpRequest'
   }
+  */
 })
 
 // request interceptor
@@ -74,6 +75,7 @@ service.interceptors.response.use(
       return response.data
     }
   },
+  */
   error => {
     console.log('err' + error) // for debug
     Message({
@@ -83,7 +85,7 @@ service.interceptors.response.use(
     })
     return Promise.reject(error)
   }
-  */
+
 )
 
 export default service

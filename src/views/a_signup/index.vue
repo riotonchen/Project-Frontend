@@ -4,7 +4,7 @@
       {{ $t('route.a_signup') }}
     </title>
     <el-card class="box_card">
-      <el-form ref="signupForm" :model="signupForm" :rules="signupRules" inline class="table_card" auto-complete="on" label-position="left">
+      <el-form ref="signupForm" :model="signupForm" :rules="signupRules" hide-required-asterisk inline class="table_card" auto-complete="on" label-position="left">
 
         <el-form-item>
           <span>{{ $t('a_signup.title') }}</span>

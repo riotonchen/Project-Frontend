@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function patchaccounting(
+export function patchaccounting_confi(
   token,
   id,
   purchasedate,
@@ -11,8 +11,8 @@ export function patchaccounting(
   subsort_id,
   account_id,
   project_id,
-  invoicenumber,
-  renew_time
+  invoice_id,
+  renew_time,
 ) {
   var jwtDecode = require('jwt-decode')
   var decoded = jwtDecode(token)
@@ -20,18 +20,63 @@ export function patchaccounting(
   const data = {
     token,
     id,
-    type,
     purchasedate,
     amount,
     comment,
-    syncstatus: 0,
-    member_id,
+    type,
     sort_id,
     subsort_id,
     account_id,
+    member_id,
     project_id,
-    invoicenumber,
-    renew_time
+    invoice_id,
+    renew_time,
+    syncstatus: 0
+  }
+  var requ_url = 'https://www.177together.com/api/accounting/' + id + '/'
+
+  return request({
+    url: requ_url,
+    method: 'patch',
+    headers: {
+      Authorization: 'JWT ' + token
+    },
+    data
+  })
+}
+
+export function patchaccounting_del(
+  token,
+  id,
+  purchasedate,
+  amount,
+  comment,
+  type,
+  sort_id,
+  subsort_id,
+  account_id,
+  project_id,
+  invoice_id,
+  renew_time,
+) {
+  var jwtDecode = require('jwt-decode')
+  var decoded = jwtDecode(token)
+  var member_id = decoded.user_id
+  const data = {
+    token,
+    id,
+    purchasedate,
+    amount,
+    comment,
+    type,
+    sort_id,
+    subsort_id,
+    account_id,
+    member_id,
+    project_id,
+    invoice_id,
+    renew_time,
+    syncstatus: 3
   }
   var requ_url = 'https://www.177together.com/api/accounting/' + id + '/'
 

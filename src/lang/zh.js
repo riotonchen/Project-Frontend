@@ -23,6 +23,39 @@ export default {
     b_activity_add: '建立商家優惠資訊'
 
   },
+  b_profile_edit: {
+    email: '信箱',
+    name: '商家名稱',
+    manager: '負責人',
+    uni_num: '統一編號',
+    mobile_num: '行動電話',
+    phone_num: '公司電話',
+    extension: '負責人分機',
+    address: '公司地址',
+    toid_ipt: '請輸入8位數字',
+    password_ipt: '如不修改，空白即可',
+    input: '再次輸入',
+    confirm: '確 認',
+    cancel: '取 消',
+    h1: '上限25個中英數字',
+    h2: '統一編號只限定於 8 碼',
+    h3: '行動電話只限定於 8 碼',
+    h4: '公司電話只限定於 8 碼',
+    h5: '負責人電話只限定於8碼',
+    b_profile_edit: '商家會員'
+  },
+  b_activity_add: {
+    commodityname: '商品名稱',
+    content: '優惠內容',
+    timestart: '上架時間',
+    timestop: '下架時間',
+    date: '請選擇日期',
+    picturetext: '將檔案拖到此處，或',
+    text: '點擊上傳',
+    remark: '只能上傳jpg/png文件，且不超過500kb',
+    add: '新增'
+  },
+
   c_profile_edit: {
     email: '信箱',
     name: '姓名',
@@ -62,9 +95,11 @@ export default {
     startdate: '開始日期',
     enddate: '結束日期',
     incomespend: '收支出',
+    choose: '請選擇',
     addmainsort: '新增主類別',
     add: '新增',
     mainsortname: '主類別名稱',
+    loadingtext: '資料取得中，請稍後...',
     amount: '請輸入',
     confirm: '確定',
     cancel: '取消',
@@ -81,8 +116,10 @@ export default {
     delete: '刪除',
     edit: '編輯',
     addsubclass: '新增子類別',
-    totalincome: '總收入',
-    totalspend: '總支出'
+    budgetmonth: '本月預算',
+    spendingmonth: '本月支出',
+    remainingbudget: '預算餘額'
+
   },
   c_connection: {
     subject: '主旨',

@@ -31,6 +31,40 @@ export default {
     thirdparty: 'Or connect with',
     thirdpartyTips: 'Can not be simulated on local, so please combine you own business simulation! ! !'
   },
+  b_profile_edit: {
+    email: 'email',
+    name: 'business name',
+    manager: 'manager',
+    uni_num: 'united number',
+    mobile_num: 'mobile number',
+    phone_num: 'phone number',
+    extension: 'extension',
+    address: 'address',
+    toid_ipt: 'Please enter 8 numbers',
+    password_ipt: 'If not modified, blank',
+    input: 'Pswd Again',
+    confirm: 'Confirm',
+    cancel: 'Cancel',
+    h1: '25 words at the most',
+    h2: '8 digit numbers at the most',
+    h3: '8 digit numbers at the most',
+    h4: '8 digit numbers at the most',
+    h5: '8 digit numbers at the most',
+    b_profile_edit: 'business member'
+  },
+
+  b_activity_add: {
+    commodityname: 'Product Name',
+    content: 'Content of the Offer',
+    timestart: 'Start selling',
+    timestop: 'Stop trafficking',
+    date: 'Please select a date',
+    picturetext: 'Put the file here , or ',
+    text: 'click upload',
+    remark: 'Only jpg/png files can be uploaded and not more than 500kb',
+    add: 'Add'
+  },
+
   c_project: {
     word: 'Please enter the content',
     search: 'Seach',
@@ -55,6 +89,8 @@ export default {
   },
   c_category: {
     incomespend: 'Income or Spend',
+    choose: 'Please select',
+    loadingtext: 'Data get in, please later ...',
     addmainsort: 'Add new main category',
     add: 'Add',
     mainsortname: 'Main-name',
@@ -70,11 +106,13 @@ export default {
     subclass: 'Sub class',
     edit: 'Edit',
     addsubclass: 'Add new sub class',
-    notmodify: 'If you do not modify the following, just keep blank.',
+    notmodify: 'If you do not modify the following , just keep blank.',
     subclassname: 'Sub-name',
     delete: 'Delete',
-    totalincome: 'Total income',
-    totalspend: 'Total spend'
+    budgetmonth: 'Budget for the Month',
+    spendingmonth: 'Expenditure for the month',
+    remainingbudget: 'Remaining budget'
+
   },
   c_accountmanager: {
     accountname: 'Account',

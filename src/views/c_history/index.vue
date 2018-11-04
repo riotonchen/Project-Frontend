@@ -56,13 +56,27 @@
       <!--目前使用日期做排序-->
       <el-table :data="c_user_history" :default-sort="{prop: 'date', order: 'descending'}" stripe style="width: 100%;" max-height="470" fit>
         <el-table-column type="expand">
-          <template slot-scope="props">
+          <template slot-scope="scope">
             <el-form label-position="left" inline class="table_expand">
+              <!--
+              <el-form-item label="發票隨機碼">
+                <div v-if="scope.row.invoice_id==='-'">
+                  <span>
+                    {{ scope.row.invoice_id }}
+                  </span>
+                </div>
+                <div v-else>
+                  <span>
+                    {{ scope.row.invoice_id.randomNumber }}
+                  </span>
+                </div>
+              </el-form-item>
+              -->
               <el-form-item :label="$t('c_history.note')">
-                <span>{{ props.row.comment }}</span>
+                <span>{{ scope.row.comment }}</span>
               </el-form-item>
               <el-form-item :label="$t('c_history.picture')">
-                <span>{{ props.row.picture }}</span>
+                <span>{{ scope.row.picture }}</span>
               </el-form-item>
             </el-form>
           </template>
@@ -76,7 +90,7 @@
         </el-table-column>
         <el-table-column :label="$t('c_history.receipt')" prop="invoice_id.number" align="center">
           <template slot-scope="scope">
-            <div v-if=" scope.row.invoice_id==='-'">
+            <div v-if="scope.row.invoice_id==='-'">
               <span>
                 {{ scope.row.invoice_id }}
               </span>
@@ -140,7 +154,7 @@
       </el-table>
     </div>
     <div class="dialog_container">
-      <el-dialog :visible.sync="c_history_visible" :title="$t('c_history.edit')" width="80vw">
+      <el-dialog :visible.sync="c_history_visible" :title="$t('c_history.edit')" width="80vw" top="8vh">
         <el-form ref="c_history_edit" :model="c_history_edit" label-position="left" inline class="table_history">
           <el-form-item>
             <span>{{ $t('c_history.notmodify') }}</span>
@@ -159,13 +173,16 @@
               <el-option v-for="account in c_accountitem" :key="account.id" :label="account.name" :value="account.id" />
             </el-select>
           </el-form-item>
-          <el-form-item :label="$t('c_history.money')" prop="amount">
-            <el-input v-model="c_history_edit.amount" :placeholder="c_history_amount_p" clearable />
+          <el-form-item label="隨機碼" prop="random">
+            <el-input v-model="c_history_edit.random" :placeholder="c_history_random_p" clearable />
           </el-form-item>
           <el-form-item label="專案" prop="project">
             <el-select v-model="c_history_edit.project" :placeholder="c_history_project_p" clearable filterable @focus="get_project()" @change="get_project()">
               <el-option v-for="project in c_projectitem" :key="project.id" :label="project.name" :value="project.id" />
             </el-select>
+          </el-form-item>
+          <el-form-item :label="$t('c_history.money')" prop="amount">
+            <el-input v-model="c_history_edit.amount" :placeholder="c_history_amount_p" clearable />
           </el-form-item>
           <el-form-item label="備註" prop="comment">
             <el-input v-model="c_history_edit.comment" :placeholder="c_history_comment_p" clearable />
@@ -212,7 +229,10 @@ import { getsort_pay, getsort_in } from '@/api/sort/getsort'
 import { getsubsort } from '@/api/subsort/getsubsort'
 import { getproject } from '@/api/project/getproject'
 import { getaccount_all } from '@/api/account/getaccount'
-import { patchaccounting } from '@/api/accounting/patchaccounting'
+import { patchaccounting_confi, patchaccounting_del } from '@/api/accounting/patchaccounting'
+import { postinvoice } from '@/api/invoice/postinvoice'
+import { patchinvoice } from '@/api/invoice/patchinvoice'
+import { postmemberinvoice } from '@/api/memberinvoice/postmemberinvoice'
 import { getToken } from '@/utils/auth'
 import { formatdate } from '@/utils/index'
 
@@ -223,6 +243,7 @@ export default {
   },
   data() {
     return {
+      globledate: formatdate('yyyy-mm-dd HH:MM:ss.l'),
       startenddate: '',
       c_payorin: '',
       c_sort: '',
@@ -234,6 +255,7 @@ export default {
         id: '',
         date: '',
         invoice: '',
+        random: '',
         account: '',
         account_id: '',
         amount: '',
@@ -250,6 +272,7 @@ export default {
       c_history_amount_p: '',
       c_history_comment_p: '',
       c_history_project_p: '',
+      c_history_random_p: '',
       c_sort_payorinitem: [],
       c_subsort_payorinitem: [],
       c_projectitem: [],
@@ -262,7 +285,10 @@ export default {
       c_history_visible: false,
       c_pay_in: [{ label: '支出', value: 0 }, { label: '收入', value: 1 }],
       c_user_history: [],
-      redirect: undefined
+      redirect: undefined,
+      sent_sort: '',
+      sent_subsort: '',
+      defineoriinvoice: ''
     }
   },
   watch: {
@@ -313,7 +339,6 @@ export default {
     },
     'c_history_edit.sort': {
       handler: function(newc_sort, oldc_sort) {
-        console.log(newc_sort, oldc_sort)
         if (oldc_sort === '') {
           this.c_confi_subsort_disable = false
         } else if (newc_sort !== oldc_sort) {
@@ -340,6 +365,7 @@ export default {
       getaccounting_all(getToken()).then((response) => {
         this.c_user_history = []
         this.c_user_history = response.data
+        console.log(response.data)
         this.c_user_history.forEach(function(element) {
           if (element.type === false) {
             element.type = '支出'
@@ -424,6 +450,8 @@ export default {
       this.c_history_date_p = row.purchasedate
       this.c_history_edit.invoice = row.invoice_id.number
       this.c_history_invoice_p = row.invoice_id.number
+      this.c_history_edit.random = row.invoice_id.randomNumber
+      this.c_history_random_p = row.invoice_id.randomNumber
       this.c_history_edit.account = row.account_id.name
       this.c_history_edit.account_id = row.account_id.id
       this.c_history_account_p = row.account_id.name
@@ -436,40 +464,93 @@ export default {
       this.c_history_comment_p = row.comment
       this.c_history_edit.payorin = row.type
       this.c_history_visible = true
+      this.sent_sort = row.sort_id.id
+      this.sent_subsort = row.subsort_id.id
+      this.defineoriinvoice = row.invoice_id
     },
     c_history_confirm() {
-      const date = formatdate('yyyy-mm-dd HH:MM:ss.l')
       let revalue_payorin
       if (this.c_history_edit.type === '支出' || this.c_history_edit.typw === 0) {
         revalue_payorin = 0
       } else {
         revalue_payorin = 1
       }
-      patchaccounting(getToken()
-        , this.c_history_edit.id
-        , this.c_history_edit.date
-        , this.c_history_edit.amount
-        , this.c_history_edit.comment
-        , revalue_payorin
-        , this.c_history_edit.sort
-        , this.c_history_edit.subsort
-        , this.c_history_edit.account_id
-        , this.c_history_edit.project_id
-        , this.c_history_edit.invoice
-        , date).then(() => {
-        this.$message({
-          type: 'success',
-          message: '已完成該筆資料修改'
-        })
-        this.get_getaccounting_all()
-      })
-        .catch((error) => {
-          console.log(error)
-          this.$message({
-            type: 'error',
-            message: '發生一點錯誤，請稍後再做修改'
+      if ((this.c_history_edit.invoice).length > 0 && this.defineoriinvoice === '-') {
+        postinvoice(getToken()
+          , this.c_history_edit.invoice
+          , this.c_history_edit.random
+          , this.c_history_edit.amount)
+          .then((response) => {
+            postmemberinvoice(getToken()
+              , response.data.id)
+              .then(() => {
+                if (this.c_history_edit.sort !== '') {
+                  this.sent_sort = this.c_history_edit.sort
+                }
+                if (this.c_history_edit.subsort !== '') {
+                  this.sent_subsort = this.c_history_edit.subsort
+                }
+                patchaccounting_confi(getToken()
+                  , this.c_history_edit.id
+                  , this.c_history_edit.date
+                  , this.c_history_edit.amount
+                  , this.c_history_edit.comment
+                  , revalue_payorin
+                  , this.sent_sort
+                  , this.sent_subsort
+                  , this.c_history_edit.account_id
+                  , this.c_history_edit.project_id
+                  , response.data.id
+                  , this.globledate).then(() => {
+                  this.$message({
+                    type: 'success',
+                    message: '已完成該筆資料修改'
+                  })
+                  this.get_getaccounting_all()
+                })
+                  .catch((error) => {
+                    console.log(error)
+                    this.$message({
+                      type: 'error',
+                      message: '發生一點錯誤，請稍後再做修改'
+                    })
+                  })
+              })
           })
-        })
+      } else {
+        patchinvoice(getToken()
+          , this.defineoriinvoice.id
+          , this.c_history_edit.invoice
+          , this.c_history_edit.random
+          , this.globledate)
+          .then((response) => {
+            patchaccounting_confi(getToken()
+              , this.c_history_edit.id
+              , this.c_history_edit.date
+              , this.c_history_edit.amount
+              , this.c_history_edit.comment
+              , revalue_payorin
+              , this.sent_sort
+              , this.sent_subsort
+              , this.c_history_edit.account_id
+              , this.c_history_edit.project_id
+              , response.data.id
+              , this.globledate).then(() => {
+              this.$message({
+                type: 'success',
+                message: '已完成該筆資料修改'
+              })
+              this.get_getaccounting_all()
+            })
+              .catch((error) => {
+                console.log(error)
+                this.$message({
+                  type: 'error',
+                  message: '發生一點錯誤，請稍後再做修改'
+                })
+              })
+          })
+      }
       this.c_history_visible = false
     },
     c_history_cal() {
@@ -490,11 +571,38 @@ export default {
           confirmButtonText: '確認',
           type: 'warning'
         }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '刪除成功'
+          let revalue_payorin
+          if (this.c_history_edit.type === '支出' || this.c_history_edit.typw === 0) {
+            revalue_payorin = 0
+          } else {
+            revalue_payorin = 1
+          }
+          patchaccounting_del(getToken()
+            , this.c_history_edit.id
+            , this.c_history_edit.date
+            , this.c_history_edit.amount
+            , this.c_history_edit.comment
+            , revalue_payorin
+            , this.sent_sort
+            , this.sent_subsort
+            , this.c_history_edit.account_id
+            , this.c_history_edit.project_id
+            , this.defineoriinvoice.id
+            , this.globledate).then(() => {
+            this.$message({
+              type: 'success',
+              message: '刪除成功'
+            })
+            this.get_getaccounting_all()
           })
-          this.c_card_visible = false
+            .catch((error) => {
+              console.log(error)
+              this.$message({
+                type: 'error',
+                message: '發生一點錯誤，請稍後再做修改'
+              })
+            })
+          this.c_history_visible = false
         }).catch(() => {
           this.$message({
             type: 'info',
@@ -551,9 +659,4 @@ export default {
   //margin-bottom: 0;
   width: 50%;
 }
-
-.history_table_container {
-  background-color: rgb(240, 242, 245);
-}
 </style>
-

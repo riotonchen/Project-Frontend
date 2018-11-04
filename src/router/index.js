@@ -313,6 +313,36 @@ export const asyncRouterMap = [{
   }]
 },
 {
+  path: '/profile/ent-profile-view',
+  component: Layout,
+  redirect: 'noredirect',
+  children: [{
+    path: '',
+    component: () =>
+        import('@/views/b_profile_edit/index'),
+    name: 'b_profile_edit',
+    meta: {
+      title: 'b_profile_edit',
+      icon: 'user'
+    }
+  }]
+},
+{
+  path: '/activity/add',
+  component: Layout,
+  redirect: 'noredirect',
+  children: [{
+    path: '',
+    component: () =>
+        import('@/views/b_activity_add/index'),
+    name: 'b_activity_add',
+    meta: {
+      title: 'b_activity_add',
+      icon: 'user'
+    }
+  }]
+},
+{
   path: '/membermanage/business',
   component: Layout,
   redirect: 'noredirect',
