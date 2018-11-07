@@ -11,7 +11,7 @@
           <span>{{ $t('c_history.selecttime') }}</span>
         </el-col>
         <el-col :xs="24" :sm="15" :md="9" :lg="8" :xl="6">
-          <el-date-picker v-model="startenddate" :start-placeholder="$t('c_history.startdate')" :end-placeholder="$t('c_history.enddate')" range-separator="-" align="center" type="daterange" style="width: 40vw;min-width:15rem;max-width:23rem;" />
+          <el-date-picker v-model="startenddate" :picker-options="datepickoptions" :start-placeholder="$t('c_history.startdate')" :end-placeholder="$t('c_history.enddate')" range-separator="-" align="center" type="daterange" style="width: 40vw;min-width:15rem;max-width:23rem;" @change="get_getaccounting_all()" />
         </el-col>
       </el-row>
       <el-row class="class_seletor">
@@ -154,7 +154,7 @@
       </el-table>
     </div>
     <div class="dialog_container">
-      <el-dialog :visible.sync="c_history_visible" :title="$t('c_history.edit')" width="80vw" top="8vh">
+      <el-dialog :visible.sync="c_history_visible" :title="$t('c_history.edit')" width="80vw" top="5.5vh">
         <el-form ref="c_history_edit" :model="c_history_edit" label-position="left" inline class="table_history">
           <el-form-item>
             <span>{{ $t('c_history.notmodify') }}</span>
@@ -200,7 +200,7 @@
             </el-select>
           </el-form-item>
           <el-form-item :label="$t('c_history.mainsort')" prop="sort">
-            <el-select v-model="c_history_edit.sort" :disabled="c_sort_disable" :placeholder="$t('c_history.mainsort')" clearable filterable style="width: 25vw;max-width:7.5rem;min-width:6.5rem;" @focus="get_confi_sort()" @change="get_confi_subsort()">
+            <el-select v-model="c_history_edit.sort" :disabled="c_confi_sort_disable" :placeholder="$t('c_history.mainsort')" clearable filterable style="width: 25vw;max-width:7.5rem;min-width:6.5rem;" @focus="get_confi_sort()" @change="get_confi_subsort()">
               <el-option v-for="sort in c_confi_sort_payorinitem" :key="sort.id" :label="sort.name" :value="sort.id" />
             </el-select>
           </el-form-item>
@@ -209,8 +209,11 @@
               <el-option v-for="subsort in c_confi_subsort_payorinitem" :key="subsort.id" :label="subsort.name" :value="subsort.id" />
             </el-select>
           </el-form-item>
-        </el-form>
 
+        </el-form>
+        <span>
+          <el-input v-model="show_ori_category" readonly style="border:0;" />
+        </span>
         <span slot="footer" class="invoice_dialog_footer">
           <el-button type="danger" plain @click="c_history_del()">{{ $t('c_history.delete') }}</el-button>
           <el-button type="primary" @click="c_history_confirm()">{{ $t('c_history.confirm') }}</el-button>
@@ -224,17 +227,19 @@
 <script>
 
 import waves from '@/directive/waves' // 水波紋指令
-import { getaccounting_all } from '@/api/accounting/getaccounting'
+
+import { getaccounting_all, getaccounting_single } from '@/api/accounting/getaccounting'
 import { getsort_pay, getsort_in } from '@/api/sort/getsort'
 import { getsubsort } from '@/api/subsort/getsubsort'
 import { getproject } from '@/api/project/getproject'
-import { getaccount_all } from '@/api/account/getaccount'
+import { getaccount_all, getaccountsingledata } from '@/api/account/getaccount'
+import { patchaccount_modify } from '@/api/account/patchaccount'
 import { patchaccounting_confi, patchaccounting_del } from '@/api/accounting/patchaccounting'
 import { postinvoice } from '@/api/invoice/postinvoice'
 import { patchinvoice } from '@/api/invoice/patchinvoice'
 import { postmemberinvoice } from '@/api/memberinvoice/postmemberinvoice'
 import { getToken } from '@/utils/auth'
-import { formatdate } from '@/utils/index'
+import { formatdate, formatdate_inc_time } from '@/utils/index'
 
 export default {
   name: 'CHistory',
@@ -269,26 +274,71 @@ export default {
       c_history_date_p: '',
       c_history_invoice_p: '',
       c_history_account_p: '',
+      c_history_account_prep: '',
       c_history_amount_p: '',
       c_history_comment_p: '',
       c_history_project_p: '',
       c_history_random_p: '',
+      c_history_sort_p: '',
+      c_history_subsort_p: '',
       c_sort_payorinitem: [],
       c_subsort_payorinitem: [],
       c_projectitem: [],
       c_accountitem: [],
       c_confi_sort_payorinitem: [],
       c_confi_subsort_payorinitem: [],
-      c_sort_disable: false,
+      c_sort_disable: true,
       c_subsort_disable: true,
+      c_confi_sort_disable: true,
       c_confi_subsort_disable: true,
       c_history_visible: false,
       c_pay_in: [{ label: '支出', value: 0 }, { label: '收入', value: 1 }],
       c_user_history: [],
       redirect: undefined,
-      sent_sort: '',
-      sent_subsort: '',
-      defineoriinvoice: ''
+      send_payorin: '',
+      send_sort: '',
+      send_subsort: '',
+      show_sort: '',
+      show_subsort: '',
+      show_ori_category: '',
+      datepickoptions: {
+        shortcuts: [{
+          text: '最近一週',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+            picker.$emit('pick', [start, end])
+          }
+        },
+        {
+          text: '最近一個月',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+            picker.$emit('pick', [start, end])
+          }
+        },
+        {
+          text: '最近三個月',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+            picker.$emit('pick', [start, end])
+          }
+        },
+        {
+          text: '最近六個月',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 180)
+            picker.$emit('pick', [start, end])
+          }
+        }]
+      }
     }
   },
   watch: {
@@ -328,7 +378,7 @@ export default {
     },
     'c_history_edit.payorin': {
       handler: function(newc_payorin, oldc_payorin) {
-        if (oldc_payorin === 0) {
+        if (oldc_payorin === '') {
           this.c_confi_sort_disable = false
         } else if (newc_payorin !== oldc_payorin) {
           this.c_history_edit.sort = ''
@@ -362,18 +412,26 @@ export default {
   },
   methods: {
     get_getaccounting_all() {
-      getaccounting_all(getToken()).then((response) => {
-        this.c_user_history = []
-        this.c_user_history = response.data
-        console.log(response.data)
-        this.c_user_history.forEach(function(element) {
-          if (element.type === false) {
-            element.type = '支出'
+      let startdate
+      let enddate
+      if (this.startenddate.length === 2) {
+        startdate = formatdate_inc_time(this.startenddate[0], 'yyyy-mm-dd')
+        enddate = formatdate_inc_time(this.startenddate[1], 'yyyy-mm-dd')
+      } else {
+        startdate = ''
+        enddate = ''
+      }
+
+      getaccounting_all(getToken(), startdate, enddate).then((res) => {
+        this.c_user_history = res.data
+        this.c_user_history.forEach(items => {
+          if (items.type === false) {
+            items.type = '支出'
           } else {
-            element.type = '收入'
+            items.type = '收入'
           }
-          if (element.invoice_id === null) {
-            element.invoice_id = '-'
+          if (items.invoice_id === null || items.invoice_id === undefined) {
+            items.invoice_id = '-'
           }
         })
       })
@@ -445,70 +503,249 @@ export default {
       })
     },
     handle_edit(index, row) {
-      this.c_history_edit.id = row.id
+      this.c_history_visible = true
       this.c_history_edit.date = row.purchasedate
-      this.c_history_date_p = row.purchasedate
-      this.c_history_edit.invoice = row.invoice_id.number
-      this.c_history_invoice_p = row.invoice_id.number
-      this.c_history_edit.random = row.invoice_id.randomNumber
-      this.c_history_random_p = row.invoice_id.randomNumber
+
       this.c_history_edit.account = row.account_id.name
       this.c_history_edit.account_id = row.account_id.id
-      this.c_history_account_p = row.account_id.name
-      this.c_history_edit.amount = row.amount
-      this.c_history_amount_p = row.amount
-      this.c_history_project_p = row.project_id.name
+
       this.c_history_edit.project = row.project_id.name
       this.c_history_edit.project_id = row.project_id.id
+
       this.c_history_edit.comment = row.comment
+
+      this.c_history_edit.invoice = row.invoice_id.number
+      this.c_history_edit.invoice_id = row.invoice_id.id
+
+      this.c_history_edit.amount = row.amount
+      this.c_history_edit.random = row.invoice_id.randomNumber
+
+      this.send_id = row.id
+      this.send_payorin = row.type
+      this.send_sort = row.sort_id.id
+      this.send_subsort = row.subsort_id.id
+      this.send_invoice_id = row.invoice_id.id
+
+      this.show_sort = row.sort_id.name
+      this.show_subsort = row.subsort_id.name
+
+      this.c_history_date_p = row.purchasedate
+      this.c_history_invoice_p = row.invoice_id.number
+      this.c_history_account_p = row.account_id.name
+      this.c_history_account_prep = row.account_id.id
+      this.c_history_amount_p = row.amount
       this.c_history_comment_p = row.comment
-      this.c_history_edit.payorin = row.type
-      this.c_history_visible = true
-      this.sent_sort = row.sort_id.id
-      this.sent_subsort = row.subsort_id.id
-      this.defineoriinvoice = row.invoice_id
+      this.c_history_project_p = row.project_id.name
+      this.c_history_random_p = row.invoice_id.randomNumber
+      this.c_history_payorin_p = row.type
+      this.c_history_sort_p = row.sort_id.id
+      this.c_history_subsort_p = row.subsort_id.id
+
+      this.show_ori_category = '原帳務分類：★收支出： ' + this.send_payorin + '   /   ★主分類： ' + this.show_sort + '   /   ★子分類： ' + this.show_subsort
+    },
+    c_account_configure_yiv() {
+      let ori_balance
+      let new_balance
+
+      getaccounting_single(getToken(), this.send_id)
+        .then((res_gats) => {
+          getaccountsingledata(getToken(), this.c_history_account_prep)
+            .then((res_gas) => {
+              if (this.c_history_payorin_p === '支出') {
+                this.c_history_payorin_p = 0
+              } else {
+                this.c_history_payorin_p = 1
+              }
+              // reback ori-amount
+              if (this.c_history_account_prep === this.c_history_edit.account_id) {
+                if (this.c_history_edit.payorin === '' || this.c_history_payorin_p === this.c_history_edit.payorin) {
+                  if (res_gats.data.type === false) {
+                    ori_balance = Number(res_gas.data.balance) + Number(this.c_history_amount_p) - Number(this.c_history_edit.amount)
+                  } else {
+                    ori_balance = Number(res_gas.data.balance) - Number(this.c_history_amount_p) + Number(this.c_history_edit.amount)
+                  }
+                } else {
+                  if (res_gats.data.type === false && this.c_history_edit.payorin === 0) {
+                    ori_balance = Number(res_gas.data.balance) - Number(this.c_history_amount_p) - Number(this.c_history_edit.amount)
+                  } else {
+                    ori_balance = Number(res_gas.data.balance) + Number(this.c_history_amount_p) + Number(this.c_history_edit.amount)
+                  }
+                }
+              } else {
+                if (this.c_history_edit.payorin === '' || this.c_history_payorin_p === this.c_history_edit.payorin) {
+                  if (res_gats.data.type === false) {
+                    ori_balance = Number(res_gas.data.balance) + Number(this.c_history_edit.amount)
+                  } else {
+                    ori_balance = Number(res_gas.data.balance) - Number(this.c_history_edit.amount)
+                  }
+                } else {
+                  if (res_gats.data.type === false && this.c_history_edit.payorin === 0) {
+                    ori_balance = Number(res_gas.data.balance) - Number(this.c_history_edit.amount)
+                  } else {
+                    ori_balance = Number(res_gas.data.balance) + Number(this.c_history_edit.amount)
+                  }
+                  console.log(ori_balance, res_gas.data.balance, this.c_history_edit.amount)
+                }
+              }
+              patchaccount_modify(getToken()
+                , this.c_history_account_prep
+                , res_gas.data.name
+                , ori_balance
+                , this.globledate)
+                .then(() => {
+                  // get new account data
+                  getaccountsingledata(getToken()
+                    , this.c_history_edit.account_id)
+                    .then((res_gnas) => {
+                      if (this.c_history_edit.payorin === '') {
+                        if (this.c_history_payorin_p === 0) {
+                          new_balance = Number(res_gnas.data.balance) - Number(this.c_history_edit.amount)
+                        } else {
+                          new_balance = Number(res_gnas.data.balance) + Number(this.c_history_edit.amount)
+                        }
+                      } else {
+                        if (this.c_history_edit.payorin === 0) {
+                          new_balance = Number(res_gnas.data.balance) - Number(this.c_history_edit.amount)
+                        } else {
+                          new_balance = Number(res_gnas.data.balance) + Number(this.c_history_edit.amount)
+                        }
+                        console.log(new_balance, Number(res_gnas.data.balance), Number(this.c_history_edit.amount))
+                      }
+                      // update new account and assign new balance
+                      patchaccount_modify(getToken()
+                        , res_gnas.data.id
+                        , res_gnas.data.name
+                        , new_balance
+                        , this.globledate)
+                        .then(() => {
+                          return true
+                        })
+                        .catch(() => {
+                          return false
+                        })
+                    })
+                    .catch(() => {
+                      return false
+                    })
+                })
+            }).catch(() => {
+              return false
+            })
+        }).catch(() => {
+          return false
+        })
     },
     c_history_confirm() {
-      let revalue_payorin
-      if (this.c_history_edit.type === '支出' || this.c_history_edit.typw === 0) {
-        revalue_payorin = 0
+      if (this.send_payorin === '支出' || this.send_payorin === 0) {
+        this.send_payorin = 0
       } else {
-        revalue_payorin = 1
+        this.send_payorin = 1
       }
-      if ((this.c_history_edit.invoice).length > 0 && this.defineoriinvoice === '-') {
+      if (!isNaN(this.c_history_edit.account)) {
+        this.c_history_edit.account_id = this.c_history_edit.account
+      }
+      if (!isNaN(this.c_history_edit.project)) {
+        this.c_history_edit.project_id = this.c_history_edit.project
+      }
+      if (this.c_history_edit.payorin !== '') {
+        this.send_payorin = this.c_history_edit.payorin
+      }
+      if (this.c_history_edit.sort !== '') {
+        this.send_sort = this.c_history_edit.sort
+      }
+      if (this.c_history_edit.subsort !== '') {
+        this.send_subsort = this.c_history_edit.subsort
+      }
+      // 有發票，其他處理皆包含
+      if (this.c_history_edit.invoice_id !== undefined && this.c_history_edit.random !== '') {
+        patchinvoice(getToken()
+          , this.c_history_edit.invoice_id
+          , this.c_history_edit.invoice
+          , this.c_history_edit.random
+          , this.c_history_edit.amount
+          , this.globledate).then(() => {
+          patchaccounting_confi(getToken()
+            , this.send_id
+            , this.c_history_edit.date
+            , this.c_history_edit.amount
+            , this.c_history_edit.comment
+            , this.send_payorin
+            , this.send_sort
+            , this.send_subsort
+            , this.c_history_edit.account_id
+            , this.c_history_edit.project_id
+            , this.send_invoice_id
+            , this.globledate)
+            .then(() => {
+              // change about amount or account
+              if (this.c_history_account_prep !== this.c_history_edit.account_id || this.c_history_amount_p !== this.c_history_edit.amount || this.c_history_edit.payorin !== '') {
+                this.c_account_configure_yiv()
+                this.c_user_history = []
+                this.get_getaccounting_all()
+              } else {
+                // not change about amount or account
+                console.log('func2')
+                this.$message({
+                  type: 'success',
+                  message: '修改成功'
+                })
+                this.c_user_history = []
+                this.get_getaccounting_all()
+              }
+            })
+            .catch((error) => {
+              console.log(error)
+              this.$message({
+                type: 'error',
+                message: '發生一點錯誤，請稍後再做修改'
+              })
+            })
+        }).catch((error) => {
+          console.log(error)
+          this.$message({
+            type: 'error',
+            message: '發生一點錯誤，請稍後再做修改'
+          })
+        })
+      } else if (this.c_history_edit.invoice_id === undefined && this.c_history_edit.invoice !== undefined && this.c_history_edit.random !== undefined) {
+        // 沒發票，但想新增發票，
         postinvoice(getToken()
           , this.c_history_edit.invoice
           , this.c_history_edit.random
-          , this.c_history_edit.amount)
-          .then((response) => {
+          , this.c_history_edit.amount
+          , this.globledate)
+          .then((res) => {
             postmemberinvoice(getToken()
-              , response.data.id)
+              , res.data.id)
               .then(() => {
-                if (this.c_history_edit.sort !== '') {
-                  this.sent_sort = this.c_history_edit.sort
-                }
-                if (this.c_history_edit.subsort !== '') {
-                  this.sent_subsort = this.c_history_edit.subsort
-                }
                 patchaccounting_confi(getToken()
-                  , this.c_history_edit.id
+                  , this.send_id
                   , this.c_history_edit.date
                   , this.c_history_edit.amount
                   , this.c_history_edit.comment
-                  , revalue_payorin
-                  , this.sent_sort
-                  , this.sent_subsort
+                  , this.send_payorin
+                  , this.send_sort
+                  , this.send_subsort
                   , this.c_history_edit.account_id
                   , this.c_history_edit.project_id
-                  , response.data.id
-                  , this.globledate).then(() => {
-                  this.$message({
-                    type: 'success',
-                    message: '已完成該筆資料修改'
-                  })
-                  this.get_getaccounting_all()
-                })
-                  .catch((error) => {
+                  , res.data.id
+                  , this.globledate)
+                  .then(() => {
+                    // change about amount or account
+                    if (this.c_history_account_prep !== this.c_history_edit.account_id || this.c_history_amount_p !== this.c_history_edit.amount || this.c_history_edit.payorin !== '') {
+                      this.c_account_configure_yiv()
+                      this.c_user_history = []
+                      this.get_getaccounting_all()
+                    } else {
+                      // not change about amount or account
+                      this.$message({
+                        type: 'success',
+                        message: '修改成功'
+                      })
+                      this.c_user_history = []
+                      this.get_getaccounting_all()
+                    }
+                  }).catch((error) => {
                     console.log(error)
                     this.$message({
                       type: 'error',
@@ -516,32 +753,6 @@ export default {
                     })
                   })
               })
-          })
-      } else {
-        patchinvoice(getToken()
-          , this.defineoriinvoice.id
-          , this.c_history_edit.invoice
-          , this.c_history_edit.random
-          , this.globledate)
-          .then((response) => {
-            patchaccounting_confi(getToken()
-              , this.c_history_edit.id
-              , this.c_history_edit.date
-              , this.c_history_edit.amount
-              , this.c_history_edit.comment
-              , revalue_payorin
-              , this.sent_sort
-              , this.sent_subsort
-              , this.c_history_edit.account_id
-              , this.c_history_edit.project_id
-              , response.data.id
-              , this.globledate).then(() => {
-              this.$message({
-                type: 'success',
-                message: '已完成該筆資料修改'
-              })
-              this.get_getaccounting_all()
-            })
               .catch((error) => {
                 console.log(error)
                 this.$message({
@@ -549,6 +760,54 @@ export default {
                   message: '發生一點錯誤，請稍後再做修改'
                 })
               })
+          })
+          .catch((error) => {
+            console.log(error)
+            this.$message({
+              type: 'error',
+              message: '發生一點錯誤，請稍後再做修改'
+            })
+          })
+      } else {
+        console.log('doing right thing2')
+        // 沒發票，不新增發票
+        if (this.send_invoice_id === '-') {
+          this.send_invoice_id = null
+        }
+        patchaccounting_confi(getToken()
+          , this.send_id
+          , this.c_history_edit.date
+          , this.c_history_edit.amount
+          , this.c_history_edit.comment
+          , this.send_payorin
+          , this.send_sort
+          , this.send_subsort
+          , this.c_history_edit.account_id
+          , this.c_history_edit.project_id
+          , this.send_invoice_id
+          , this.globledate)
+          .then(() => {
+            // change about amount or account
+            if (this.c_history_account_prep !== this.c_history_edit.account_id || this.c_history_amount_p !== this.c_history_edit.amount || this.c_history_edit.payorin !== '') {
+              this.c_account_configure_yiv()
+              this.c_user_history = []
+              this.get_getaccounting_all()
+            } else {
+              // not change about amount or account
+              this.$message({
+                type: 'success',
+                message: '修改成功'
+              })
+              this.c_user_history = []
+              this.get_getaccounting_all()
+            }
+          })
+          .catch((error) => {
+            console.log(error)
+            this.$message({
+              type: 'error',
+              message: '發生一點錯誤，請稍後再做修改'
+            })
           })
       }
       this.c_history_visible = false
@@ -571,30 +830,25 @@ export default {
           confirmButtonText: '確認',
           type: 'warning'
         }).then(() => {
-          let revalue_payorin
-          if (this.c_history_edit.type === '支出' || this.c_history_edit.typw === 0) {
-            revalue_payorin = 0
+          if (this.send_payorin === '支出' || this.send_payorin === 0) {
+            this.send_payorin = 0
           } else {
-            revalue_payorin = 1
+            this.send_payorin = 1
+          }
+          if (this.send_invoice_id === '-') {
+            this.send_invoice_id = null
           }
           patchaccounting_del(getToken()
-            , this.c_history_edit.id
-            , this.c_history_edit.date
-            , this.c_history_edit.amount
-            , this.c_history_edit.comment
-            , revalue_payorin
-            , this.sent_sort
-            , this.sent_subsort
-            , this.c_history_edit.account_id
-            , this.c_history_edit.project_id
-            , this.defineoriinvoice.id
-            , this.globledate).then(() => {
-            this.$message({
-              type: 'success',
-              message: '刪除成功'
+            , this.send_id
+            , this.globledate)
+            .then(() => {
+              this.$message({
+                type: 'success',
+                message: '刪除成功'
+              })
+              this.c_user_history = []
+              this.get_getaccounting_all()
             })
-            this.get_getaccounting_all()
-          })
             .catch((error) => {
               console.log(error)
               this.$message({
@@ -658,5 +912,8 @@ export default {
   margin-right: 0;
   //margin-bottom: 0;
   width: 50%;
+}
+.dialog_container span .el-input input {
+  border: 0;
 }
 </style>

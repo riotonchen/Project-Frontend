@@ -47,9 +47,10 @@ export default {
     cancel: 'Cancel',
     h1: '25 words at the most',
     h2: '8 digit numbers at the most',
-    h3: '8 digit numbers at the most',
-    h4: '8 digit numbers at the most',
-    h5: '8 digit numbers at the most',
+    h3: '20 digit numbers at the most',
+    h4: '30 digit numbers at the most',
+    h5: '10 digit numbers at the most',
+    h6: '64 digit at the most',
     b_profile_edit: 'business member'
   },
 

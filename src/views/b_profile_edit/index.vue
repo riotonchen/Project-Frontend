@@ -7,7 +7,7 @@
       <el-card>
         <el-form ref="profile_edit_form" :model="profile_edit_form" :rules="profile_edit_form_rules" label-position="left" inline class="personal_edit">
           <el-form-item :label="$t('b_profile_edit.email')">
-            <el-input v-model="profile_edit_form.email" />
+            <el-input v-model="profile_edit_form.email" type="textarea" resize="none" readonly />
           </el-form-item>
           <el-form-item :label="$t('b_profile_edit.name')" prop="name">
             <el-input v-model="profile_edit_form.name" :placeholder="$t('b_profile_edit.h1')" name="name" />
@@ -23,13 +23,13 @@
           </el-form-item>
 
           <el-form-item :label="$t('b_profile_edit.phone_num')" prop="phone_num">
-            <el-input v-model="profile_edit_form.phone_num" :placeholder="$t('b_profile_edit.h5')" name="phone_num" />
+            <el-input v-model="profile_edit_form.phone_num" :placeholder="$t('b_profile_edit.h4')" name="phone_num" />
           </el-form-item>
           <el-form-item :label="$t('b_profile_edit.extension')" prop="extension">
-            <el-input v-model="profile_edit_form.phone_extension" name="extension" />
+            <el-input v-model="profile_edit_form.extension" :placeholder="$t('b_profile_edit.h5')" name="extension" />
           </el-form-item>
-          <el-form-item :label="$t('b_profile_edit.address')" prop="phone_address">
-            <el-input v-model="profile_edit_form.phone_address" name="address" />
+          <el-form-item :label="$t('b_profile_edit.address')" prop="address">
+            <el-input v-model="profile_edit_form.address" :placeholder="$t('b_profile_edit.h6')" name="address" />
           </el-form-item>
           <el-button :loading="loadingprofile_view_send" type="primary" class="btn2" @click.native.prevent="handleprofile_edit">{{ $t('b_profile_edit.confirm') }}</el-button>
           <el-button :loading="loadingprofile_view_cancal" type="info" class="btn" @click.native.prevent="goprofile_view">{{ $t('b_profile_edit.cancel') }}</el-button>
@@ -46,13 +46,11 @@ import { getToken } from '@/utils/auth'
 import { patchprofile, patchprofilepswd } from '@/api/profile/patchprofile'
 
 export default {
-  name: 'BProfileEdit',
+  name: 'CProfileEdit',
   data() {
     const validateuninum = (rule, value, callback) => {
       if (value === '') {
         callback()
-      } else if (!validateuninum(value)) {
-        callback(new Error('統一編號只能有大小寫英數'))
       } else if (value.length !== 8) {
         callback(new Error('統一編號只限定於 8 碼'))
       } else {
@@ -63,7 +61,7 @@ export default {
       if (value === '') {
         callback()
       } else if (value.length > 25) {
-        callback(new Error('姓名不可以大於 25 個字'))
+        callback(new Error('商家名稱不可以大於 25 個字'))
       } else {
         callback()
       }
@@ -71,8 +69,8 @@ export default {
     const validatemobilenum = (rule, value, callback) => {
       if (value === '') {
         callback()
-      } else if (value.length > 8) {
-        callback(new Error('行動電話不可大於 8 碼'))
+      } else if (value.length > 20) {
+        callback(new Error('行動電話不可大於20碼'))
       } else {
         callback()
       }
@@ -80,12 +78,40 @@ export default {
     const validatephonenum = (rule, value, callback) => {
       if (value === '') {
         callback()
-      } else if (value.length > 8) {
-        callback(new Error('公司電話不可大於 8 碼'))
+      } else if (value.length > 30) {
+        callback(new Error('公司電話不可大於30碼'))
       } else {
         callback()
       }
     }
+    const validatemanager = (rule, value, callback) => {
+      if (value === '') {
+        callback()
+      } else if (value.length > 25) {
+        callback(new Error('負責人名稱不可以大於 25 個字'))
+      } else {
+        callback()
+      }
+    }
+    const validateextension = (rule, value, callback) => {
+      if (value === '') {
+        callback()
+      } else if (value.length > 10) {
+        callback(new Error('分機不可大於 10 碼'))
+      } else {
+        callback()
+      }
+    }
+    const validateaddress = (rule, value, callback) => {
+      if (value === '') {
+        callback()
+      } else if (value.length > 64) {
+        callback(new Error('地址不可以大於64個字'))
+      } else {
+        callback()
+      }
+    }
+
     return {
       imageUrl: '',
       labelPosition: 'right',
@@ -110,7 +136,10 @@ export default {
         name: [{ required: false, trigger: 'change', validator: validatename }],
         uni_num: [{ required: false, trigger: 'change', validator: validateuninum }],
         mobile_num: [{ required: false, trigger: 'change', validator: validatemobilenum }],
-        phone_num: [{ required: false, trigger: 'change', validator: validatephonenum }]
+        phone_num: [{ required: false, trigger: 'change', validator: validatephonenum }],
+        manager: [{ required: false, trigger: 'change', validator: validatemanager }],
+        extension: [{ required: false, trigger: 'change', validator: validateextension }],
+        address: [{ required: false, trigger: 'change', validator: validateaddress }]
 
       }
     }
@@ -139,7 +168,7 @@ export default {
       setTimeout(() => {
         setTimeout(() => {
           this.loadingprofile_view_cancal = false
-          this.$router.push({ path: this.redirect || '/profile/profile-view' })
+          this.$router.push({ path: this.redirect || '/profile/b_profile_view' })
         }, 300)
       }, 150)
     },
@@ -177,7 +206,7 @@ export default {
                 type: 'success'
               })
               this.loadingsend = false
-              this.$router.push({ path: this.redirect || '/profile/profile-view' })
+              this.$router.push({ path: this.redirect || '/profile/b_profile_view' })
             })
               .catch((error) => {
                 console.log(error.response)
@@ -207,6 +236,9 @@ export default {
                 }
               })
           })
+        } else {
+          console.log('error submit!!')
+          return false
         }
       })
     }

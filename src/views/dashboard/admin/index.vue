@@ -49,9 +49,9 @@ import LineChart from './components/LineChart'
 import RaddarChart from './components/RaddarChart'
 import PieChart from './components/PieChart'
 import BarChart from './components/BarChart'
-import TransactionTable from './components/TransactionTable'
-import TodoList from './components/TodoList'
-import BoxCard from './components/BoxCard'
+// import TransactionTable from './components/TransactionTable'
+// import TodoList from './components/TodoList'
+// import BoxCard from './components/BoxCard'
 
 const lineChartData = {
   newVisitis: {
@@ -80,10 +80,10 @@ export default {
     LineChart,
     RaddarChart,
     PieChart,
-    BarChart,
-    TransactionTable,
-    TodoList,
-    BoxCard
+    BarChart
+    // TransactionTable,
+    // TodoList,
+    // BoxCard
   },
   data() {
     return {

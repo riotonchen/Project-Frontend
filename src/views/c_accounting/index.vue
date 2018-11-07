@@ -78,10 +78,11 @@ import { getToken } from '@/utils/auth'
 import { getproject } from '@/api/project/getproject'
 import { getsort_pay, getsort_in } from '@/api/sort/getsort'
 import { getsubsort } from '@/api/subsort/getsubsort'
-import { getaccount_all } from '@/api/account/getaccount'
+import { getaccount_all, getaccountsingledata } from '@/api/account/getaccount'
 import { postaccounting_niv, postaccounting_yiv } from '@/api/accounting/postaccounting'
 import { postinvoice } from '@/api/invoice/postinvoice'
 import { postmemberinvoice } from '@/api/memberinvoice/postmemberinvoice'
+import { patchaccount_modify } from '@/api/account/patchaccount'
 import { formatdate_inc_time } from '@/utils/index'
 import { validinvoice, validnum4, validdouble } from '@/utils/validate'
 import { formatdate } from '@/utils/index'
@@ -165,6 +166,7 @@ export default {
       }
     }
     return {
+      globledate: formatdate('yyyy-mm-dd HH:MM:ss.l'),
       accounting_rules: {
         date: [{ required: true, trigger: 'change', validator: valid_date }],
         invoice: [{ required: false, trigger: 'change', validator: valid_invoice }],
@@ -196,6 +198,7 @@ export default {
       c_subsort_payorinitem: [],
       c_projectitem: [],
       c_account_nameitem: [],
+      c_account_ori_amount: '',
       c_sort_disable: false,
       c_subsort_disable: true,
       c_randon_disable: true,
@@ -326,23 +329,40 @@ export default {
                 , this.c_accountting_add.account
                 , this.c_accountting_add.project)
                 .then(() => {
-                  this.$notify({
-                    title: '成功',
-                    message: '該筆帳務已記錄成功',
-                    type: 'success',
-                    duration: 3500,
-                    showClose: false
-                  })
-                  this.account_table_load = false
-                  this.clean_form('accounting')
-                })
-                .catch(() => {
-                  this.$notify.error({
-                    title: '失敗',
-                    message: '該筆帳務記錄失敗，請稍後在試一次',
-                    duration: 3500,
-                    showClose: false
-                  })
+                  getaccountsingledata(getToken(), this.c_accountting_add.account)
+                    .then((response) => {
+                      this.c_account_ori_amount = response.data.balance
+                      let send_amount
+                      if (this.c_accountting_add.payorin === 0) {
+                        send_amount = Number(this.c_account_ori_amount) - Number(this.c_accountting_add.amount)
+                      } else {
+                        send_amount = Number(this.c_account_ori_amount) + Number(this.c_accountting_add.amount)
+                      }
+                      patchaccount_modify(getToken()
+                        , this.c_accountting_add.account
+                        , response.data.name
+                        , send_amount
+                        , this.globledate)
+                        .then(() => {
+                          this.$notify({
+                            title: '成功',
+                            message: '該筆帳務已記錄成功',
+                            type: 'success',
+                            duration: 3500,
+                            showClose: false
+                          })
+                          this.account_table_load = false
+                          this.clean_form('accounting')
+                        })
+                        .catch(() => {
+                          this.$notify.error({
+                            title: '失敗',
+                            message: '該筆帳務記錄失敗，請稍後在試一次',
+                            duration: 3500,
+                            showClose: false
+                          })
+                        })
+                    })
                   this.account_table_load = false
                 })
             }, 1000)
@@ -366,23 +386,40 @@ export default {
                         , this.c_accountting_add.project
                         , response.data.id)
                         .then(() => {
-                          this.$notify({
-                            title: '成功',
-                            message: '該筆帳務已記錄成功',
-                            type: 'success',
-                            duration: 3500,
-                            showClose: false
-                          })
-                          this.account_table_load = false
-                          this.clean_form('accounting')
-                        })
-                        .catch(() => {
-                          this.$notify.error({
-                            title: '失敗',
-                            message: '該筆帳務記錄失敗，請稍後在試一次',
-                            duration: 3500,
-                            showClose: false
-                          })
+                          getaccountsingledata(getToken(), this.c_accountting_add.account)
+                            .then((response) => {
+                              this.c_account_ori_amount = response.data.balance
+                              let send_amount
+                              if (this.c_accountting_add.payorin === 0) {
+                                send_amount = Number(this.c_account_ori_amount) - Number(this.c_accountting_add.amount)
+                              } else {
+                                send_amount = Number(this.c_account_ori_amount) + Number(this.c_accountting_add.amount)
+                              }
+                              patchaccount_modify(getToken()
+                                , this.c_accountting_add.account
+                                , response.data.name
+                                , send_amount
+                                , this.globledate)
+                                .then(() => {
+                                  this.$notify({
+                                    title: '成功',
+                                    message: '該筆帳務已記錄成功',
+                                    type: 'success',
+                                    duration: 3500,
+                                    showClose: false
+                                  })
+                                  this.account_table_load = false
+                                  this.clean_form('accounting')
+                                })
+                                .catch(() => {
+                                  this.$notify.error({
+                                    title: '失敗',
+                                    message: '該筆帳務記錄失敗，請稍後在試一次',
+                                    duration: 3500,
+                                    showClose: false
+                                  })
+                                })
+                            })
                           this.account_table_load = false
                         })
                     })

@@ -9,7 +9,6 @@ export function patchaccount_modify(token, id, name, balance, renew_time) {
     syncstatus: 0,
     renew_time
   }
-  console.log(typeof (data), data)
   var requ_url = 'https://www.177together.com/api/account/' + id + '/'
 
   return request({

@@ -47,11 +47,11 @@
     <div class="dialog_container">
       <!--新增-->
       <el-dialog :visible.sync="c_category_add_visible" :title="$t('c_accountmanager.addnewaccount')" width="80vw">
-        <el-form :model="c_category_add" label-position="left" inline class="table_account_add">
-          <el-form-item :label="$t('c_accountmanager.accountname')">
+        <el-form ref="c_category_add" :model="c_category_add" :rules="c_category_add_rules" label-position="left" inline class="table_account_add">
+          <el-form-item :label="$t('c_accountmanager.accountname')" prop="name">
             <el-input v-model="c_category_add.name" :placeholder="$t('c_accountmanager.accountname')" />
           </el-form-item>
-          <el-form-item :label="$t('c_accountmanager.accounttype')">
+          <el-form-item :label="$t('c_accountmanager.accounttype')" prop="type">
             <el-select v-model="c_category_add.type" :placeholder="$t('c_accountmanager.project')" filterable clearable @focus="get_account()" @change="get_account()">
               <el-option v-for="type in c_account_type_options" :key="type.accounttype_id" :label="type.name" :value="type.accounttype_id" />
             </el-select>
@@ -66,11 +66,18 @@
       </el-dialog>
       <!--修改-->
       <el-dialog :visible.sync="c_category_configure_visible" :title="$t('c_accountmanager.configure')" width="80vw">
-        <el-form :model="c_category_configure" label-position="left" inline class="table_account_add">
-          <el-form-item :label="$t('c_accountmanager.accountname')">
+        <el-form ref="c_category_configure" :model="c_category_configure" :rules="c_category_configure_rules" label-position="left" inline class="table_account_add">
+          <el-form-item :label="$t('c_accountmanager.accountname')" prop="name">
             <el-input v-model="c_category_configure.name" :placeholder="c_account_add_name_p" />
           </el-form-item>
-          <el-form-item :label="$t('c_accountmanager.finallymoney')">
+          <!--
+          <el-form-item :label="$t('c_accountmanager.accounttype')">
+            <el-select v-model="c_category_configure.type" :placeholder="$t('c_accountmanager.project')" filterable clearable>
+              <el-option v-for="type in c_account_type_options" :key="type.accounttype_id" :label="type.name" :value="type.accounttype_id" />
+            </el-select>
+          </el-form-item>
+          -->
+          <el-form-item :label="$t('c_accountmanager.finallymoney')" prop="balance">
             <el-input v-model="c_category_configure.balance" :placeholder="c_account_add_balance_p" />
           </el-form-item>
         </el-form>
@@ -93,6 +100,7 @@ import { getaccount_all, getaccounttype, getaccountsingledata } from '@/api/acco
 import { patchaccount_modify, patchaccount_del } from '@/api/account/patchaccount'
 import { getToken } from '@/utils/auth'
 import { formatdate } from '@/utils/index'
+import { validdouble } from '@/utils/validate'
 
 export default {
   name: 'CAccountmanager',
@@ -100,6 +108,24 @@ export default {
     waves
   },
   data() {
+    const validatename = (rule, value, callback) => {
+      if (value === '' || value === null) {
+        return callback(new Error('名稱不能為空'))
+      } else if (value.length > 10) {
+        callback(new Error('名稱不可以大於 10 個字'))
+      } else {
+        callback()
+      }
+    }
+    const validatebalance = (rule, value, callback) => {
+      if (value === '' || value === null) {
+        return callback(new Error('金額不能為空'))
+      } else if (!validdouble(value)) {
+        callback(new Error('金額只有數字(可有小數點)'))
+      } else {
+        callback()
+      }
+    }
     return {
       c_account_type: null,
       c_account_name: null,
@@ -109,18 +135,26 @@ export default {
       c_account_type_options: [],
       c_account_name_options: [],
       c_category_add: {
-        name: null,
-        type: null
+        name: '',
+        type: ''
       },
       c_category_configure: {
-        id: null,
-        name: null,
-        type: null
+        id: '',
+        name: '',
+        type: '',
+        balance: ''
       },
       c_account_name_visible: true,
       c_category_add_visible: false,
       c_category_configure_visible: false,
-      view_loading: true
+      view_loading: true,
+      c_category_add_rules: {
+        name: [{ required: false, trigger: 'change', validator: validatename }]
+      },
+      c_category_configure_rules: {
+        name: [{ required: false, trigger: 'change', validator: validatename }],
+        balance: [{ required: false, trigger: 'change', validator: validatebalance }]
+      }
     }
   },
   watch: {
@@ -179,88 +213,109 @@ export default {
       this.c_category_configure_visible = false
     },
     c_account_add() {
-      postaccount(getToken(), this.c_category_add.name, this.c_category_add.type)
-        .then(() => {
-          this.$message({
-            type: 'success',
-            message: '已成功新增一筆帳戶'
-          })
-          this.c_account_type = null
-          this.c_account_name = null
-          this.c_category_add_visible = false
-          this.get_account()
-        })
-        .catch((error) => {
-          console.log(error)
-          this.$message({
-            type: 'error',
-            message: '發生一點錯誤，請稍後再做新增'
-          })
-        })
+      this.$refs.c_category_add.validate(valid => {
+        if (valid) {
+          postaccount(getToken(), this.c_category_add.name, this.c_category_add.type)
+            .then(() => {
+              this.$message({
+                type: 'success',
+                message: '已成功新增一筆帳戶'
+              })
+              this.c_account_type = null
+              this.c_account_name = null
+              this.c_category_add_visible = false
+              this.get_account()
+            })
+            .catch((error) => {
+              console.log(error)
+              this.$message({
+                type: 'error',
+                message: '發生一點錯誤，請稍後再做新增'
+              })
+            })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
     },
     c_account_configure() {
-      const date = formatdate('yyyy-mm-dd HH:MM:ss.l')
-      patchaccount_modify(getToken(), this.c_category_configure.id, this.c_category_configure.name, this.c_category_configure.balance, date)
-        .then(() => {
-          this.$message({
-            type: 'success',
-            message: '已成功修改一筆帳戶'
-          })
-          this.c_account_type = null
-          this.c_account_name = null
-          this.c_category_configure_visible = false
-          this.get_account()
-        })
-        .catch((error) => {
-          console.log(error)
-          this.$message({
-            type: 'error',
-            message: '發生一點錯誤，請稍後再做新增'
-          })
-        })
+      this.$refs.c_category_configure.validate(valid => {
+        if (valid) {
+          const date = formatdate('yyyy-mm-dd HH:MM:ss.l')
+          patchaccount_modify(getToken(), this.c_category_configure.id, this.c_category_configure.name, this.c_category_configure.balance, date)
+            .then(() => {
+              this.$message({
+                type: 'success',
+                message: '已成功修改一筆帳戶'
+              })
+              this.c_account_type = null
+              this.c_account_name = null
+              this.c_category_configure_visible = false
+              this.get_account()
+            })
+            .catch((error) => {
+              console.log(error)
+              this.$message({
+                type: 'error',
+                message: '發生一點錯誤，請稍後再做新增'
+              })
+            })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
     },
     c_account_del() {
-      this.$confirm('你真的要刪除該帳戶資料嗎？', '警告', {
-        cancelButtonText: '取消',
-        confirmButtonText: '確認',
-        type: 'warning'
-      }).then(() => {
-        this.$confirm('請在確認一次是否要刪除該帳戶資料資料', '警告', {
-          cancelButtonText: '取消',
-          confirmButtonText: '確認',
-          type: 'warning'
-        }).then(() => {
-          const date = formatdate('yyyy-mm-dd HH:MM:ss.l')
-          patchaccount_del(getToken(), this.c_category_configure.id, date).then(() => {
-            this.$message({
-              type: 'success',
-              message: '刪除成功'
+      this.$refs.c_category_configure.validate(valid => {
+        if (valid) {
+          this.$confirm('你真的要刪除該帳戶資料嗎？', '警告', {
+            cancelButtonText: '取消',
+            confirmButtonText: '確認',
+            type: 'warning'
+          }).then(() => {
+            this.$confirm('請在確認一次是否要刪除該帳戶資料資料', '警告', {
+              cancelButtonText: '取消',
+              confirmButtonText: '確認',
+              type: 'warning'
+            }).then(() => {
+              const date = formatdate('yyyy-mm-dd HH:MM:ss.l')
+              patchaccount_del(getToken(), this.c_category_configure.id, date).then(() => {
+                this.$message({
+                  type: 'success',
+                  message: '刪除成功'
+                })
+                this.c_account_type = null
+                this.c_account_name = null
+                this.c_category_configure_visible = false
+                this.get_account()
+              }).catch((error) => {
+                console.log(error)
+                this.$message({
+                  type: 'error',
+                  message: '發生一點錯誤，請稍後再做修改'
+                })
+              })
+              this.c_category_configure_visible = false
+            }).catch(() => {
+              this.$message({
+                type: 'info',
+                message: '已取消刪除'
+              })
+              this.c_category_configure_visible = false
             })
-            this.c_account_type = null
-            this.c_account_name = null
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消刪除'
+            })
             this.c_category_configure_visible = false
-            this.get_account()
-          }).catch((error) => {
-            console.log(error)
-            this.$message({
-              type: 'error',
-              message: '發生一點錯誤，請稍後再做修改'
-            })
           })
-          this.c_category_configure_visible = false
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消刪除'
-          })
-          this.c_category_configure_visible = false
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消刪除'
-        })
-        this.c_category_configure_visible = false
+        } else {
+          console.log('error submit!!')
+          return false
+        }
       })
     },
     handle_edit(index, row) {

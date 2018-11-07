@@ -319,6 +319,21 @@ export const asyncRouterMap = [{
   children: [{
     path: '',
     component: () =>
+        import('@/views/b_profile_view/index'),
+    name: 'b_profile_view',
+    meta: {
+      title: 'b_profile_view',
+      icon: 'user'
+    }
+  }]
+},
+{
+  path: '/profile/ent-profile-edit',
+  component: Layout,
+  redirect: 'noredirect',
+  children: [{
+    path: '',
+    component: () =>
         import('@/views/b_profile_edit/index'),
     name: 'b_profile_edit',
     meta: {

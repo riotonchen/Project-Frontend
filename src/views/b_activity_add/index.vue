@@ -35,7 +35,7 @@
         </el-upload>
       </div>
       <div class="cheap_btn">
-        <el-button type="primary " @click="onSubmit">{{ $t('b_activity_add.add') }}</el-button>
+        <el-button type="primary " @click="send_data()">{{ $t('b_activity_add.add') }}</el-button>
       </div>
     </el-card>
 
@@ -74,6 +74,11 @@ export default {
         name: [{ required: false, trigger: 'change', validator: validatename }],
         content: [{ required: false, trigger: 'change', validator: validatecontent }]
       }
+    }
+  },
+  methods: {
+    send_data() {
+      // nhbjhb
     }
   }
 }

@@ -1,5 +1,4 @@
 <template>
-  <!-- 新增修改刪除未配好，及子分類動態 -->
   <div class="category_container">
     <title>
       {{ $t('route.c_category') }}
@@ -22,26 +21,31 @@
       <!--外層表單設計之表格-->
       <div class="category_table_container">
         <el-table v-loading.fullscreen.lock="view_loading" :data="c_category_list" :element-loading-text="$t('c_category.loadingtext')" element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.9)" stripe style="width: 100%;" max-height="500" fit>
+          <el-table-column type="index" align="center" />
           <el-table-column :label="$t('c_category.name')" prop="name" align="center">
             <template slot-scope="scope">
               <span>{{ scope.row.name }}</span>
             </template>
           </el-table-column>
+
           <el-table-column :label="$t('c_category.budgetmonth')" prop="allin" align="center">
             <template slot-scope="scope">
               <span>{{ scope.row.allin }}</span>
             </template>
           </el-table-column>
+
           <el-table-column :label="$t('c_category.spendingmonth')" prop="allout" align="center">
             <template slot-scope="scope">
               <span>{{ scope.row.allout }}</span>
             </template>
           </el-table-column>
-          <el-table-column :label="$t('c_category.remainingbudget')" prop="budget" align="center">
+
+          <el-table-column :label="$t('c_category.remainingbudget')" prop="balance" align="center">
             <template slot-scope="scope">
-              <span>{{ scope.row.budget }}</span>
+              <span>{{ scope.row.balance }}</span>
             </template>
           </el-table-column>
+
           <el-table-column :label="$t('c_category.operation')" align="center">
             <template slot-scope="scope">
               <el-button type="info" plain @click.native.prevent="handle_edit_sort(scope.$index,scope.row)">{{ $t('c_category.edit') }}</el-button>
@@ -55,15 +59,15 @@
       <!--編輯主類別之表單-->
       <el-dialog :visible.sync="c_category_editsort_visible" :title="$t('c_category.edit')" width="80vw">
 
-        <el-form :model="c_subsort_edit" :rules="c_category_editmainsort_rules" label-position="left" inline class="table_category">
+        <el-form ref="c_subsort_edit" :model="c_subsort_edit" :rules="c_category_editsort_rules" label-position="left" inline class="table_category">
           <el-form-item>
             <span>{{ $t('c_category.notmodify') }}</span>
           </el-form-item>
           <el-form-item>
             <span />
           </el-form-item>
-          <el-form-item :label="$t('c_category.mainsortname')" prop="mainsortname">
-            <el-input v-model="c_category_editmainsort.mainsortname" :placeholder="c_category_sortname_p" clearable @focus="clean_name()" />
+          <el-form-item :label="$t('c_category.mainsortname')" prop="name">
+            <el-input v-model="c_subsort_edit.name" :placeholder="c_category_sortname_p" name="name" clearable @focus="clean_name()" />
           </el-form-item>
           <el-form-item>
             <span />
@@ -83,15 +87,15 @@
       <!--新增主類別之表單-->
       <el-dialog :visible.sync="c_category_sort_add_visible" :title="$t('c_category.add')" width="80vw">
 
-        <el-form :model="c_sort_add" :rules="c_sort_add_rules" label-position="left" inline class="table_sort">
+        <el-form ref="c_sort_add" :model="c_sort_add" :rules="c_sort_add_rules" label-position="left" inline class="table_sort">
 
-          <el-form-item :label="$t('c_category.mainsortname')" prop="name">
-            <el-select v-model="c_sort_add.name" :placeholder="$t('c_category.incomespend')" filterable clearable style="width: 10vw;max-width:8rem;min-width:5rem;">
+          <el-form-item :label="$t('c_category.mainsortname')" prop="payorin">
+            <el-select v-model="c_sort_add.payorin" :placeholder="$t('c_category.incomespend')" filterable clearable style="width: 10vw;max-width:8rem;min-width:5rem;">
               <el-option v-for="payorin in c_pay_in" :key="payorin.value" :label="payorin.label" :value="payorin.value" />
             </el-select>
           </el-form-item>
-          <el-form-item :label="$t('c_category.mainsortname')" prop="payorin">
-            <el-input v-model="c_sort_add.payorin" :placeholder="$t('c_category.amount')" name="payorin" clearable />
+          <el-form-item :label="$t('c_category.mainsortname')" prop="name">
+            <el-input v-model="c_sort_add.name" :placeholder="$t('c_category.amount')" name="name" clearable />
           </el-form-item>
         </el-form>
 
@@ -121,16 +125,19 @@
                   <span>{{ scope.row.name }}</span>
                 </template>
               </el-table-column>
-              <el-table-column :label="$t('c_category.spendingmonth')" prop="allout" align="center">
+
+              <el-table-column :label="$t('c_category.spendingmonth')" prop="allin" align="center">
                 <template slot-scope="scope">
-                  <span>{{ scope.row.allout }}</span>
+                  <span>{{ scope.row.allin }}</span>
                 </template>
               </el-table-column>
+
               <el-table-column :label="$t('c_category.operation')" align="center">
                 <template slot-scope="scope">
                   <el-button type="primary" plain @click.native.prevent="handle_in_edit(scope.$index,scope.row)">{{ $t('c_category.edit') }}</el-button>
                 </template>
               </el-table-column>
+
             </el-table>
           </div>
         </div>
@@ -138,7 +145,7 @@
       <!--編輯子分類名稱之表單-->
       <el-dialog :visible.sync="c_category_two_visible" :title="$t('c_category.edit')" width="80vw">
 
-        <el-form :model="c_subsort_edit" :rules="c_category_edit_rules" label-position="left" inline class="table_category">
+        <el-form ref="c_subsort_edit" :model="c_subsort_edit" :rules="c_category_edit_rules" label-position="left" inline class="table_category">
           <el-form-item>
             <span>{{ $t('c_category.notmodify') }}</span>
           </el-form-item>
@@ -166,7 +173,7 @@
       <!--新增子分類之表單-->
       <el-dialog :visible.sync="c_category_subsort_table_visible" :title="$t('c_category.add')" width="80vw">
 
-        <el-form :model="c_subsort_edit" :rules="c_category_edit_rules" label-position="left" inline class="table_sort">
+        <el-form ref="c_subsort_edit" :model="c_subsort_edit" :rules="c_category_edit_rules" label-position="left" inline class="table_sort">
           <el-form-item :label="$t('c_category.subclassname')" prop="subname">
             <el-input v-model="c_subsort_edit.subname" :placeholder="$t('c_category.amount')" name="subname" clearable />
           </el-form-item>
@@ -199,34 +206,27 @@ export default {
     waves
   },
   data() {
-    const validate_name = (rule, value, callback) => {
-      if (value.length > 10) {
-        return callback(new Error('最多只能輸入10個字'))
+    const validate_payorin = (rule, value, callback) => {
+      if (value === '' || value === null) {
+        return callback(new Error('不能為空'))
       } else {
         callback()
       }
     }
     const validate_subname = (rule, value, callback) => {
       if (value === '' || value === null) {
-        return callback(new Error('子分類不能為空'))
+        return callback(new Error('名稱不能為空'))
       } else if (value.length > 10) {
         callback(new Error('名稱不可以大於 10 個字'))
       } else {
         callback()
       }
     }
-    const validate_payorin = (rule, value, callback) => {
+    const validate_name = (rule, value, callback) => {
       if (value === '' || value === null) {
-        return callback(new Error('主分類不能為空'))
+        return callback(new Error('名稱不能為空'))
       } else if (value.length > 10) {
         callback(new Error('名稱不可以大於 10 個字'))
-      } else {
-        callback()
-      }
-    }
-    const validate_mainsortname = (rule, value, callback) => {
-      if (value.length > 10) {
-        return callback(new Error('最多只能輸入10個字'))
       } else {
         callback()
       }
@@ -257,13 +257,6 @@ export default {
         name: null,
         type: null
       },
-      c_category_editmainsort: {
-        mainsortname: ''
-      },
-      c_category_edit: {
-        subname: '',
-        name: ''
-      },
       c_sort_payorinitem: [],
       c_subsort_payorinitem: [],
       c_projectitem: [],
@@ -284,11 +277,12 @@ export default {
         subname: [{ required: false, trigger: 'change', validator: validate_subname }],
         name: [{ required: false, trigger: 'change', validator: validate_name }]
       },
-      c_category_editmainsort_rules: {
-        mainsortname: [{ required: false, trigger: 'change', validator: validate_mainsortname }]
-      },
       c_sort_add_rules: {
+        name: [{ required: false, trigger: 'change', validator: validate_name }],
         payorin: [{ required: false, trigger: 'change', validator: validate_payorin }]
+      },
+      c_category_editsort_rules: {
+        name: [{ required: false, trigger: 'change', validator: validate_name }]
       }
     }
   },
@@ -309,7 +303,7 @@ export default {
       setTimeout(() => {
         this.view_loading = false
         this.get_sort()
-      }, 1000)
+      }, 500)
     },
     clean_name() {
       this.c_subsort_edit.name = ''
@@ -376,7 +370,7 @@ export default {
     handle_edit_sort(index, row) {
       this.c_category_editsort_visible = true
       this.c_category_editsort.id = row.id
-      this.c_category_editsort.sortname = row.sortname
+      this.c_category_editsort.name = row.name
       this.c_category_sortname_p = row.name
     },
     visible_subsort_table() {
@@ -386,7 +380,7 @@ export default {
       this.c_category_sort_add_visible = true
     },
     c_category_sortadd() {
-      this.$refs.c_sort_add.validate((valid) => {
+      this.$refs.c_sort_add.validate(valid => {
         if (valid) {
           postsort(getToken(), this.c_sort_add.name, this.c_sort_add.payorin).then(() => {
             this.$message({
@@ -411,7 +405,7 @@ export default {
       })
     },
     c_category_subsortadd() {
-      this.$refs.c_subsort_edit.validate((valid) => {
+      this.$refs.c_subsort_edit.validate(valid => {
         if (valid) {
           postsubsort(getToken(), this.c_subsort_edit.id, this.c_sort_row_id, this.c_subsort_edit.subname, this.c_sort_row_type).then(() => {
             this.$message({
@@ -436,10 +430,10 @@ export default {
       })
     },
     c_category_sort_confirm() {
-      this.$refs.c_subsort_edit.validate((valid) => {
+      this.$refs.c_subsort_edit.validate(valid => {
         if (valid) {
           const date = formatdate('yyyy-mm-dd HH:MM:ss.l')
-          patchsort_update(getToken(), this.c_category_editsort.id, this.c_category_editsort.name, date).then((response) => {
+          patchsort_update(getToken(), this.c_category_editsort.id, this.c_subsort_edit.name, date).then((response) => {
             this.$message({
               type: 'success',
               message: '已完成該筆分類相關修改'
@@ -462,7 +456,7 @@ export default {
       })
     },
     c_category_sort_del() {
-      this.$refs.c_subsort_edit.validate((valid) => {
+      this.$refs.c_subsort_edit.validate(valid => {
         if (valid) {
           this.$confirm('你真的要刪除該筆分類相關嗎？', '警告', {
             cancelButtonText: '取消',
@@ -506,7 +500,7 @@ export default {
       })
     },
     c_category_subsort_confirm() {
-      this.$refs.c_subsort_edit.validate((valid) => {
+      this.$refs.c_subsort_edit.validate(valid => {
         if (valid) {
           const date = formatdate('yyyy-mm-dd HH:MM:ss.l')
           patchsubsort_update(getToken(), this.c_subsort_edit.id, this.c_subsort_edit.name, date).then(() => {
@@ -540,7 +534,7 @@ export default {
       this.c_category_subsort_table_visible = false
     },
     c_category_subsort_del() {
-      this.$refs.c_subsort_edit.validate((valid) => {
+      this.$refs.c_subsort_edit.validate(valid => {
         if (valid) {
           this.$confirm('你真的要刪除該筆分類相關嗎？', '警告', {
             cancelButtonText: '取消',
