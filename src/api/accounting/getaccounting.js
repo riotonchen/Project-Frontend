@@ -1,6 +1,15 @@
 import request from '@/utils/request'
 
-export function getaccounting_all(token, purchasedate_gte, purchasedate_lte) {
+export function getaccounting_all(
+  token,
+  purchasedate_gte,
+  purchasedate_lte,
+  type,
+  sort_id,
+  subsort_id,
+  project_id,
+  account_id
+) {
   const data = {
     token
   }
@@ -8,19 +17,26 @@ export function getaccounting_all(token, purchasedate_gte, purchasedate_lte) {
   var decoded = jwtDecode(token)
   var user_id = decoded.user_id
   var requ_url
-  if (purchasedate_gte !== '' && purchasedate_lte !== '') {
-    requ_url = 'https://www.177together.com/api/accounting/?member_id=' + user_id + '&syncstatus_not=3&purchasedate_gte=' + purchasedate_gte + '&purchasedate_lte=' + purchasedate_lte
-  } else {
-    requ_url = 'https://www.177together.com/api/accounting/?member_id=' + user_id + '&syncstatus_not=3'
-  }
+  requ_url =
+    'https://www.177together.com/api/accounting/?member_id=' +
+    user_id +
+    '&syncstatus_not=3'
   return request({
-
     url: requ_url,
     method: 'get',
     headers: {
       Authorization: 'JWT ' + token
     },
-    data
+    data,
+    params: {
+      purchasedate_gte,
+      purchasedate_lte,
+      type,
+      sort_id,
+      subsort_id,
+      project_id,
+      account_id
+    }
   })
 }
 
@@ -31,7 +47,6 @@ export function getaccounting_single(token, id) {
   }
   var requ_url = 'https://www.177together.com/api/accounting/' + id + '/'
   return request({
-
     url: requ_url,
     method: 'get',
     headers: {

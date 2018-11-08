@@ -11,7 +11,8 @@
           <span>{{ $t('c_history.selecttime') }}</span>
         </el-col>
         <el-col :xs="24" :sm="15" :md="9" :lg="8" :xl="6">
-          <el-date-picker v-model="startenddate" :picker-options="datepickoptions" :start-placeholder="$t('c_history.startdate')" :end-placeholder="$t('c_history.enddate')" range-separator="-" align="center" type="daterange" style="width: 40vw;min-width:15rem;max-width:23rem;" @change="get_getaccounting_all()" />
+          <!--style="width: 40vw;min-width:15rem;max-width:23rem;"-->
+          <el-date-picker v-model="startenddate" :picker-options="datepickoptions" :start-placeholder="$t('c_history.startdate')" :end-placeholder="$t('c_history.enddate')" :clearable="dateclean" range-separator="-" align="center" type="daterange" @focus="get_getaccounting_all()" @change="get_getaccounting_all()" />
         </el-col>
       </el-row>
       <el-row class="class_seletor">
@@ -19,7 +20,7 @@
           <span>{{ $t('c_history.selectclass') }}</span>
         </el-col>
         <el-col :xs="24" :sm="15" :md="9" :lg="8" :xl="6">
-          <el-select v-model="c_payorin" :placeholder="$t('c_history.incomespend')" filterable clearable style="width: 25vw;max-width:7.5rem;min-width:5.5rem;">
+          <el-select v-model="c_payorin" :placeholder="$t('c_history.incomespend')" filterable clearable style="width: 25vw;max-width:7.5rem;min-width:5.5rem;" @focus="get_getaccounting_all()" @change="get_getaccounting_all()">
             <el-option v-for="payorin in c_pay_in" :key="payorin.value" :label="payorin.label" :value="payorin.value" />
           </el-select>
           <el-select v-model="c_sort" :disabled="c_sort_disable" :placeholder="$t('c_history.mainsort')" filterable style="width: 25vw;max-width:7.5rem;min-width:6.5rem;" @focus="get_sort()" @change="get_subsort()">
@@ -48,6 +49,11 @@
           <el-select v-model="c_account" :placeholder="$t('c_history.account')" filterable style="width: 25vw;max-width:13.2rem;min-width:11.8rem;" @focus="get_account()">
             <el-option v-for="account in c_accountitem" :key="account.id" :label="account.name" :value="account.id" />
           </el-select>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="24" style="padding-top:2vh;">
+          <el-button type="info" plain @click.native.prevent="cleanallselect()">清空篩選</el-button>
         </el-col>
       </el-row>
     </div>
@@ -247,9 +253,12 @@ export default {
     waves
   },
   data() {
+    const start = new Date()
+    start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
     return {
       globledate: formatdate('yyyy-mm-dd HH:MM:ss.l'),
-      startenddate: '',
+      // default around 3 month
+      startenddate: [start, formatdate('yyyy-mm-dd HH:MM:ss.l')],
       c_payorin: '',
       c_sort: '',
       c_subsort: '',
@@ -301,6 +310,7 @@ export default {
       show_sort: '',
       show_subsort: '',
       show_ori_category: '',
+      dateclean: false,
       datepickoptions: {
         shortcuts: [{
           text: '最近一週',
@@ -411,6 +421,17 @@ export default {
     this.get_getaccounting_all()
   },
   methods: {
+    cleanallselect() {
+      const start = new Date()
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+      this.startenddate = [start, formatdate('yyyy-mm-dd HH:MM:ss.l')]
+      this.c_payorin = ''
+      this.c_sort = ''
+      this.c_subsort = ''
+      this.c_project = ''
+      this.c_account = ''
+      this.get_getaccounting_all()
+    },
     get_getaccounting_all() {
       let startdate
       let enddate
@@ -421,8 +442,16 @@ export default {
         startdate = ''
         enddate = ''
       }
-
-      getaccounting_all(getToken(), startdate, enddate).then((res) => {
+      this.c_user_history = []
+      let payinval
+      if (this.c_payorin === 0) {
+        payinval = 'False'
+      } else if (this.c_payorin === 1) {
+        payinval = 'True'
+      } else {
+        payinval = ''
+      }
+      getaccounting_all(getToken(), startdate, enddate, payinval, this.c_sort, this.c_subsort, this.c_project, this.c_account).then((res) => {
         this.c_user_history = res.data
         this.c_user_history.forEach(items => {
           if (items.type === false) {
@@ -440,12 +469,14 @@ export default {
       if (this.c_payorin === 0) {
         getsort_pay(getToken()).then(response => {
           this.c_sort_payorinitem = response.data
+          this.get_getaccounting_all()
         }).catch((error) => {
           console.log(error)
         })
       } else {
         getsort_in(getToken()).then(response => {
           this.c_sort_payorinitem = response.data
+          this.get_getaccounting_all()
         }).catch((error) => {
           console.log(error)
         })
@@ -455,8 +486,10 @@ export default {
       getsubsort(getToken(), this.c_sort).then(response => {
         if (response.data.length !== 0) {
           this.c_subsort_payorinitem = response.data
+          this.get_getaccounting_all()
         } else {
           this.c_subsort_disable = true
+          this.get_getaccounting_all()
         }
       }).catch((error) => {
         console.log(error)
@@ -491,6 +524,7 @@ export default {
     get_project() {
       getproject(getToken()).then(response => {
         this.c_projectitem = response.data
+        this.get_getaccounting_all()
       }).catch((error) => {
         console.log(error)
       })
@@ -498,6 +532,7 @@ export default {
     get_account() {
       getaccount_all(getToken()).then(response => {
         this.c_accountitem = response.data
+        this.get_getaccounting_all()
       }).catch((error) => {
         console.log(error)
       })
