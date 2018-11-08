@@ -66,7 +66,7 @@
       </el-dialog>
       <!--修改-->
       <el-dialog :visible.sync="c_category_configure_visible" :title="$t('c_accountmanager.configure')" width="80vw">
-        <el-form ref="c_category_configure" :model="c_category_configure" :rules="c_category_configure_rules" label-position="left" inline class="table_account_add">
+        <el-form ref="c_category_configure" :model="c_category_configure" :rules="c_category_configure_rules" label-position="left" inline class="table_account_confi">
           <el-form-item :label="$t('c_accountmanager.accountname')" prop="name">
             <el-input v-model="c_category_configure.name" :placeholder="c_account_add_name_p" />
           </el-form-item>
@@ -149,11 +149,13 @@ export default {
       c_category_configure_visible: false,
       view_loading: true,
       c_category_add_rules: {
-        name: [{ required: false, trigger: 'change', validator: validatename }]
+        name: [{ required: true, trigger: 'change', validator: validatename }]
+        // 類型不得為空
       },
       c_category_configure_rules: {
-        name: [{ required: false, trigger: 'change', validator: validatename }],
-        balance: [{ required: false, trigger: 'change', validator: validatebalance }]
+        name: [{ required: true, trigger: 'change', validator: validatename }],
+        balance: [{ required: true, trigger: 'change', validator: validatebalance }]
+        // 類型不得為空(先不加)
       }
     }
   },
@@ -325,6 +327,7 @@ export default {
       this.c_category_configure.id = row.id
       this.c_category_configure.name = row.name
       this.c_category_configure.balance = row.balance
+      // this.c_category_configure.type = row.accounttype.id.name
     }
   }
 }
@@ -345,6 +348,18 @@ export default {
   margin-right: 0;
   //margin-bottom: 0;
   width: 50%;
+}
+.table_account_confi {
+  font-size: 0;
+}
+.table_account_confi label {
+  width: 100px;
+  color: #99a9bf;
+}
+.table_account_confi .el-form-item {
+  margin-right: 0;
+  //margin-bottom: 0;
+  width: 100%;
 }
 </style>
 

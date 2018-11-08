@@ -33,6 +33,8 @@ export default {
     const valideSubjectlength = (rule, value, callback) => {
       if (value.length > 10) {
         callback(new Error('主旨最多輸入10字'))
+      } else if (value.length < 1) {
+        callback(new Error('主旨不得為空'))
       } else {
         callback()
       }
@@ -41,6 +43,8 @@ export default {
     const valideContentlength = (rule, value, callback) => {
       if (value.length > 140) {
         callback(new Error('內容最多輸入140字'))
+      } else if (value.length < 1) {
+        callback(new Error('內容不得為空'))
       } else {
         callback()
       }

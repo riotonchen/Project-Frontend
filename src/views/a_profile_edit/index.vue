@@ -23,7 +23,6 @@
           </el-form-item>
           <el-button :loading="loadingprofile_view_send" type="primary" class="btn2" @click.native.prevent="handleprofile_edit">{{ $t('a_profile_edit.confirm') }}</el-button>
           <el-button :loading="loadingprofile_view_cancal" type="info" class="btn" @click.native.prevent="goprofile_view">{{ $t('a_profile_edit.cancel') }}</el-button>
-
         </el-form>
       </el-card>
     </div>
@@ -39,8 +38,8 @@ export default {
   name: 'AProfileEdit',
   data() {
     const _validatetoid = (rule, value, callback) => {
-      if (value === '') {
-        callback()
+      if (value.length < 1) {
+        callback(new Error('ToID 不得為空'))
       } else if (!validatetoid(value)) {
         callback(new Error('ToID 只能有大小寫英數'))
       } else if (value.length !== 8) {
@@ -50,8 +49,8 @@ export default {
       }
     }
     const validatename = (rule, value, callback) => {
-      if (value === '') {
-        callback()
+      if (value.length < 1) {
+        callback(new Error('姓名不得為空'))
       } else if (value.length > 25) {
         callback(new Error('姓名不可以大於 25 個字'))
       } else {
@@ -122,7 +121,7 @@ export default {
       setTimeout(() => {
         setTimeout(() => {
           this.loadingprofile_view_cancal = false
-          this.$router.push({ path: this.redirect || '/profile/profile-view' })
+          this.$router.push({ path: this.redirect || '/profile/admin-profile-view' })
         }, 300)
       }, 150)
     },
@@ -198,7 +197,7 @@ export default {
 <style rel="stylesheet/scss" lang="scss" >
 .personal_edit_form {
   width: 80%;
-  margin: 15vh 10vw;
+  margin: 15vh 9vw;
 }
 .btn {
   float: right;

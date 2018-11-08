@@ -3,8 +3,8 @@
     <title>
       {{ $t('route.a_profile_view') }}
     </title>
-    <div class="card_info">
-      <el-card body-style="padding:3.125rem">
+    <div>
+      <el-card body-style="padding:3.125rem" class="card_info">
         <el-form :model="infoform" label-position="left" inline class="personal_view">
           <el-form-item :label="$t('a_profile_view.email')">
             <el-input v-model="infoform.useraccount" type="textarea" autosize readonly />
@@ -57,7 +57,7 @@ export default {
       setTimeout(() => {
         setTimeout(() => {
           this.loadingprofile_edit = false
-          this.$router.push({ path: this.redirect || '/profile/profile-edit' })
+          this.$router.push({ path: this.redirect || '/profile/admin-profile-edit' })
         }, 300)
       }, 150)
     }
@@ -67,8 +67,8 @@ export default {
 </script>
 <style rel="stylesheet/scss" lang="scss" >
 .card_info {
-  width: 80%;
-  margin: 15vh 10vw;
+  width: 70%;
+  margin: 20vh 14vw;
 }
 
 .btn {

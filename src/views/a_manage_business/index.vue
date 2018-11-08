@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="filter-container">
       <title>
-        {{ $t('route.a_manage_business_view.businessmember') }}
+        {{ $t('route.a_manage_business') }}
       </title>
       <el-select v-model="selectnumber" :remote-method="remoteMethod" :loading="loading" :placeholder="$t('a_manage_business_view.number')" filterable remote reserve-keyword>
         <el-option v-for="item in selnumber" :key="item.value" :label="item.label" :value="item.value" />

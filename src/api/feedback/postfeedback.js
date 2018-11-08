@@ -7,8 +7,7 @@ export function postfeedback(token, title, content, time) {
   const data = {
     token,
     member_id,
-    // 暫時送39
-    admin_id: 39,
+    admin_id: null,
 
     status: 0,
     syncstatus: 2,

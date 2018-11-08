@@ -66,7 +66,7 @@
             <span />
           </el-form-item>
           <el-form-item label="專案名稱" prop="name">
-            <el-input v-model="c_project_add.name" :placeholder="c_project_name_p" clearable name="name" @focus="clean_name()" />
+            <el-input v-model="c_project_add.name" clearable name="name" @focus="clean_name()" />
           </el-form-item>
         </el-form>
 
@@ -83,6 +83,7 @@
 
 import waves from '@/directive/waves' // 水波紋指令
 import { getproject, getproject_single } from '@/api/project/getproject'
+import { getaccounting_all } from '@/api/accounting/getaccounting'
 import { postproject } from '@/api/project/postproject'
 import { patchproject_update, patchproject_delete } from '@/api/project/patchproject'
 import { getToken } from '@/utils/auth'
@@ -125,6 +126,7 @@ export default {
   },
   created() {
     this.page_load()
+    this.get_getaccounting_all()
   },
   methods: {
     page_load() {
@@ -144,6 +146,22 @@ export default {
       this.c_project_name_p = row.name
       this.c_project_edit.name = row.name
       this.c_project_visible = true
+    },
+    get_getaccounting_all() {
+      let accounting_history = []
+      getaccounting_all(getToken()).then((res) => {
+        accounting_history = res.data
+        accounting_history.forEach(items => {
+          if (items.type === false) {
+            items.type = '支出'
+          } else {
+            items.type = '收入'
+          }
+          if (items.invoice_id === null || items.invoice_id === undefined) {
+            items.invoice_id = '-'
+          }
+        })
+      })
     },
     get_projectlist() {
       getproject(getToken()).then(response => {
@@ -179,6 +197,7 @@ export default {
             type: 'success',
             message: '新增專案成功'
           })
+          this.c_project_add.name = ''
           this.get_project()
         })
         .catch((error) => {
@@ -215,6 +234,7 @@ export default {
         message: '已取消動作'
       })
       this.c_project_visible = false
+      this.c_project_add_visible = false
     },
     c_project_del() {
       this.$confirm('你真的要刪除該卡片資料嗎？', '警告', {

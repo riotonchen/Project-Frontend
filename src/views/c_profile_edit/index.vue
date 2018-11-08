@@ -39,8 +39,8 @@ export default {
   name: 'CProfileEdit',
   data() {
     const _validatetoid = (rule, value, callback) => {
-      if (value === '') {
-        callback()
+      if (value.length < 1) {
+        callback(new Error('ToID 不得為空'))
       } else if (!validatetoid(value)) {
         callback(new Error('ToID 只能有大小寫英數'))
       } else if (value.length !== 8) {
@@ -50,8 +50,8 @@ export default {
       }
     }
     const validatename = (rule, value, callback) => {
-      if (value === '') {
-        callback()
+      if (value.length < 1) {
+        callback(new Error('姓名 不得為空'))
       } else if (value.length > 25) {
         callback(new Error('姓名不可以大於 25 個字'))
       } else {

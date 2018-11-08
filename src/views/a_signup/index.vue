@@ -170,13 +170,12 @@ export default {
   width: 100%;
 }
 .box_card {
-  width: 50%;
-  margin-left: 25vw;
-  margin-top: 9.5vh;
+  width: 60%;
+  margin: 10vh 19vw;
 }
 .a_signup_bottun {
   float: right;
-  margin-bottom: 5vh;
+  //margin-bottom: 1vh;
 }
 </style>
 

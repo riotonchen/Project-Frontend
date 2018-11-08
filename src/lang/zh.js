@@ -17,10 +17,13 @@ export default {
     c_categorymanager: '類別管理',
     c_projectmanager: '專案管理',
     a_profile_view: '管理員資訊',
-    a_profile_edit: '編輯資訊',
+    a_profile_edit: '管理員編輯資訊',
     a_signup: '管理員註冊',
+    a_manage_business: '商家管理',
     a_feedbackmanage: '回饋管理',
-    b_activity_add: '建立商家優惠資訊'
+    b_activity_add: '建立優惠資訊',
+    b_profile_view: '商家資訊',
+    b_profile_edit: '商家編輯資訊'
 
   },
   b_profile_edit: {
