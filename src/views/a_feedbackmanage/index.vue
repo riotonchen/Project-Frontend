@@ -5,12 +5,18 @@
       {{ $t('route.a_feebackmanage') }}
     </title>
     <div class="filter-container">
-      <el-select v-model="testselect" clearable filterable style="width: 25vw;max-width:7.5rem;min-width:5.5rem;" @focus="get_cardlist()" @change="get_cardlist()">
-        <el-option v-for="item in testdata" :key="item.id" :label="item.name" :value="item.id" />
-      </el-select>
+      <el-row class="date_seletor">
+        <el-col :xs="6" :sm="3" :md="2" :lg="2" :xl="1" class="selector_title">
+          <span>{{ $t('a_feebackmanager.selecttime') }}</span>
+        </el-col>
+        <el-col :xs="24" :sm="15" :md="9" :lg="8" :xl="6">
+          <!--style="width: 40vw;min-width:15rem;max-width:23rem;"-->
+          <el-date-picker v-model="startenddate" :start-placeholder="$t('a_feebackmanager.startdate')" :end-placeholder="$t('a_feebackmanager.enddate')" :clearable="dateclean" range-separator="-" align="center" type="daterange" />
+        </el-col>
+      </el-row>
     </div>
     <div class="feedback_table">
-      <el-table :data="test" stripe style="width: 100%;" max-height="500" fit sortable>
+      <el-table :data="feedbackdata" stripe style="width: 100%;" max-height="500" fit sortable>
         <el-table-column type="index" align="center" />
         <el-table-column :label="$t('a_feebackmanager.date')" prop="date">
           <template slot-scope="scope">
@@ -34,13 +40,13 @@
         </el-table-column>
         <el-table-column :label="$t('a_feebackmanager.act')" align="center">
           <template slot-scope="scope">
-            <el-button type="primary" plain @click.native.prevent="handleUpdate(scope.row)">{{ $t('a_feebackmanager.edit') }}</el-button>
+            <el-button type="primary" plain @click.native.prevent="handleUpdate(scope.row)">{{ $t('a_feebackmanager.detailed') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
     <div class="dialog_container">
-      <el-dialog :visible.sync="centerDialogVisible" width="80vw">
+      <el-dialog :visible.sync="a_feedback_visible" width="80vw">
         <el-form :ref="a_feedback_form" :model="a_feedback_form" label-position="left" inline class="table-invoice">
           <el-form-item :label="$t('a_feebackmanager.problemcontent')" prop="problemcontent">
             <el-input v-model="a_feedback_form.problemcontent" :autosize="{ minRows: 15, maxRows:15}" placeholder="" readonly resize="none" type="textarea" style="width:40vw" />
@@ -49,9 +55,22 @@
         </el-form>
 
         <span slot="footer" class="invoice_dialog_footer">
-          <el-button type="primary" @click="send_reback()">回復</el-button>
+          <el-button type="primary" @click="a_feedbackreply()">{{ $t('a_feebackmanager.reply') }}</el-button>
         </span>
 
+      </el-dialog>
+      <!--回覆-->
+      <el-dialog :visible.sync="a_feedbackreply_visible" width="80vw">
+        <el-form :ref="a_feedback_reply" :model="a_feedback_reply">
+          <el-form-item :label="$t('a_feebackmanager.replycontent')" prop="content">
+            <el-input v-model="a_feedback_reply.content" :placeholder="$t('a_feebackmanager.input')" :autosize="{ minRows: 15, maxRows:15}" resize="none" type="textarea" style="width:40vw" />
+          </el-form-item>
+
+        </el-form>
+        <span slot="footer" class="invoice_dialog_footer">
+          <el-button type="primary" @click.native.prevent="send_reback()">{{ $t('a_feebackmanager.confirm') }}</el-button>
+          <el-button type="info" plain @click.native.prevent="a_feeback_cal()">{{ $t('a_feebackmanager.cancel') }}</el-button>
+        </span>
       </el-dialog>
     </div>
   </div>
@@ -69,18 +88,20 @@ export default {
 
   data() {
     return {
+      startenddate: '',
+      dateclean: false,
       a_feedback_form: {
         problemcontent: ''
       },
-      test: [{ date: 'hufihsiogrkj', problemnumber: '12348465', problemsubject: 'ewgrb', memberaccount: 'ebwnb' }, { date: 'hufihsiogrkj', problemnumber: '12348465', problemsubject: 'ewgrb', memberaccount: 'ebwnb' }],
-      testselect: '',
+      a_feedback_reply:
+      {
+        content: ''
+      },
+      feedbackdata: [{ date: 'hufihsiogrkj', problemnumber: '12348465', problemsubject: 'ewgrb', memberaccount: 'ebwnb' }, { date: 'hufihsiogrkj', problemnumber: '12348465', problemsubject: 'ewgrb', memberaccount: 'ebwnb' }],
+      select: '',
       testdata: [{ id: 1, name: '可' }, { id: 2, name: '阿' }, { id: 3, name: '溪' }],
-
-      dialogFormVisible: false,
-      dialogStatus: '',
-      centerDialogVisible: false,
-      dialogPvVisible: false
-
+      a_feedback_visible: false,
+      a_feedbackreply_visible: false
     }
   },
 
@@ -89,20 +110,40 @@ export default {
   },
 
   methods: {
-
     handleUpdate(index, row) {
-      this.centerDialogVisible = true
+      this.a_feedback_visible = true
       this.a_feedback_form.problemcontent = row.problemcontent
-      this.a_feedbackmanage_content_p = row.content
+    },
+    a_feedbackreply() {
+      this.a_feedbackreply_visible = true
     },
     send_reback() {
-      this.centerDialogVisible = false
-      const h = this.$createElement
-      this.$notify({
-        title: '回覆成功',
-        message: h('b', { style: 'color: teal' }, '該問題已經回覆')
+      this.$refs.a_feedback_reply.validate((valid) => {
+        if (valid) {
+          this.a_feedbackreply_visible = false
+          const h = this.$createElement
+          this.$notify({
+            title: '回覆成功',
+            message: h('b', { style: 'color: teal' }, '該問題已經回覆')
+          })
+        } else {
+          console.log('error submit')
+          return false
+        }
+      })
+    },
+    a_feeback_cal() {
+      this.$message({
+        type: 'info',
+        message: '已取消動作'
       })
     }
   }
 }
 </script>
+<style>
+.selector_title {
+  line-height: 2.25rem;
+  font-size: 0.7vw;
+}
+</style>

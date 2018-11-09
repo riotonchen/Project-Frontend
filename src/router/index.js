@@ -237,7 +237,7 @@ export const asyncRouterMap = [{
 },
 
 {
-  path: '/report',
+  path: '/mbr-report',
   component: Layout,
   redirect: 'noredirect',
   children: [{
@@ -354,6 +354,21 @@ export const asyncRouterMap = [{
     meta: {
       title: 'b_activity_add',
       icon: 'user'
+    }
+  }]
+},
+{
+  path: '/ent-report',
+  component: Layout,
+  redirect: 'noredirect',
+  children: [{
+    path: '',
+    component: () =>
+        import('@/views/b_connection/index'),
+    name: 'b_connection',
+    meta: {
+      title: '聯絡我們',
+      icon: 'support'
     }
   }]
 },

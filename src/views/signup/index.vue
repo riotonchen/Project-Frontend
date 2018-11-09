@@ -42,7 +42,7 @@
           <svg-icon icon-class="star" />
         </span>
         <el-select v-model="signupForm.membertype_id" clearable placeholder="請選擇會員類別" style="width:88%;">
-          <el-option v-for="item in membertype" :key="item.key" :label="item.label" :value="item.key" />
+          <el-option v-for="item in membertype" :key="item.value" :label="item.label" :value="item.value" />
         </el-select>
       </el-form-item>
 
@@ -59,6 +59,9 @@ import LangSelect from '@/components/LangSelect'
 import {
   Postsignup
 } from '@/api/signup'
+import {
+  postentprofile
+} from '@/api/ent-profile/postentprofile'
 
 export default {
   name: 'Signup',
@@ -113,7 +116,7 @@ export default {
       loadinghome: false,
       showDialog: false,
       redirect: undefined,
-      membertype: [{ label: '會員', key: '2' }, { label: '商家', key: '5' }]
+      membertype: [{ label: '會員', value: '2' }, { label: '商家', value: '5' }]
     }
   },
   watch: {
@@ -132,64 +135,28 @@ export default {
         this.passwordType = 'password'
       }
     },
+    post_ent() {
+      if (this.signupForm.membertype_id === 5) {
+        postentprofile(this.signupForm.username, this.signupForm.password)
+          .catch((error) => {
+            console.log(error)
+          })
+      }
+    },
     handleSignup() {
       this.$refs.signupForm.validate(valid => {
         if (valid) {
           this.loadingsend = true
           Postsignup(this.signupForm.username, this.signupForm.password, this.signupForm.membertype_id)
             .then(() => {
-              // send ent-profile
-              // https://www.177together.com/api/enterprise/
-              /*
-              if (this.signupForm.membertype_id === 5) {
-                // send ent-profile code
-                // 147 change to ent
-                Postsignup(this.signupForm.username, this.signupForm.password, this.signupForm.membertype_id)
-                  .then(() => {
-                    const h = this.$createElement
-                    this.$notify({
-                      title: '註冊成功',
-                      message: h('b', { style: 'color: teal' }, '恭喜你註冊成功，好好享受我們的服務吧！'),
-                      position: 'top-left'
-                    })
-                    this.loadingsend = false
-                    this.$router.push({ path: this.redirect || '/home' })
-                  })
-                  .catch((error) => {
-                    console.log(error.response.data)
-                    if (error.response.data.error_msg === '帳號已存在！') {
-                      const h = this.$createElement
-                      this.$notify.error({
-                        title: '註冊失敗',
-                        message: h('b', { style: 'color: red' }, '你輸入的電子信箱已經註冊過，請確認後再次註冊！ 5秒自動幫你重新刷新頁面'),
-                        position: 'top-left',
-                        showClose: false
-                      })
-                      setTimeout(() => {
-                        location.reload()
-                      }, 5000)
-                    } else {
-                      const h = this.$createElement
-                      this.$notify.error({
-                        title: '註冊失敗',
-                        message: h('b', { style: 'color: red' }, '發生了一點錯誤，請在試一次，如果一直發生請與我們聯繫，造成您的不良體驗，實在非常抱歉！ 5秒自動幫你跳轉'),
-                        position: 'top-left',
-                        showClose: false
-                      })
-                      setTimeout(() => {
-                        location.reload()
-                      }, 5000)
-                    }
-                  })
-              }
-              */
-
+              this.post_ent()
               const h = this.$createElement
               this.$notify({
                 title: '註冊成功',
                 message: h('b', { style: 'color: teal' }, '恭喜你註冊成功，好好享受我們的服務吧！'),
                 position: 'top-left'
               })
+
               this.loadingsend = false
               this.$router.push({ path: this.redirect || '/home' })
             })

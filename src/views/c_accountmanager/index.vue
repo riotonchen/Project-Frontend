@@ -8,7 +8,7 @@
       <el-select v-model="c_account_type" :placeholder="$t('c_accountmanager.project')" filterable clearable style="width: 10vw;max-width:8rem;min-width:5rem;" @focus="get_account()" @change="get_account()">
         <el-option v-for="type in c_account_type_options" :key="type.accounttype_id" :label="type.name" :value="type.accounttype_id" />
       </el-select>
-      <el-select v-model="c_account_name" :disabled="c_account_name_visible" :placeholder="$t('c_category.mainsortname')" clearable filterable style="width: 25vw;max-width:7.5rem;min-width:6.5rem;" @focus="get_account()" @change="get_account()">
+      <el-select v-model="c_account_name" :disabled="c_account_name_visible" :placeholder="$t('c_category.mainsortname')" filterable style="width: 25vw;max-width:7.5rem;min-width:6.5rem;" @focus="get_account()" @change="get_account()">
         <el-option v-for="name in c_account_name_options" :key="name.id" :label="name.name" :value="name.id" />
       </el-select>
       <el-button type="primary" @click="c_open_add_view()">
