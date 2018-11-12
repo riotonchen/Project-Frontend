@@ -1,6 +1,6 @@
 <template>
   <!--修改刪除新增未寫-->
-  <div class="accountma_container">
+  <div class="app-container">
     <title>
       {{ $t('route.c_accountmanager') }}
     </title>

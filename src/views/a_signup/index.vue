@@ -1,10 +1,10 @@
 <template>
-  <div class="signup-container">
+  <div class="app-container">
     <title>
       {{ $t('route.a_signup') }}
     </title>
-    <el-card class="box_card">
-      <el-form ref="signupForm" :model="signupForm" :rules="signupRules" hide-required-asterisk inline class="table_card" auto-complete="on" label-position="left">
+    <el-card class="a_signup_card">
+      <el-form ref="signupForm" :model="signupForm" :rules="signupRules" hide-required-asterisk inline class="table_a_signup" auto-complete="on" label-position="left">
 
         <el-form-item>
           <span>{{ $t('a_signup.title') }}</span>
@@ -151,31 +151,31 @@ export default {
 
 </script>
 <style rel="stylesheet/scss" lang="scss" >
-.table_card {
+.table_a_signup {
   font-size: 0;
 }
-.table_card label {
+.table_a_signup label {
   width: 70vw;
   color: #99a9bf;
   font-size: 1.5vw;
 }
-.table_card span {
+.table_a_signup span {
   width: 100px;
   color: #000000;
   font-size: 2vw;
 }
-.table_card .el-form-item {
+.table_a_signup .el-form-item {
   margin-right: 0;
   //margin-bottom: 0;
   width: 100%;
 }
-.box_card {
+.a_signup_card {
   width: 60%;
   margin: 10vh 19vw;
 }
 .a_signup_bottun {
   float: right;
-  //margin-bottom: 1vh;
+  margin-bottom: 3vh;
 }
 </style>
 

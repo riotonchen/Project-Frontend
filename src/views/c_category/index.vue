@@ -1,17 +1,18 @@
 <template>
-  <div class="category_container">
+  <div class="app-container">
     <title>
       {{ $t('route.c_category') }}
     </title>
     <!--搜尋分類-->
     <div class="filter_container">
-      <el-select v-model="c_sort_payorin" :placeholder="$t('c_category.incomespend')" filterable clearable style="width: 10vw;max-width:8rem;min-width:5rem;" @focus="get_sort()" @change="get_sort()">
+      <el-select v-model="c_sort_payorin" :placeholder="$t('c_category.incomespend')" filterable clearable style="width: 10vw;max-width:8rem;min-width:5rem;" @focus="get_category()" @change="get_category()">
         <el-option v-for="payorin in c_pay_in" :key="payorin.value" :label="payorin.label" :value="payorin.value" />
       </el-select>
-      <el-select v-model="c_sort_id" :disabled="c_sort_disable" :placeholder="$t('c_category.mainsortname')" clearable filterable style="width: 25vw;max-width:7.5rem;min-width:6.5rem;" @focus="get_sortchange()" @change="get_sortchange()">
-        <el-option v-for="sort in c_category_list" :key="sort.id" :label="sort.name" :value="sort.id" />
+      <el-select v-model="c_sort_id" :disabled="c_sort_disable" :placeholder="$t('c_category.mainsortname')" clearable filterable style="width: 25vw;max-width:7.5rem;min-width:6.5rem;" @focus="get_category()" @change="get_category()">
+        <el-option v-for="sort in c_category_list_option" :key="sort.sort_id.id" :label="sort.sort_id.name" :value="sort.sort_id.id" />
       </el-select>
-      <el-date-picker v-model="startenddate" :placeholder="$t('c_category.choose')" align="center" type="month" style="width: 10vw;min-width:7rem;max-width:10rem;" />
+
+      <el-date-picker v-model="startenddate" :placeholder="$t('c_category.choose')" :clearable="datepickerclea" value-format="yyyy-MM" align="center" type="month" style="width: 10vw;min-width:7rem;max-width:10rem;" />
 
       <!--新增主分類-->
       <span slot="footer" class="invoice_dialog_footer">
@@ -24,19 +25,19 @@
           <el-table-column type="index" align="center" />
           <el-table-column :label="$t('c_category.name')" prop="name" align="center">
             <template slot-scope="scope">
-              <span>{{ scope.row.name }}</span>
+              <span>{{ scope.row.sort_id.name }}</span>
             </template>
           </el-table-column>
 
-          <el-table-column :label="$t('c_category.budgetmonth')" prop="allin" align="center">
+          <el-table-column :label="$t('c_category.budgetmonth')" prop="budget" align="center">
             <template slot-scope="scope">
-              <span>{{ scope.row.allin }}</span>
+              <span>{{ scope.row.budget }}</span>
             </template>
           </el-table-column>
 
-          <el-table-column :label="$t('c_category.spendingmonth')" prop="allout" align="center">
+          <el-table-column :label="$t('c_category.spendingmonth')" prop="amount" align="center">
             <template slot-scope="scope">
-              <span>{{ scope.row.allout }}</span>
+              <span>{{ scope.row.amount }}</span>
             </template>
           </el-table-column>
 
@@ -59,7 +60,7 @@
       <!--編輯主類別之表單-->
       <el-dialog :visible.sync="c_category_editsort_visible" :title="$t('c_category.edit')" width="80vw">
 
-        <el-form ref="c_subsort_edit" :model="c_subsort_edit" :rules="c_category_editsort_rules" label-position="left" inline class="table_category">
+        <el-form ref="c_subsort_edit" :model="c_category_editsort" :rules="c_category_editsort_rules" label-position="left" inline class="table_category">
           <el-form-item>
             <span>{{ $t('c_category.notmodify') }}</span>
           </el-form-item>
@@ -67,7 +68,7 @@
             <span />
           </el-form-item>
           <el-form-item :label="$t('c_category.mainsortname')" prop="name">
-            <el-input v-model="c_subsort_edit.name" :placeholder="c_category_sortname_p" name="name" clearable @focus="clean_name()" />
+            <el-input v-model="c_category_editsort.name" :placeholder="c_category_sortname_p" name="name" clearable @focus="clean_name()" />
           </el-form-item>
           <el-form-item>
             <span />
@@ -191,7 +192,7 @@
 <script>
 
 import waves from '@/directive/waves' // 水波紋指令
-import { getsort_all, getsort_pay, getsort_in, getsortsingledata } from '@/api/sort/getsort'
+import { getsortbudget_all } from '@/api/sortbudget/getsortbudget'
 import { postsort } from '@/api/sort/postsort'
 import { patchsort_update, patchsort_delete } from '@/api/sort/patchsort'
 import { postsubsort } from '@/api/subsort/postsubsort'
@@ -232,16 +233,20 @@ export default {
       }
     }
     return {
-      startenddate: '',
-      c_sort_payorin: null,
-      c_sort_id: null,
-      c_subsort_id: null,
-      c_sort_row_id: null,
-      c_sort_row_type: null,
-      c_add_sort_payorin: null,
+      startenddate: formatdate('yyyy-mm'),
+      c_sort_payorin: '',
+      c_sort_id: '',
+      c_subsort_id: '',
+      c_sort_row_id: '',
+      c_sort_row_type: '',
+      c_add_sort_payorin: '',
       c_project: '',
       c_account: '',
       c_category_name_p: '',
+      c_sort_edit: {
+        id: '',
+        name: ''
+      },
       c_subsort_edit: {
         id: '',
         name: '',
@@ -251,11 +256,11 @@ export default {
         name: '',
         payorin: ''
       },
-      c_category_sortname_p: null,
+      c_category_sortname_p: '',
       c_category_editsort: {
-        id: null,
-        name: null,
-        type: null
+        id: '',
+        name: '',
+        type: ''
       },
       c_sort_payorinitem: [],
       c_subsort_payorinitem: [],
@@ -271,8 +276,10 @@ export default {
       c_category_subsort_table_visible: false,
       c_category_sort_add_visible: false,
       view_loading: true,
+      datepickerclea: false,
       c_pay_in: [{ label: '支出', value: 0 }, { label: '收入', value: 1 }],
       c_category_list: [],
+      c_category_list_option: [],
       c_category_edit_rules: {
         subname: [{ required: false, trigger: 'change', validator: validate_subname }],
         name: [{ required: false, trigger: 'change', validator: validate_name }]
@@ -287,11 +294,33 @@ export default {
     }
   },
   watch: {
-    c_sort_payorin: function() {
+    c_sort_payorin: function(newpi, oldpi) {
       if (this.c_sort_payorin === null || this.c_sort_payorin === '') {
         this.c_sort_disable = true
+        this.c_sort_id = ''
+      } else if (newpi !== oldpi) {
+        this.c_sort_id = ''
+        this.c_sort_disable = false
       } else {
         this.c_sort_disable = false
+      }
+    },
+    startenddate: function(newdate, olddate) {
+      const todayplus3 = new Date()
+      const todayde3 = new Date()
+      const time = new Date(newdate)
+      todayplus3.setTime(todayplus3.getTime() + 3600 * 1000 * 24 * 90)
+      todayde3.setTime(todayde3.getTime() - 3600 * 1000 * 24 * 90)
+      time.setTime(time.getTime())
+
+      if (time > todayplus3 || time < todayde3) {
+        this.startenddate = formatdate('yyyy-mm')
+        this.$message({
+          type: 'warning',
+          message: '只能選擇前後各三個月的時間'
+        })
+      } else if (newdate !== olddate) {
+        this.get_category()
       }
     }
   },
@@ -302,39 +331,32 @@ export default {
     page_load() {
       setTimeout(() => {
         this.view_loading = false
-        this.get_sort()
+        this.get_category()
       }, 500)
     },
     clean_name() {
       this.c_subsort_edit.name = ''
     },
-    get_sort() {
-      this.c_sort_id = null
-      if (this.c_sort_payorin === 0) {
-        getsort_pay(getToken()).then((response) => {
-          this.c_category_list = response.data
-        })
-      } else if (this.c_sort_payorin === 1) {
-        getsort_in(getToken()).then((response) => {
-          this.c_category_list = response.data
+    get_category() {
+      this.c_category_list = []
+      let send_payin
+      if (this.c_sort_payorin !== '') {
+        if (this.c_sort_payorin === 0) {
+          send_payin = 'False'
+        } else {
+          send_payin = 'True'
+        }
+        getsortbudget_all(getToken(), this.startenddate.substring(0, 4), this.startenddate.substring(5, 8), send_payin, this.c_sort_id).then((res) => {
+          this.c_category_list = res.data
         })
       } else {
-        getsort_all(getToken()).then(response => {
-          this.c_category_list = response.data
-        }).catch((error) => {
-          console.log(error)
+        getsortbudget_all(getToken(), this.startenddate.substring(0, 4), this.startenddate.substring(5, 8)).then((res) => {
+          this.c_category_list = res.data
         })
       }
-    },
-    get_sortchange() {
-      if (this.c_sort_id === null) {
-        this.get_sort()
-      } else {
-        getsortsingledata(getToken(), this.c_sort_id).then((response) => {
-          this.c_category_list = []
-          this.c_category_list.push(response.data)
-        })
-      }
+      getsortbudget_all(getToken(), this.startenddate.substring(0, 4), this.startenddate.substring(5, 8), send_payin).then((res) => {
+        this.c_category_list_option = res.data
+      })
     },
     get_subsort() {
       getsubsort(getToken(), this.c_sort_row_id).then((response) => {
@@ -356,8 +378,8 @@ export default {
     },
     handle_edit_subsort(index, row) {
       this.c_category_visible = true
-      this.c_sort_row_id = row.id
-      this.c_sort_row_type = row.type
+      this.c_sort_row_id = row.sort_id.id
+      this.c_sort_row_type = row.sort_id.type
       this.c_subsort_id = ''
       this.get_subsort()
     },
@@ -369,9 +391,9 @@ export default {
     },
     handle_edit_sort(index, row) {
       this.c_category_editsort_visible = true
-      this.c_category_editsort.id = row.id
-      this.c_category_editsort.name = row.name
-      this.c_category_sortname_p = row.name
+      this.c_category_editsort.id = row.sort_id.id
+      this.c_category_editsort.name = row.sort_id.name
+      this.c_category_sortname_p = row.sort_id.name
     },
     visible_subsort_table() {
       this.c_category_subsort_table_visible = true
@@ -382,14 +404,14 @@ export default {
     c_category_sortadd() {
       this.$refs.c_sort_add.validate(valid => {
         if (valid) {
-          postsort(getToken(), this.c_sort_add.name, this.c_sort_add.payorin).then(() => {
+          postsort(getToken(), this.c_sort_add.payorin, this.c_sort_add.name).then(() => {
             this.$message({
               type: 'success',
               message: '已新增一筆主分類'
             })
-            this.c_sort_payorin = null
-            this.c_sort_id = null
-            this.get_sort()
+            this.c_sort_payorin = ''
+            this.c_sort_id = ''
+            this.get_category()
           }).catch((error) => {
             console.log(error)
             this.$message({
@@ -407,7 +429,7 @@ export default {
     c_category_subsortadd() {
       this.$refs.c_subsort_edit.validate(valid => {
         if (valid) {
-          postsubsort(getToken(), this.c_subsort_edit.id, this.c_sort_row_id, this.c_subsort_edit.subname, this.c_sort_row_type).then(() => {
+          postsubsort(getToken(), this.c_category_editsort.id, this.c_subsort_edit.subname, this.c_sort_row_type).then(() => {
             this.$message({
               type: 'success',
               message: '已新增一筆子分類'
@@ -433,14 +455,14 @@ export default {
       this.$refs.c_subsort_edit.validate(valid => {
         if (valid) {
           const date = formatdate('yyyy-mm-dd HH:MM:ss.l')
-          patchsort_update(getToken(), this.c_category_editsort.id, this.c_subsort_edit.name, date).then((response) => {
+          patchsort_update(getToken(), this.c_category_editsort.id, this.c_category_editsort.name, date).then((response) => {
             this.$message({
               type: 'success',
               message: '已完成該筆分類相關修改'
             })
-            this.c_sort_payorin = null
-            this.c_sort_id = null
-            this.get_sort()
+            this.c_sort_payorin = ''
+            this.c_sort_id = ''
+            this.get_category()
           }).catch((error) => {
             console.log(error)
             this.$message({
@@ -477,7 +499,7 @@ export default {
                 this.c_category_editsort_visible = false
                 this.c_sort_payorin = null
                 this.c_sort_id = null
-                this.get_sort()
+                this.get_category()
               })
             }).catch(() => {
               this.$message({

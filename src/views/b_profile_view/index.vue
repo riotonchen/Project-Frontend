@@ -1,5 +1,5 @@
 <template>
-  <div class="b_personal_container">
+  <div class="app-container">
     <title>
       {{ $t('route.b_profile_view') }}
     </title>
@@ -82,7 +82,7 @@ export default {
       setTimeout(() => {
         setTimeout(() => {
           this.loadingprofile_edit = false
-          this.$router.push({ path: this.redirect || '/profile/b_profile_edit' })
+          this.$router.push({ path: this.redirect || '/profile/ent-profile-edit' })
         }, 300)
       }, 150)
     }
@@ -93,7 +93,7 @@ export default {
 <style rel="stylesheet/scss" lang="scss" >
 .card_info {
   width: 80%;
-  margin: 15vh 10vw;
+  margin: 2.5vh 10vw;
 }
 
 .btn {
@@ -107,7 +107,7 @@ export default {
 .personal_view label {
   width: 90px;
   color: #99a9bf;
-  font-size: 1.2vw;
+  font-size: 0.8vw;
 }
 .personal_view input {
   font-family: "Microsoft JhengHei";

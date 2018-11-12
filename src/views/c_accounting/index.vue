@@ -1,6 +1,6 @@
 <template>
 
-  <div class="accounting_container">
+  <div class="app-container">
     <title>
       {{ $t('route.c_accounting') }}
     </title>

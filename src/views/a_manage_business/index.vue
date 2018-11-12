@@ -1,34 +1,33 @@
 <template>
   <div class="app-container">
+    <title>
+      {{ $t('route.a_manage_business_view.businessmember') }}
+    </title>
     <div class="filter-container">
-      <title>
-        {{ $t('route.a_manage_business') }}
-      </title>
-      <el-select v-model="selectnumber" :remote-method="remoteMethod" :loading="loading" :placeholder="$t('a_manage_business_view.number')" filterable remote reserve-keyword>
-        <el-option v-for="item in selnumber" :key="item.value" :label="item.label" :value="item.value" />
+      <el-select v-model="selectuni_num" :placeholder="$t('a_manage_business_view.number')" filterable>
+        <el-option v-for="item in b_uni_num" :key="item.value" :label="item.label" :value="item.value" />
       </el-select>
-      <el-select v-model="selectname" :remote-method="remoteMethod" :loading="loading" :placeholder="$t('a_manage_business_view.name')" filterable remote reserve-keyword>
-        <el-option v-for="item in selname" :key="item.value" :label="item.label" :value="item.value" />
+      <el-select v-model="selectname" :placeholder="$t('a_manage_business_view.name')" filterable>
+        <el-option v-for="item in b_name" :key="item.value" :label="item.label" :value="item.value" />
       </el-select>
-      <el-select v-model="selectid" :remote-method="remoteMethod" :loading="loading" :placeholder="$t('a_manage_business_view.id')" filterable remote reserve-keyword>
-        <el-option v-for="item in selid" :key="item.value" :label="item.label" :value="item.value" />
+      <el-select v-model="selectaccount" :placeholder="$t('a_manage_business_view.id')" filterable>
+        <el-option v-for="item in b_account" :key="item.value" :label="item.label" :value="item.value" />
       </el-select>
-      <!--遠程搜索-->
     </div>
     <!--外層Table-->
     <div>
-      <el-table :data="a_business_table" fit>
-        <el-table-column :label="$t('a_manage_business_view.number')" prop="businessnumber" class="number" align="center">
+      <el-table :data="a_business_table" stripe style="width: 100%;" max-height="500" fit>
+        <el-table-column :label="$t('a_manage_business_view.number')" prop="businessnumber" align="center">
           <template slot-scope="scope">
             <span>{{ scope.row.number }}</span>
           </template>
         </el-table-column>
-        <el-table-column :label="$t('a_manage_business_view.name')" prop="businessname" class="name" align="center">
+        <el-table-column :label="$t('a_manage_business_view.name')" prop="businessname" align="center">
           <template slot-scope="scope">
             <span>{{ scope.row.name }}</span>
           </template>
         </el-table-column>
-        <el-table-column :label="$t('a_manage_business_view.id')" prop="businessid" class="id" align="center">
+        <el-table-column :label="$t('a_manage_business_view.id')" prop="businessid" align="center">
           <template slot-scope="scope">
             <span>{{ scope.row.id }}</span>
           </template>
@@ -38,44 +37,42 @@
           <template slot-scope="scope">
             <el-button type="info" plain @click="dialogFormVisible = true">{{ $t('a_manage_business_view.detail') }}</el-button>
             <el-button type="primary" plain @click="dialogTableVisible = true">{{ $t('a_manage_business_view.activity') }}</el-button>
-            <!--@click="handleUpdate(scope.row)先拿掉-->
           </template>
         </el-table-column>
 
       </el-table>
     </div>
-    <div class="dialog_container">
+    <div>
       <!--詳細資料-->
       <el-dialog :visible.sync="dialogFormVisible" width="80vw">
-        <el-form :data="a_business_subsort" label-position="left" inline class="table_dialog">
-          <el-form-item :label="$t('a_manage_business_view.princiapl')" class="princiapl">
-            <el-input v-model="a_business_edit.princiapl" type="text" class="princiapl" readonly />
+        <el-form :data="a_business_subsort" :model="a_business_view" label-position="left" inline class="dialog_container">
+          <el-form-item :label="$t('a_manage_business_view.princiapl')">
+            <el-input v-model="a_business_view.princiapl" type="text" readonly />
           </el-form-item>
-          <el-form-item :label="$t('a_manage_business_view.number')" class="labelnumber">
-            <el-input v-model="a_business_edit.number" type="text" class="number" readonly />
+          <el-form-item :label="$t('a_manage_business_view.number')">
+            <el-input v-model="a_business_view.number" type="text" readonly />
           </el-form-item>
-          <el-form-item :label="$t('a_manage_business_view.name')" class="labelname">
-            <el-input v-model="a_business_edit.namel" type="text" class="name" readonly />
+          <el-form-item :label="$t('a_manage_business_view.name')">
+            <el-input v-model="a_business_view.name" type="text" readonly />
           </el-form-item>
-          <el-form-item :label="$t('a_manage_business_view.id')" class="labelid">
-            <el-input v-model="a_business_edit.id" type="text" class="id" readonly />
+          <el-form-item :label="$t('a_manage_business_view.id')">
+            <el-input v-model="a_business_view.id" type="text" readonly />
           </el-form-item>
-          <el-form-item :label="$t('a_manage_business_view.taxID')" class="labeltaxID">
-            <el-input v-model="a_business_edit.taxID" type="text" class="taxID" readonly />
+          <el-form-item :label="$t('a_manage_business_view.taxID')">
+            <el-input v-model="a_business_view.taxID" type="text" readonly />
           </el-form-item>
-          <el-form-item :label="$t('a_manage_business_view.telephone')" class="labeltelephone">
-            <el-input v-model="a_business_edit.telephone" type="text" class="telephone" readonly />
+          <el-form-item :label="$t('a_manage_business_view.telephone')">
+            <el-input v-model="a_business_view.telephone" type="text" readonly />
           </el-form-item>
-          <el-form-item :label="$t('a_manage_business_view.cellphone')" class="labelcellphone">
-            <el-input v-model="a_business_edit.cellphone" type="text" class="cellphone" readonly />
+          <el-form-item :label="$t('a_manage_business_view.cellphone')">
+            <el-input v-model="a_business_view.cellphone" type="text" readonly />
           </el-form-item>
-          <el-form-item :label="$t('a_manage_business_view.extension')" class="labelextension">
-            <el-input v-model="a_business_edit.extension" type="text" class="extension" readonly />
+          <el-form-item :label="$t('a_manage_business_view.extension')">
+            <el-input v-model="a_business_view.extension" type="text" readonly />
           </el-form-item>
-          <el-form-item :label="$t('a_manage_business_view.address')" class="labeladdress">
-            <el-input v-model="a_business_edit.address" type="text" class="address" readonly />
+          <el-form-item :label="$t('a_manage_business_view.address')">
+            <el-input v-model="a_business_view.address" type="text" readonly />
           </el-form-item>
-
         </el-form>
       </el-dialog>
       <!--優惠活動-->
@@ -104,9 +101,9 @@
           </el-table>
         </div>
         <!--編輯優惠活動-->
-        <div class="dialog_acitvity">
+        <div class="dialog_avitvity">
           <el-dialog :visible.sync="a_business_visible" width="80vw" title="編輯">
-            <el-form :model="a_business_edit" :rules="a_business_edit_rules" label-position="left" inline class="dialog_activity">
+            <el-form :model="a_business_activity_edit" :rules="a_business_activity_edit_rules" label-position="left" inline class="table-invoice">
               <el-form-item>
                 <span>{{ $t('a_manage_business_view.notmodify') }}</span>
               </el-form-item>
@@ -114,19 +111,19 @@
                 <span />
               </el-form-item>
               <el-form-item :label="$t('a_manage_business_view.preferentialname')" prop="name">
-                <el-input v-model="a_business_edit.name" :placeholder="a_business_name_p" name="name" class="name" clearable />
+                <el-input v-model="a_business_activity_edit.name" :placeholder="a_business_name_p" clearable />
               </el-form-item>
               <el-form-item :label="$t('a_manage_business_view.preferentialcontent')" prop="content">
-                <el-input v-model="a_business_edit.content" :placeholder="a_business_content_p" name="content" class="content" clearable />
+                <el-input v-model="a_business_activity_edit.content" :placeholder="a_business_content_p" clearable />
               </el-form-item>
               <el-form-item :label="$t('a_manage_business_view.status')">
-                <el-input v-model="a_business_edit.status" :placeholder="a_business_status_p" class="status" clearable readonly />
+                <el-input v-model="a_business_activity_edit.status" :placeholder="a_business_status_p" clearable readonly />
               </el-form-item>
               <el-form-item :label="$t('a_manage_business_view.topshelf')">
-                <el-input v-model="a_business_edit.selltime" :placeholder="a_business_selltime_p" class="sellime" clearable type="date" />
+                <el-input v-model="a_business_activity_edit.selltime" :placeholder="a_business_selltime_p" clearable type="date" />
               </el-form-item>
               <el-form-item :label="$t('a_manage_business_view.lowershelf')">
-                <el-input v-model="a_business_edit.unselltime" :placeholder="a_business_unselltime_p" class="unselltime" clearable type="date" />
+                <el-input v-model="a_business_activity_edit.unselltime" :placeholder="a_business_unselltime_p" clearable type="date" />
               </el-form-item>
             </el-form>
 
@@ -144,12 +141,10 @@
   </div>
 </template>
 <script>
-import { fetchList } from '@/api/article'
 import waves from '@/directive/waves' // 水波紋指令
-import { } from '@/utils'
 
 export default {
-  name: 'BusinessTable',
+  name: 'BManageBusiness',
   directives: {
     waves
   },
@@ -169,19 +164,26 @@ export default {
       }
     }
     return {
+      selectuni_num: '',
+      selectname: '',
+      selectaccount: '',
+      a_business_view: {
+        princiapl: '',
+        number: '',
+        name: '',
+        id: '',
+        taxID: '',
+        telephone: '',
+        cellphone: '',
+        extension: '',
+        address: ''
+      },
       a_business_name_p: '',
       a_business_content_P: '',
       a_business_status_p: '',
       a_business_selltime_p: '',
       a_business_unselltime_p: '',
-      number: '',
-      id: '',
-      name: '',
-      content: '',
-      status: '',
-      selltime: '',
-      unselltime: '',
-      a_business_edit: {
+      a_business_activity_edit: {
         content: '',
         name: '',
         status: '',
@@ -191,41 +193,8 @@ export default {
       dialogFormVisible: false,
       dialogTableVisible: false,
       a_business_visible: false,
-      a_business_subsort: null,
+      a_business_subsort: '',
       tableKey: 0,
-      /* --list: null,*/
-      total: null,
-      listLoading: true,
-      listQuery: {
-        page: 1,
-        limit: 20,
-        importance: undefined,
-        title: undefined,
-        type: undefined,
-        sort: '+id',
-        selnumber: [],
-        selectnumber: [],
-        selname: [],
-        selectname: [],
-        selid: [],
-        selectid: [],
-        list: [],
-        loading: false,
-        states: ['apple', 'banana', '超商']
-      },
-      importanceOptions: [1, 2, 3],
-      sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
-      statusOptions: ['published', 'draft', 'deleted'],
-      showReviewer: false,
-      temp: {
-        id: undefined,
-        importance: 1,
-        remark: '',
-        timestamp: new Date(),
-        title: '',
-        type: '',
-        status: 'published'
-      },
       a_business_activity: [{
         name: 'missdior',
         content: '限時八折',
@@ -240,75 +209,16 @@ export default {
         id: 'iam878787'
       }
       ],
-      a_business_edit_rules: {
+      a_business_activity_edit_rules: {
         name: [{ required: false, trigger: 'change', validator: validatename }],
         content: [{ required: false, trigger: 'change', validator: validatecontent }]
       },
-      downloadLoading: false
+      b_uni_num: [],
+      b_name: [],
+      b_account: []
     }
   },
-  mounted() {
-    this.list = this.states.map(item => {
-      return { value: item, label: item }
-    })
-  },
-  created() {
-    this.getList()
-  },
   methods: {
-    remoteMethod(query) {
-      if (query !== '') {
-        this.loading = true
-        setTimeout(() => {
-          this.loading = false
-          this.selnumber = this.list.filter(item => {
-            return item.label.toLowerCase()
-              .indexOf(query.toLowerCase()) > -1
-          })
-          this.selname = this.list.filter(item => {
-            return item.label.toLowerCase()
-              .indexOf(query.toLowerCase()) > -1
-          })
-          this.selid = this.list.filter(item => {
-            return item.label.toLowerCase()
-              .indexOf(query.toLowerCase()) > -1
-          })
-        }, 200)
-      } else {
-        this.selnumber = []
-        this.selname = []
-        this.selid = []
-      }
-    },
-    getList() {
-      this.listLoading = true
-      fetchList(this.listQuery).then(response => {
-        this.list = response.data.items
-        this.total = response.data.total
-
-        // Just to simulate the time of the request
-        setTimeout(() => {
-          this.listLoading = false
-        }, 1.5 * 1000)
-      })
-    },
-    handle_edit(index, row) {
-      this.a_business_name_p = row.date
-      this.a_business_content_p = row.invoice
-      this.a_business_status_p = row.account
-      this.a_business_selltime_p = row.amount
-      this.a_business_unselltime_p = row.amount
-      this.a_business_visible = true
-    },
-    handleUpdate(row) {
-      this.temp = Object.assign({}, row) // copy obj
-      this.temp.timestamp = new Date(this.temp.timestamp)
-      this.dialogStatus = 'update'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
-    },
     a_business_confirm() {
       this.$message({
         type: 'success',
@@ -358,27 +268,21 @@ export default {
 }
 </script>
 <style lang="scss">
-.table_dialog {
+.dialog_container {
   font-size: 0;
+  padding-left: 9vw;
 }
-.table_dialog label {
-  width: 100px;
+.dialog_container label {
+  width: 110px;
   color: #99a9bf;
 }
-.table_dialog .el-form-item {
+.dialog_container input {
+  border: 0;
+}
+.dialog_container .el-form-item {
   margin-right: 0;
   //margin-bottom: 0;
   width: 50%;
 }
-.dialog_activity {
-  font-size: 0;
-}
-.dialog_activity label {
-  width: 100px;
-  color: #99a9bf;
-}
-.dialog_activity .el-form-item {
-  margin-right: 0;
-  //margin-bottom: 0;
-  width: 50%;
-}
+</style>
+

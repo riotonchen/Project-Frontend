@@ -19,14 +19,14 @@
             <span>{{ scope.row.name }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="總收入" prop="allin" align="center">
+        <el-table-column label="總收入" prop="total_income" align="center">
           <template slot-scope="scope">
-            <span>{{ scope.row.allin }}</span>
+            <span>{{ scope.row.total_income }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="總支出" prop="allpay" align="center">
+        <el-table-column label="總支出" prop="total_expenses" align="center">
           <template slot-scope="scope">
-            <span>{{ scope.row.allpay }}</span>
+            <span>{{ scope.row.total_expenses }}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center">
@@ -83,7 +83,6 @@
 
 import waves from '@/directive/waves' // 水波紋指令
 import { getproject, getproject_single } from '@/api/project/getproject'
-import { getaccounting_all } from '@/api/accounting/getaccounting'
 import { postproject } from '@/api/project/postproject'
 import { patchproject_update, patchproject_delete } from '@/api/project/patchproject'
 import { getToken } from '@/utils/auth'
@@ -103,11 +102,11 @@ export default {
       }
     }
     return {
-      c_project: null,
+      c_project: '',
       c_project_id: '',
       c_project_name_p: '',
       c_projectlist: [],
-      c_user_project: null,
+      c_user_project: '',
       c_project_visible: false,
       c_project_add_visible: false,
       view_loading: true,
@@ -126,7 +125,6 @@ export default {
   },
   created() {
     this.page_load()
-    this.get_getaccounting_all()
   },
   methods: {
     page_load() {
@@ -146,22 +144,6 @@ export default {
       this.c_project_name_p = row.name
       this.c_project_edit.name = row.name
       this.c_project_visible = true
-    },
-    get_getaccounting_all() {
-      let accounting_history = []
-      getaccounting_all(getToken()).then((res) => {
-        accounting_history = res.data
-        accounting_history.forEach(items => {
-          if (items.type === false) {
-            items.type = '支出'
-          } else {
-            items.type = '收入'
-          }
-          if (items.invoice_id === null || items.invoice_id === undefined) {
-            items.invoice_id = '-'
-          }
-        })
-      })
     },
     get_projectlist() {
       getproject(getToken()).then(response => {

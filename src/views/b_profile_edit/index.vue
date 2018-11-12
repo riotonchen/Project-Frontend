@@ -1,11 +1,11 @@
 <template>
-  <div class="personal_edit_container">
+  <div class="app-container">
     <title>
       {{ $t('route.b_profile_edit') }}
     </title>
-    <div class="personal_edit_form">
+    <div class="b_b_personal_edit_form">
       <el-card>
-        <el-form ref="profile_edit_form" :model="profile_edit_form" :rules="profile_edit_form_rules" label-position="left" inline class="personal_edit">
+        <el-form ref="profile_edit_form" :model="profile_edit_form" :rules="profile_edit_form_rules" label-position="left" inline class="b_personal_edit">
           <el-form-item :label="$t('b_profile_edit.email')">
             <el-input v-model="profile_edit_form.email" type="textarea" resize="none" readonly />
           </el-form-item>
@@ -168,7 +168,7 @@ export default {
       setTimeout(() => {
         setTimeout(() => {
           this.loadingprofile_view_cancal = false
-          this.$router.push({ path: this.redirect || '/profile/b_profile_view' })
+          this.$router.push({ path: this.redirect || '/profile/ent-profile-view' })
         }, 300)
       }, 150)
     },
@@ -247,9 +247,9 @@ export default {
 
 </script>
 <style rel="stylesheet/scss" lang="scss" >
-.personal_edit_form {
-  width: 60%;
-  margin: 15vh 18vw;
+.b_b_personal_edit_form {
+  width: 80%;
+  margin: 2.5vh 9vw;
 }
 .btn {
   float: right;
@@ -260,25 +260,25 @@ export default {
   float: right;
   margin-bottom: 1.875rem;
 }
-.personal_edit {
+.b_personal_edit {
   font-size: 0;
 }
-.personal_edit label {
+.b_personal_edit label {
   width: 90px;
   color: #99a9bf;
-  font-size: 0.8vw;
+  font-size: 1.1vw;
 }
-.personal_edit input {
+.b_personal_edit input {
   font-family: "Microsoft JhengHei";
   width: 130%;
 }
-.personal_edit textarea {
+.b_personal_edit textarea {
   font-family: "Microsoft JhengHei";
   border: 0;
   width: 130%;
   padding-top: 0.65rem;
 }
-.personal_edit .el-form-item {
+.b_personal_edit .el-form-item {
   margin-right: 0;
   //margin-bottom: 0;
   width: 100%;

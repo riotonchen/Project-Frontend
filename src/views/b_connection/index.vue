@@ -1,5 +1,5 @@
 <template>
-  <div class="connection_container">
+  <div class="app-container">
     <title>
       {{ $t('route.c_connection') }}
 

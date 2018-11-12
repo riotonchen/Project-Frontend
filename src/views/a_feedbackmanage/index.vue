@@ -23,9 +23,9 @@
             <span>{{ scope.row.date }}</span>
           </template>
         </el-table-column>
-        <el-table-column :label="$t('a_feebackmanager.problemnumber')" prop="problemnumber">
+        <el-table-column label="狀態" prop="status">
           <template slot-scope="scope">
-            <span>{{ scope.row.problemnumber }}</span>
+            <span>{{ scope.row.status }}</span>
           </template>
         </el-table-column>
         <el-table-column :label="$t('a_feebackmanager.problemsubject')" prop="problemsubject">
@@ -40,14 +40,14 @@
         </el-table-column>
         <el-table-column :label="$t('a_feebackmanager.act')" align="center">
           <template slot-scope="scope">
-            <el-button type="primary" plain @click.native.prevent="handleUpdate(scope.row)">{{ $t('a_feebackmanager.detailed') }}</el-button>
+            <el-button type="primary" plain @click.native.prevent="handleUpdate(scope.$index,scope.row)">{{ $t('a_feebackmanager.detailed') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
     <div class="dialog_container">
       <el-dialog :visible.sync="a_feedback_visible" width="80vw">
-        <el-form :ref="a_feedback_form" :model="a_feedback_form" label-position="left" inline class="table-invoice">
+        <el-form :ref="a_feedback_form" :model="a_feedback_form" label-position="left" inline class="table_fdback_view">
           <el-form-item :label="$t('a_feebackmanager.problemcontent')" prop="problemcontent">
             <el-input v-model="a_feedback_form.problemcontent" :autosize="{ minRows: 15, maxRows:15}" placeholder="" readonly resize="none" type="textarea" style="width:40vw" />
           </el-form-item>
@@ -104,11 +104,6 @@ export default {
       a_feedbackreply_visible: false
     }
   },
-
-  created() {
-    this.getList()
-  },
-
   methods: {
     handleUpdate(index, row) {
       this.a_feedback_visible = true
@@ -118,18 +113,12 @@ export default {
       this.a_feedbackreply_visible = true
     },
     send_reback() {
-      this.$refs.a_feedback_reply.validate((valid) => {
-        if (valid) {
-          this.a_feedbackreply_visible = false
-          const h = this.$createElement
-          this.$notify({
-            title: '回覆成功',
-            message: h('b', { style: 'color: teal' }, '該問題已經回覆')
-          })
-        } else {
-          console.log('error submit')
-          return false
-        }
+      this.a_feedbackreply_visible = false
+      this.a_feedback_visible = false
+      const h = this.$createElement
+      this.$notify({
+        title: '回覆成功',
+        message: h('b', { style: 'color: teal' }, '該問題已經回覆')
       })
     },
     a_feeback_cal() {
@@ -137,13 +126,22 @@ export default {
         type: 'info',
         message: '已取消動作'
       })
+      this.a_feedbackreply_visible = false
+      this.a_feedback_visible = false
     }
   }
 }
 </script>
-<style>
+<style lang='scss'>
 .selector_title {
   line-height: 2.25rem;
   font-size: 0.7vw;
+}
+.table_fdback_view textarea {
+  //border: 0;
+  width: 50vw;
+}
+.table_fdback_view label {
+  font-size: 2vw;
 }
 </style>

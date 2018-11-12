@@ -1,5 +1,5 @@
 <template>
-  <div class="personal_container">
+  <div class="app-container">
     <title>
       {{ $t('route.c_profile_view') }}
     </title>
@@ -67,7 +67,7 @@ export default {
 <style rel="stylesheet/scss" lang="scss" >
 .card_info {
   width: 60%;
-  margin: 15vh 20vw;
+  margin: 15vh 19vw;
 }
 
 .btn {

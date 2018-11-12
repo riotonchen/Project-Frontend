@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function postsort(token, name, type) {
+export function postsort(token, type, name) {
   var jwtDecode = require('jwt-decode')
   var decoded = jwtDecode(token)
   var member_id = decoded.user_id

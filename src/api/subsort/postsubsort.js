@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function postsubsort(token, id, sort_id, name, type) {
+export function postsubsort(token, sort_id, name, type) {
   var jwtDecode = require('jwt-decode')
   var decoded = jwtDecode(token)
   var member_id = decoded.user_id
@@ -13,7 +13,7 @@ export function postsubsort(token, id, sort_id, name, type) {
     type,
     syncstatus: 2
   }
-  var requ_url = 'https://www.177together.com/api/subsort/' + id + '/'
+  var requ_url = 'https://www.177together.com/api/subsort/'
 
   return request({
 

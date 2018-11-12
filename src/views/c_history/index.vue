@@ -1,6 +1,6 @@
 <template>
 
-  <div class="history_container">
+  <div class="app-container">
     <title>
       {{ $t('route.c_history') }}
     </title>
@@ -26,7 +26,7 @@
           <el-select v-model="c_sort" :disabled="c_sort_disable" :placeholder="$t('c_history.mainsort')" filterable style="width: 25vw;max-width:7.5rem;min-width:6.5rem;" @focus="get_sort()" @change="get_subsort()">
             <el-option v-for="sort in c_sort_payorinitem" :key="sort.id" :label="sort.name" :value="sort.id" />
           </el-select>
-          <el-select v-model="c_subsort" :disabled="c_subsort_disable" :placeholder="$t('c_history.subclass')" filterable style="width: 25vw;max-width:7.5rem;min-width:6.5rem;">
+          <el-select v-model="c_subsort" :disabled="c_subsort_disable" :placeholder="$t('c_history.subclass')" filterable style="width: 25vw;max-width:7.5rem;min-width:6.5rem;" @focus="get_subsort()" @change="get_subsort()">
             <el-option v-for="subsort in c_subsort_payorinitem" :key="subsort.id" :label="subsort.name" :value="subsort.id" />
           </el-select>
         </el-col>
@@ -361,6 +361,11 @@ export default {
     c_payorin: function(newc_payorin, oldc_payorin) {
       if (oldc_payorin === '') {
         this.c_sort_disable = false
+      } else if (newc_payorin === '') {
+        this.c_sort = ''
+        this.c_subsort = ''
+        this.c_sort_disable = true
+        this.get_getaccounting_all()
       } else if (newc_payorin !== 1 && newc_payorin !== 0) {
         this.c_sort_disable = true
         this.c_subsort_disable = true

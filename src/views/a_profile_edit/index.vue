@@ -1,5 +1,5 @@
 <template>
-  <div class="personal_edit_container">
+  <div class="app-container">
     <title>
       {{ $t('route.a_profile_edit') }}
     </title>

@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function getsortbudget_all(token, year, month, type) {
+export function getsortbudget_all(token, year, month, type, sort_id) {
   const data = {
     token
   }
@@ -20,7 +20,8 @@ export function getsortbudget_all(token, year, month, type) {
     params: {
       year,
       month,
-      type
+      type,
+      sort_id
     }
   })
 }

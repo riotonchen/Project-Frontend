@@ -246,7 +246,7 @@ export const asyncRouterMap = [{
         import('@/views/c_connection/index'),
     name: 'c_connection',
     meta: {
-      title: '聯絡我們',
+      title: 'c_connection',
       icon: 'support'
     }
   }]
@@ -367,7 +367,7 @@ export const asyncRouterMap = [{
         import('@/views/b_connection/index'),
     name: 'b_connection',
     meta: {
-      title: '聯絡我們',
+      title: 'c_connection',
       icon: 'support'
     }
   }]
@@ -383,6 +383,21 @@ export const asyncRouterMap = [{
     name: 'a_manage_business',
     meta: {
       title: 'a_manage_business',
+      icon: 'user'
+    }
+  }]
+},
+{
+  path: '/membermanage/member',
+  component: Layout,
+  redirect: 'noredirect',
+  children: [{
+    path: '',
+    component: () =>
+        import('@/views/a_manage_member/index'),
+    name: 'a_manage_member',
+    meta: {
+      title: 'a_manage_member',
       icon: 'user'
     }
   }]

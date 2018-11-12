@@ -1,10 +1,10 @@
 <template>
-  <div class="personal_container">
+  <div class="app-container">
     <title>
       {{ $t('route.a_profile_view') }}
     </title>
     <div>
-      <el-card body-style="padding:3.125rem" class="card_info">
+      <el-card body-style="padding:3.125rem" class="a_admin_info">
         <el-form :model="infoform" label-position="left" inline class="personal_view">
           <el-form-item :label="$t('a_profile_view.email')">
             <el-input v-model="infoform.useraccount" type="textarea" autosize readonly />
@@ -66,9 +66,9 @@ export default {
 
 </script>
 <style rel="stylesheet/scss" lang="scss" >
-.card_info {
+.a_admin_info {
   width: 70%;
-  margin: 20vh 14vw;
+  margin: 20vh 13vw;
 }
 
 .btn {
