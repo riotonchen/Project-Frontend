@@ -13,11 +13,6 @@ import {
 const service = axios.create({
   baseURL: process.env.BASE_API, // api 的 base_url
   timeout: 5000 // request timeout
-  /*
-  headers: {
-    'X-Requested-With': 'XMLHttpRequest'
-  }
-  */
 })
 
 // request interceptor
@@ -78,11 +73,13 @@ service.interceptors.response.use(
   */
   error => {
     console.log('err' + error) // for debug
+    // 上線時要拔掉
     Message({
       message: error.message,
       type: 'error',
-      duration: 5 * 1000
+      duration: 5 * 500
     })
+
     return Promise.reject(error)
   }
 

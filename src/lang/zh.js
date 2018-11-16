@@ -20,8 +20,10 @@ export default {
     a_profile_edit: '管理員編輯資訊',
     a_signup: '管理員註冊',
     a_manage_business: '商家管理',
+    a_manage_member: '會員管理',
     a_feedbackmanage: '回饋管理',
     b_activity_add: '建立優惠資訊',
+    b_activity_history: '歷史優惠資訊',
     b_profile_view: '商家資訊',
     b_profile_edit: '商家編輯資訊'
 

@@ -47,7 +47,7 @@
       </el-form-item>
 
       <el-button :loading="loadingsend" type="primary" style="width:100%;margin-bottom:15px;" @click.native.prevent="handleSignup">{{ $t('signup.signUP') }}</el-button>
-      <el-button :loading="loadinghome" type="primary" style="width:100%;margin-left:0px" @click.native.prevent="gohome">回首頁</el-button>
+      <el-button :loading="loadinghome" type="primary" style="width:100%;margin-left:0px" @click.native.prevent="goent">商家註冊</el-button>
 
     </el-form>
   </div>
@@ -189,12 +189,12 @@ export default {
         }
       })
     },
-    gohome() {
+    goent() {
       this.loadinghome = true
       setTimeout(() => {
         setTimeout(() => {
           this.loadinghome = false
-          this.$router.push({ path: this.redirect || '/home' })
+          this.$router.push({ path: this.redirect || '/ent_signup' })
         }, 300)
       }, 300)
     }

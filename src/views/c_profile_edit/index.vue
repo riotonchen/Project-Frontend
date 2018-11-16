@@ -1,9 +1,10 @@
 <template>
-  <div class="app-container">
+  <div class="personal_edit_container">
     <title>
       {{ $t('route.c_profile_edit') }}
     </title>
     <div class="personal_edit_form">
+      <!--個人資料修改-->
       <el-card>
         <el-form ref="profile_edit_form" :model="profile_edit_form" :rules="profile_edit_form_rules" label-position="left" inline class="personal_edit">
           <el-form-item :label="$t('c_profile_edit.email')">
@@ -125,6 +126,7 @@ export default {
         this.profile_edit_form.toid = info.toid
       })
     },
+    /* 取消按鈕*/
     goprofile_view() {
       this.loadingprofile_view_cancal = true
       setTimeout(() => {
@@ -134,6 +136,7 @@ export default {
         }, 300)
       }, 150)
     },
+    /* 修改確認按鈕*/
     handleprofile_edit() {
       this.$refs.profile_edit_form.validate(valid => {
         if (valid) {

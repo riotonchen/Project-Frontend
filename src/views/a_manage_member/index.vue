@@ -2,12 +2,16 @@
   <div class="app-container">
 
     <title>
-      {{ $t('route.a_user') }}
+      {{ $t('route.a_manage_member') }}
     </title>
-    <div class="filter_container" />
+    <div class="filter_container">
+      <el-input v-model="a_select_account" placeholder="account" style="width: 25vw;max-width:7.5rem;min-width:5.5rem;" />
+      <el-input v-model="a_select_name" placeholder="name" style="width: 25vw;max-width:7.5rem;min-width:5.5rem;" />
+      <el-input v-model="a_select_toid" placeholder="toid" style="width: 25vw;max-width:7.5rem;min-width:5.5rem;" />
+    </div>
 
     <div class="memberinfo_table">
-      <el-table :data="a_all_member_data" stripe style="width: 100%;" max-height="550" fit>
+      <el-table :data="a_all_member_data" stripe style="width: 100%;" max-height="650" fit>
         <el-table-column type="expand">
           <template slot-scope="scope">
             <el-form label-position="left" inline class="table_expand">
@@ -112,13 +116,166 @@
     </div>
 
     <div class="account_dialog">
-      <el-dialog :visible.sync="a_adv_account_visible" width="80%" title="會員帳戶管理" />
+
+      <el-dialog :visible.sync="a_adv_account_visible" width="80%" title="會員帳戶管理" top="9vh">
+        <div class="filter_container">
+          <el-select v-model="c_account_type" :placeholder="$t('c_accountmanager.project')" filterable clearable style="width: 10vw;max-width:8rem;min-width:5rem;" @change="get_account_info()">
+            <el-option v-for="type in c_account_type_options" :key="type.accounttype_id" :label="type.name" :value="type.accounttype_id" />
+          </el-select>
+          <el-select v-model="c_account_name" :disabled="c_account_name_disable" :placeholder="$t('c_category.mainsortname')" filterable style="width: 25vw;max-width:7.5rem;min-width:6.5rem;" @change="get_account_info()">
+            <el-option v-for="name in c_account_name_options" :key="name.id" :label="name.name" :value="name.id" />
+          </el-select>
+          <el-button type="primary" @click="c_account_add_view()">
+            {{ $t('c_accountmanager.data') }}
+          </el-button>
+        </div>
+        <div class="account_table_container">
+          <el-row>
+            <el-col :span="24">
+              <el-table :data="c_account_data" stripe style="width: 100%;" max-height="450" fit>
+                <el-table-column type="index" align="center" />
+                <el-table-column :label="$t('c_accountmanager.accountname')" prop="name" align="center">
+                  <template slot-scope="scope">
+                    <span>{{ scope.row.name }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column :label="$t('c_accountmanager.accounttype')" prop="accounttype_id" align="center">
+                  <template slot-scope="scope">
+                    <el-tag :type="scope.row.accounttype_id.name==='現金'?'primary':scope.row.accounttype_id.name==='資產'?'success':scope.row.accounttype_id.name==='儲值卡'?'warning':'danger'">
+                      <span>
+                        {{ scope.row.accounttype_id.name }}
+                      </span>
+                    </el-tag>
+                  </template>
+                </el-table-column>
+                <el-table-column :label="$t('c_accountmanager.finallymoney')" prop="balance" align="center">
+                  <template slot-scope="scope">
+                    <span>{{ scope.row.balance }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column :label="$t('c_accountmanager.use')" align="center">
+                  <template slot-scope="scope">
+                    <el-button type="primary" plain @click.native.prevent="handle_edit(scope.$index,scope.row)">{{ $t('c_card_view.edit') }}</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24">
+              <el-button type="info" class="adv_calbtn" @click="in_adv_cal()">回操作頁</el-button>
+            </el-col>
+          </el-row>
+        </div>
+      </el-dialog>
+    </div>
+    <div class="c_account_add_dialog_container">
+      <!--新增-->
+      <el-dialog :visible.sync="c_account_add_visible" :title="$t('c_accountmanager.addnewaccount')" width="70%">
+        <el-form ref="c_category_add" :model="c_account_add" :rules="c_category_add_rules" label-position="left" inline class="table_account_add">
+          <el-form-item :label="$t('c_accountmanager.accountname')" prop="name">
+            <el-input v-model="c_account_add.name" :placeholder="$t('c_accountmanager.accountname')" />
+          </el-form-item>
+          <el-form-item :label="$t('c_accountmanager.accounttype')" prop="type">
+            <el-select v-model="c_account_add.type" :placeholder="$t('c_accountmanager.project')" filterable clearable @focus="get_account()" @change="get_account()">
+              <el-option v-for="type in c_account_type_options" :key="type.accounttype_id" :label="type.name" :value="type.accounttype_id" />
+            </el-select>
+          </el-form-item>
+        </el-form>
+
+        <span slot="footer">
+          <el-button type="primary" @click.native.prevent="c_account_add()">{{ $t('c_accountmanager.confirm') }}</el-button>
+          <el-button type="info" plain @click.native.prevent="in_adv_motion_cal()">{{ $t('c_accountmanager.cancel') }}</el-button>
+        </span>
+
+      </el-dialog>
+    </div>
+    <div class="c_account_confi_dialog_container">
+      <!--修改-->
+      <el-dialog :visible.sync="c_account_configure_visible" :title="$t('c_accountmanager.configure')" width="70%">
+        <el-form ref="c_account_configure" :model="c_account_configure" label-position="left" inline class="table_account_confi">
+          <el-form-item :label="$t('c_accountmanager.accountname')" prop="name">
+            <el-input v-model="c_account_configure.name" :placeholder="c_account_add_name_p" />
+          </el-form-item>
+          <!--
+          <el-form-item :label="$t('c_accountmanager.accounttype')">
+            <el-select v-model="c_account_configure.type" :placeholder="$t('c_accountmanager.project')" filterable clearable>
+              <el-option v-for="type in c_account_type_options" :key="type.accounttype_id" :label="type.name" :value="type.accounttype_id" />
+            </el-select>
+          </el-form-item>
+          -->
+          <el-form-item :label="$t('c_accountmanager.finallymoney')" prop="balance">
+            <el-input v-model="c_account_configure.balance" :placeholder="c_account_add_balance_p" />
+          </el-form-item>
+        </el-form>
+
+        <span slot="footer">
+          <el-button type="danger" plain @click.native.prevent="c_account_del()">{{ $t('c_accountmanager.delete') }}</el-button>
+          <el-button type="primary" @click.native.prevent="c_account_configure()">{{ $t('c_accountmanager.confirm') }}</el-button>
+          <el-button type="info" plain @click.native.prevent="c_account_cal()">{{ $t('c_accountmanager.cancel') }}</el-button>
+        </span>
+
+      </el-dialog>
     </div>
 
     <div class="card_dialog">
-      <el-dialog :visible.sync="a_adv_card_visible" width="80%" title="會員卡片管理" />
+      <el-dialog :visible.sync="a_adv_card_visible" width="80%" title="會員卡片管理">
+        <div class="filter_container">
+          <el-select v-model="card_id" :placeholder="$t('c_card_view.cardname')" clearable filterable style="width: 25vw;max-width:7.5rem;min-width:5.5rem;" @focus="get_card_info()" @change="get_card_info()">
+            <el-option v-for="card in c_cardlistoptions" :key="card.id" :label="card.name" :value="card.id" />
+          </el-select>
+        </div>
+
+        <div class="card_table_container">
+          <el-row>
+            <el-col :span="24">
+              <el-table :data="c_user_card" stripe style="width: 100%;" max-height="500" fit sortable>
+                <el-table-column type="index" align="center" />
+                <el-table-column :label="$t('c_card_view.name')" prop="name" align="center">
+                  <template slot-scope="scope">
+                    <span>{{ scope.row.name }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column :label="$t('c_card_view.codenumber')" prop="number" align="center">
+                  <template slot-scope="scope">
+                    <span>{{ scope.row.number }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column label="操作" align="center">
+                  <template slot-scope="scope">
+                    <el-button type="primary" plain @click.native.prevent="handle_card_edit(scope.$index,scope.row)">{{ $t('c_card_view.edit') }}</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24">
+              <el-button type="info" class="adv_calbtn" @click="in_adv_cal()">回操作頁</el-button>
+            </el-col>
+          </el-row>
+        </div>
+      </el-dialog>
     </div>
 
+    <div class="card_dialog_container">
+      <el-dialog :visible.sync="c_card_confi_visible" :title="$t('c_card_view.edit')" width="70%">
+        <el-form ref="c_card_edit" :model="c_card_edit" hide-required-asterisk label-position="left" inline class="table_card">
+          <el-form-item :label="$t('c_card_view.name')" prop="name">
+            <el-input v-model="c_card_edit.name" :placeholder="c_card_name_p" clearable name="name" @focus="clean_name()" />
+          </el-form-item>
+          <el-form-item :label="$t('c_card_view.codenumber')" prop="number">
+            <el-input v-model="c_card_edit.number" :placeholder="c_card_number_p" clearable name="number" @focus="clean_number()" />
+          </el-form-item>
+        </el-form>
+
+        <span slot="footer" class="card_dialog_footer">
+          <el-button type="danger" plain @click.native.prevent="c_card_del()">{{ $t('c_card_view.delete') }}</el-button>
+          <el-button type="primary" @click.native.prevent="c_card_confirm()">{{ $t('c_card_view.confirm') }}</el-button>
+          <el-button type="info" plain @click.native.prevent="in_adv_motion_cal()">{{ $t('c_card_view.cancel') }}</el-button>
+        </span>
+      </el-dialog>
+    </div>
     <div class="category_dialog">
       <el-dialog :visible.sync="a_adv_category_visible" width="80%" title="會員分類管理" />
     </div>
@@ -132,28 +289,38 @@
 </template>
 
 <script>
+import waves from '@/directive/waves' // 水波紋指令
+import { getcardforadmin } from '@/api/card/getcard'
+import { patchcard_modify, patchcard_del } from '@/api/card/patchcard'
 import { getmember, getmemberlist } from '@/api/member/getmember'
 import { getToken } from '@/utils/auth'
-// import { formatdate, formatdate_inc_time } from '@/utils/index'
+import { formatdate } from '@/utils/index'
+
+import { postaccount } from '@/api/account/postaccount'
+import { getaccountforadmin, getaccounttype, getaccountsingledata } from '@/api/account/getaccount'
+import { patchaccount_modify, patchaccount_del } from '@/api/account/patchaccount'
 
 export default {
 
   name: 'AManageMember',
-  /*
   directives: {
     waves
   },
-  */
   data() {
     return {
+      globaltime: formatdate('yyyy-mm-dd HH:MM:ss.l'),
+      // ori-page
       profile_edit_form: {
-        id: '',
+        id: '', // member id for all confi
         account: '',
         name: '',
         toid: '',
         pswd: '',
         pswd2: ''
       },
+      a_select_account: '',
+      a_select_name: '',
+      a_select_toid: '',
       a_all_member_data: [],
       a_member_adv_visible: false,
       a_adv_info_visible: false,
@@ -161,10 +328,53 @@ export default {
       a_adv_account_visible: false,
       a_adv_card_visible: false,
       a_adv_category_visible: false,
-      a_adv_project_visible: false
+      a_adv_project_visible: false,
+
+      // account
+      c_account_data: [],
+      c_account_type: '',
+      c_account_name: '',
+      c_account_type_options: '',
+      c_account_name_options: '',
+      c_account_name_disable: true,
+      c_account_add_visible: false,
+      c_account_configure_visible: false,
+      c_account_add: {
+        name: '',
+        type: ''
+      },
+      c_account_configure: {
+        name: '',
+        type: ''
+      },
+
+      // card
+      card_id: '',
+      c_card_name_p: '',
+      c_card_number_p: '',
+      c_card_edit: {
+        id: '',
+        name: '',
+        number: ''
+      },
+      c_cardlistoptions: [],
+      c_user_card: [],
+      c_card_confi_visible: false
     }
   },
   watch: {
+    c_account_type: function(new_type, old_type) {
+      if (new_type !== '') {
+        this.c_account_name_disable = false
+      } else if (new_type === '') {
+        this.c_account_name_disable = true
+        this.c_account_type = ''
+        this.c_account_name = ''
+        this.get_account_info()
+      } else if (new_type !== old_type) {
+        this.c_account_name = ''
+      }
+    }
   },
   created() {
     this.get_member_all()
@@ -176,20 +386,19 @@ export default {
           const testmember = res.data
           const ori_data = []
           for (let i = 1; i <= testmember.length; i++) {
-            getmemberlist(getToken(), i)
-              .then((res_data) => {
-                /*
-                if (res_data.data.membertype === 5) {
-                  return
-                } else {
-                  this.a_all_member_data.push(res_data.data)
-                }
-                */
-                ori_data.push(res_data.data)
-                this.a_all_member_data = ori_data.filter(function(item, index, array) {
-                  return item.membertype !== 5
+            setTimeout(() => {
+              getmemberlist(getToken(), i)
+                .then((res_data) => {
+                  if ((res_data.status) !== 404) {
+                    ori_data.push(res_data.data)
+                    this.a_all_member_data = ori_data.filter(function(item, index, array) {
+                      return item.membertype === 2 || item.membertype === 3 || item.membertype === 4
+                    })
+                  } else {
+                    return
+                  }
                 })
-              })
+            }, i * 10)
           }
         })
     },
@@ -210,10 +419,46 @@ export default {
     get_account_info() {
       // not done
       this.a_adv_account_visible = true
+      getaccountforadmin(getToken()
+        , this.profile_edit_form.id
+        , this.c_account_type
+        , this.c_account_name)
+        .then((res) => {
+          this.c_account_data = res.data
+        })
+      getaccountforadmin(getToken()
+        , this.profile_edit_form.id
+        , this.c_account_type)
+        .then((res) => {
+          this.c_account_name_options = res.data
+        })
+      getaccounttype(getToken())
+        .then((res) => {
+          this.c_account_type_options = res.data
+        })
     },
+
+    c_account_add_view() {
+      this.c_account_add_visible = true
+    },
+
     get_card_info() {
-      // not done
+      this.c_user_card = []
+      if (this.card_id === '') {
+        getcardforadmin(getToken(), this.profile_edit_form.id).then((res) => {
+          this.c_cardlistoptions = res.data
+          this.c_user_card = res.data
+        })
+      } else {
+        getcardforadmin(getToken(), this.profile_edit_form.id, this.card_id).then((res) => {
+          this.c_user_card = res.data
+        })
+      }
       this.a_adv_card_visible = true
+    },
+    handle_card_edit(index, row) {
+      this.c_card_confi_visible = true
+      this.c_card_edit.id = row.id
     },
     get_category_info() {
       // not done
@@ -237,10 +482,80 @@ export default {
     clean_toid() {
       this.profile_edit_form.toid = ''
     },
+    c_card_del() {
+      this.$confirm('你真的要刪除該卡片資料嗎？', '警告', {
+        cancelButtonText: '取消',
+        confirmButtonText: '確認',
+        type: 'warning'
+      }).then(() => {
+        this.$confirm('請在確認一次是否要刪除該卡片資料資料', '警告', {
+          cancelButtonText: '取消',
+          confirmButtonText: '確認',
+          type: 'warning'
+        }).then(() => {
+          patchcard_del(getToken(), this.c_card_edit.id, this.globaltime).then(() => {
+            this.$message({
+              type: 'success',
+              message: '刪除成功'
+            })
+            this.get_card()
+          }).catch((error) => {
+            console.log(error)
+            this.$message({
+              type: 'error',
+              message: '發生一點錯誤，請稍後再做修改'
+            })
+          })
+          this.c_card_confi_visible = false
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消刪除'
+          })
+          this.c_card_confi_visible = false
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消刪除'
+        })
+        this.c_card_confi_visible = false
+      })
+    },
+    c_card_confirm() {
+      patchcard_modify(getToken(), this.c_card_edit.id, this.c_card_edit.name, this.c_card_edit.number, this.globaltime)
+        .then(() => {
+          this.$message({
+            type: 'success',
+            message: '卡片相關更新成功'
+          })
+          this.get_card()
+        })
+        .catch((error) => {
+          console.log(error)
+          this.$message({
+            type: 'error',
+            message: '發生一點錯誤，請稍後再做修改'
+          })
+        })
+      this.c_card_confi_visible = false
+    },
+    in_adv_motion_cal() {
+      // 3層以上的功能
+      // btn-cal in add confi del finc view
+      this.c_card_confi_visible = false
+      this.c_account_add_visible = false
+      this.$message({
+        type: 'info',
+        message: '已取消動作'
+      })
+    },
     in_adv_cal() {
       // 所有3層取消打在這  會回到2層
       // 3層的回各項操作(2層) btn方法請都用這個
       this.a_adv_info_visible = false
+      this.a_adv_card_visible = false
+      this.a_adv_account_visible = false
     },
     adv_cal() {
       // 這個是2層回1層
@@ -302,5 +617,29 @@ export default {
   margin-right: 0;
   //margin-bottom: 0;
   width: 100%;
+}
+.table_card {
+  font-size: 0;
+}
+.table_card label {
+  width: 100px;
+  color: #99a9bf;
+}
+.table_card .el-form-item {
+  margin-right: 0;
+  //margin-bottom: 0;
+  width: 50%;
+}
+.table_account_add {
+  font-size: 0;
+}
+.table_account_add label {
+  width: 100px;
+  color: #99a9bf;
+}
+.table_account_add .el-form-item {
+  margin-right: 0;
+  //margin-bottom: 0;
+  width: 50%;
 }
 </style>

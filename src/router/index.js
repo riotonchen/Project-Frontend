@@ -56,6 +56,12 @@ export const constantRouterMap = [{
   hidden: true
 },
 {
+  path: '/ent_signup',
+  component: () =>
+      import('@/views/b_signup/index'),
+  hidden: true
+},
+{
   path: '/auth-redirect',
   component: () =>
       import('@/views/login/authredirect'),
@@ -357,6 +363,23 @@ export const asyncRouterMap = [{
     }
   }]
 },
+
+{
+  path: '/activity/history',
+  component: Layout,
+  redirect: 'noredirect',
+  children: [{
+    path: '',
+    component: () =>
+        import('@/views/b_activity_history/index'),
+    name: 'b_activity_history',
+    meta: {
+      title: 'b_activity_history',
+      icon: 'user'
+    }
+  }]
+},
+
 {
   path: '/ent-report',
   component: Layout,

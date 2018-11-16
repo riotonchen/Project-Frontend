@@ -20,10 +20,12 @@ export default {
     a_profile_edit: 'Manager Edit Info',
     a_signup: 'Manager Signup',
     a_manage_business: 'Enterprise Manage',
+    a_manage_member: 'Member Manage',
     a_feedbackmanage: 'Feedback Manage',
     b_profile_view: 'Enterprise Information',
     b_profile_edit: 'Enterprise Edit Info',
-    b_activity_add: 'Add Partial Info'
+    b_activity_add: 'Add Partial Info',
+    b_activity_history: 'History Partial Info'
 
   },
   login: {

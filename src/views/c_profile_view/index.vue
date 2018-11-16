@@ -1,9 +1,10 @@
 <template>
-  <div class="app-container">
+  <div class="personal_container">
     <title>
       {{ $t('route.c_profile_view') }}
     </title>
     <div class="card_info">
+      <!--個人資料檢視-->
       <el-card body-style="padding:3.125rem">
         <el-form :model="infoform" label-position="left" inline class="personal_view">
           <el-form-item :label="$t('c_profile_view.email')">
@@ -51,8 +52,9 @@ export default {
         this.infoform.usertoid = info.toid
       })
     },
+    /* 點擊修改按鈕*/
     goprofile_edit() {
-      this.loadingprofile_edit = true
+      this.loadingprofile_edit = true/* 載入個人資料修改頁面*/
       setTimeout(() => {
         setTimeout(() => {
           this.loadingprofile_edit = false
