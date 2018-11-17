@@ -37,3 +37,19 @@ export function getsinglesubsort(token, subsort_id) {
     data
   })
 }
+
+export function getsubsortforadmin(token, member_id, sort_id) {
+  var requ_url = 'https://www.177together.com/api/subsort/?member_id=' + member_id + '&syncstatus_not=3'
+
+  return request({
+
+    url: requ_url,
+    method: 'get',
+    headers: {
+      Authorization: 'JWT ' + token
+    },
+    params: {
+      sort_id
+    }
+  })
+}

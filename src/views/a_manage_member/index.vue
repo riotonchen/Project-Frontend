@@ -120,21 +120,21 @@
             </el-col>
             <el-col :xs="24" :sm="15" :md="9" :lg="8" :xl="6">
               <!--style="width: 40vw;min-width:15rem;max-width:23rem;"-->
-              <el-date-picker v-model="accounting_startenddate" :picker-options="accounting_datepickoptions" :start-placeholder="$t('c_history.startdate')" :end-placeholder="$t('c_history.enddate')" :clearable="datepickerclea" range-separator="-" align="center" type="daterange" @focus="get_getaccounting_all()" @change="get_getaccounting_all()" />
+              <el-date-picker v-model="accounting_startenddate" :picker-options="accounting_datepickoptions" :start-placeholder="$t('c_history.startdate')" :end-placeholder="$t('c_history.enddate')" :clearable="datepickerclea" range-separator="-" align="center" type="daterange" @focus="get_accounting_info()" @change="get_accounting_info()" />
             </el-col>
           </el-row>
           <el-row class="class_seletor">
             <el-col :xs="6" :sm="3" :md="2" :lg="2" :xl="1" class="c_history_selector_title">
               <span>{{ $t('c_history.selectclass') }}</span>
             </el-col>
-            <el-col :xs="24" :sm="15" :md="9" :lg="8" :xl="6">
-              <el-select v-model="c_accounting_payorin" :placeholder="$t('c_history.incomespend')" filterable clearable style="width: 25vw;max-width:7.5rem;min-width:5.5rem;" @focus="get_getaccounting_all()" @change="get_getaccounting_all()">
+            <el-col :xs="24" :sm="15" :md="11" :lg="9" :xl="8">
+              <el-select v-model="c_accounting_payorin" :placeholder="$t('c_history.incomespend')" filterable clearable style="width: 25vw;max-width:7.5rem;min-width:5.5rem;" @focus="get_accounting_info()" @change="get_accounting_info()">
                 <el-option v-for="payorin in c_pay_in" :key="payorin.value" :label="payorin.label" :value="payorin.value" />
               </el-select>
-              <el-select v-model="c_accounting_sort" :disabled="c_sort_disable" :placeholder="$t('c_history.mainsort')" filterable style="width: 25vw;max-width:7.5rem;min-width:6.5rem;" @focus="get_sort()" @change="get_subsort()">
+              <el-select v-model="c_accounting_sort" :disabled="c_accounting_sort_disable" :placeholder="$t('c_history.mainsort')" filterable style="width: 25vw;max-width:7.5rem;min-width:6.5rem;" @focus="get_accounting_info()" @change="get_accounting_info()">
                 <el-option v-for="sort in c_accounting_sortitem" :key="sort.id" :label="sort.name" :value="sort.id" />
               </el-select>
-              <el-select v-model="c_accounting_subsort" :disabled="c_subsort_disable" :placeholder="$t('c_history.subclass')" filterable style="width: 25vw;max-width:7.5rem;min-width:6.5rem;" @focus="get_subsort()" @change="get_subsort()">
+              <el-select v-model="c_accounting_subsort" :disabled="c_accounting_subsort_disable" :placeholder="$t('c_history.subclass')" filterable style="width: 25vw;max-width:7.5rem;min-width:6.5rem;" @focus="get_accounting_info()" @change="get_accounting_info()">
                 <el-option v-for="subsort in c_accounting_subsortitem" :key="subsort.id" :label="subsort.name" :value="subsort.id" />
               </el-select>
             </el-col>
@@ -144,7 +144,7 @@
               <span>{{ $t('c_history.selectproject') }}</span>
             </el-col>
             <el-col :xs="24" :sm="12" :md="9" :lg="8" :xl="6">
-              <el-select v-model="c_accounting_project" :placeholder="$t('c_history.project')" filterable style="width: 25vw;max-width:13.2rem;min-width:11.8rem;" @focus="get_project()">
+              <el-select v-model="c_accounting_project" :placeholder="$t('c_history.project')" clearable filterable style="width: 25vw;max-width:13.2rem;min-width:11.8rem;" @focus="get_accounting_info()" @change="get_accounting_info()">
                 <el-option v-for="project in c_accounting_projectitem" :key="project.id" :label="project.name" :value="project.id" />
               </el-select>
             </el-col>
@@ -154,7 +154,7 @@
               <span>{{ $t('c_history.selectaccount') }}</span>
             </el-col>
             <el-col :xs="24" :sm="15" :md="9" :lg="8" :xl="6">
-              <el-select v-model="c_accounting_account" :placeholder="$t('c_history.account')" filterable style="width: 25vw;max-width:13.2rem;min-width:11.8rem;" @focus="get_account()">
+              <el-select v-model="c_accounting_account" :placeholder="$t('c_history.account')" clearable filterable style="width: 25vw;max-width:13.2rem;min-width:11.8rem;" @focus="get_accounting_info()" @change="get_accounting_info()">
                 <el-option v-for="account in c_accounting_accountitem" :key="account.id" :label="account.name" :value="account.id" />
               </el-select>
             </el-col>
@@ -173,20 +173,20 @@
                 <el-table-column type="expand">
                   <template slot-scope="scope">
                     <el-form label-position="left" inline class="table_expand">
-                      <!--
-              <el-form-item label="發票隨機碼">
-                <div v-if="scope.row.invoice_id==='-'">
-                  <span>
-                    {{ scope.row.invoice_id }}
-                  </span>
-                </div>
-                <div v-else>
-                  <span>
-                    {{ scope.row.invoice_id.randomNumber }}
-                  </span>
-                </div>
-              </el-form-item>
-              -->
+
+                      <el-form-item label="發票隨機碼">
+                        <div v-if="scope.row.invoice_id==='-'">
+                          <span>
+                            {{ scope.row.invoice_id }}
+                          </span>
+                        </div>
+                        <div v-else>
+                          <span>
+                            {{ scope.row.invoice_id.randomNumber }}
+                          </span>
+                        </div>
+                      </el-form-item>
+
                       <el-form-item :label="$t('c_history.note')">
                         <span>{{ scope.row.comment }}</span>
                       </el-form-item>
@@ -453,10 +453,13 @@ import waves from '@/directive/waves' // 水波紋指令
 import { getcardforadmin } from '@/api/card/getcard'
 import { getmember, getmemberlist } from '@/api/member/getmember'
 import { getToken } from '@/utils/auth'
-import { formatdate } from '@/utils/index'
+import { formatdate, formatdate_inc_time } from '@/utils/index'
 import { getaccountforadmin, getaccounttype } from '@/api/account/getaccount'
 import { getprojectforadmin } from '@/api/project/getproject'
 import { getsortbudgetforadmin } from '@/api/sortbudget/getsortbudget'
+import { getaccountingforadmin } from '@/api/accounting/getaccounting'
+import { getsortforadmin } from '@/api/sort/getsort'
+import { getsubsortforadmin } from '@/api/subsort/getsubsort'
 
 export default {
   name: 'AManageMember',
@@ -514,6 +517,8 @@ export default {
       c_accounting_projectitem: [],
       c_accounting_accountitem: [],
       c_user_history: [],
+      c_accounting_sort_disable: true,
+      c_accounting_subsort_disable: true,
       accounting_startenddate: [start, formatdate('yyyy-mm-dd HH:MM:ss.l')],
       accounting_datepickoptions: {
         shortcuts: [
@@ -615,27 +620,43 @@ export default {
       } else if (newdate !== olddate) {
         this.get_category_info()
       }
-    }
-    /*
-    accounting_startenddate: function(newdate, olddate) {
-      const todayplus3 = new Date()
-      const todayde3 = new Date()
-      const time = new Date(newdate)
-      todayplus3.setTime(todayplus3.getTime() + 3600 * 1000 * 24 * 90)
-      todayde3.setTime(todayde3.getTime() - 3600 * 1000 * 24 * 90)
-      time.setTime(time.getTime())
-
-      if (time > todayplus3 || time < todayde3) {
-        this.category_startenddate = formatdate('yyyy-mm')
-        this.$message({
-          type: 'warning',
-          message: '只能選擇前後各三個月的時間'
-        })
-      } else if (newdate !== olddate) {
-        this.get_category_info()
+    },
+    c_accounting_payorin: function(newc_payorin, oldc_payorin) {
+      if (oldc_payorin === '') {
+        this.c_accounting_sort_disable = false
+      } else if (newc_payorin === '') {
+        this.c_accounting_sort = ''
+        this.c_accounting_subsort = ''
+        this.c_accounting_sort_disable = true
+        this.get_accounting_info()
+      } else if (newc_payorin !== 1 && newc_payorin !== 0) {
+        this.c_accounting_sort_disable = true
+        this.c_accounting_subsort_disable = true
+        this.c_accounting_sort = ''
+        this.c_accounting_subsort = ''
+      } else if (newc_payorin !== oldc_payorin) {
+        this.c_accounting_sort = ''
+        this.c_accounting_subsort = ''
+        this.get_accounting_info()
+      }
+    },
+    c_accounting_sort: function(newc_sort, oldc_sort) {
+      if (oldc_sort === '') {
+        this.c_accounting_subsort_disable = false
+      } else if (newc_sort === '') {
+        this.c_accounting_subsort = ''
+        this.c_accounting_subsort_disable = true
+      } else if (newc_sort !== oldc_sort) {
+        this.c_accounting_subsort = ''
+      }
+    },
+    c_accounting_subsort: function(newc_subsort, oldc_subsort) {
+      if (oldc_subsort === '') {
+        this.c_accounting_subsort_disable = false
+      } else if (this.c_sort === '') {
+        this.c_accounting_subsort_disable = true
       }
     }
-    */
   },
   created() {
     this.get_member_all()
@@ -676,9 +697,70 @@ export default {
     get_accounting_info() {
       // not done
       this.a_adv_accountung_visible = true
+      let startdate
+      let enddate
+      if (this.accounting_startenddate.length === 2) {
+        startdate = formatdate_inc_time(this.accounting_startenddate[0], 'yyyy-mm-dd')
+        enddate = formatdate_inc_time(this.accounting_startenddate[1], 'yyyy-mm-dd')
+      } else {
+        startdate = ''
+        enddate = ''
+      }
+      let send_payin
+      if (this.c_accounting_payorin === 0) {
+        send_payin = 'False'
+      } else if (this.c_accounting_payorin === 1) {
+        send_payin = 'True'
+      } else {
+        send_payin = ''
+        this.c_accounting_sort_id = ''
+      }
+      getaccountforadmin(getToken()
+        , this.profile_edit_form.id)
+        .then((res) => {
+          this.c_accounting_accountitem = res.data
+        })
+      getprojectforadmin(getToken(), this.profile_edit_form.id)
+        .then((res) => {
+          this.c_accounting_projectitem = res.data
+        })
+      getsortforadmin(getToken()
+        , this.profile_edit_form.id
+        , send_payin)
+        .then((res) => {
+          this.c_accounting_sortitem = res.data
+        })
+      getsubsortforadmin(getToken()
+        , this.profile_edit_form.id
+        , this.c_accounting_sort)
+        .then((res) => {
+          this.c_accounting_subsortitem = res.data
+        })
+      getaccountingforadmin(getToken()
+        , this.profile_edit_form.id
+        , startdate
+        , enddate
+        , send_payin
+        , this.c_accounting_sort
+        , this.c_accounting_subsort
+        , this.c_accounting_project
+        , this.c_accounting_account)
+        .then((res) => {
+          this.c_user_history = []
+          this.c_user_history = res.data
+          this.c_user_history.forEach(items => {
+            if (items.type === false) {
+              items.type = '支出'
+            } else {
+              items.type = '收入'
+            }
+            if (items.invoice_id === null || items.invoice_id === undefined) {
+              items.invoice_id = '-'
+            }
+          })
+        })
     },
     get_account_info() {
-      // not done
       this.a_adv_account_visible = true
       this.c_account_data = []
       if (this.c_account === '') {
@@ -718,7 +800,6 @@ export default {
       this.a_adv_card_visible = true
     },
     get_category_info() {
-      // not done
       this.a_adv_category_visible = true
       let send_payin
       if (this.c_category_sort_payorin === 0) {
@@ -754,6 +835,7 @@ export default {
     },
     get_project_info() {
       this.a_adv_project_visible = true
+      this.c_user_project = []
       if (this.c_project === '') {
         getprojectforadmin(getToken(), this.profile_edit_form.id)
           .then((res) => {
@@ -766,10 +848,6 @@ export default {
             this.c_user_project = res.data
           })
       }
-    },
-
-    cofigure_member_info() {
-      // not done
     },
     handle_advance(index, row) {
       this.a_member_adv_visible = true
@@ -790,6 +868,7 @@ export default {
       const start = new Date()
       start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
       this.accounting_startenddate = [start, formatdate('yyyy-mm-dd HH:MM:ss.l')]
+      this.get_accounting_info()
     },
     in_adv_motion_cal() {
       // 3層以上的功能

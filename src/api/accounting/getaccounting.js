@@ -55,3 +55,37 @@ export function getaccounting_single(token, id) {
     data
   })
 }
+
+export function getaccountingforadmin(
+  token,
+  member_id,
+  purchasedate_gte,
+  purchasedate_lte,
+  type,
+  sort_id,
+  subsort_id,
+  project_id,
+  account_id
+) {
+  var requ_url
+  requ_url =
+    'https://www.177together.com/api/accounting/?member_id=' +
+    member_id +
+    '&syncstatus_not=3'
+  return request({
+    url: requ_url,
+    method: 'get',
+    headers: {
+      Authorization: 'JWT ' + token
+    },
+    params: {
+      purchasedate_gte,
+      purchasedate_lte,
+      type,
+      sort_id,
+      subsort_id,
+      project_id,
+      account_id
+    }
+  })
+}
