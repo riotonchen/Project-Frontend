@@ -77,3 +77,19 @@ export function getsortsingledata(token, sort_id) {
     data
   })
 }
+
+export function getsortforadmin(token, member_id, type) {
+  var requ_url = 'https://www.177together.com/api/sort/?member_id=' + member_id + '&syncstatus_not=3'
+
+  return request({
+
+    url: requ_url,
+    method: 'get',
+    headers: {
+      Authorization: 'JWT ' + token
+    },
+    params: {
+      type
+    }
+  })
+}

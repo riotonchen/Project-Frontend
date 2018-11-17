@@ -1,7 +1,7 @@
 <template>
   <div class="activity_history">
     <title>
-      {{ $t('route.b_activity_history') }}
+      {{ $t('route.activity_history') }}
     </title>
     <div class="activity_history_container">
       <!--目前使用日期做排序-->
@@ -30,17 +30,17 @@
     </div>
     <div class="dialog_container">
       <el-dialog :visible.sync="activity_history_visible" :title="$t('c_history.edit')" width="80vw">
-        <el-form :model="activity_history_edit" label-position="left" inline class="acthistory_dialog">
+        <el-form :ref="activity_history_edit" :model="activity_history_edit" :rules="activity_history_rules" label-position="left" inline class="acthistory_dialog">
           <el-form-item>
             <span>{{ $t('activity_history.notmodify') }}</span>
           </el-form-item>
           <el-form-item>
             <span />
           </el-form-item>
-          <el-form-item :label="$t('activity_history.offername')">
+          <el-form-item :label="$t('activity_history.offername')" prop="offername">
             <el-input v-model="activity_history_edit.offername" :placeholder="activity_history_offername_p" clearable />
           </el-form-item>
-          <el-form-item :label="$t('activity_history.offercontent')">
+          <el-form-item :label="$t('activity_history.offercontent')" prop="offercontent">
             <el-input v-model="activity_history_edit.offercontent" :placeholder="activity_history_offercontent_p" clearable />
           </el-form-item>
           <el-form-item :label="$t('activity_history.starttime')">
@@ -78,12 +78,31 @@ import { getproject } from '@/api/project/getproject'
 import { getaccount } from '@/api/account/getaccount'
 import { getToken } from '@/utils/auth'
 export default {
-  name: 'BActivityHistory',
+  name: 'ActHistory',
   directives: {
     waves
   },
   data() {
+    const validatename = (rule, value, callback) => {
+      if (value === '' || value === null) {
+        return callback(new Error('名稱不能為空'))
+      } else if (value.length > 10) {
+        callback(new Error('名稱不可以大於 10 個字'))
+      } else {
+        callback()
+      }
+    }
+    const valideContentlength = (rule, value, callback) => {
+      if (value.length > 140) {
+        callback(new Error('內容最多輸入140字'))
+      } else if (value.length < 1) {
+        callback(new Error('內容不得為空'))
+      } else {
+        callback()
+      }
+    }
     return {
+
       startenddate: '',
       dialogImageUrl: '',
       acthistory_Visible: false,
@@ -96,6 +115,10 @@ export default {
         endtime: '',
         photo: ''
 
+      },
+      activity_history_rules: {
+        offername: [{ required: false, trigger: 'change', validator: validatename }],
+        offercontent: [{ required: false, trigger: 'change', validator: valideContentlength }]
       },
       activity_history_date1_p: '',
       activity_history_date2_p: '',
@@ -118,36 +141,105 @@ export default {
   },
 
   methods: {
-    acthistory_edit() {
+    handleRemove(file, fileList) {
+      console.log(file, fileList)
+    },
+    handlePictureCardPreview(file) {
+      this.dialogImageUrl = file.url
+      this.acthistory_Visible = true
+    },
+    acthistory_edit(index, row) {
+      this.activity_history_offername_p = row.offername
+      this.activity_history_offercontent_p = row.offercontent
+      this.activity_history_date1_p = row.date1
+      this.activity_history_date2_p = row.date2
       this.activity_history_visible = true
+    },
+    acthistory_confirm() {
+      this.$refs.activity_history_edit.validate((valid) => {
+        if (valid) {
+          this.$message({
+            type: 'success',
+            message: '已完成該筆資料修改'
+          })
+          this.activity_history_visible = false
+        } else {
+          console.log('error submit')
+          return false
+        }
+      })
+    },
+    acthistory_cal() {
+      this.$message({
+        type: 'info',
+        message: '已取消修改'
+      })
+      this.activity_history_visible = false
+    },
+    acthistory_del() {
+      this.$confirm('你真的要刪除該筆資料嗎？', '警告', {
+        cancelButtonText: '取消',
+        confirmButtonText: '確認',
+        type: 'warning'
+      }).then(() => {
+        this.$confirm('請在確認一次是否要刪除該筆資料', '警告', {
+          cancelButtonText: '取消',
+          confirmButtonText: '確認',
+          type: 'warning'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '刪除成功'
+          }).catch((error) => {
+            console.log(error)
+            this.$message({
+              type: 'error',
+              message: '發生一點錯誤，請稍後再做修改'
+            })
+          })
+          this.c_card_visible = false
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消刪除'
+          })
+          this.activity_history_visible = false
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消刪除'
+        })
+        this.activity_history_visible = false
+      })
     }
   }
 }
 </script>
-<style lang='scss'>
-.activity_add_container {
+<style lang="scss">
+.activity_history_container {
   padding: 20px;
 }
-.table-acthistory_dialog {
+.acthistory_dialog {
   font-size: 0;
 }
-.table-acthistory_dialog label {
+.acthistory_dialog label {
   width: 100px;
   color: #99a9bf;
 }
-.acthistory_dialog-invoice .el-form-item {
+.acthistory_dialog .el-form-item {
   margin-right: 0;
   //margin-bottom: 0;
   width: 50%;
 }
-.table-table_acthistory_view {
+.table_acthistory_view {
   font-size: 0;
 }
-.table-table_acthistory_view label {
+.table_acthistory_view label {
   width: 90px;
   color: #99a9bf;
 }
-.table-table_acthistory_view .el-form-item {
+.table_acthistory_view .el-form-item {
   margin-right: 0;
   margin-bottom: 0;
   width: 100%;

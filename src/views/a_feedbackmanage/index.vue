@@ -2,7 +2,7 @@
   <div class="app-container">
 
     <title>
-      {{ $t('route.a_feedbackmanage') }}
+      {{ $t('route.a_feebackmanage') }}
     </title>
     <div class="filter-container">
       <el-row class="date_seletor">
@@ -11,7 +11,7 @@
         </el-col>
         <el-col :xs="24" :sm="15" :md="9" :lg="8" :xl="6">
           <!--style="width: 40vw;min-width:15rem;max-width:23rem;"-->
-          <el-date-picker v-model="feeddate" :picker-options="feeddateselect" :start-placeholder="$t('a_feebackmanager.startdate')" :end-placeholder="$t('a_feebackmanager.enddate')" :clearable="dateclean" range-separator="-" align="center" type="daterange" />
+          <el-date-picker v-model="startenddate" :picker-options="feeddateselect" :start-placeholder="$t('a_feebackmanager.startdate')" :end-placeholder="$t('a_feebackmanager.enddate')" :clearable="dateclean" range-separator="-" align="center" type="daterange" />
         </el-col>
       </el-row>
     </div>
@@ -86,7 +86,7 @@
 
 <script>
 import waves from '@/directive/waves'
-
+import { formatdate } from '@/utils/index'
 export default {
   name: 'AFeedbackmanage',
   directives: {
@@ -97,7 +97,9 @@ export default {
     const start = new Date()
     start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
     return {
-      feeddate: '',
+
+      globledate: formatdate('yyyy-mm-dd HH:MM:ss.l'),
+      startenddate: [start, formatdate('yyyy-mm-dd HH:MM:ss.l')],
       dateclean: false,
       a_feedback_form: {
         problemcontent: ''
@@ -150,7 +152,6 @@ export default {
         }]
       }
     }
-  
   },
 
   created() {
@@ -168,15 +169,15 @@ export default {
       this.a_feedbackreply_visible = true/* 打開回覆框*/
     },
     send_reback() {
-       this.$refs.a_feedback_reply.validate((valid) => {
+      this.$refs.a_feedback_reply.validate((valid) => {
         if (valid) {
-      this.a_feedbackreply_visible = false/* 關掉詳細內容框*/
-      this.a_feedback_visible = false/* 關掉回覆框*/
-      const h = this.$createElement
-      this.$notify({
-        title: '回覆成功',
-        message: h('b', { style: 'color: teal' }, '該問題已經回覆')
-      }).catch((error) => {
+          this.a_feedbackreply_visible = false/* 關掉詳細內容框*/
+          this.a_feedback_visible = false/* 關掉回覆框*/
+          const h = this.$createElement
+          this.$notify({
+            title: '回覆成功',
+            message: h('b', { style: 'color: teal' }, '該問題已經回覆')
+          }).catch((error) => {
             console.log(error)
             this.$message({
               type: 'error',
@@ -188,7 +189,6 @@ export default {
           return false
         }
       })
-
     },
     a_feeback_cal() {
       this.$message({

@@ -292,7 +292,28 @@ export default {
     cancel: 'Cancel',
     confirm: 'Confirm',
     problemcontent: 'Problem Content',
-    reply: 'Reply'
+    reply: 'Reply',
+    status: 'Status',
+    act: 'Act',
+    selecttime: 'Select Time',
+    startdate: 'Start Date',
+    enddate: 'End Date',
+    content: 'Reply Content',
+    input: 'Please Input',
+    replycontent: 'Reply Content'
+  },
+  activity_history: {
+    offername: 'Offer Name',
+    offercontent: 'Offer Content',
+    status: 'Status',
+    starttime: 'Start Time',
+    endtime: 'End Time',
+    photo: 'Offer Photo',
+    edit: 'Edit',
+    delete: 'Delete',
+    confirm: 'Confirm',
+    cancel: 'Cancel',
+    note: 'Note'
   },
 
   navbar: {

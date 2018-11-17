@@ -36,3 +36,18 @@ export function getproject_single(token, id) {
     data
   })
 }
+
+export function getprojectforadmin(token, member_id, id) {
+  const requ_url = 'https://www.177together.com/api/project/?member_id=' + member_id + '&syncstatus_not=3'
+
+  return request({
+    url: requ_url,
+    method: 'get',
+    headers: {
+      Authorization: 'JWT ' + token
+    },
+    params: {
+      id
+    }
+  })
+}

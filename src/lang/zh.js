@@ -73,6 +73,20 @@ export default {
     remark: '只能上傳jpg/png文件，且不超過500kb',
     add: '新增'
   },
+  activity_history: {
+    offername: '優惠名稱',
+    offercontent: '優惠內容',
+    status: '狀態',
+    starttime: '上架時間',
+    endtime: '下架時間',
+    photo: '商品照片',
+    edit: '編輯',
+    delete: '刪除',
+    confirm: '確定',
+    cancel: '取消',
+    notmodify: '以下如不修改保持空白即可',
+    note: '備註'
+  },
 
   c_profile_edit: {
     email: '信箱',
@@ -251,7 +265,14 @@ export default {
     cancel: '取消',
     confirm: '確認',
     problemcontent: '問題內容',
-    reply: '回覆'
+    reply: '回覆',
+    status: '狀態',
+    act: '操作',
+    selecttime: '選擇時間',
+    startdate: '開始日期',
+    enddate: '結束日期',
+    replycontent: '回覆內容',
+    input: '請輸入'
   },
   a_manage_business_view: {
     businessmember: '商家會員',
