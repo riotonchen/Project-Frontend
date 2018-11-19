@@ -668,30 +668,26 @@ export default {
           const testmember = res.data
           const ori_data = []
           for (let i = 1; i <= testmember.length; i++) {
-            setTimeout(() => {
-              getmemberlist(getToken(), i)
-                .then((res_data) => {
-                  if ((res_data.status) !== 404) {
-                    ori_data.push(res_data.data)
-                    this.a_all_member_data = ori_data.filter(function(item, index, array) {
-                      return item.membertype === 2 || item.membertype === 3 || item.membertype === 4
-                    })
-                  } else {
-                    return
-                  }
-                })
-            }, i * 20)
+            getmemberlist(getToken(), i)
+              .then((res_data) => {
+                setTimeout(() => {
+                  ori_data.push(res_data.data)
+                  this.a_all_member_data = ori_data.filter(function(item, index, array) {
+                    return item.membertype < 5 && item.membertype > 1
+                  })
+                }, i * 50)
+              })
           }
         })
     },
     get_member_info() {
       this.c_member_confiinfo_visible = true
-      console.log(this.profile_edit_form.id)
       getmemberlist(getToken(), this.profile_edit_form.id)
         .then((res) => {
           this.profile_edit_form.account = res.data.account
           this.profile_edit_form.name = res.data.name
           this.profile_edit_form.toid = res.data.toid
+          console.log(res.data)
         })
     },
     get_accounting_info() {

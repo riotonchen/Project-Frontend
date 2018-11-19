@@ -52,7 +52,7 @@ import {
 } from '@/api/signup'
 
 export default {
-  name: 'Signup',
+  name: 'CSignup',
   components: { LangSelect },
   data() {
     const isvalidateEmail = (rule, value, callback) => {

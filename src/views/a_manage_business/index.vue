@@ -1,154 +1,129 @@
 <template>
   <div class="app-container">
     <title>
-      {{ $t('route.a_manage_business_view.businessmember') }}
+      {{ $t('route.a_manage_business') }}
     </title>
-    <div class="filter-container">
-      <el-select v-model="selectuni_num" :placeholder="$t('a_manage_business_view.number')" filterable>
-        <el-option v-for="item in b_uni_num" :key="item.value" :label="item.label" :value="item.value" />
-      </el-select>
-      <el-select v-model="selectname" :placeholder="$t('a_manage_business_view.name')" filterable>
-        <el-option v-for="item in b_name" :key="item.value" :label="item.label" :value="item.value" />
-      </el-select>
-      <el-select v-model="selectaccount" :placeholder="$t('a_manage_business_view.id')" filterable>
-        <el-option v-for="item in b_account" :key="item.value" :label="item.label" :value="item.value" />
-      </el-select>
+    <div class="filter_container">
+      <el-input v-model="a_select_account" placeholder="account" style="width: 25vw;max-width:7.5rem;min-width:5.5rem;" />
+      <el-input v-model="a_select_name" placeholder="name" style="width: 25vw;max-width:7.5rem;min-width:5.5rem;" />
+      <el-input v-model="a_select_id" placeholder="toid" style="width: 25vw;max-width:7.5rem;min-width:5.5rem;" />
     </div>
-    <!--外層Table-->
-    <div>
-      <el-table :data="a_business_table" stripe style="width: 100%;" max-height="500" fit>
-        <el-table-column :label="$t('a_manage_business_view.number')" prop="businessnumber" align="center">
-          <template slot-scope="scope">
-            <span>{{ scope.row.number }}</span>
+
+    <div class="memberinfo_table">
+      <el-table :data="a_all_ent_data" stripe style="width: 100%;" max-height="650" fit>
+        <el-table-column type="index" align="center" />
+        <el-table-column label="商家帳號">
+          <template slot-scope="scope" prop="account" align="center">
+            <span>{{ scope.row.account }}</span>
           </template>
         </el-table-column>
-        <el-table-column :label="$t('a_manage_business_view.name')" prop="businessname" align="center">
-          <template slot-scope="scope">
+        <el-table-column label="商家名稱">
+          <template slot-scope="scope" prop="name" align="center">
             <span>{{ scope.row.name }}</span>
           </template>
         </el-table-column>
-        <el-table-column :label="$t('a_manage_business_view.id')" prop="businessid" align="center">
-          <template slot-scope="scope">
+        <el-table-column label="商家編號">
+          <template slot-scope="scope" prop="id" align="center">
             <span>{{ scope.row.id }}</span>
           </template>
         </el-table-column>
-
-        <el-table-column :label="$t('a_manage_business_view.operating')" align="center">
+        <el-table-column label="操作" align="center">
           <template slot-scope="scope">
-            <el-button type="info" plain @click="dialogFormVisible = true">{{ $t('a_manage_business_view.detail') }}</el-button>
-            <el-button type="primary" plain @click="dialogTableVisible = true">{{ $t('a_manage_business_view.activity') }}</el-button>
+            <el-button type="primary" @click="handle_advance(scope.$index,scope.row)">進階</el-button>
           </template>
         </el-table-column>
-
       </el-table>
     </div>
-    <div>
-      <!--詳細資料-->
-      <el-dialog :visible.sync="dialogFormVisible" width="80vw">
-        <el-form :data="a_business_subsort" :model="a_business_view" label-position="left" inline class="dialog_container">
-          <el-form-item :label="$t('a_manage_business_view.princiapl')">
-            <el-input v-model="a_business_view.princiapl" type="text" readonly />
-          </el-form-item>
-          <el-form-item :label="$t('a_manage_business_view.number')">
-            <el-input v-model="a_business_view.number" type="text" readonly />
-          </el-form-item>
-          <el-form-item :label="$t('a_manage_business_view.name')">
-            <el-input v-model="a_business_view.name" type="text" readonly />
-          </el-form-item>
-          <el-form-item :label="$t('a_manage_business_view.id')">
-            <el-input v-model="a_business_view.id" type="text" readonly />
-          </el-form-item>
-          <el-form-item :label="$t('a_manage_business_view.taxID')">
-            <el-input v-model="a_business_view.taxID" type="text" readonly />
-          </el-form-item>
-          <el-form-item :label="$t('a_manage_business_view.telephone')">
-            <el-input v-model="a_business_view.telephone" type="text" readonly />
-          </el-form-item>
-          <el-form-item :label="$t('a_manage_business_view.cellphone')">
-            <el-input v-model="a_business_view.cellphone" type="text" readonly />
-          </el-form-item>
-          <el-form-item :label="$t('a_manage_business_view.extension')">
-            <el-input v-model="a_business_view.extension" type="text" readonly />
-          </el-form-item>
-          <el-form-item :label="$t('a_manage_business_view.address')">
-            <el-input v-model="a_business_view.address" type="text" readonly />
-          </el-form-item>
-        </el-form>
+    <div class="advance_dialog">
+      <el-dialog :visible.sync="a_ent_adv_visible" title="商家會員各項操作" width="90%">
+        <el-row>
+          <el-col :span="12">
+            <el-button type="primary" class="adv_in_btn" plain @click="get_ent_info()">修改資料</el-button>
+          </el-col>
+          <el-col :span="12">
+            <el-button type="primary" class="adv_in_btn" plain @click="get_accounting_info()">歷史帳務</el-button>
+          </el-col>
+        </el-row>
+        <el-row>
+          <!--
+          <el-col :span="12">
+            <el-button type="primary" class="adv_in_btn" plain @click="get_account_info()">帳戶管理</el-button>
+          </el-col>
+          <el-col :span="12">
+            <el-button type="primary" class="adv_in_btn" plain @click="get_card_info()">卡片管理</el-button>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-button type="primary" class="adv_in_btn" plain @click="get_category_info()">分類管理</el-button>
+          </el-col>
+          <el-col :span="12">
+            <el-button type="primary" class="adv_in_btn" plain @click="get_project_info()">專案管理</el-button>
+          </el-col>
+        </el-row>
+        -->
+          <el-row>
+            <el-col :span="24">
+              <el-button type="info" class="adv_calbtn" @click="adv_cal()">回管理頁</el-button>
+            </el-col>
+          </el-row>
+        </el-row>
       </el-dialog>
-      <!--優惠活動-->
-      <el-dialog :visible.sync="dialogTableVisible" width="80vw">
-        <div class="acivity_data">
-          <el-table :data="a_business_activity" :default-sort="{prop: 'date', order: 'descending'}" stripe style="width: 100%;" max-height="470" fit>
-            <el-table-column type="expand">
-              <template slot-scope="props">
-                <el-form label-position="left" inline class="table-expand">
-                  <el-form-item :label="$t('a_manage_business_view.picture')">
-                    <span>{{ props.row.picture }}</span>
-                  </el-form-item>
-                </el-form>
-              </template>
-            </el-table-column>
-            <el-table-column :label="$t('a_manage_business_view.preferentialname')" prop="name" align="center" />
-            <el-table-column :label="$t('a_manage_business_view.preferentialcontent')" prop="content" align="center" />
-            <el-table-column :label="$t('a_manage_business_view.status')" prop="status" align="center" />
-            <el-table-column :label="$t('a_manage_business_view.topshelf')" prop="selltime" align="center" />
-            <el-table-column :label="$t('a_manage_business_view.lowershelf')" prop="unselltime" align="center" />
-            <el-table-column label="操作" align="center">
-              <template slot-scope="scope">
-                <el-button type="primary" plain @click="handle_edit(scope.$index,scope.row)">{{ $t('a_manage_business_view.operating') }}</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-        </div>
-        <!--編輯優惠活動-->
-        <div class="dialog_avitvity">
-          <el-dialog :visible.sync="a_business_visible" width="80vw" title="編輯">
-            <el-form :model="a_business_activity_edit" :rules="a_business_activity_edit_rules" label-position="left" inline class="table-invoice">
-              <el-form-item>
-                <span>{{ $t('a_manage_business_view.notmodify') }}</span>
+    </div>
+    <div class="editinfo_dialog">
+      <el-dialog :visible.sync="c_ent_confiinfo_visible" title="修改會員資訊" width="80%">
+        <el-row>
+          <el-col :span="24">
+            <el-form ref="profile_edit_form" :model="profile_edit_form" label-position="left" inline class="ent_edit">
+              <el-form-item label="商家帳號">
+                <el-input v-model="profile_edit_form.account" type="text" readonly />
               </el-form-item>
-              <el-form-item>
-                <span />
+              <el-form-item :label="$t('a_manage_business_view.princiapl')">
+                <el-input v-model="profile_edit_form.manager" type="text" readonly />
               </el-form-item>
-              <el-form-item :label="$t('a_manage_business_view.preferentialname')" prop="name">
-                <el-input v-model="a_business_activity_edit.name" :placeholder="a_business_name_p" clearable />
+              <el-form-item :label="$t('a_manage_business_view.name')">
+                <el-input v-model="profile_edit_form.name" type="text" readonly />
               </el-form-item>
-              <el-form-item :label="$t('a_manage_business_view.preferentialcontent')" prop="content">
-                <el-input v-model="a_business_activity_edit.content" :placeholder="a_business_content_p" clearable />
+              <el-form-item :label="$t('a_manage_business_view.taxID')">
+                <el-input v-model="profile_edit_form.uni_num" type="text" readonly />
               </el-form-item>
-              <el-form-item :label="$t('a_manage_business_view.status')">
-                <el-input v-model="a_business_activity_edit.status" :placeholder="a_business_status_p" clearable readonly />
+              <el-form-item :label="$t('a_manage_business_view.telephone')">
+                <el-input v-model="profile_edit_form.mobile_num" type="text" readonly />
               </el-form-item>
-              <el-form-item :label="$t('a_manage_business_view.topshelf')">
-                <el-input v-model="a_business_activity_edit.selltime" :placeholder="a_business_selltime_p" clearable type="date" />
+              <el-form-item :label="$t('a_manage_business_view.cellphone')">
+                <el-input v-model="profile_edit_form.phone_num" type="text" readonly />
               </el-form-item>
-              <el-form-item :label="$t('a_manage_business_view.lowershelf')">
-                <el-input v-model="a_business_activity_edit.unselltime" :placeholder="a_business_unselltime_p" clearable type="date" />
+              <el-form-item :label="$t('a_manage_business_view.extension')">
+                <el-input v-model="profile_edit_form.extension" type="text" readonly />
+              </el-form-item>
+              <el-form-item :label="$t('a_manage_business_view.address')">
+                <el-input v-model="profile_edit_form.address" type="text" readonly />
               </el-form-item>
             </el-form>
-
-            <span slot="footer" class="invoice_dialog_footer">
-              <el-button type="danger" plain @click="a_business_del()">{{ $t('a_manage_business_view.delete') }}</el-button>
-              <el-button type="primary" @click="a_business_confirm()">{{ $t('a_manage_business_view.confirm') }}</el-button>
-              <el-button type="info" plain @click="a_business_cal()">{{ $t('a_manage_business_view.cancel') }}</el-button>
-            </span>
-
-          </el-dialog>
-        </div>
-
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-button type="primary" class="info_btns" @click.native.prevent="cofigure_member_info()">{{ $t('c_profile_edit.confirm') }}</el-button>
+            <el-button type="info" class="info_btns" @click.native.prevent="in_adv_motion_cal()">{{ $t('c_profile_edit.cancel') }}</el-button>
+          </el-col>
+        </el-row>
       </el-dialog>
     </div>
   </div>
 </template>
 <script>
 import waves from '@/directive/waves' // 水波紋指令
-
+import { getToken } from '@/utils/auth'
+import { getmember, getmemberlist } from '@/api/member/getmember'
+import { getentprofile } from '@/api/ent-profile/getentprofile'
 export default {
   name: 'BManageBusiness',
   directives: {
     waves
   },
   data() {
+    /*
     const validatename = (rule, value, callback) => {
       if (value.length > 10) {
         callback(new Error('優惠名稱不可以大於 10 個字'))
@@ -163,123 +138,114 @@ export default {
         callback()
       }
     }
+    */
     return {
-      selectuni_num: '',
-      selectname: '',
-      selectaccount: '',
-      a_business_view: {
-        princiapl: '',
-        number: '',
+      a_select_account: '',
+      a_select_name: '',
+      a_select_id: '',
+
+      a_all_ent_data: [],
+      a_ent_adv_visible: false,
+      c_ent_confiinfo_visible: false,
+      profile_edit_form: {
+        account: '',
         name: '',
-        id: '',
-        taxID: '',
-        telephone: '',
-        cellphone: '',
-        extension: '',
-        address: ''
-      },
-      a_business_name_p: '',
-      a_business_content_P: '',
-      a_business_status_p: '',
-      a_business_selltime_p: '',
-      a_business_unselltime_p: '',
-      a_business_activity_edit: {
-        content: '',
-        name: '',
-        status: '',
-        selltime: '',
-        unselltime: ''
-      },
-      dialogFormVisible: false,
-      dialogTableVisible: false,
-      a_business_visible: false,
-      a_business_subsort: '',
-      tableKey: 0,
-      a_business_activity: [{
-        name: 'missdior',
-        content: '限時八折',
-        status: '全新',
-        selltime: '2018.09.02',
-        unselltime: '2018.09.30'
+        manager: '',
+        uni_num: '',
+        address: '',
+        mobile_num: '',
+        phone_num: '',
+        extension: ''
       }
-      ],
-      a_business_table: [{
-        number: '5487',
-        name: '87小舖',
-        id: 'iam878787'
-      }
-      ],
-      a_business_activity_edit_rules: {
-        name: [{ required: false, trigger: 'change', validator: validatename }],
-        content: [{ required: false, trigger: 'change', validator: validatecontent }]
-      },
-      b_uni_num: [],
-      b_name: [],
-      b_account: []
     }
   },
+  created() {
+    this.get_member_all()
+  },
   methods: {
-    a_business_confirm() {
-      this.$message({
-        type: 'success',
-        message: '已完成該筆資料修改'
-      })
-      this.a_business_visible = false
+    get_member_all() {
+      getmember(getToken())
+        .then((res) => {
+          const testmember = res.data
+          const ori_data = []
+          for (let i = 1; i <= testmember.length; i++) {
+            getmemberlist(getToken(), i)
+              .then((res_data) => {
+                setTimeout(() => {
+                  ori_data.push(res_data.data)
+                  this.a_all_ent_data = ori_data.filter(function(item, index, array) {
+                    return item.membertype === 5
+                  })
+                }, i * 10)
+              })
+          }
+        })
     },
-    a_business_cal() {
+    handle_advance(index, row) {
+      this.a_ent_adv_visible = true
+      this.profile_edit_form.account = row.account
+      console.log(row.account)
+    },
+    adv_cal() {
+      this.a_ent_adv_visible = false
+    },
+    in_adv_motion_cal() {
+      this.c_ent_confiinfo_visible = false
       this.$message({
         type: 'info',
-        message: '已取消修改'
+        message: '已取消動作'
       })
-      this.a_business_visible = false
     },
-    a_business_del() {
-      this.$confirm('你真的要刪除該筆資料嗎？', '警告', {
-        cancelButtonText: '取消',
-        confirmButtonText: '確認',
-        type: 'warning'
-      }).then(() => {
-        this.$confirm('請在確認一次是否要刪除該筆資料', '警告', {
-          cancelButtonText: '取消',
-          confirmButtonText: '確認',
-          type: 'warning'
-        }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '刪除成功'
-          })
-          this.a_business_visible = false
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消刪除'
-          })
-          this.a_business_visible = false
+    get_ent_info() {
+      this.c_ent_confiinfo_visible = true
+      getentprofile(getToken(), this.profile_edit_form.account)
+        .then((res) => {
+          this.profile_edit_form.name = ''
+          this.profile_edit_form.manager = ''
+          this.profile_edit_form.uni_num = ''
+          this.profile_edit_form.mobile_num = ''
+          this.profile_edit_form.phone_num = ''
+          this.profile_edit_form.extension = ''
+          this.profile_edit_form.address = ''
+          this.profile_edit_form.name = res.data[0].name
+          this.profile_edit_form.manager = res.data[0].manager
+          this.profile_edit_form.uni_num = res.data[0].uni_num
+          this.profile_edit_form.mobile_num = res.data[0].mobile_num
+          this.profile_edit_form.phone_num = res.data[0].phone_num
+          this.profile_edit_form.extension = res.data[0].extension
+          this.profile_edit_form.address = res.data[0].address
         })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消刪除'
-        })
-        this.a_business_visible = false
-      })
     }
   }
 }
 </script>
 <style lang="scss">
-.dialog_container {
+.adv_calbtn {
+  float: right;
+  margin-top: 5vh;
+}
+.advance_dialog .el-row {
+  padding-top: 3vh;
+}
+.advance_dialog .el-col {
+  text-align: center;
+}
+.advance_dialog .el-col .adv_in_btn {
+  width: 80%;
+  text-align: center;
+}
+.ent_edit {
   font-size: 0;
   padding-left: 9vw;
 }
-.dialog_container label {
+.ent_edit label {
   width: 110px;
   color: #99a9bf;
 }
-.dialog_container input {
+.ent_edit input {
   border: 0;
 }
-.dialog_container .el-form-item {
+.ent_edit .el-form-item {
   margin-right: 0;
   //margin-bottom: 0;
   width: 50%;

@@ -219,7 +219,7 @@ import {
 } from '@/api/ent-profile/postentprofile'
 
 export default {
-  name: 'Signup',
+  name: 'BSignup',
   components: { LangSelect },
   data() {
     const isvalidateEmail = (rule, value, callback) => {
