@@ -37,18 +37,9 @@
         </span>
       </el-form-item>
 
-      <el-form-item prop="membertype_id">
-        <span class="svg-container">
-          <svg-icon icon-class="star" />
-        </span>
-        <el-select v-model="signupForm.membertype_id" clearable placeholder="請選擇會員類別" style="width:88%;">
-          <el-option v-for="item in membertype" :key="item.value" :label="item.label" :value="item.value" />
-        </el-select>
-      </el-form-item>
-
       <el-button :loading="loadingsend" type="primary" style="width:100%;margin-bottom:15px;" @click.native.prevent="handleSignup">{{ $t('signup.signUP') }}</el-button>
-      <el-button :loading="loadinghome" type="primary" style="width:100%;margin-left:0px" @click.native.prevent="goent">商家註冊</el-button>
-
+      <el-button :loading="loadingent" type="primary" style="width:100%;margin-left:0px" @click.native.prevent="goent">商家註冊</el-button>
+      <el-button :loading="loadinghome" type="primary" style="width:100%;margin-left:0px;margin-top:15px;" @click.native.prevent="gohome">回首頁</el-button>
     </el-form>
   </div>
 </template>
@@ -59,9 +50,6 @@ import LangSelect from '@/components/LangSelect'
 import {
   Postsignup
 } from '@/api/signup'
-import {
-  postentprofile
-} from '@/api/ent-profile/postentprofile'
 
 export default {
   name: 'Signup',
@@ -90,33 +78,24 @@ export default {
         callback()
       }
     }
-    const validateMembertype = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('請選擇會員類別'))
-      } else {
-        callback()
-      }
-    }
 
     return {
       signupForm: {
         username: '',
         password: '',
-        doublepswd: '',
-        membertype_id: '2'
+        doublepswd: ''
       },
       signupRules: {
         username: [{ required: true, trigger: 'change', validator: isvalidateEmail }],
         password: [{ required: true, trigger: 'change', validator: validatePassword }],
-        doublepswd: [{ required: true, trigger: 'change', validator: validatedoublepswd }],
-        membertype_id: [{ required: true, trigger: 'change', validator: validateMembertype }]
+        doublepswd: [{ required: true, trigger: 'change', validator: validatedoublepswd }]
       },
       passwordType: 'password',
       loadingsend: false,
+      loadingent: false,
       loadinghome: false,
       showDialog: false,
-      redirect: undefined,
-      membertype: [{ label: '會員', value: '2' }, { label: '商家', value: '5' }]
+      redirect: undefined
     }
   },
   watch: {
@@ -135,19 +114,11 @@ export default {
         this.passwordType = 'password'
       }
     },
-    post_ent() {
-      if (this.signupForm.membertype_id === 5) {
-        postentprofile(this.signupForm.username, this.signupForm.password)
-          .catch((error) => {
-            console.log(error)
-          })
-      }
-    },
     handleSignup() {
       this.$refs.signupForm.validate(valid => {
         if (valid) {
           this.loadingsend = true
-          Postsignup(this.signupForm.username, this.signupForm.password, this.signupForm.membertype_id)
+          Postsignup(this.signupForm.username, this.signupForm.password, 2)
             .then(() => {
               this.post_ent()
               const h = this.$createElement
@@ -190,11 +161,20 @@ export default {
       })
     },
     goent() {
+      this.loadingent = true
+      setTimeout(() => {
+        setTimeout(() => {
+          this.loadingent = false
+          this.$router.push({ path: this.redirect || '/ent_signup' })
+        }, 300)
+      }, 300)
+    },
+    gohome() {
       this.loadinghome = true
       setTimeout(() => {
         setTimeout(() => {
           this.loadinghome = false
-          this.$router.push({ path: this.redirect || '/ent_signup' })
+          this.$router.push({ path: this.redirect || '/home' })
         }, 300)
       }, 300)
     }

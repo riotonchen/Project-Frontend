@@ -343,7 +343,7 @@ export default {
     thirdpartyTips: '尚未完成'
   },
   signup: {
-    title: '帳號註冊',
+    title: '普通會員-帳號註冊',
     signUP: '送出',
     username: '帳號(電子信箱)',
     password: '密碼',
