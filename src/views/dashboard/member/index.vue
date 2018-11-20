@@ -26,7 +26,11 @@
         </div>
       </el-col>
     </el-row>
-
+    <el-row>
+      <el-col :xs="{span: 24}" :sm="{span: 24}" :md="{span: 24}" :lg="{span: 24}" :xl="{span: 24}" style="margin-bottom:30px;">
+        <transaction-table />
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -37,7 +41,7 @@ import LineChart from './components/LineChart'
 import RaddarChart from './components/RaddarChart'
 import PieChart from './components/PieChart'
 import BarChart from './components/BarChart'
-// import TransactionTable from './components/TransactionTable'
+import TransactionTable from './components/TransactionTable'
 // import TodoList from './components/TodoList'
 // import BoxCard from './components/BoxCard'
 
@@ -68,8 +72,8 @@ export default {
     LineChart,
     RaddarChart,
     PieChart,
-    BarChart
-    // TransactionTable,
+    BarChart,
+    TransactionTable
     // TodoList,
     // BoxCard
   },

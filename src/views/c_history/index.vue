@@ -60,7 +60,7 @@
 
     <div class="history_table_container">
       <!--目前使用日期做排序-->
-      <el-table :data="c_user_history" :default-sort="{prop: 'date', order: 'descending'}" stripe style="width: 100%;" max-height="470" fit>
+      <el-table :data="c_user_history" :default-sort="{prop: 'purchasedate', order: 'ascending'}" stripe style="width: 100%;" max-height="470" fit>
         <el-table-column type="expand">
           <template slot-scope="scope">
             <el-form label-position="left" inline class="table_expand">
