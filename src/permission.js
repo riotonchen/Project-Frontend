@@ -10,12 +10,13 @@ import {
 } from '@/utils/auth' // getToken from cookie
 
 NProgress.configure({
-  showSpinner: false
+  // showSpinner: false
+  showSpinner: true
 }) // NProgress Configuration
 
 // permission judge function
 function hasPermission(roles, permissionRoles) {
-  if (roles === 1 || roles === 2 || roles === 5) return true // admin permission passed directly ori-code roles.indexOf('admin') >= 0
+  if (roles > 0 || roles < 6) return true // admin permission passed directly ori-code roles.indexOf('admin') >= 0
   if (!permissionRoles) return true
   return roles.some(role => permissionRoles.indexOf(role) >= 0)
 }
@@ -34,7 +35,8 @@ router.beforeEach((to, from, next) => {
     } else {
       if (store.getters.roles.length === 0) { // 判斷當前用户是否已拉取完user_info信息
         store.dispatch('GetUserInfo').then(res => { // 拉取user_info
-          const roles = res.data.roles // note: roles must be a array! such as: ['editor','develop']
+          const roles = []
+          roles.push((res.data.membertype).toString()) // note: roles must be a array! such as: ['editor','develop']
           store.dispatch('GenerateRoutes', {
             roles
           }).then(() => { // 根據roles權限生成可訪問的路由表

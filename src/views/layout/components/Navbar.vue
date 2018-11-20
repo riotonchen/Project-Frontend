@@ -18,9 +18,11 @@
 
         <lang-select class="international right-menu-item" />
 
+        <!--
         <el-tooltip :content="$t('navbar.theme')" effect="dark" placement="bottom">
           <theme-picker class="theme-switch right-menu-item" />
         </el-tooltip>
+        -->
       </template>
 
       <el-dropdown class="avatar-container right-menu-item" trigger="click">
@@ -74,7 +76,7 @@ export default {
     ...mapGetters([
       'sidebar',
       'name',
-      'avatar',
+      'dbpicture',
       'device'
     ])
   },

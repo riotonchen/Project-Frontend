@@ -181,20 +181,26 @@ const user = {
               reject('error')
             }
             const data = response.data
-            if (data.membertype && data.membertype === 2 || data.membertype === 1 || data.membertype === 5) {
+            if (data.membertype && data.membertype > 0 && data.membertype < 6) {
               // 驗證返回的membertype是否合法
               commit('SET_ROLES', data.membertype)
             } else {
               reject('資訊: 會員資訊取得錯誤')
             }
+            const tostrmembertype = []
+            tostrmembertype.push((data.membertype).toString())
             commit('SET_ID', data.id)
             commit('SET_TOID', data.toid)
             commit('SET_ACCOUNT', data.account)
             commit('SET_IDENTIFIER', data.identifier)
-            commit('SET_MEMBERTYPE', data.membertype)
+            commit('SET_MEMBERTYPE', tostrmembertype)
             commit('SET_NAME', data.name)
             commit('SET_LOCALPICTURE', data.localpicture)
-            commit('SET_DBPICTURE', data.dbpicture)
+            if (data.dbpicture === null) {
+              commit('SET_DBPICTURE', 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif')
+            } else {
+              commit('SET_DBPICTURE', data.dbpicture)
+            }
             commit('SET_RENEW_TIME', data.renew_time)
             // commit('SET_AVATAR', data.avatar)
             // commit('SET_INTRODUCTION', data.introduction)
@@ -251,9 +257,10 @@ const user = {
         removeToken()
         resolve()
       })
-    },
+    }
 
     // 動態修改權限
+    /*
     ChangeRoles({
       commit,
       dispatch
@@ -278,6 +285,7 @@ const user = {
         })
       })
     }
+    */
   }
 }
 export default user

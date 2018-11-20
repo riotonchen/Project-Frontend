@@ -7,7 +7,7 @@
       <github-corner style="position: absolute; top: 0px; border: 0; right: 0;" />
       <div class="info-container">
         <span class="display_name">{{ name }}</span>
-        <span style="font-size:20px;padding-top:20px;display:inline-block;">管理員's Dashboard</span>
+        <span style="font-size:20px;padding-top:20px;display:inline-block;">商家會員's Dashboard</span>
       </div>
     </div>
     <div>
