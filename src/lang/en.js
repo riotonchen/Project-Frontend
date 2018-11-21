@@ -59,6 +59,23 @@ export default {
     h6: '64 digit at the most',
     b_profile_edit: 'business member'
   },
+  b_signup: {
+    title: 'Create an Enterprise account',
+    username: 'Account(Email)',
+    password: 'Password',
+    name: 'Buiness name',
+    doublepswd: 'Please enter your password again',
+    signUP: 'Send Out',
+    email: 'Manager Email',
+    taxID: 'TaxID',
+    telephone: 'Telephone number',
+    cellphone: 'Cellphone number',
+    extension: 'Extension number',
+    address: 'Address',
+    princiapl: 'Princiapl',
+    edit: 'Edit'
+  },
+
   a_manage_business_view: {
     businessmember: 'Businessmember',
     number: 'Businessnumber',

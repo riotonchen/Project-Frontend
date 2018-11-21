@@ -1,11 +1,14 @@
 <template>
-  <div :class="className" :style="{height:height,width:width}"/>
+
+  <div :class="className" :style="{height:height,width:width}" />
+
 </template>
 
 <script>
 import echarts from 'echarts'
 require('echarts/theme/macarons') // echarts theme
 import { debounce } from '@/utils'
+import { formatdate_inc_time } from '@/utils/index'
 
 export default {
   props: {
@@ -55,7 +58,7 @@ export default {
       window.addEventListener('resize', this.__resizeHandler)
     }
 
-    // 监听侧边栏的变化
+    // 監聽側邊變化
     this.sidebarElm = document.getElementsByClassName('sidebar-container')[0]
     this.sidebarElm && this.sidebarElm.addEventListener('transitionend', this.sidebarResizeHandler)
   },
@@ -79,12 +82,27 @@ export default {
       }
     },
     setOptions({ expectedData, actualData } = {}) {
+      const start = new Date()
+      const done = start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+      const dtwo = start.setTime(start.getTime() + 3600 * 1000 * 24 * 30)
+      const dthr = start.setTime(start.getTime() + 3600 * 1000 * 24 * 30)
+      const oridate = start.setTime(start.getTime() + 3600 * 1000 * 24 * 30)
+      const pone = start.setTime(start.getTime() + 3600 * 1000 * 24 * 30)
+      const ptwo = start.setTime(start.getTime() + 3600 * 1000 * 24 * 30)
+      const pthr = start.setTime(start.getTime() + 3600 * 1000 * 24 * 30)
       this.chart.setOption({
         xAxis: {
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: [
+            formatdate_inc_time(done, 'mm'),
+            formatdate_inc_time(dtwo, 'mm'),
+            formatdate_inc_time(dthr, 'mm'),
+            formatdate_inc_time(oridate, 'mm'),
+            formatdate_inc_time(pone, 'mm'),
+            formatdate_inc_time(ptwo, 'mm'),
+            formatdate_inc_time(pthr, 'mm')],
           boundaryGap: false,
           axisTick: {
-            show: false
+            show: true
           }
         },
         grid: {
@@ -103,12 +121,14 @@ export default {
         },
         yAxis: {
           axisTick: {
-            show: false
+            show: true
           }
         },
+        /*
         legend: {
           data: ['expected', 'actual']
         },
+        */
         series: [{
           name: 'expected', itemStyle: {
             normal: {
@@ -154,3 +174,13 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+.accounting_title_col {
+  padding: 15px;
+  background-color: #fff;
+  text-align: center;
+  font-size: 1.2vw;
+  font-weight: bold;
+}
+</style>
+

@@ -143,15 +143,8 @@ export default {
     get_getaccounting_all() {
       let startdate
       let enddate
-      this.c_user_history = []
       let payinval
-      if (this.c_payorin === 0) {
-        payinval = 'False'
-      } else if (this.c_payorin === 1) {
-        payinval = 'True'
-      } else {
-        payinval = ''
-      }
+      this.c_user_history = []
       getaccounting_all(getToken(), startdate, enddate, payinval, this.c_sort, this.c_subsort, this.c_project, this.c_account).then((res) => {
         this.c_user_history = res.data
         this.c_user_history.forEach(items => {

@@ -50,6 +50,22 @@ export default {
     h6: '地址上限64個中英數字',
     b_profile_edit: '商家會員'
   },
+  b_signup: {
+    title: '新建商家帳號',
+    username: '帳號(電子信箱)',
+    password: '密碼',
+    doublepswd: '請再次輸入密碼',
+    signUP: '送出',
+    email: '管理員信箱',
+    name: '商家名稱',
+    princiapl: '負責人',
+    taxID: '統一編號',
+    telephone: '行動電話',
+    cellphone: '公司電話',
+    extension: '分機號碼',
+    address: '公司地址',
+    edit: '編輯'
+  },
   b_profile_view: {
     businessview: '商家資料',
     email: '電子信箱',

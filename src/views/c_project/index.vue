@@ -197,7 +197,7 @@ export default {
         .then(() => {
           this.$message({
             type: 'success',
-            message: '卡片相關更新成功'
+            message: '專案相關更新成功'
           })
           this.get_project()
         })
@@ -219,12 +219,12 @@ export default {
       this.c_project_add_visible = false
     },
     c_project_del() {
-      this.$confirm('你真的要刪除該卡片資料嗎？', '警告', {
+      this.$confirm('你真的要刪除該專案資料嗎？', '警告', {
         cancelButtonText: '取消',
         confirmButtonText: '確認',
         type: 'warning'
       }).then(() => {
-        this.$confirm('請在確認一次是否要刪除該卡片資料資料', '警告', {
+        this.$confirm('請在確認一次是否要刪除該專案資料資料', '警告', {
           cancelButtonText: '取消',
           confirmButtonText: '確認',
           type: 'warning'
