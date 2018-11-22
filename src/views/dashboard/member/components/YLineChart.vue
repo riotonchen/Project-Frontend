@@ -18,7 +18,7 @@ export default {
     },
     width: {
       type: String,
-      default: '100%'
+      default: '59vw'
     },
     height: {
       type: String,
@@ -81,25 +81,28 @@ export default {
         this.__resizeHandler()
       }
     },
-    setOptions({ expectedData, actualData } = {}) {
+    setOptions({ paydata, indata } = {}) {
       const start = new Date()
-      const done = start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-      const dtwo = start.setTime(start.getTime() + 3600 * 1000 * 24 * 30)
-      const dthr = start.setTime(start.getTime() + 3600 * 1000 * 24 * 30)
-      const oridate = start.setTime(start.getTime() + 3600 * 1000 * 24 * 30)
-      const pone = start.setTime(start.getTime() + 3600 * 1000 * 24 * 30)
-      const ptwo = start.setTime(start.getTime() + 3600 * 1000 * 24 * 30)
-      const pthr = start.setTime(start.getTime() + 3600 * 1000 * 24 * 30)
+      const done = start.setTime(start.getTime() - 3600 * 1000 * 24 * 30 * 12 * 3)
+      const dtwo = start.setTime(start.getTime() + 3600 * 1000 * 24 * 30 * 12)
+      const dthr = start.setTime(start.getTime() + 3600 * 1000 * 24 * 30 * 12)
+      const oridate = start.setTime(start.getTime() + 3600 * 1000 * 24 * 30 * 12)
+      const pone = start.setTime(start.getTime() + 3600 * 1000 * 24 * 30 * 12)
+      const ptwo = start.setTime(start.getTime() + 3600 * 1000 * 24 * 30 * 12)
+      const pthr = start.setTime(start.getTime() + 3600 * 1000 * 24 * 30 * 12)
       this.chart.setOption({
+        title: {
+          text: '年報表收支出'
+        },
         xAxis: {
           data: [
-            formatdate_inc_time(done, 'mm'),
-            formatdate_inc_time(dtwo, 'mm'),
-            formatdate_inc_time(dthr, 'mm'),
-            formatdate_inc_time(oridate, 'mm'),
-            formatdate_inc_time(pone, 'mm'),
-            formatdate_inc_time(ptwo, 'mm'),
-            formatdate_inc_time(pthr, 'mm')],
+            formatdate_inc_time(done, 'yyyy'),
+            formatdate_inc_time(dtwo, 'yyyy'),
+            formatdate_inc_time(dthr, 'yyyy'),
+            formatdate_inc_time(oridate, 'yyyy'),
+            formatdate_inc_time(pone, 'yyyy'),
+            formatdate_inc_time(ptwo, 'yyyy'),
+            formatdate_inc_time(pthr, 'yyyy')],
           boundaryGap: false,
           axisTick: {
             show: true
@@ -107,9 +110,9 @@ export default {
         },
         grid: {
           left: 10,
-          right: 10,
+          right: 20,
           bottom: 20,
-          top: 30,
+          top: 60,
           containLabel: true
         },
         tooltip: {
@@ -124,29 +127,33 @@ export default {
             show: true
           }
         },
-        /*
+
         legend: {
-          data: ['expected', 'actual']
+          data: ['支出', '收入']
         },
-        */
+
         series: [{
-          name: 'expected', itemStyle: {
+          name: '支出',
+          itemStyle: {
             normal: {
-              color: '#FF005A',
+              color: '#CC0000',
               lineStyle: {
-                color: '#FF005A',
-                width: 2
+                color: '#CC0000',
+                width: 5
+              },
+              areaStyle: {
+                color: '#FF3333'
               }
             }
           },
           smooth: true,
           type: 'line',
-          data: expectedData,
+          data: paydata,
           animationDuration: 2800,
           animationEasing: 'cubicInOut'
         },
         {
-          name: 'actual',
+          name: '收入',
           smooth: true,
           type: 'line',
           itemStyle: {
@@ -154,14 +161,14 @@ export default {
               color: '#3888fa',
               lineStyle: {
                 color: '#3888fa',
-                width: 2
+                width: 5
               },
               areaStyle: {
-                color: '#f3f8ff'
+                color: '#00FFFF'
               }
             }
           },
-          data: actualData,
+          data: indata,
           animationDuration: 2800,
           animationEasing: 'quadraticOut'
         }]
@@ -174,13 +181,4 @@ export default {
   }
 }
 </script>
-<style lang="scss">
-.accounting_title_col {
-  padding: 15px;
-  background-color: #fff;
-  text-align: center;
-  font-size: 1.2vw;
-  font-weight: bold;
-}
-</style>
 

@@ -120,14 +120,12 @@ export default {
           this.loadingsend = true
           Postsignup(this.signupForm.username, this.signupForm.password, 2)
             .then(() => {
-              this.post_ent()
               const h = this.$createElement
               this.$notify({
                 title: '註冊成功',
                 message: h('b', { style: 'color: teal' }, '恭喜你註冊成功，好好享受我們的服務吧！'),
                 position: 'top-left'
               })
-
               this.loadingsend = false
               this.$router.push({ path: this.redirect || '/home' })
             })
