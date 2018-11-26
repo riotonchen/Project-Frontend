@@ -71,6 +71,7 @@ service.interceptors.response.use(
     }
   },
   */
+  /*
   error => {
     console.log('err' + error) // for debug
     // 上線時要拔掉
@@ -82,7 +83,7 @@ service.interceptors.response.use(
 
     return Promise.reject(error)
   }
-
+*/
 )
 
 export default service

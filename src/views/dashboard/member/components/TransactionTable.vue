@@ -27,7 +27,7 @@
     </el-row>
     <el-row>
       <el-col :span="24">
-        <el-table :data="c_user_history" :default-sort="{prop: 'purchasedate', order: 'descending'}" stripe style="width: 100%;" max-height="345" fit>
+        <el-table :data="c_user_history" :default-sort="{prop: 'purchasedate', order: 'descending'}" stripe style="width: 100%;" max-height="358" fit>
           <el-table-column type="expand">
             <template slot-scope="scope">
               <el-form label-position="left" inline class="table_expand">

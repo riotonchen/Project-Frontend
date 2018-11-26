@@ -4,125 +4,44 @@
     <panel-group @handleSetLineChartData="handleSetLineChartData" />
     <!--<panel-group @handleSetLineChartData="handleSetLineChartData" />-->
     <!--style="background:#fff;padding:1rem 1rem 0;margin-bottom:2rem;"-->
-    <el-row>
-      <el-col :xs="24" :sm="8" :md="8" :lg="8" :xl="8">
-        <el-row :gutter="40" class="panel-group">
-          <el-col :xs="12" :sm="11" :lg="11" class="card-panel-col">
-            <div class="card-panel">
-              <!--
-              <div class="card-panel-icon-wrapper icon-people">
-                <svg-icon icon-class="peoples" class-name="card-panel-icon" />
-              </div>
-              -->
-              <div class="card-panel-description" @click="showYLinecahrt()">
-                <div class="card-panel-text">
-                  <span>年報表<br><br>曲線圖</span>
-                </div>
-              </div>
-            </div>
-          </el-col>
-          <el-col :xs="12" :sm="11" :lg="11" class="card-panel-col">
-            <div class="card-panel">
-              <!--
-              <div class="card-panel-icon-wrapper icon-people">
-                <svg-icon icon-class="peoples" class-name="card-panel-icon" />
-              </div>
-              -->
-              <div class="card-panel-description" @click="showMLinecahrt()">
-                <div class="card-panel-text">
-                  <span>月報表<br><br>曲線圖</span>
-                </div>
-              </div>
-            </div>
-          </el-col>
-        </el-row>
-        <el-row :gutter="40" class="panel-group">
-          <el-col :xs="12" :sm="11" :lg="11" class="card-panel-col">
-            <div class="card-panel">
-              <!--
-              <div class="card-panel-icon-wrapper icon-people">
-                <svg-icon icon-class="peoples" class-name="card-panel-icon" />
-              </div>
-              -->
-              <div class="card-panel-description">
-                <div class="card-panel-text">TEST</div>
-              </div>
-            </div>
-          </el-col>
-          <el-col :xs="12" :sm="11" :lg="11" class="card-panel-col">
-            <div class="card-panel">
-              <!--
-              <div class="card-panel-icon-wrapper icon-people">
-                <svg-icon icon-class="peoples" class-name="card-panel-icon" />
-              </div>
-              -->
-              <div class="card-panel-description">
-                <div class="card-panel-text">TEST</div>
-              </div>
-            </div>
-          </el-col>
-        </el-row>
-        <el-row :gutter="40" class="panel-group">
-          <el-col :xs="12" :sm="11" :lg="11" class="card-panel-col">
-            <div class="card-panel">
-              <!--
-              <div class="card-panel-icon-wrapper icon-people">
-                <svg-icon icon-class="peoples" class-name="card-panel-icon" />
-              </div>
-              -->
-              <div class="card-panel-description">
-                <div class="card-panel-text">TEST</div>
-              </div>
-            </div>
-          </el-col>
-          <el-col :xs="12" :sm="11" :lg="11" class="card-panel-col">
-            <div class="card-panel">
-              <!--
-              <div class="card-panel-icon-wrapper icon-people">
-                <svg-icon icon-class="peoples" class-name="card-panel-icon" />
-              </div>
-              -->
-              <div class="card-panel-description">
-                <div class="card-panel-text">TEST</div>
-              </div>
-            </div>
-          </el-col>
-        </el-row>
-      </el-col>
-      <el-col :xs="24" :sm="16" :md="16" :lg="16" :xl="16">
+    <el-row :gutter="40">
+      <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
         <div class="chart-wrapper">
-          <transition name="el-fade-in">
-            <div v-show="MLineChartshow">
-              <MLineChart :chart-data="lineChartData" />
-            </div>
-          </transition>
-          <transition name="el-fade-in">
-            <div v-show="YLineChartshow">
-              <YLineChart :chart-data="lineChartData" />
-            </div>
-          </transition>
+          <YLineChart :chart-data="lineChartData" />
+        </div>
+      </el-col>
+      <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+        <div class="chart-wrapper">
+          <MLineChart :chart-data="lineChartData" />
         </div>
       </el-col>
     </el-row>
 
-    <el-row :gutter="32">
-      <!--
-      <el-col :xs="24" :sm="24" :lg="8">
+    <el-row :gutter="40">
+      <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
         <div class="chart-wrapper">
-          <raddar-chart />
+          <YStackLine :chart-data="lineChartData" />
         </div>
       </el-col>
-      <el-col :xs="24" :sm="24" :lg="8">
+      <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
         <div class="chart-wrapper">
-          <pie-chart />
+          <MStackLine :chart-data="lineChartData" />
         </div>
       </el-col>
-      <el-col :xs="24" :sm="24" :lg="8">
+    </el-row>
+    <el-row :gutter="40">
+      <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
         <div class="chart-wrapper">
-          <bar-chart />
+          <YINPie :chart-data="lineChartData" />
         </div>
       </el-col>
-      -->
+
+      <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+        <div class="chart-wrapper">
+          <YPAYPie :chart-data="lineChartData" />
+        </div>
+      </el-col>
+
     </el-row>
 
     <el-row>
@@ -135,43 +54,21 @@
 </template>
 
 <script>
+import PanelGroup from './components/PanelGroup'
+
+import TransactionTable from './components/TransactionTable'
+
+import YLineChart from './components/YLineChart'
+import MLineChart from './components/MLineChart'
+import YStackLine from './components/YStackLine'
+import MStackLine from './components/MStackLine'
+import YINPie from './components/YINPie'
+import YPAYPie from './components/YPAYPie'
 import { getaccount_all } from '@/api/account/getaccount'
 import { getToken } from '@/utils/auth'
-import { formatdate_inc_time } from '@/utils/index'
-// import GithubCorner from '@/components/GithubCorner'
-import PanelGroup from './components/PanelGroup'
-import MLineChart from './components/MLineChart'
-import YLineChart from './components/YLineChart'
-import RaddarChart from './components/RaddarChart'
-import PieChart from './components/PieChart'
-import BarChart from './components/BarChart'
-import TransactionTable from './components/TransactionTable'
-// import TodoList from './components/TodoList'
-// import BoxCard from './components/BoxCard'
-
-/*
-const lineChartData = {
-  newVisitis: {
-    paydata: [100, 120, 161, 134, 105, 160, 165],
-    indata: [120, 82, 91, 154, 162, 140, 145]
-  },
-  messages: {
-    paydata: [200, 192, 120, 144, 160, 130, 140],
-    indata: [180, 160, 151, 106, 145, 150, 130]
-  },
-  purchases: {
-    paydata: [80, 100, 121, 104, 105, 90, 100],
-    indata: [120, 90, 100, 138, 142, 130, 130]
-  },
-  shoppings: {
-    paydata: [130, 140, 141, 142, 145, 150, 160],
-    indata: [120, 82, 91, 154, 162, 140, 130]
-  }
-}
-*/
 const lineChartData = {
   messages: {
-    paydata: [200, 192, 120, 144, 160, 130, 140],
+    paydata: [130, 140, 50, 142, 70, 150, 160],
     indata: [180, 160, 151, 106, 145, 150, 130]
   },
   purchases: {
@@ -187,25 +84,19 @@ const lineChartData = {
 export default {
   name: 'DashboardMember',
   components: {
-    // GithubCorner,
     PanelGroup,
     MLineChart,
     YLineChart,
-    RaddarChart,
-    PieChart,
-    BarChart,
+    YStackLine,
+    MStackLine,
+    YINPie,
+    YPAYPie,
     TransactionTable
-    // TodoList,
-    // BoxCard
   },
   data() {
     return {
-      lineChartData: lineChartData.messages,
-      MLineChartshow: true,
-      YLineChartshow: false
+      lineChartData: lineChartData.messages
     }
-  },
-  created() {
   },
   methods: {
     handleSetLineChartData(type) {
@@ -227,6 +118,12 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.chart-wrapper .chart {
+  width: 100% !important;
+}
+</style>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .dashboard-editor-container {

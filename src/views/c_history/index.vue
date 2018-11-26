@@ -12,7 +12,7 @@
         </el-col>
         <el-col :xs="24" :sm="15" :md="9" :lg="8" :xl="6">
           <!--style="width: 40vw;min-width:15rem;max-width:23rem;"-->
-          <el-date-picker v-model="startenddate" :picker-options="datepickoptions" :start-placeholder="$t('c_history.startdate')" :end-placeholder="$t('c_history.enddate')" :clearable="dateclean" range-separator="-" align="center" type="daterange" @focus="get_getaccounting_all()" @change="get_getaccounting_all()" />
+          <el-date-picker v-model="startenddate" :picker-options="datepickoptions" :start-placeholder="$t('c_history.startdate')" :end-placeholder="$t('c_history.enddate')" :clearable="dateclean" range-separator="-" align="center" type="daterange" @change="get_getaccounting_all()" />
         </el-col>
       </el-row>
       <el-row class="class_seletor">
@@ -20,13 +20,13 @@
           <span>{{ $t('c_history.selectclass') }}</span>
         </el-col>
         <el-col :xs="24" :sm="15" :md="9" :lg="8" :xl="6">
-          <el-select v-model="c_payorin" :placeholder="$t('c_history.incomespend')" filterable clearable style="width: 25vw;max-width:7.5rem;min-width:5.5rem;" @focus="get_getaccounting_all()" @change="get_getaccounting_all()">
+          <el-select v-model="c_payorin" :placeholder="$t('c_history.incomespend')" filterable clearable style="width: 25vw;max-width:7.5rem;min-width:5.5rem;" @change="get_getaccounting_all()">
             <el-option v-for="payorin in c_pay_in" :key="payorin.value" :label="payorin.label" :value="payorin.value" />
           </el-select>
-          <el-select v-model="c_sort" :disabled="c_sort_disable" :placeholder="$t('c_history.mainsort')" filterable style="width: 25vw;max-width:7.5rem;min-width:6.5rem;" @focus="get_sort()" @change="get_subsort()">
+          <el-select v-model="c_sort" :disabled="c_sort_disable" :placeholder="$t('c_history.mainsort')" clearable filterable style="width: 25vw;max-width:7.5rem;min-width:6.5rem;" @change="get_subsort()">
             <el-option v-for="sort in c_sort_payorinitem" :key="sort.id" :label="sort.name" :value="sort.id" />
           </el-select>
-          <el-select v-model="c_subsort" :disabled="c_subsort_disable" :placeholder="$t('c_history.subclass')" filterable style="width: 25vw;max-width:7.5rem;min-width:6.5rem;" @focus="get_subsort()" @change="get_subsort()">
+          <el-select v-model="c_subsort" :disabled="c_subsort_disable" :placeholder="$t('c_history.subclass')" clearable filterable style="width: 25vw;max-width:7.5rem;min-width:6.5rem;" @change="get_subsort()">
             <el-option v-for="subsort in c_subsort_payorinitem" :key="subsort.id" :label="subsort.name" :value="subsort.id" />
           </el-select>
         </el-col>
@@ -36,7 +36,7 @@
           <span>{{ $t('c_history.selectproject') }}</span>
         </el-col>
         <el-col :xs="24" :sm="12" :md="9" :lg="8" :xl="6">
-          <el-select v-model="c_project" :placeholder="$t('c_history.project')" filterable style="width: 25vw;max-width:13.2rem;min-width:11.8rem;" @focus="get_project()">
+          <el-select v-model="c_project" :placeholder="$t('c_history.project')" clearable filterable style="width: 25vw;max-width:13.2rem;min-width:11.8rem;" @focus="get_project()" @change="get_project()">
             <el-option v-for="project in c_projectitem" :key="project.id" :label="project.name" :value="project.id" />
           </el-select>
         </el-col>
@@ -46,7 +46,7 @@
           <span>{{ $t('c_history.selectaccount') }}</span>
         </el-col>
         <el-col :xs="24" :sm="15" :md="9" :lg="8" :xl="6">
-          <el-select v-model="c_account" :placeholder="$t('c_history.account')" filterable style="width: 25vw;max-width:13.2rem;min-width:11.8rem;" @focus="get_account()">
+          <el-select v-model="c_account" :placeholder="$t('c_history.account')" clearable filterable style="width: 25vw;max-width:13.2rem;min-width:11.8rem;" @focus="get_account()" @change="get_account()">
             <el-option v-for="account in c_accountitem" :key="account.id" :label="account.name" :value="account.id" />
           </el-select>
         </el-col>
@@ -60,7 +60,7 @@
 
     <div class="history_table_container">
       <!--目前使用日期做排序-->
-      <el-table :data="c_user_history" :default-sort="{prop: 'purchasedate', order: 'ascending'}" stripe style="width: 100%;" max-height="470" fit>
+      <el-table :data="c_user_history" :default-sort="{prop: 'purchasedate', order: 'descending'}" stripe style="width: 100%;" max-height="470" fit>
         <el-table-column type="expand">
           <template slot-scope="scope">
             <el-form label-position="left" inline class="table_expand">
@@ -254,10 +254,10 @@ export default {
   },
   data() {
     const start = new Date()
-    start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+    start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
     return {
       globledate: formatdate('yyyy-mm-dd HH:MM:ss.l'),
-      // default around 3 month
+      // default around 1 month
       startenddate: [start, formatdate('yyyy-mm-dd HH:MM:ss.l')],
       c_payorin: '',
       c_sort: '',
@@ -375,6 +375,7 @@ export default {
         this.c_sort = ''
         this.c_subsort = ''
         this.c_sort_disable = true
+        this.c_subsort_disable = true
         this.get_getaccounting_all()
       } else if (newc_payorin !== 1 && newc_payorin !== 0) {
         this.c_sort_disable = true

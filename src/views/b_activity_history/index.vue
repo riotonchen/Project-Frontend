@@ -72,11 +72,7 @@
 </template>
 <script>
 import waves from '@/directive/waves' // 水波紋指令
-import { getsort_pay, getsort_in } from '@/api/sort/getsort'
-import { getsubsort } from '@/api/subsort/getsubsort'
-import { getproject } from '@/api/project/getproject'
-import { getaccount } from '@/api/account/getaccount'
-import { getToken } from '@/utils/auth'
+
 export default {
   name: 'ActHistory',
   directives: {

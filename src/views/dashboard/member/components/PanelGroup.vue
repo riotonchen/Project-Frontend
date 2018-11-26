@@ -9,7 +9,7 @@
           </div>
           <div class="card-panel-description">
             <div class="card-panel-text">本年度總收入</div>
-            <count-to :start-val="0" :end-val="c_user_y_history_in" :duration="4500" class="card-panel-num" />
+            <count-to :start-val="0" :end-val="c_user_y_history_in" :duration="3500" class="card-panel-num" />
           </div>
         </div>
       </el-col>
@@ -20,7 +20,7 @@
           </div>
           <div class="card-panel-description">
             <div class="card-panel-text">本年度總支出</div>
-            <count-to :start-val="0" :end-val="c_user_y_history_pay" :duration="4500" class="card-panel-num" />
+            <count-to :start-val="0" :end-val="c_user_y_history_pay" :duration="3500" class="card-panel-num" />
           </div>
         </div>
       </el-col>
@@ -31,7 +31,7 @@
           </div>
           <div class="card-panel-description">
             <div class="card-panel-text">本年度總盈餘</div>
-            <count-to :start-val="0" :end-val="c_user_y_history_balance" :duration="4500" class="card-panel-num" />
+            <count-to :start-val="0" :end-val="c_user_y_history_balance" :duration="3500" class="card-panel-num" />
           </div>
         </div>
       </el-col>
@@ -44,7 +44,7 @@
           </div>
           <div class="card-panel-description">
             <div class="card-panel-text">總資產</div>
-            <count-to :start-val="0" :end-val="account_all_balance" :duration="4500" class="card-panel-num" />
+            <count-to :start-val="0" :end-val="account_all_balance" :duration="3500" class="card-panel-num" />
           </div>
         </div>
       </el-col>
@@ -55,7 +55,7 @@
           </div>
           <div class="card-panel-description">
             <div class="card-panel-text">本月收入</div>
-            <count-to :start-val="0" :end-val="c_user_m_history_in" :duration="4500" class="card-panel-num" />
+            <count-to :start-val="0" :end-val="c_user_m_history_in" :duration="3500" class="card-panel-num" />
           </div>
         </div>
       </el-col>
@@ -66,7 +66,7 @@
           </div>
           <div class="card-panel-description">
             <div class="card-panel-text">本月支出</div>
-            <count-to :start-val="0" :end-val="c_user_m_history_pay" :duration="4500" class="card-panel-num" />
+            <count-to :start-val="0" :end-val="c_user_m_history_pay" :duration="3500" class="card-panel-num" />
           </div>
         </div>
       </el-col>
