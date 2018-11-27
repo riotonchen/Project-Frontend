@@ -1,9 +1,10 @@
-
 import store from '@/store'
 
-export default{
+export default {
   inserted(el, binding, vnode) {
-    const { value } = binding
+    const {
+      value
+    } = binding
     const roles = store.getters && store.getters.roles
 
     if (value && value instanceof Array && value.length > 0) {
@@ -17,7 +18,7 @@ export default{
         el.parentNode && el.parentNode.removeChild(el)
       }
     } else {
-      throw new Error(`need roles! Like v-permission="['admin','editor']"`)
+      throw new Error(`need roles! Like v-permission="['1','2','3','4','5']"`)
     }
   }
 }
