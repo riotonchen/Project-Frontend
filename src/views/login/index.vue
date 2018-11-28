@@ -3,7 +3,14 @@
     <title>
       登入
     </title>
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
+    <el-form
+      ref="loginForm"
+      :model="loginForm"
+      :rules="loginRules"
+      class="login-form"
+      auto-complete="on"
+      label-position="left"
+    >
 
       <div class="title-container">
         <h3 class="title">{{ $t('login.title') }}</h3>
@@ -14,15 +21,31 @@
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
-        <el-input v-model="loginForm.username" :placeholder="$t('login.username')" name="username" type="text" auto-complete="on" />
+        <el-input
+          v-model="loginForm.username"
+          :placeholder="$t('login.username')"
+          name="username"
+          type="text"
+          auto-complete="on"
+        />
       </el-form-item>
 
       <el-form-item prop="password">
         <span class="svg-container">
           <svg-icon icon-class="password" />
         </span>
-        <el-input :type="passwordType" v-model="loginForm.password" :placeholder="$t('login.password')" name="password" auto-complete="on" @keyup.enter.native="handleLogin" />
-        <span class="show-pwd" @click="showPwd">
+        <el-input
+          :type="passwordType"
+          v-model="loginForm.password"
+          :placeholder="$t('login.password')"
+          name="password"
+          auto-complete="on"
+          @keyup.enter.native="handleLogin"
+        />
+        <span
+          class="show-pwd"
+          @click="showPwd"
+        >
           <svg-icon icon-class="eye" />
         </span>
       </el-form-item>
@@ -37,16 +60,40 @@
         <span class="svg-container">
           <svg-icon icon-class="star" />
         </span>
-        <el-select v-model="loginForm.membertype_id" placeholder="請選擇會員類別" style="width:88%;" @keyup.enter.native="handleLogin">
-          <el-option v-for="item in membertype" :key="item.key" :label="item.label" :value="item.key" />
+        <el-select
+          v-model="loginForm.membertype_id"
+          placeholder="請選擇會員類別"
+          style="width:88%;"
+          @keyup.enter.native="handleLogin"
+        >
+          <el-option
+            v-for="item in membertype"
+            :key="item.key"
+            :label="item.label"
+            :value="item.key"
+          />
         </el-select>
       </el-form-item>
 
-      <el-button :loading="loadingsend" type="primary" style="width:100%;margin-bottom:15px;" @click.native.prevent="handleLogin">{{ $t('login.logIn') }}</el-button>
+      <el-button
+        :loading="loadingsend"
+        type="primary"
+        style="width:100%;margin-bottom:15px;"
+        @click.native.prevent="handleLogin"
+      >{{ $t('login.logIn') }}</el-button>
       <!--<el-button class="thirdparty-button" type="primary" style="width:86.5%;margin-bottom:-5px;" @click="showDialog=true">{{ $t('login.thirdparty') }}</el-button>-->
-      <el-button :loading="loadinghome" type="primary" style="width:100%;margin-bottom:-200px;margin-left:0px" @click.native.prevent="gohome">回首頁</el-button>
+      <el-button
+        :loading="loadinghome"
+        type="primary"
+        style="width:100%;margin-bottom:-200px;margin-left:0px"
+        @click.native.prevent="gohome"
+      >回首頁</el-button>
     </el-form>
-    <el-dialog :title="$t('login.thirdparty')" :visible.sync="showDialog" append-to-body>
+    <el-dialog
+      :title="$t('login.thirdparty')"
+      :visible.sync="showDialog"
+      append-to-body
+    >
       {{ $t('login.thirdpartyTips') }}
       <br>
       <br>
@@ -58,9 +105,9 @@
 </template>
 
 <script>
-import { validateEmail } from '@/utils/validate'
-import LangSelect from '@/components/LangSelect'
-import SocialSign from './socialsignin'
+import { validateEmail } from '@/utils/validate';
+import LangSelect from '@/components/LangSelect';
+import SocialSign from './socialsignin';
 
 export default {
   name: 'Login',
@@ -95,16 +142,26 @@ export default {
         membertype_id: '2'
       },
       loginRules: {
-        username: [{ required: true, trigger: 'change', validator: isvalidateEmail }],
-        password: [{ required: true, trigger: 'change', validator: validatePassword }],
-        membertype_id: [{ required: true, trigger: 'change', validator: validateMembertype }]
+        username: [
+          { required: true, trigger: 'change', validator: isvalidateEmail }
+        ],
+        password: [
+          { required: true, trigger: 'change', validator: validatePassword }
+        ],
+        membertype_id: [
+          { required: true, trigger: 'change', validator: validateMembertype }
+        ]
       },
       passwordType: 'password',
       loadingsend: false,
       loadinghome: false,
       showDialog: false,
       redirect: undefined,
-      membertype: [{ label: '會員', key: '2' }, { label: '管理員', key: '1' }, { label: '商家', key: '5' }]
+      membertype: [
+        { label: '會員', key: '2' },
+        { label: '管理員', key: '1' },
+        { label: '商家', key: '5' }
+      ]
     }
   },
   watch: {
@@ -114,26 +171,29 @@ export default {
       },
       immediate: true
     }
-
   },
   methods: {
     showPwd() {
       if (this.passwordType === 'password') {
-        this.passwordType = ''
+        this.passwordType = '';
       } else {
-        this.passwordType = 'password'
+        this.passwordType = 'password';
       }
     },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loadingsend = true
-          this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
-            this.loadingsend = false
-            this.$router.push({ path: this.redirect || '/' })
-          }).catch(() => {
-            this.loadingsend = false
-          })
+          this.$store
+            .dispatch('LoginByUsername', this.loginForm)
+            .then(() => {
+              this.loadingsend = false
+              this.$router.push({ path: this.redirect || '/' })
+              location.reload()
+            })
+            .catch(() => {
+              this.loadingsend = false
+            })
         } else {
           console.log('error submit!!')
           return false
@@ -169,7 +229,6 @@ export default {
     }
   }
 }
-
 </script>
 
 <style rel="stylesheet/scss" lang="scss">

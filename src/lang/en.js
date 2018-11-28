@@ -21,7 +21,7 @@ export default {
     a_signup: 'Manager Signup',
     a_manage_business: 'Enterprise Manage',
     a_manage_member: 'Member Manage',
-    a_feedbackmanage: 'Feedback Manage',
+    a_feebackmanage: 'Feedback Manage',
     b_profile_view: 'Enterprise Information',
     b_profile_edit: 'Enterprise Edit Info',
     b_activity_add: 'Add Partial Info',

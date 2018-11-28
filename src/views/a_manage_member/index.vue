@@ -4,164 +4,419 @@
     <title>
       {{ $t('route.a_manage_member') }}
     </title>
-    <div class="filter_container">
-      <el-input v-model="a_select_account" placeholder="account" style="width: 25vw;max-width:7.5rem;min-width:5.5rem;" />
-      <el-input v-model="a_select_name" placeholder="name" style="width: 25vw;max-width:7.5rem;min-width:5.5rem;" />
-      <el-input v-model="a_select_toid" placeholder="toid" style="width: 25vw;max-width:7.5rem;min-width:5.5rem;" />
-    </div>
 
     <div class="memberinfo_table">
-      <el-table :data="a_all_member_data" stripe style="width: 100%;" max-height="650" fit>
+      <el-table
+        :data="a_all_member_data"
+        stripe
+        style="width: 100%;"
+        max-height="650"
+        fit
+      >
         <el-table-column type="expand">
           <template slot-scope="scope">
-            <el-form label-position="left" inline class="table_expand">
+            <el-form
+              label-position="left"
+              inline
+              class="table_expand"
+            >
               <el-form-item label="大頭貼">
                 <span>{{ scope.row.localpicture }}</span>
               </el-form-item>
             </el-form>
           </template>
         </el-table-column>
-        <el-table-column type="index" align="center" />
+        <el-table-column
+          type="index"
+          align="center"
+        />
         <el-table-column label="會員帳號">
-          <template slot-scope="scope" prop="account" align="center">
+          <template
+            slot-scope="scope"
+            prop="account"
+            align="center"
+          >
             <span>{{ scope.row.account }}</span>
           </template>
         </el-table-column>
         <el-table-column label="會員名稱">
-          <template slot-scope="scope" prop="name" align="center">
+          <template
+            slot-scope="scope"
+            prop="name"
+            align="center"
+          >
             <span>{{ scope.row.name }}</span>
           </template>
         </el-table-column>
         <el-table-column label="ToID">
-          <template slot-scope="scope" prop="toid" align="center">
+          <template
+            slot-scope="scope"
+            prop="toid"
+            align="center"
+          >
             <span>{{ scope.row.toid }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center">
+        <el-table-column
+          label="操作"
+          align="center"
+        >
           <template slot-scope="scope">
-            <el-button type="primary" @click="handle_advance(scope.$index,scope.row)">進階</el-button>
+            <el-button
+              type="primary"
+              @click="handle_advance(scope.$index,scope.row)"
+            >進階</el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
 
     <div class="advance_dialog">
-      <el-dialog :visible.sync="a_member_adv_visible" title="普通會員各項操作" width="90%">
+      <el-dialog
+        :visible.sync="a_member_adv_visible"
+        title="普通會員各項操作"
+        width="90%"
+      >
         <el-row>
           <el-col :span="12">
-            <el-button type="primary" class="adv_in_btn" plain @click="get_member_info()">修改資料</el-button>
+            <el-button
+              type="primary"
+              class="adv_in_btn"
+              plain
+              @click="get_member_info()"
+            >修改資料</el-button>
           </el-col>
           <el-col :span="12">
-            <el-button type="primary" class="adv_in_btn" plain @click="get_accounting_info()">歷史帳務</el-button>
+            <el-button
+              type="primary"
+              class="adv_in_btn"
+              plain
+              @click="get_accounting_info()"
+            >歷史帳務</el-button>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-button type="primary" class="adv_in_btn" plain @click="get_account_info()">帳戶管理</el-button>
+            <el-button
+              type="primary"
+              class="adv_in_btn"
+              plain
+              @click="get_account_info()"
+            >帳戶管理</el-button>
           </el-col>
           <el-col :span="12">
-            <el-button type="primary" class="adv_in_btn" plain @click="get_card_info()">卡片管理</el-button>
+            <el-button
+              type="primary"
+              class="adv_in_btn"
+              plain
+              @click="get_card_info()"
+            >卡片管理</el-button>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-button type="primary" class="adv_in_btn" plain @click="get_category_info()">分類管理</el-button>
+            <el-button
+              type="primary"
+              class="adv_in_btn"
+              plain
+              @click="get_category_info()"
+            >分類管理</el-button>
           </el-col>
           <el-col :span="12">
-            <el-button type="primary" class="adv_in_btn" plain @click="get_project_info()">專案管理</el-button>
+            <el-button
+              type="primary"
+              class="adv_in_btn"
+              plain
+              @click="get_project_info()"
+            >專案管理</el-button>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-button type="info" class="adv_calbtn" @click="adv_cal()">回管理頁</el-button>
+            <el-button
+              type="info"
+              class="adv_calbtn"
+              @click="adv_cal()"
+            >回管理頁</el-button>
           </el-col>
         </el-row>
       </el-dialog>
     </div>
 
     <div class="editinfo_dialog">
-      <el-dialog :visible.sync="c_member_confiinfo_visible" title="修改會員資訊" width="80%">
+      <el-dialog
+        :visible.sync="c_member_confiinfo_visible"
+        title="修改會員資訊"
+        width="80%"
+      >
         <el-row>
           <el-col :span="24">
-            <el-form ref="profile_edit_form" :model="profile_edit_form" label-position="left" inline class="personal_edit">
+            <el-form
+              ref="profile_edit_form"
+              :model="profile_edit_form"
+              label-position="left"
+              inline
+              class="personal_edit"
+            >
               <el-form-item :label="$t('c_profile_edit.email')">
-                <el-input v-model="profile_edit_form.account" type="textarea" resize="none" readonly />
+                <el-input
+                  v-model="profile_edit_form.account"
+                  type="textarea"
+                  resize="none"
+                  readonly
+                />
               </el-form-item>
-              <el-form-item :label="$t('c_profile_edit.name')" prop="name">
-                <el-input v-model="profile_edit_form.name" :placeholder="$t('c_profile_edit.h1')" @focus="clean_name()" />
+              <el-form-item
+                :label="$t('c_profile_edit.name')"
+                prop="name"
+              >
+                <el-input
+                  v-model="profile_edit_form.name"
+                  :placeholder="$t('c_profile_edit.h1')"
+                  @focus="clean_name()"
+                />
               </el-form-item>
-              <el-form-item label="ToID" prop="toid">
-                <el-input v-model="profile_edit_form.toid" :placeholder="$t('c_profile_edit.h2')" @focus="clean_toid()" />
+              <el-form-item
+                label="ToID"
+                prop="toid"
+              >
+                <el-input
+                  v-model="profile_edit_form.toid"
+                  :placeholder="$t('c_profile_edit.h2')"
+                  @focus="clean_toid()"
+                />
               </el-form-item>
-              <el-form-item :label="$t('c_profile_edit.newpswd')" prop="pswd">
-                <el-input v-model="profile_edit_form.pswd" :placeholder="$t('c_profile_edit.h3')" type="password" />
+              <el-form-item
+                :label="$t('c_profile_edit.newpswd')"
+                prop="pswd"
+              >
+                <el-input
+                  v-model="profile_edit_form.pswd"
+                  :placeholder="$t('c_profile_edit.h3')"
+                  type="password"
+                />
               </el-form-item>
-              <el-form-item :label="$t('c_profile_edit.input')" prop="pswd2">
-                <el-input v-model="profile_edit_form.pswd2" :placeholder="$t('c_profile_edit.h3')" type="password" />
+              <el-form-item
+                :label="$t('c_profile_edit.input')"
+                prop="pswd2"
+              >
+                <el-input
+                  v-model="profile_edit_form.pswd2"
+                  :placeholder="$t('c_profile_edit.h3')"
+                  type="password"
+                />
               </el-form-item>
             </el-form>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-button type="primary" class="info_btns" @click.native.prevent="cofigure_member_info()">{{ $t('c_profile_edit.confirm') }}</el-button>
-            <el-button type="info" class="info_btns" @click.native.prevent="in_adv_motion_cal()">{{ $t('c_profile_edit.cancel') }}</el-button>
+            <el-button
+              type="primary"
+              class="info_btns"
+              @click.native.prevent="cofigure_member_info()"
+            >{{ $t('c_profile_edit.confirm') }}</el-button>
+            <el-button
+              type="info"
+              class="info_btns"
+              @click.native.prevent="in_adv_motion_cal()"
+            >{{ $t('c_profile_edit.cancel') }}</el-button>
           </el-col>
         </el-row>
       </el-dialog>
     </div>
 
     <div class="accounting_dialog">
-      <el-dialog :visible.sync="a_adv_accountung_visible" width="80%" title="會員歷史帳務" top="5vh">
+      <el-dialog
+        :visible.sync="a_adv_accountung_visible"
+        width="80%"
+        title="會員歷史帳務"
+        top="5vh"
+      >
         <div class="filter_container">
           <el-row class="date_seletor">
-            <el-col :xs="6" :sm="3" :md="2" :lg="2" :xl="1" class="c_history_selector_title">
+            <el-col
+              :xs="6"
+              :sm="3"
+              :md="2"
+              :lg="2"
+              :xl="1"
+              class="c_history_selector_title"
+            >
               <span>{{ $t('c_history.selecttime') }}</span>
             </el-col>
-            <el-col :xs="24" :sm="15" :md="9" :lg="8" :xl="6">
+            <el-col
+              :xs="24"
+              :sm="15"
+              :md="9"
+              :lg="8"
+              :xl="6"
+            >
               <!--style="width: 40vw;min-width:15rem;max-width:23rem;"-->
-              <el-date-picker v-model="accounting_startenddate" :picker-options="accounting_datepickoptions" :start-placeholder="$t('c_history.startdate')" :end-placeholder="$t('c_history.enddate')" :clearable="datepickerclea" range-separator="-" align="center" type="daterange" @focus="get_accounting_info()" @change="get_accounting_info()" />
+              <el-date-picker
+                v-model="accounting_startenddate"
+                :picker-options="accounting_datepickoptions"
+                :start-placeholder="$t('c_history.startdate')"
+                :end-placeholder="$t('c_history.enddate')"
+                :clearable="datepickerclea"
+                range-separator="-"
+                align="center"
+                type="daterange"
+                @focus="get_accounting_info()"
+                @change="get_accounting_info()"
+              />
             </el-col>
           </el-row>
           <el-row class="class_seletor">
-            <el-col :xs="6" :sm="3" :md="2" :lg="2" :xl="1" class="c_history_selector_title">
+            <el-col
+              :xs="6"
+              :sm="3"
+              :md="2"
+              :lg="2"
+              :xl="1"
+              class="c_history_selector_title"
+            >
               <span>{{ $t('c_history.selectclass') }}</span>
             </el-col>
-            <el-col :xs="24" :sm="15" :md="11" :lg="9" :xl="8">
-              <el-select v-model="c_accounting_payorin" :placeholder="$t('c_history.incomespend')" filterable clearable style="width: 25vw;max-width:7.5rem;min-width:5.5rem;" @focus="get_accounting_info()" @change="get_accounting_info()">
-                <el-option v-for="payorin in c_pay_in" :key="payorin.value" :label="payorin.label" :value="payorin.value" />
+            <el-col
+              :xs="24"
+              :sm="15"
+              :md="11"
+              :lg="9"
+              :xl="8"
+            >
+              <el-select
+                v-model="c_accounting_payorin"
+                :placeholder="$t('c_history.incomespend')"
+                filterable
+                clearable
+                style="width: 25vw;max-width:7.5rem;min-width:5.5rem;"
+                @focus="get_accounting_info()"
+                @change="get_accounting_info()"
+              >
+                <el-option
+                  v-for="payorin in c_pay_in"
+                  :key="payorin.value"
+                  :label="payorin.label"
+                  :value="payorin.value"
+                />
               </el-select>
-              <el-select v-model="c_accounting_sort" :disabled="c_accounting_sort_disable" :placeholder="$t('c_history.mainsort')" filterable style="width: 25vw;max-width:7.5rem;min-width:6.5rem;" @focus="get_accounting_info()" @change="get_accounting_info()">
-                <el-option v-for="sort in c_accounting_sortitem" :key="sort.id" :label="sort.name" :value="sort.id" />
+              <el-select
+                v-model="c_accounting_sort"
+                :disabled="c_accounting_sort_disable"
+                :placeholder="$t('c_history.mainsort')"
+                filterable
+                style="width: 25vw;max-width:7.5rem;min-width:6.5rem;"
+                @focus="get_accounting_info()"
+                @change="get_accounting_info()"
+              >
+                <el-option
+                  v-for="sort in c_accounting_sortitem"
+                  :key="sort.id"
+                  :label="sort.name"
+                  :value="sort.id"
+                />
               </el-select>
-              <el-select v-model="c_accounting_subsort" :disabled="c_accounting_subsort_disable" :placeholder="$t('c_history.subclass')" filterable style="width: 25vw;max-width:7.5rem;min-width:6.5rem;" @focus="get_accounting_info()" @change="get_accounting_info()">
-                <el-option v-for="subsort in c_accounting_subsortitem" :key="subsort.id" :label="subsort.name" :value="subsort.id" />
+              <el-select
+                v-model="c_accounting_subsort"
+                :disabled="c_accounting_subsort_disable"
+                :placeholder="$t('c_history.subclass')"
+                filterable
+                style="width: 25vw;max-width:7.5rem;min-width:6.5rem;"
+                @focus="get_accounting_info()"
+                @change="get_accounting_info()"
+              >
+                <el-option
+                  v-for="subsort in c_accounting_subsortitem"
+                  :key="subsort.id"
+                  :label="subsort.name"
+                  :value="subsort.id"
+                />
               </el-select>
             </el-col>
           </el-row>
           <el-row class="project_seletor">
-            <el-col :xs="6" :sm="3" :md="2" :lg="2" :xl="1" class="c_history_selector_title">
+            <el-col
+              :xs="6"
+              :sm="3"
+              :md="2"
+              :lg="2"
+              :xl="1"
+              class="c_history_selector_title"
+            >
               <span>{{ $t('c_history.selectproject') }}</span>
             </el-col>
-            <el-col :xs="24" :sm="12" :md="9" :lg="8" :xl="6">
-              <el-select v-model="c_accounting_project" :placeholder="$t('c_history.project')" clearable filterable style="width: 25vw;max-width:13.2rem;min-width:11.8rem;" @focus="get_accounting_info()" @change="get_accounting_info()">
-                <el-option v-for="project in c_accounting_projectitem" :key="project.id" :label="project.name" :value="project.id" />
+            <el-col
+              :xs="24"
+              :sm="12"
+              :md="9"
+              :lg="8"
+              :xl="6"
+            >
+              <el-select
+                v-model="c_accounting_project"
+                :placeholder="$t('c_history.project')"
+                clearable
+                filterable
+                style="width: 25vw;max-width:13.2rem;min-width:11.8rem;"
+                @focus="get_accounting_info()"
+                @change="get_accounting_info()"
+              >
+                <el-option
+                  v-for="project in c_accounting_projectitem"
+                  :key="project.id"
+                  :label="project.name"
+                  :value="project.id"
+                />
               </el-select>
             </el-col>
           </el-row>
           <el-row class="account_seletor">
-            <el-col :xs="6" :sm="3" :md="2" :lg="2" :xl="1" class="c_history_selector_title">
+            <el-col
+              :xs="6"
+              :sm="3"
+              :md="2"
+              :lg="2"
+              :xl="1"
+              class="c_history_selector_title"
+            >
               <span>{{ $t('c_history.selectaccount') }}</span>
             </el-col>
-            <el-col :xs="24" :sm="15" :md="9" :lg="8" :xl="6">
-              <el-select v-model="c_accounting_account" :placeholder="$t('c_history.account')" clearable filterable style="width: 25vw;max-width:13.2rem;min-width:11.8rem;" @focus="get_accounting_info()" @change="get_accounting_info()">
-                <el-option v-for="account in c_accounting_accountitem" :key="account.id" :label="account.name" :value="account.id" />
+            <el-col
+              :xs="24"
+              :sm="15"
+              :md="9"
+              :lg="8"
+              :xl="6"
+            >
+              <el-select
+                v-model="c_accounting_account"
+                :placeholder="$t('c_history.account')"
+                clearable
+                filterable
+                style="width: 25vw;max-width:13.2rem;min-width:11.8rem;"
+                @focus="get_accounting_info()"
+                @change="get_accounting_info()"
+              >
+                <el-option
+                  v-for="account in c_accounting_accountitem"
+                  :key="account.id"
+                  :label="account.name"
+                  :value="account.id"
+                />
               </el-select>
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="24" style="padding-top:2vh;">
-              <el-button type="info" plain @click.native.prevent="clean_accounting_allselect()">清空篩選</el-button>
+            <el-col
+              :span="24"
+              style="padding-top:2vh;"
+            >
+              <el-button
+                type="info"
+                plain
+                @click.native.prevent="clean_accounting_allselect()"
+              >清空篩選</el-button>
             </el-col>
           </el-row>
         </div>
@@ -169,10 +424,21 @@
           <!--目前使用日期做排序-->
           <el-row>
             <el-col :span="24">
-              <el-table :data="c_user_history" :default-sort="{prop: 'date', order: 'descending'}" stripe style="width: 100%;" max-height="350" fit>
+              <el-table
+                :data="c_user_history"
+                :default-sort="{prop: 'date', order: 'descending'}"
+                stripe
+                style="width: 100%;"
+                max-height="350"
+                fit
+              >
                 <el-table-column type="expand">
                   <template slot-scope="scope">
-                    <el-form label-position="left" inline class="table_expand">
+                    <el-form
+                      label-position="left"
+                      inline
+                      class="table_expand"
+                    >
 
                       <el-form-item label="發票隨機碼">
                         <div v-if="scope.row.invoice_id==='-'">
@@ -196,14 +462,23 @@
                     </el-form>
                   </template>
                 </el-table-column>
-                <el-table-column :label="$t('c_history.date')" prop="purchasedate" sortable align="center">
+                <el-table-column
+                  :label="$t('c_history.date')"
+                  prop="purchasedate"
+                  sortable
+                  align="center"
+                >
                   <template slot-scope="scope">
                     <span>
                       {{ scope.row.purchasedate }}
                     </span>
                   </template>
                 </el-table-column>
-                <el-table-column :label="$t('c_history.receipt')" prop="invoice_id.number" align="center">
+                <el-table-column
+                  :label="$t('c_history.receipt')"
+                  prop="invoice_id.number"
+                  align="center"
+                >
                   <template slot-scope="scope">
                     <div v-if="scope.row.invoice_id==='-'">
                       <span>
@@ -217,7 +492,11 @@
                     </div>
                   </template>
                 </el-table-column>
-                <el-table-column :label="$t('c_history.incomespend')" prop="type" align="center">
+                <el-table-column
+                  :label="$t('c_history.incomespend')"
+                  prop="type"
+                  align="center"
+                >
                   <template slot-scope="scope">
                     <el-tag :type="scope.row.type==='支出'?'danger':'primary'">
                       <span>
@@ -226,35 +505,55 @@
                     </el-tag>
                   </template>
                 </el-table-column>
-                <el-table-column :label="$t('c_history.mainsort')" prop="sort_id.name" align="center">
+                <el-table-column
+                  :label="$t('c_history.mainsort')"
+                  prop="sort_id.name"
+                  align="center"
+                >
                   <template slot-scope="scope">
                     <span>
                       {{ scope.row.sort_id.name }}
                     </span>
                   </template>
                 </el-table-column>
-                <el-table-column :label="$t('c_history.subclass')" prop="subsort_id.name" align="center">
+                <el-table-column
+                  :label="$t('c_history.subclass')"
+                  prop="subsort_id.name"
+                  align="center"
+                >
                   <template slot-scope="scope">
                     <span>
                       {{ scope.row.subsort_id.name }}
                     </span>
                   </template>
                 </el-table-column>
-                <el-table-column :label="$t('c_history.project')" prop="project_id.name" align="center">
+                <el-table-column
+                  :label="$t('c_history.project')"
+                  prop="project_id.name"
+                  align="center"
+                >
                   <template slot-scope="scope">
                     <span>
                       {{ scope.row.project_id.name }}
                     </span>
                   </template>
                 </el-table-column>
-                <el-table-column :label="$t('c_history.account')" prop="account_id.name" align="center">
+                <el-table-column
+                  :label="$t('c_history.account')"
+                  prop="account_id.name"
+                  align="center"
+                >
                   <template slot-scope="scope">
                     <span>
                       {{ scope.row.account_id.name }}
                     </span>
                   </template>
                 </el-table-column>
-                <el-table-column :label="$t('c_history.money')" prop="amount" align="center">
+                <el-table-column
+                  :label="$t('c_history.money')"
+                  prop="amount"
+                  align="center"
+                >
                   <template slot-scope="scope">
                     <span>
                       {{ scope.row.amount }}
@@ -266,7 +565,11 @@
           </el-row>
           <el-row>
             <el-col :span="24">
-              <el-button type="info" class="adv_calbtn" @click="in_adv_cal()">回操作頁</el-button>
+              <el-button
+                type="info"
+                class="adv_calbtn"
+                @click="in_adv_cal()"
+              >回操作頁</el-button>
             </el-col>
           </el-row>
         </div>
@@ -275,26 +578,72 @@
 
     <div class="account_dialog">
 
-      <el-dialog :visible.sync="a_adv_account_visible" width="80%" title="會員帳戶管理" top="9vh">
+      <el-dialog
+        :visible.sync="a_adv_account_visible"
+        width="80%"
+        title="會員帳戶管理"
+        top="9vh"
+      >
         <div class="filter_container">
-          <el-select v-model="c_account" :placeholder="$t('c_accountmanager.project')" filterable clearable style="width: 10vw;max-width:8rem;min-width:5rem;" @change="get_account_info()">
-            <el-option v-for="type in c_account_options" :key="type.accounttype_id" :label="type.name" :value="type.accounttype_id" />
+          <el-select
+            v-model="c_account"
+            :placeholder="$t('c_accountmanager.project')"
+            filterable
+            clearable
+            style="width: 10vw;max-width:8rem;min-width:5rem;"
+            @change="get_account_info()"
+          >
+            <el-option
+              v-for="type in c_account_options"
+              :key="type.accounttype_id"
+              :label="type.name"
+              :value="type.accounttype_id"
+            />
           </el-select>
-          <el-select v-model="c_account_name" :disabled="c_account_name_disable" :placeholder="$t('c_category.mainsortname')" filterable style="width: 25vw;max-width:7.5rem;min-width:6.5rem;" @change="get_account_info()">
-            <el-option v-for="name in c_account_name_options" :key="name.id" :label="name.name" :value="name.id" />
+          <el-select
+            v-model="c_account_name"
+            :disabled="c_account_name_disable"
+            :placeholder="$t('c_category.mainsortname')"
+            filterable
+            style="width: 25vw;max-width:7.5rem;min-width:6.5rem;"
+            @change="get_account_info()"
+          >
+            <el-option
+              v-for="name in c_account_name_options"
+              :key="name.id"
+              :label="name.name"
+              :value="name.id"
+            />
           </el-select>
         </div>
         <div class="account_table_container">
           <el-row>
             <el-col :span="24">
-              <el-table :data="c_account_data" stripe style="width: 100%;" max-height="450" fit>
-                <el-table-column type="index" align="center" />
-                <el-table-column :label="$t('c_accountmanager.accountname')" prop="name" align="center">
+              <el-table
+                :data="c_account_data"
+                stripe
+                style="width: 100%;"
+                max-height="450"
+                fit
+              >
+                <el-table-column
+                  type="index"
+                  align="center"
+                />
+                <el-table-column
+                  :label="$t('c_accountmanager.accountname')"
+                  prop="name"
+                  align="center"
+                >
                   <template slot-scope="scope">
                     <span>{{ scope.row.name }}</span>
                   </template>
                 </el-table-column>
-                <el-table-column :label="$t('c_accountmanager.accounttype')" prop="accounttype_id" align="center">
+                <el-table-column
+                  :label="$t('c_accountmanager.accounttype')"
+                  prop="accounttype_id"
+                  align="center"
+                >
                   <template slot-scope="scope">
                     <el-tag :type="scope.row.accounttype_id.name==='現金'?'primary':scope.row.accounttype_id.name==='資產'?'success':scope.row.accounttype_id.name==='儲值卡'?'warning':'danger'">
                       <span>
@@ -303,7 +652,11 @@
                     </el-tag>
                   </template>
                 </el-table-column>
-                <el-table-column :label="$t('c_accountmanager.finallymoney')" prop="balance" align="center">
+                <el-table-column
+                  :label="$t('c_accountmanager.finallymoney')"
+                  prop="balance"
+                  align="center"
+                >
                   <template slot-scope="scope">
                     <span>{{ scope.row.balance }}</span>
                   </template>
@@ -313,7 +666,11 @@
           </el-row>
           <el-row>
             <el-col :span="24">
-              <el-button type="info" class="adv_calbtn" @click="in_adv_cal()">回操作頁</el-button>
+              <el-button
+                type="info"
+                class="adv_calbtn"
+                @click="in_adv_cal()"
+              >回操作頁</el-button>
             </el-col>
           </el-row>
         </div>
@@ -321,24 +678,60 @@
     </div>
 
     <div class="card_dialog">
-      <el-dialog :visible.sync="a_adv_card_visible" width="80%" title="會員卡片管理" top="9vh">
+      <el-dialog
+        :visible.sync="a_adv_card_visible"
+        width="80%"
+        title="會員卡片管理"
+        top="9vh"
+      >
         <div class="filter_container">
-          <el-select v-model="c_card" :placeholder="$t('c_card_view.cardname')" clearable filterable style="width: 25vw;max-width:7.5rem;min-width:5.5rem;" @focus="get_card_info()" @change="get_card_info()">
-            <el-option v-for="card in c_card_options" :key="card.id" :label="card.name" :value="card.id" />
+          <el-select
+            v-model="c_card"
+            :placeholder="$t('c_card_view.cardname')"
+            clearable
+            filterable
+            style="width: 25vw;max-width:7.5rem;min-width:5.5rem;"
+            @focus="get_card_info()"
+            @change="get_card_info()"
+          >
+            <el-option
+              v-for="card in c_card_options"
+              :key="card.id"
+              :label="card.name"
+              :value="card.id"
+            />
           </el-select>
         </div>
 
         <div class="card_table_container">
           <el-row>
             <el-col :span="24">
-              <el-table :data="c_user_card" stripe style="width: 100%;" max-height="450" fit sortable>
-                <el-table-column type="index" align="center" />
-                <el-table-column :label="$t('c_card_view.name')" prop="name" align="center">
+              <el-table
+                :data="c_user_card"
+                stripe
+                style="width: 100%;"
+                max-height="450"
+                fit
+                sortable
+              >
+                <el-table-column
+                  type="index"
+                  align="center"
+                />
+                <el-table-column
+                  :label="$t('c_card_view.name')"
+                  prop="name"
+                  align="center"
+                >
                   <template slot-scope="scope">
                     <span>{{ scope.row.name }}</span>
                   </template>
                 </el-table-column>
-                <el-table-column :label="$t('c_card_view.codenumber')" prop="number" align="center">
+                <el-table-column
+                  :label="$t('c_card_view.codenumber')"
+                  prop="number"
+                  align="center"
+                >
                   <template slot-scope="scope">
                     <span>{{ scope.row.number }}</span>
                   </template>
@@ -348,7 +741,11 @@
           </el-row>
           <el-row>
             <el-col :span="24">
-              <el-button type="info" class="adv_calbtn" @click="in_adv_cal()">回操作頁</el-button>
+              <el-button
+                type="info"
+                class="adv_calbtn"
+                @click="in_adv_cal()"
+              >回操作頁</el-button>
             </el-col>
           </el-row>
         </div>
@@ -356,37 +753,100 @@
     </div>
 
     <div class="category_dialog">
-      <el-dialog :visible.sync="a_adv_category_visible" width="80%" title="會員分類管理" top="9vh">
+      <el-dialog
+        :visible.sync="a_adv_category_visible"
+        width="80%"
+        title="會員分類管理"
+        top="9vh"
+      >
         <div class="filter_container">
-          <el-select v-model="c_category_sort_payorin" :placeholder="$t('c_category.incomespend')" filterable clearable style="width: 10vw;max-width:8rem;min-width:5rem;" @change="get_category_info()">
-            <el-option v-for="payorin in c_pay_in" :key="payorin.value" :label="payorin.label" :value="payorin.value" />
+          <el-select
+            v-model="c_category_sort_payorin"
+            :placeholder="$t('c_category.incomespend')"
+            filterable
+            clearable
+            style="width: 10vw;max-width:8rem;min-width:5rem;"
+            @change="get_category_info()"
+          >
+            <el-option
+              v-for="payorin in c_pay_in"
+              :key="payorin.value"
+              :label="payorin.label"
+              :value="payorin.value"
+            />
           </el-select>
-          <el-select v-model="c_category_sort_id" :disabled="c_sort_disable" :placeholder="$t('c_category.mainsortname')" clearable filterable style="width: 25vw;max-width:7.5rem;min-width:6.5rem;" @change="get_category_info()">
-            <el-option v-for="sort in c_category_sort_list_option" :key="sort.sort_id.id" :label="sort.sort_id.name" :value="sort.sort_id.id" />
+          <el-select
+            v-model="c_category_sort_id"
+            :disabled="c_sort_disable"
+            :placeholder="$t('c_category.mainsortname')"
+            clearable
+            filterable
+            style="width: 25vw;max-width:7.5rem;min-width:6.5rem;"
+            @change="get_category_info()"
+          >
+            <el-option
+              v-for="sort in c_category_sort_list_option"
+              :key="sort.sort_id.id"
+              :label="sort.sort_id.name"
+              :value="sort.sort_id.id"
+            />
           </el-select>
-          <el-date-picker v-model="category_startenddate" :placeholder="$t('c_category.choose')" :clearable="datepickerclea" value-format="yyyy-MM" align="center" type="month" style="width: 10vw;min-width:7rem;max-width:10rem;" />
+          <el-date-picker
+            v-model="category_startenddate"
+            :placeholder="$t('c_category.choose')"
+            :clearable="datepickerclea"
+            value-format="yyyy-MM"
+            align="center"
+            type="month"
+            style="width: 10vw;min-width:7rem;max-width:10rem;"
+          />
         </div>
         <div class="category_table_container">
           <el-row>
             <el-col :span="24">
-              <el-table :data="c_user_category" stripe style="width: 100%;" max-height="450" fit>
-                <el-table-column type="index" align="center" />
-                <el-table-column :label="$t('c_category.name')" prop="name" align="center">
+              <el-table
+                :data="c_user_category"
+                stripe
+                style="width: 100%;"
+                max-height="450"
+                fit
+              >
+                <el-table-column
+                  type="index"
+                  align="center"
+                />
+                <el-table-column
+                  :label="$t('c_category.name')"
+                  prop="name"
+                  align="center"
+                >
                   <template slot-scope="scope">
                     <span>{{ scope.row.sort_id.name }}</span>
                   </template>
                 </el-table-column>
-                <el-table-column :label="$t('c_category.budgetmonth')" prop="budget" align="center">
+                <el-table-column
+                  :label="$t('c_category.budgetmonth')"
+                  prop="budget"
+                  align="center"
+                >
                   <template slot-scope="scope">
                     <span>{{ scope.row.budget }}</span>
                   </template>
                 </el-table-column>
-                <el-table-column :label="$t('c_category.spendingmonth')" prop="amount" align="center">
+                <el-table-column
+                  :label="$t('c_category.spendingmonth')"
+                  prop="amount"
+                  align="center"
+                >
                   <template slot-scope="scope">
                     <span>{{ scope.row.amount }}</span>
                   </template>
                 </el-table-column>
-                <el-table-column :label="$t('c_category.remainingbudget')" prop="balance" align="center">
+                <el-table-column
+                  :label="$t('c_category.remainingbudget')"
+                  prop="balance"
+                  align="center"
+                >
                   <template slot-scope="scope">
                     <span>{{ scope.row.balance }}</span>
                   </template>
@@ -397,7 +857,11 @@
           <el-row>
             <el-row>
               <el-col :span="24">
-                <el-button type="info" class="adv_calbtn" @click="in_adv_cal()">回操作頁</el-button>
+                <el-button
+                  type="info"
+                  class="adv_calbtn"
+                  @click="in_adv_cal()"
+                >回操作頁</el-button>
               </el-col>
             </el-row>
           </el-row>
@@ -406,28 +870,68 @@
     </div>
 
     <div class="project_dialog">
-      <el-dialog :visible.sync="a_adv_project_visible" width="80%" title="會員專案管理" top="9vh">
+      <el-dialog
+        :visible.sync="a_adv_project_visible"
+        width="80%"
+        title="會員專案管理"
+        top="9vh"
+      >
         <div class="filter-container">
-          <el-select v-model="c_project" placeholder="專案名稱" clearable filterable style="width: 25vw;max-width:7.5rem;min-width:5.5rem;" @focus="get_project_info()" @change="get_project_info()">
-            <el-option v-for="project in c_project_options" :key="project.id" :label="project.name" :value="project.id" />
+          <el-select
+            v-model="c_project"
+            placeholder="專案名稱"
+            clearable
+            filterable
+            style="width: 25vw;max-width:7.5rem;min-width:5.5rem;"
+            @focus="get_project_info()"
+            @change="get_project_info()"
+          >
+            <el-option
+              v-for="project in c_project_options"
+              :key="project.id"
+              :label="project.name"
+              :value="project.id"
+            />
           </el-select>
         </div>
         <div class="project_table_container">
           <el-row>
             <el-col :span="24">
-              <el-table :data="c_user_project" stripe style="width: 100%;" max-height="450" fit sortable>
-                <el-table-column type="index" align="center" />
-                <el-table-column label="名稱" prop="name" align="center">
+              <el-table
+                :data="c_user_project"
+                stripe
+                style="width: 100%;"
+                max-height="450"
+                fit
+                sortable
+              >
+                <el-table-column
+                  type="index"
+                  align="center"
+                />
+                <el-table-column
+                  label="名稱"
+                  prop="name"
+                  align="center"
+                >
                   <template slot-scope="scope">
                     <span>{{ scope.row.name }}</span>
                   </template>
                 </el-table-column>
-                <el-table-column label="總收入" prop="total_income" align="center">
+                <el-table-column
+                  label="總收入"
+                  prop="total_income"
+                  align="center"
+                >
                   <template slot-scope="scope">
                     <span>{{ scope.row.total_income }}</span>
                   </template>
                 </el-table-column>
-                <el-table-column label="總支出" prop="total_expenses" align="center">
+                <el-table-column
+                  label="總支出"
+                  prop="total_expenses"
+                  align="center"
+                >
                   <template slot-scope="scope">
                     <span>{{ scope.row.total_expenses }}</span>
                   </template>
@@ -437,7 +941,11 @@
           </el-row>
           <el-row>
             <el-col :span="24">
-              <el-button type="info" class="adv_calbtn" @click="in_adv_cal()">回操作頁</el-button>
+              <el-button
+                type="info"
+                class="adv_calbtn"
+                @click="in_adv_cal()"
+              >回操作頁</el-button>
             </el-col>
           </el-row>
         </div>
@@ -449,17 +957,17 @@
 </template>
 
 <script>
-import waves from '@/directive/waves' // 水波紋指令
-import { getcardforadmin } from '@/api/card/getcard'
-import { getmember, getmemberlist } from '@/api/member/getmember'
-import { getToken } from '@/utils/auth'
-import { formatdate, formatdate_inc_time } from '@/utils/index'
-import { getaccountforadmin, getaccounttype } from '@/api/account/getaccount'
-import { getprojectforadmin } from '@/api/project/getproject'
-import { getsortbudgetforadmin } from '@/api/sortbudget/getsortbudget'
-import { getaccountingforadmin } from '@/api/accounting/getaccounting'
-import { getsortforadmin } from '@/api/sort/getsort'
-import { getsubsortforadmin } from '@/api/subsort/getsubsort'
+import waves from '@/directive/waves'; // 水波紋指令
+import { getcardforadmin } from '@/api/card/getcard';
+import { getmember, getmemberlist } from '@/api/member/getmember';
+import { getToken } from '@/utils/auth';
+import { formatdate, formatdate_inc_time } from '@/utils/index';
+import { getaccountforadmin, getaccounttype } from '@/api/account/getaccount';
+import { getprojectforadmin } from '@/api/project/getproject';
+import { getsortbudgetforadmin } from '@/api/sortbudget/getsortbudget';
+import { getaccountingforadmin } from '@/api/accounting/getaccounting';
+import { getsortforadmin } from '@/api/sort/getsort';
+import { getsubsortforadmin } from '@/api/subsort/getsubsort';
 
 export default {
   name: 'AManageMember',
@@ -566,7 +1074,8 @@ export default {
               start.setTime(start.getTime() - 3600 * 1000 * 24 * 180)
               picker.$emit('pick', [start, end])
             }
-          }]
+          }
+        ]
       },
 
       // category
@@ -587,19 +1096,19 @@ export default {
   watch: {
     c_account: function(new_type, old_type) {
       if (new_type !== '') {
-        this.c_account_name = ''
+        this.c_account_name = '';
         this.c_account_name_disable = false
       } else if (new_type !== old_type) {
-        this.c_account_name = ''
+        this.c_account_name = '';
         this.get_account_info()
       }
     },
     c_category_sort_payorin: function(newpi, oldpi) {
       if (this.c_category_sort_payorin === '') {
         this.c_sort_disable = true
-        this.c_category_sort_id = ''
+        this.c_category_sort_id = '';
       } else if (newpi !== oldpi) {
-        this.c_category_sort_id = ''
+        this.c_category_sort_id = '';
         this.c_sort_disable = false
       }
     },
@@ -625,18 +1134,18 @@ export default {
       if (oldc_payorin === '') {
         this.c_accounting_sort_disable = false
       } else if (newc_payorin === '') {
-        this.c_accounting_sort = ''
-        this.c_accounting_subsort = ''
+        this.c_accounting_sort = '';
+        this.c_accounting_subsort = '';
         this.c_accounting_sort_disable = true
         this.get_accounting_info()
       } else if (newc_payorin !== 1 && newc_payorin !== 0) {
         this.c_accounting_sort_disable = true
         this.c_accounting_subsort_disable = true
-        this.c_accounting_sort = ''
-        this.c_accounting_subsort = ''
+        this.c_accounting_sort = '';
+        this.c_accounting_subsort = '';
       } else if (newc_payorin !== oldc_payorin) {
-        this.c_accounting_sort = ''
-        this.c_accounting_subsort = ''
+        this.c_accounting_sort = '';
+        this.c_accounting_subsort = '';
         this.get_accounting_info()
       }
     },
@@ -644,10 +1153,10 @@ export default {
       if (oldc_sort === '') {
         this.c_accounting_subsort_disable = false
       } else if (newc_sort === '') {
-        this.c_accounting_subsort = ''
+        this.c_accounting_subsort = '';
         this.c_accounting_subsort_disable = true
       } else if (newc_sort !== oldc_sort) {
-        this.c_accounting_subsort = ''
+        this.c_accounting_subsort = '';
       }
     },
     c_accounting_subsort: function(newc_subsort, oldc_subsort) {
@@ -663,32 +1172,33 @@ export default {
   },
   methods: {
     get_member_all() {
-      getmember(getToken())
-        .then((res) => {
-          const testmember = res.data
-          const ori_data = []
-          for (let i = 1; i <= testmember.length; i++) {
-            getmemberlist(getToken(), i)
-              .then((res_data) => {
-                setTimeout(() => {
-                  ori_data.push(res_data.data)
-                  this.a_all_member_data = ori_data.filter(function(item, index, array) {
-                    return item.membertype < 5 && item.membertype > 1
-                  })
-                }, i * 50)
+      getmember(getToken()).then(res => {
+        const testmember = res.data
+        const ori_data = []
+        for (let i = 1; i <= testmember.length; i++) {
+          getmemberlist(getToken(), i).then(res_data => {
+            setTimeout(() => {
+              ori_data.push(res_data.data)
+              this.a_all_member_data = ori_data.filter(function(
+                item,
+                index,
+                array
+              ) {
+                return item.membertype < 5 && item.membertype > 1
               })
-          }
-        })
+            }, i * 50)
+          })
+        }
+      })
     },
     get_member_info() {
       this.c_member_confiinfo_visible = true
-      getmemberlist(getToken(), this.profile_edit_form.id)
-        .then((res) => {
-          this.profile_edit_form.account = res.data.account
-          this.profile_edit_form.name = res.data.name
-          this.profile_edit_form.toid = res.data.toid
-          console.log(res.data)
-        })
+      getmemberlist(getToken(), this.profile_edit_form.id).then(res => {
+        this.profile_edit_form.account = res.data.account
+        this.profile_edit_form.name = res.data.name
+        this.profile_edit_form.toid = res.data.toid
+        console.log(res.data)
+      })
     },
     get_accounting_info() {
       // not done
@@ -696,65 +1206,69 @@ export default {
       let startdate
       let enddate
       if (this.accounting_startenddate.length === 2) {
-        startdate = formatdate_inc_time(this.accounting_startenddate[0], 'yyyy-mm-dd')
-        enddate = formatdate_inc_time(this.accounting_startenddate[1], 'yyyy-mm-dd')
+        startdate = formatdate_inc_time(
+          this.accounting_startenddate[0],
+          'yyyy-mm-dd'
+        )
+        enddate = formatdate_inc_time(
+          this.accounting_startenddate[1],
+          'yyyy-mm-dd'
+        )
       } else {
-        startdate = ''
-        enddate = ''
+        startdate = '';
+        enddate = '';
       }
       let send_payin
       if (this.c_accounting_payorin === 0) {
-        send_payin = 'False'
+        send_payin = 'False';
       } else if (this.c_accounting_payorin === 1) {
-        send_payin = 'True'
+        send_payin = 'True';
       } else {
-        send_payin = ''
-        this.c_accounting_sort_id = ''
+        send_payin = '';
+        this.c_accounting_sort_id = '';
       }
-      getaccountforadmin(getToken()
-        , this.profile_edit_form.id)
-        .then((res) => {
-          this.c_accounting_accountitem = res.data
-        })
-      getprojectforadmin(getToken(), this.profile_edit_form.id)
-        .then((res) => {
-          this.c_accounting_projectitem = res.data
-        })
-      getsortforadmin(getToken()
-        , this.profile_edit_form.id
-        , send_payin)
-        .then((res) => {
+      getaccountforadmin(getToken(), this.profile_edit_form.id).then(res => {
+        this.c_accounting_accountitem = res.data
+      })
+      getprojectforadmin(getToken(), this.profile_edit_form.id).then(res => {
+        this.c_accounting_projectitem = res.data
+      })
+      getsortforadmin(getToken(), this.profile_edit_form.id, send_payin).then(
+        res => {
           this.c_accounting_sortitem = res.data
+        }
+      )
+      getsubsortforadmin(
+        getToken(),
+        this.profile_edit_form.id,
+        this.c_accounting_sort
+      ).then(res => {
+        this.c_accounting_subsortitem = res.data
+      })
+      getaccountingforadmin(
+        getToken(),
+        this.profile_edit_form.id,
+        startdate,
+        enddate,
+        send_payin,
+        this.c_accounting_sort,
+        this.c_accounting_subsort,
+        this.c_accounting_project,
+        this.c_accounting_account
+      ).then(res => {
+        this.c_user_history = []
+        this.c_user_history = res.data
+        this.c_user_history.forEach(items => {
+          if (items.type === false) {
+            items.type = '支出';
+          } else {
+            items.type = '收入';
+          }
+          if (items.invoice_id === null || items.invoice_id === undefined) {
+            items.invoice_id = '-';
+          }
         })
-      getsubsortforadmin(getToken()
-        , this.profile_edit_form.id
-        , this.c_accounting_sort)
-        .then((res) => {
-          this.c_accounting_subsortitem = res.data
-        })
-      getaccountingforadmin(getToken()
-        , this.profile_edit_form.id
-        , startdate
-        , enddate
-        , send_payin
-        , this.c_accounting_sort
-        , this.c_accounting_subsort
-        , this.c_accounting_project
-        , this.c_accounting_account)
-        .then((res) => {
-          this.c_user_history = []
-          this.c_user_history = res.data
-          this.c_user_history.forEach(items => {
-            if (items.type === false) {
-              items.type = '支出'
-            } else {
-              items.type = '收入'
-            }
-            if (items.invoice_id === null || items.invoice_id === undefined) {
-              items.invoice_id = '-'
-            }
-          })
-        })
+      })
     },
     get_account_info() {
       this.a_adv_account_visible = true
@@ -762,34 +1276,39 @@ export default {
       if (this.c_account === '') {
         this.c_account_name_disable = true
       }
-      getaccountforadmin(getToken()
-        , this.profile_edit_form.id
-        , this.c_account
-        , this.c_account_name)
-        .then((res) => {
-          this.c_account_data = res.data
-        })
-      getaccountforadmin(getToken()
-        , this.profile_edit_form.id
-        , this.c_account)
-        .then((res) => {
-          this.c_account_name_options = res.data
-        })
-      getaccounttype(getToken())
-        .then((res) => {
-          this.c_account_options = res.data
-        })
+      getaccountforadmin(
+        getToken(),
+        this.profile_edit_form.id,
+        this.c_account,
+        this.c_account_name
+      ).then(res => {
+        this.c_account_data = res.data
+      })
+      getaccountforadmin(
+        getToken(),
+        this.profile_edit_form.id,
+        this.c_account
+      ).then(res => {
+        this.c_account_name_options = res.data
+      })
+      getaccounttype(getToken()).then(res => {
+        this.c_account_options = res.data
+      })
     },
 
     get_card_info() {
       this.c_user_card = []
       if (this.c_card === '') {
-        getcardforadmin(getToken(), this.profile_edit_form.id).then((res) => {
+        getcardforadmin(getToken(), this.profile_edit_form.id).then(res => {
           this.c_card_options = res.data
           this.c_user_card = res.data
         })
       } else {
-        getcardforadmin(getToken(), this.profile_edit_form.id, this.c_card).then((res) => {
+        getcardforadmin(
+          getToken(),
+          this.profile_edit_form.id,
+          this.c_card
+        ).then(res => {
           this.c_user_card = res.data
         })
       }
@@ -799,50 +1318,53 @@ export default {
       this.a_adv_category_visible = true
       let send_payin
       if (this.c_category_sort_payorin === 0) {
-        send_payin = 'False'
+        send_payin = 'False';
       } else if (this.c_category_sort_payorin === 1) {
-        send_payin = 'True'
+        send_payin = 'True';
       } else {
-        send_payin = ''
-        this.c_category_sort_id = ''
+        send_payin = '';
+        this.c_category_sort_id = '';
       }
 
-      getsortbudgetforadmin(getToken()
-        , this.profile_edit_form.id
-        , this.category_startenddate.substring(0, 4)
-        , this.category_startenddate.substring(5, 8)
-        , send_payin
-        , this.c_category_sort_id
-      )
-        .then((res) => {
-          this.c_user_category = []
-          this.c_user_category = res.data
-        })
+      getsortbudgetforadmin(
+        getToken(),
+        this.profile_edit_form.id,
+        this.category_startenddate.substring(0, 4),
+        this.category_startenddate.substring(5, 8),
+        send_payin,
+        this.c_category_sort_id
+      ).then(res => {
+        this.c_user_category = []
+        this.c_user_category = res.data
+      })
 
-      getsortbudgetforadmin(getToken()
-        , this.profile_edit_form.id
-        , this.category_startenddate.substring(0, 4)
-        , this.category_startenddate.substring(5, 8)
-        , send_payin)
-        .then((res) => {
-          this.c_category_sort_list_option = []
-          this.c_category_sort_list_option = res.data
-        })
+      getsortbudgetforadmin(
+        getToken(),
+        this.profile_edit_form.id,
+        this.category_startenddate.substring(0, 4),
+        this.category_startenddate.substring(5, 8),
+        send_payin
+      ).then(res => {
+        this.c_category_sort_list_option = []
+        this.c_category_sort_list_option = res.data
+      })
     },
     get_project_info() {
       this.a_adv_project_visible = true
       this.c_user_project = []
       if (this.c_project === '') {
-        getprojectforadmin(getToken(), this.profile_edit_form.id)
-          .then((res) => {
-            this.c_project_options = res.data
-            this.c_user_project = res.data
-          })
+        getprojectforadmin(getToken(), this.profile_edit_form.id).then(res => {
+          this.c_project_options = res.data
+          this.c_user_project = res.data
+        })
       } else {
-        getprojectforadmin(getToken(), this.profile_edit_form.id, this.c_project)
-          .then((res) => {
-            this.c_user_project = res.data
-          })
+        getprojectforadmin(
+          getToken(),
+          this.profile_edit_form.id,
+          this.c_project
+        ).then(res => {
+          this.c_user_project = res.data
+        })
       }
     },
     handle_advance(index, row) {
@@ -850,20 +1372,23 @@ export default {
       this.profile_edit_form.id = row.id
     },
     clean_name() {
-      this.profile_edit_form.name = ''
+      this.profile_edit_form.name = '';
     },
     clean_toid() {
-      this.profile_edit_form.toid = ''
+      this.profile_edit_form.toid = '';
     },
     clean_accounting_allselect() {
-      this.c_accounting_payorin = ''
-      this.c_accounting_sort = ''
-      this.c_accounting_subsort = ''
-      this.c_accounting_project = ''
-      this.c_accounting_account = ''
+      this.c_accounting_payorin = '';
+      this.c_accounting_sort = '';
+      this.c_accounting_subsort = '';
+      this.c_accounting_project = '';
+      this.c_accounting_account = '';
       const start = new Date()
       start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-      this.accounting_startenddate = [start, formatdate('yyyy-mm-dd HH:MM:ss.l')]
+      this.accounting_startenddate = [
+        start,
+        formatdate('yyyy-mm-dd HH:MM:ss.l')
+      ]
       this.get_accounting_info()
     },
     in_adv_motion_cal() {

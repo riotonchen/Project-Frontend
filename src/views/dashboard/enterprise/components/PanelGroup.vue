@@ -1,3 +1,4 @@
+/* eslint-disable semi */
 <template>
   <div>
 
@@ -72,107 +73,6 @@
               :start-val="0"
               :end-val="c_user_y_history_balance"
               :duration="3500"
-              class="card-panel-num"
-            />
-          </div>
-        </div>
-      </el-col>
-    </el-row>
-    <el-row
-      :gutter="40"
-      class="panel-group"
-    >
-      <el-col
-        :xs="24"
-        :sm="12"
-        :lg="6"
-        class="card-panel-col"
-      >
-        <div class="card-panel">
-          <div class="card-panel-icon-wrapper icon-people">
-            <svg-icon
-              icon-class="peoples"
-              class-name="card-panel-icon"
-            />
-          </div>
-          <div class="card-panel-description">
-            <div class="card-panel-text">總資產</div>
-            <count-to
-              :start-val="0"
-              :end-val="account_all_balance"
-              :duration="3500"
-              class="card-panel-num"
-            />
-          </div>
-        </div>
-      </el-col>
-      <el-col
-        :xs="24"
-        :sm="12"
-        :lg="6"
-        class="card-panel-col"
-      >
-        <div class="card-panel">
-          <div class="card-panel-icon-wrapper icon-message">
-            <svg-icon
-              icon-class="message"
-              class-name="card-panel-icon"
-            />
-          </div>
-          <div class="card-panel-description">
-            <div class="card-panel-text">本月收入</div>
-            <count-to
-              :start-val="0"
-              :end-val="c_user_m_history_in"
-              :duration="3500"
-              class="card-panel-num"
-            />
-          </div>
-        </div>
-      </el-col>
-      <el-col
-        :xs="24"
-        :sm="12"
-        :lg="6"
-        class="card-panel-col"
-      >
-        <div class="card-panel">
-          <div class="card-panel-icon-wrapper icon-money">
-            <svg-icon
-              icon-class="money"
-              class-name="card-panel-icon"
-            />
-          </div>
-          <div class="card-panel-description">
-            <div class="card-panel-text">本月支出</div>
-            <count-to
-              :start-val="0"
-              :end-val="c_user_m_history_pay"
-              :duration="3500"
-              class="card-panel-num"
-            />
-          </div>
-        </div>
-      </el-col>
-      <el-col
-        :xs="24"
-        :sm="12"
-        :lg="6"
-        class="card-panel-col"
-      >
-        <div class="card-panel">
-          <div class="card-panel-icon-wrapper icon-shopping">
-            <svg-icon
-              icon-class="shopping"
-              class-name="card-panel-icon"
-            />
-          </div>
-          <div class="card-panel-description">
-            <div class="card-panel-text">本月預算餘額</div>
-            <count-to
-              :start-val="0"
-              :end-val="c_category_m_list"
-              :duration="3600"
               class="card-panel-num"
             />
           </div>
