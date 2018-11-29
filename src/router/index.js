@@ -233,7 +233,7 @@ if (getToken() === undefined || getToken() === null || getToken() === '') {
         path: '/profile/ent-profile-edit',
         component: Layout,
         alwaysShow: false,
-        hidden:true,
+        hidden: true,
         redirect: 'noredirect',
         children: [{
           path: '',

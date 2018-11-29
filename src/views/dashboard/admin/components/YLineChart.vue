@@ -8,10 +8,10 @@
 </template>
 
 <script>
-import echarts from 'echarts';
+import echarts from 'echarts'
 require('echarts/theme/macarons') // echarts theme
-import { debounce } from '@/utils';
-import { formatdate_inc_time } from '@/utils/index';
+import { debounce } from '@/utils'
+import { formatdate_inc_time } from '@/utils/index'
 
 export default {
   props: {

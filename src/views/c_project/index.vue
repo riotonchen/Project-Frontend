@@ -31,7 +31,7 @@
       <el-table
         v-loading.fullscreen.lock="view_loading"
         :data="c_user_project"
-        element-loading-text="資料取得中，請稍後..."
+        element-loading-text="正在幫你載入所有專案資料中......."
         element-loading-spinner="el-icon-loading"
         element-loading-background="rgba(0, 0, 0, 0.9)"
         stripe
@@ -192,15 +192,15 @@
 </template>
 
 <script>
-import waves from '@/directive/waves'; // 水波紋指令
-import { getproject, getproject_single } from '@/api/project/getproject';
-import { postproject } from '@/api/project/postproject';
+import waves from '@/directive/waves' // 水波紋指令
+import { getproject, getproject_single } from '@/api/project/getproject'
+import { postproject } from '@/api/project/postproject'
 import {
   patchproject_update,
   patchproject_delete
-} from '@/api/project/patchproject';
-import { getToken } from '@/utils/auth';
-import { formatdate } from '@/utils/index';
+} from '@/api/project/patchproject'
+import { getToken } from '@/utils/auth'
+import { formatdate } from '@/utils/index'
 
 export default {
   name: 'CProject',
@@ -250,13 +250,13 @@ export default {
       setTimeout(() => {
         this.view_loading = false
         this.get_projectlist()
-      }, 500)
+      }, 1500)
     },
     clean_name() {
-      this.c_project_edit.name = '';
+      this.c_project_edit.name = ''
     },
     clean_number() {
-      this.c_project_edit.number = '';
+      this.c_project_edit.number = ''
     },
     handle_edit(index, row) {
       this.c_project_id = row.id
@@ -304,7 +304,7 @@ export default {
             type: 'success',
             message: '新增專案成功'
           })
-          this.c_project_add.name = '';
+          this.c_project_add.name = ''
           this.get_project()
         })
         .catch(error => {

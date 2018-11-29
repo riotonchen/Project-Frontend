@@ -957,17 +957,17 @@
 </template>
 
 <script>
-import waves from '@/directive/waves'; // 水波紋指令
-import { getcardforadmin } from '@/api/card/getcard';
-import { getmember, getmemberlist } from '@/api/member/getmember';
-import { getToken } from '@/utils/auth';
-import { formatdate, formatdate_inc_time } from '@/utils/index';
-import { getaccountforadmin, getaccounttype } from '@/api/account/getaccount';
-import { getprojectforadmin } from '@/api/project/getproject';
-import { getsortbudgetforadmin } from '@/api/sortbudget/getsortbudget';
-import { getaccountingforadmin } from '@/api/accounting/getaccounting';
-import { getsortforadmin } from '@/api/sort/getsort';
-import { getsubsortforadmin } from '@/api/subsort/getsubsort';
+import waves from '@/directive/waves' // 水波紋指令
+import { getcardforadmin } from '@/api/card/getcard'
+import { getmember, getmemberlist } from '@/api/member/getmember'
+import { getToken } from '@/utils/auth'
+import { formatdate, formatdate_inc_time } from '@/utils/index'
+import { getaccountforadmin, getaccounttype } from '@/api/account/getaccount'
+import { getprojectforadmin } from '@/api/project/getproject'
+import { getsortbudgetforadmin } from '@/api/sortbudget/getsortbudget'
+import { getaccountingforadmin } from '@/api/accounting/getaccounting'
+import { getsortforadmin } from '@/api/sort/getsort'
+import { getsubsortforadmin } from '@/api/subsort/getsubsort'
 
 export default {
   name: 'AManageMember',
@@ -1096,19 +1096,19 @@ export default {
   watch: {
     c_account: function(new_type, old_type) {
       if (new_type !== '') {
-        this.c_account_name = '';
+        this.c_account_name = ''
         this.c_account_name_disable = false
       } else if (new_type !== old_type) {
-        this.c_account_name = '';
+        this.c_account_name = ''
         this.get_account_info()
       }
     },
     c_category_sort_payorin: function(newpi, oldpi) {
       if (this.c_category_sort_payorin === '') {
         this.c_sort_disable = true
-        this.c_category_sort_id = '';
+        this.c_category_sort_id = ''
       } else if (newpi !== oldpi) {
-        this.c_category_sort_id = '';
+        this.c_category_sort_id = ''
         this.c_sort_disable = false
       }
     },
@@ -1134,18 +1134,18 @@ export default {
       if (oldc_payorin === '') {
         this.c_accounting_sort_disable = false
       } else if (newc_payorin === '') {
-        this.c_accounting_sort = '';
-        this.c_accounting_subsort = '';
+        this.c_accounting_sort = ''
+        this.c_accounting_subsort = ''
         this.c_accounting_sort_disable = true
         this.get_accounting_info()
       } else if (newc_payorin !== 1 && newc_payorin !== 0) {
         this.c_accounting_sort_disable = true
         this.c_accounting_subsort_disable = true
-        this.c_accounting_sort = '';
-        this.c_accounting_subsort = '';
+        this.c_accounting_sort = ''
+        this.c_accounting_subsort = ''
       } else if (newc_payorin !== oldc_payorin) {
-        this.c_accounting_sort = '';
-        this.c_accounting_subsort = '';
+        this.c_accounting_sort = ''
+        this.c_accounting_subsort = ''
         this.get_accounting_info()
       }
     },
@@ -1153,10 +1153,10 @@ export default {
       if (oldc_sort === '') {
         this.c_accounting_subsort_disable = false
       } else if (newc_sort === '') {
-        this.c_accounting_subsort = '';
+        this.c_accounting_subsort = ''
         this.c_accounting_subsort_disable = true
       } else if (newc_sort !== oldc_sort) {
-        this.c_accounting_subsort = '';
+        this.c_accounting_subsort = ''
       }
     },
     c_accounting_subsort: function(newc_subsort, oldc_subsort) {
@@ -1169,27 +1169,64 @@ export default {
   },
   created() {
     this.get_member_all()
+    this.fullloading()
   },
   methods: {
+    fullloading() {
+      const loading = this.$loading({
+        lock: true,
+        text: '正在幫你載入所有普通會員中.......',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.9)'
+      })
+      setTimeout(() => {
+        loading.close()
+      }, 3000)
+    },
     get_member_all() {
       getmember(getToken()).then(res => {
         const testmember = res.data
         const ori_data = []
+        let testnum = testmember.length
         for (let i = 1; i <= testmember.length; i++) {
-          getmemberlist(getToken(), i).then(res_data => {
-            setTimeout(() => {
-              ori_data.push(res_data.data)
-              this.a_all_member_data = ori_data.filter(function(
-                item,
-                index,
-                array
-              ) {
-                return item.membertype < 5 && item.membertype > 1
-              })
-            }, i * 50)
-          })
+          getmemberlist(getToken(), i)
+            .then(res_data => {
+              setTimeout(() => {
+                ori_data.push(res_data.data)
+                this.a_all_member_data = ori_data.filter(function(
+                  item,
+                  index,
+                  array
+                ) {
+                  return item.membertype < 5 && item.membertype > 1
+                })
+              }, i * 50)
+            })
+            .catch(() => {
+              testnum = testnum + 1
+              this.get_member_all_ext(testnum)
+            })
         }
       })
+    },
+    get_member_all_ext(testnum) {
+      getmemberlist(getToken(), testnum)
+        .then(res_data => {
+          setTimeout(() => {
+            this.a_all_member_data.push(res_data.data)
+            this.a_all_member_data = this.a_all_member_data.filter(function(
+              item,
+              index,
+              array
+            ) {
+              return item.membertype < 5 && item.membertype > 1
+            })
+          }, testnum * 50)
+        })
+        .catch(() => {
+          testnum = testnum + 1
+          this.get_member_all_ext(testnum)
+        })
     },
     get_member_info() {
       this.c_member_confiinfo_visible = true
@@ -1215,17 +1252,17 @@ export default {
           'yyyy-mm-dd'
         )
       } else {
-        startdate = '';
-        enddate = '';
+        startdate = ''
+        enddate = ''
       }
       let send_payin
       if (this.c_accounting_payorin === 0) {
-        send_payin = 'False';
+        send_payin = 'False'
       } else if (this.c_accounting_payorin === 1) {
-        send_payin = 'True';
+        send_payin = 'True'
       } else {
-        send_payin = '';
-        this.c_accounting_sort_id = '';
+        send_payin = ''
+        this.c_accounting_sort_id = ''
       }
       getaccountforadmin(getToken(), this.profile_edit_form.id).then(res => {
         this.c_accounting_accountitem = res.data
@@ -1260,12 +1297,12 @@ export default {
         this.c_user_history = res.data
         this.c_user_history.forEach(items => {
           if (items.type === false) {
-            items.type = '支出';
+            items.type = '支出'
           } else {
-            items.type = '收入';
+            items.type = '收入'
           }
           if (items.invoice_id === null || items.invoice_id === undefined) {
-            items.invoice_id = '-';
+            items.invoice_id = '-'
           }
         })
       })
@@ -1318,12 +1355,12 @@ export default {
       this.a_adv_category_visible = true
       let send_payin
       if (this.c_category_sort_payorin === 0) {
-        send_payin = 'False';
+        send_payin = 'False'
       } else if (this.c_category_sort_payorin === 1) {
-        send_payin = 'True';
+        send_payin = 'True'
       } else {
-        send_payin = '';
-        this.c_category_sort_id = '';
+        send_payin = ''
+        this.c_category_sort_id = ''
       }
 
       getsortbudgetforadmin(
@@ -1372,17 +1409,17 @@ export default {
       this.profile_edit_form.id = row.id
     },
     clean_name() {
-      this.profile_edit_form.name = '';
+      this.profile_edit_form.name = ''
     },
     clean_toid() {
-      this.profile_edit_form.toid = '';
+      this.profile_edit_form.toid = ''
     },
     clean_accounting_allselect() {
-      this.c_accounting_payorin = '';
-      this.c_accounting_sort = '';
-      this.c_accounting_subsort = '';
-      this.c_accounting_project = '';
-      this.c_accounting_account = '';
+      this.c_accounting_payorin = ''
+      this.c_accounting_sort = ''
+      this.c_accounting_subsort = ''
+      this.c_accounting_project = ''
+      this.c_accounting_account = ''
       const start = new Date()
       start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
       this.accounting_startenddate = [

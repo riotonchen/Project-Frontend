@@ -167,9 +167,11 @@
      */
     _applyFormat: function(formatStr, formatting) {
       // default the format string to year-month-day
-      var source = formatStr || formatting.defaultFormat,
-        result = '',
-        match
+      var source = formatStr || formatting.defaultFormat
+
+      var result = ''
+
+      var match
       // replace each format code
       while (source.length > 0) {
         if ((match = source.match(formatting.matcher))) {
@@ -507,8 +509,9 @@
           if (date === '') {
             return Date.current()
           }
-          var i = 0,
-            pattern, ms, obj, match, regex, fn
+          var i = 0
+
+          var pattern; var ms; var obj; var match; var regex; var fn
           // try each of our patterns
           while ((pattern = Date.create.patterns[i++])) {
             if (typeof pattern[0] === 'string') {
@@ -648,8 +651,9 @@
      */
     addPattern: function(spec, afterName) {
       if (afterName) {
-        var i = 0,
-          pattern
+        var i = 0
+
+        var pattern
         while ((pattern = Date.create.patterns[i++])) {
           if (pattern[0] === afterName || pattern[1] === afterName) {
             Date.create.patterns.splice(i, 0, spec)
@@ -671,8 +675,9 @@
      * @return {Array|Boolean}  Returns the removed pattern or false if pattern not found
      */
     removePattern: function(name) {
-      var i = 0,
-        pattern
+      var i = 0
+
+      var pattern
       while ((pattern = Date.create.patterns[i++])) {
         if (pattern[0] === name || pattern[1] === name) {
           // return
@@ -886,9 +891,11 @@
   }
 
   // add uppercase versions of each sql code
-  var keys = 'yyyy yy mm m mmm mmmm dd d ddd dddd w hh24 h24 hh12 h12 am pm mi ss'.split(' '),
-    i = 0,
-    key
+  var keys = 'yyyy yy mm m mmm mmmm dd d ddd dddd w hh24 h24 hh12 h12 am pm mi ss'.split(' ')
+
+  var i = 0
+
+  var key
   while ((key = keys[i++])) {
     formatSql.codes[key.toUpperCase()] = formatSql.codes[key]
   }
@@ -1061,8 +1068,9 @@
         }
         // $3 = month name
         else if (match[3]) {
-          var month = match[3].toLowerCase(),
-            diff
+          var month = match[3].toLowerCase()
+
+          var diff
           for (i = 0; i < months.length; i++) {
             if (month === months[i].toLowerCase()) {
               diff = 12 - (now.getMonth() - i)

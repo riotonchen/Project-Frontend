@@ -82,12 +82,12 @@
 </template>
 
 <script>
-import CountTo from 'vue-count-to';
-import { getToken } from '@/utils/auth';
-import { getaccount_all } from '@/api/account/getaccount';
-import { getaccounting_all } from '@/api/accounting/getaccounting';
-import { getsortbudget_all } from '@/api/sortbudget/getsortbudget';
-import { formatdate_inc_time } from '@/utils/index';
+import CountTo from 'vue-count-to'
+import { getToken } from '@/utils/auth'
+import { getaccount_all } from '@/api/account/getaccount'
+import { getaccounting_all } from '@/api/accounting/getaccounting'
+import { getsortbudget_all } from '@/api/sortbudget/getsortbudget'
+import { formatdate_inc_time } from '@/utils/index'
 
 export default {
   components: {
@@ -148,18 +148,18 @@ export default {
           this.c_user_y_history = res_year.data
           this.c_user_y_history.forEach(items => {
             if (items.type === false) {
-              items.type = '支出';
+              items.type = '支出'
             } else {
-              items.type = '收入';
+              items.type = '收入'
             }
             if (items.invoice_id === null || items.invoice_id === undefined) {
-              items.invoice_id = '-';
+              items.invoice_id = '-'
             }
           })
           this.c_user_y_history_pay = this.c_user_y_history.filter(function(
             item
           ) {
-            return item.type === '支出';
+            return item.type === '支出'
           })
 
           this.c_user_y_history_pay = this.c_user_y_history_pay.reduce(function(
@@ -172,7 +172,7 @@ export default {
           this.c_user_y_history_in = this.c_user_y_history.filter(function(
             item
           ) {
-            return item.type === '收入';
+            return item.type === '收入'
           })
           this.c_user_y_history_in = this.c_user_y_history_in.reduce(function(
             accumulator,
@@ -187,18 +187,18 @@ export default {
           this.c_user_m_history = res_month.data
           this.c_user_m_history.forEach(items => {
             if (items.type === false) {
-              items.type = '支出';
+              items.type = '支出'
             } else {
-              items.type = '收入';
+              items.type = '收入'
             }
             if (items.invoice_id === null || items.invoice_id === undefined) {
-              items.invoice_id = '-';
+              items.invoice_id = '-'
             }
           })
           this.c_user_m_history_pay = this.c_user_m_history.filter(function(
             item
           ) {
-            return item.type === '支出';
+            return item.type === '支出'
           })
 
           this.c_user_m_history_pay = this.c_user_m_history_pay.reduce(function(
@@ -211,7 +211,7 @@ export default {
           this.c_user_m_history_in = this.c_user_m_history.filter(function(
             item
           ) {
-            return item.type === '收入';
+            return item.type === '收入'
           })
           this.c_user_m_history_in = this.c_user_m_history_in.reduce(function(
             accumulator,

@@ -2,12 +2,26 @@
   <div class="app-container">
     <title>{{ $t('router.c_information') }}</title>
     <el-carousel indicator-position="outside">
-      <el-carousel-item v-for="item in 4" :key="item" />
+      <el-carousel-item
+        v-for="item in 4"
+        :key="item"
+      />
     </el-carousel>
     <el-row :gutter="20">
-      <el-col v-for="(o, index) in 1" :span="8" :key="o" :offset="index > 0 ? 2 : 0">
-        <el-card :body-style="{ padding: '0px' }" width="20vw">
-          <img src="../../assets/images/a.jpg" class="image">
+      <el-col
+        v-for="(o, index) in 1"
+        :span="8"
+        :key="o"
+        :offset="index > 0 ? 2 : 0"
+      >
+        <el-card
+          :body-style="{ padding: '0px' }"
+          width="20vw"
+        >
+          <img
+            src="../../assets/images/a.jpg"
+            class="image"
+          >
           <div style="padding: 16px;">
             <div>防水噴霧</div>
           </div>
@@ -18,9 +32,20 @@
           </div>
         </el-card>
       </el-col>
-      <el-col v-for="(o, index) in 1" :span="8" :key="o" :offset="index > 0 ? 2 : 0">
-        <el-card :body-style="{ padding: '0px' }" width="20vw">
-          <img src="../../assets/images/b.jpg" class="image">
+      <el-col
+        v-for="(o, index) in 1"
+        :span="8"
+        :key="o"
+        :offset="index > 0 ? 2 : 0"
+      >
+        <el-card
+          :body-style="{ padding: '0px' }"
+          width="20vw"
+        >
+          <img
+            src="../../assets/images/b.jpg"
+            class="image"
+          >
           <div style="padding: 16px;">
             <div>率性手拿簡約萬用夾</div>
           </div>
@@ -31,9 +56,20 @@
           </div>
         </el-card>
       </el-col>
-      <el-col v-for="(o, index) in 1" :span="8" :key="o" :offset="index > 0 ? 2 : 0">
-        <el-card :body-style="{ padding: '0px' }" width="20vw">
-          <img src="../../assets/images/c.jpg" class="image">
+      <el-col
+        v-for="(o, index) in 1"
+        :span="8"
+        :key="o"
+        :offset="index > 0 ? 2 : 0"
+      >
+        <el-card
+          :body-style="{ padding: '0px' }"
+          width="20vw"
+        >
+          <img
+            src="../../assets/images/c.jpg"
+            class="image"
+          >
           <div style="padding: 16px;">
             <div>29吋行李箱 PC拉絲鋁框旅行箱</div>
           </div>
@@ -173,7 +209,6 @@
 </template>
 
 <script>
-
 export default {
   data() {
     return {
@@ -183,7 +218,9 @@ export default {
       dialogVisible: false
     }
   },
+
   methods: {
+
     handleClick(tab, event) {
       console.log(tab, event)
     },
@@ -250,9 +287,36 @@ img {
 export default {
   data() {
     return {
-      currentDate: new Date()
+      activeName1: "first",
+      activeName2: "1",
+      dialogImageUrl: "",
+      dialogVisible: false
     };
+  },
+  created() {
+    this.fullloading();
+  },
+  methods: {
+    fullloading() {
+      const loading = this.$loading({
+        lock: true,
+        text: "正在幫你載入所有所有優惠資訊中.......",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.9)"
+      });
+      setTimeout(() => {
+        loading.close();
+      }, 2000);
+    },
+    handleClick(tab, event) {
+      console.log(tab, event);
+    },
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePictureCardPreview(file) {
+      this.dialogImageUrl = file.url;
+      this.dialogVisible = true;
+    }
   }
-}
-
-</style>
+};

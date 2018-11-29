@@ -57,6 +57,7 @@
           :label="$t('a_feebackmanager.date')"
           prop="time"
           sortable
+          align="center"
         >
           <template slot-scope="scope">
             <span>{{ scope.row.time }}</span>
@@ -66,6 +67,7 @@
           :label="$t('a_feebackmanager.status')"
           prop="status"
           sortable
+          align="center"
         >
           <template slot-scope="scope">
             <el-tag :type="scope.row.status==='已回覆'?'primary':'danger'">
@@ -78,6 +80,7 @@
         <el-table-column
           :label="$t('a_feebackmanager.problemsubject')"
           prop="title"
+          align="center"
         >
           <template slot-scope="scope">
             <span>{{ scope.row.title }}</span>
@@ -86,6 +89,7 @@
         <el-table-column
           :label="$t('a_feebackmanager.memberaccount')"
           prop="member_id"
+          align="center"
         >
           <template slot-scope="scope">
             <span>{{ scope.row.member_id }}</span>
@@ -165,10 +169,10 @@
             <el-input
               v-model="a_feedback_reply.content"
               :placeholder="$t('a_feebackmanager.input')"
-              :autosize="{ minRows: 15, maxRows:15}"
+              :autosize="{ minRows: 8, maxRows:8}"
               resize="none"
               type="textarea"
-              style="width:40vw"
+              style="width:40vw;font-size:2vw;"
             />
           </el-form-item>
 
@@ -194,12 +198,13 @@
 </template>
 
 <script>
-import waves from '@/directive/waves';
-import { formatdate } from '@/utils/index';
-import { getfeedback } from '@/api/feedback/getfeedback';
-import { getmemberlist } from '@/api/member/getmember';
-import { getToken } from '@/utils/auth';
-import { formatdate_inc_time } from '@/utils/index';
+import waves from '@/directive/waves'
+import { formatdate } from '@/utils/index'
+import { getfeedback } from '@/api/feedback/getfeedback'
+import { patchfeedback } from '@/api/feedback/patchfeedback'
+import { getmemberlist } from '@/api/member/getmember'
+import { getToken } from '@/utils/auth'
+import { formatdate_inc_time } from '@/utils/index'
 
 export default {
   name: 'AFeedbackmanage',
@@ -215,6 +220,7 @@ export default {
       startenddate: [start, formatdate('yyyy-mm-dd HH:MM:ss.l')],
       dateclean: false,
       a_feedback_form: {
+        id: '',
         problemcontent: ''
       },
       a_feedback_reply: {
@@ -270,18 +276,33 @@ export default {
 
   created() {
     this.get_feedback_all()
+    this.fullloading()
   },
 
   methods: {
+    fullloading() {
+      const loading = this.$loading({
+        lock: true,
+        text: '正在幫你載入所有意見回饋中.......',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.9)'
+      })
+      setTimeout(() => {
+        loading.close()
+      }, 2000)
+    },
     get_feedback_all() {
       getfeedback(getToken()).then(res => {
         this.feedbackdata = res.data
         this.feedbackdata.forEach(items => {
           if (items.status === 0) {
-            items.status = '未回覆';
+            items.status = '未回覆'
           } else {
-            items.status = '已回覆';
+            items.status = '已回覆'
           }
+          items.time = items.time
+            .toString()
+            .substring(0, items.time.indexOf('T'))
           getmemberlist(getToken(), items.member_id).then(res => {
             items.member_id = res.data.account
           })
@@ -292,29 +313,34 @@ export default {
     handleDetailed(index, row) {
       this.a_feedback_visible = true /* 打開詳細問題內容框*/
       this.a_feedback_form.problemcontent = row.content
+      this.a_feedback_form.id = row.id
+    },
+    a_feedbackreply() {
+      this.a_feedbackreply_visible = true /* 打開回覆框*/
     },
     /* 點擊回覆框按鈕*/
     send_reback() {
-      this.$refs.a_feedback_reply.validate(valid => {
-        if (valid) {
+      patchfeedback(
+        getToken(),
+        this.a_feedback_form.id,
+        this.a_feedback_reply.content
+      )
+        .then(() => {
           this.a_feedbackreply_visible = false /* 關掉詳細內容框*/
           this.a_feedback_visible = false /* 關掉回覆框*/
           const h = this.$createElement
           this.$notify({
             title: '回覆成功',
             message: h('b', { style: 'color: teal' }, '該問題已經回覆')
-          }).catch(error => {
-            console.log(error)
-            this.$message({
-              type: 'error',
-              message: '發生一點錯誤，請稍後送出一次'
-            })
           })
-        } else {
-          console.log('error submit')
-          return false
-        }
-      })
+        })
+        .catch(error => {
+          console.log(error)
+          this.$message({
+            type: 'error',
+            message: '發生一點錯誤，請稍後送出一次'
+          })
+        })
     },
     a_feeback_cal() {
       this.$message({
@@ -344,6 +370,7 @@ export default {
   font-size: 2vw;
   font-family: "Microsoft JhengHei";
 }
+
 .feedback_view textarea {
   border: 0;
 }

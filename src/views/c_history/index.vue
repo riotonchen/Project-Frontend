@@ -7,63 +7,207 @@
 
     <div class="filter_container">
       <el-row class="date_seletor">
-        <el-col :xs="6" :sm="3" :md="2" :lg="2" :xl="1" class="selector_title">
+        <el-col
+          :xs="6"
+          :sm="3"
+          :md="2"
+          :lg="2"
+          :xl="1"
+          class="selector_title"
+        >
           <span>{{ $t('c_history.selecttime') }}</span>
         </el-col>
-        <el-col :xs="24" :sm="15" :md="9" :lg="8" :xl="6">
+        <el-col
+          :xs="24"
+          :sm="15"
+          :md="9"
+          :lg="8"
+          :xl="6"
+        >
           <!--style="width: 40vw;min-width:15rem;max-width:23rem;"-->
-          <el-date-picker v-model="startenddate" :picker-options="datepickoptions" :start-placeholder="$t('c_history.startdate')" :end-placeholder="$t('c_history.enddate')" :clearable="dateclean" range-separator="-" align="center" type="daterange" @change="get_getaccounting_all()" />
+          <el-date-picker
+            v-model="startenddate"
+            :picker-options="datepickoptions"
+            :start-placeholder="$t('c_history.startdate')"
+            :end-placeholder="$t('c_history.enddate')"
+            :clearable="dateclean"
+            range-separator="-"
+            align="center"
+            type="daterange"
+            @change="get_getaccounting_all()"
+          />
         </el-col>
       </el-row>
       <el-row class="class_seletor">
-        <el-col :xs="6" :sm="3" :md="2" :lg="2" :xl="1" class="selector_title">
+        <el-col
+          :xs="6"
+          :sm="3"
+          :md="2"
+          :lg="2"
+          :xl="1"
+          class="selector_title"
+        >
           <span>{{ $t('c_history.selectclass') }}</span>
         </el-col>
-        <el-col :xs="24" :sm="15" :md="9" :lg="8" :xl="6">
-          <el-select v-model="c_payorin" :placeholder="$t('c_history.incomespend')" filterable clearable style="width: 25vw;max-width:7.5rem;min-width:5.5rem;" @change="get_getaccounting_all()">
-            <el-option v-for="payorin in c_pay_in" :key="payorin.value" :label="payorin.label" :value="payorin.value" />
+        <el-col
+          :xs="24"
+          :sm="15"
+          :md="9"
+          :lg="8"
+          :xl="6"
+        >
+          <el-select
+            v-model="c_payorin"
+            :placeholder="$t('c_history.incomespend')"
+            filterable
+            clearable
+            style="width: 25vw;max-width:7.5rem;min-width:5.5rem;"
+            @change="get_getaccounting_all()"
+          >
+            <el-option
+              v-for="payorin in c_pay_in"
+              :key="payorin.value"
+              :label="payorin.label"
+              :value="payorin.value"
+            />
           </el-select>
-          <el-select v-model="c_sort" :disabled="c_sort_disable" :placeholder="$t('c_history.mainsort')" clearable filterable style="width: 25vw;max-width:7.5rem;min-width:6.5rem;" @change="get_subsort()">
-            <el-option v-for="sort in c_sort_payorinitem" :key="sort.id" :label="sort.name" :value="sort.id" />
+          <el-select
+            v-model="c_sort"
+            :disabled="c_sort_disable"
+            :placeholder="$t('c_history.mainsort')"
+            clearable
+            filterable
+            style="width: 25vw;max-width:7.5rem;min-width:6.5rem;"
+            @change="get_subsort()"
+          >
+            <el-option
+              v-for="sort in c_sort_payorinitem"
+              :key="sort.id"
+              :label="sort.name"
+              :value="sort.id"
+            />
           </el-select>
-          <el-select v-model="c_subsort" :disabled="c_subsort_disable" :placeholder="$t('c_history.subclass')" clearable filterable style="width: 25vw;max-width:7.5rem;min-width:6.5rem;" @change="get_subsort()">
-            <el-option v-for="subsort in c_subsort_payorinitem" :key="subsort.id" :label="subsort.name" :value="subsort.id" />
+          <el-select
+            v-model="c_subsort"
+            :disabled="c_subsort_disable"
+            :placeholder="$t('c_history.subclass')"
+            clearable
+            filterable
+            style="width: 25vw;max-width:7.5rem;min-width:6.5rem;"
+            @change="get_subsort()"
+          >
+            <el-option
+              v-for="subsort in c_subsort_payorinitem"
+              :key="subsort.id"
+              :label="subsort.name"
+              :value="subsort.id"
+            />
           </el-select>
         </el-col>
       </el-row>
       <el-row class="project_seletor">
-        <el-col :xs="6" :sm="3" :md="2" :lg="2" :xl="1" class="selector_title">
+        <el-col
+          :xs="6"
+          :sm="3"
+          :md="2"
+          :lg="2"
+          :xl="1"
+          class="selector_title"
+        >
           <span>{{ $t('c_history.selectproject') }}</span>
         </el-col>
-        <el-col :xs="24" :sm="12" :md="9" :lg="8" :xl="6">
-          <el-select v-model="c_project" :placeholder="$t('c_history.project')" clearable filterable style="width: 25vw;max-width:13.2rem;min-width:11.8rem;" @focus="get_project()" @change="get_project()">
-            <el-option v-for="project in c_projectitem" :key="project.id" :label="project.name" :value="project.id" />
+        <el-col
+          :xs="24"
+          :sm="12"
+          :md="9"
+          :lg="8"
+          :xl="6"
+        >
+          <el-select
+            v-model="c_project"
+            :placeholder="$t('c_history.project')"
+            clearable
+            filterable
+            style="width: 25vw;max-width:13.2rem;min-width:11.8rem;"
+            @focus="get_project()"
+            @change="get_project()"
+          >
+            <el-option
+              v-for="project in c_projectitem"
+              :key="project.id"
+              :label="project.name"
+              :value="project.id"
+            />
           </el-select>
         </el-col>
       </el-row>
       <el-row class="account_seletor">
-        <el-col :xs="6" :sm="3" :md="2" :lg="2" :xl="1" class="selector_title">
+        <el-col
+          :xs="6"
+          :sm="3"
+          :md="2"
+          :lg="2"
+          :xl="1"
+          class="selector_title"
+        >
           <span>{{ $t('c_history.selectaccount') }}</span>
         </el-col>
-        <el-col :xs="24" :sm="15" :md="9" :lg="8" :xl="6">
-          <el-select v-model="c_account" :placeholder="$t('c_history.account')" clearable filterable style="width: 25vw;max-width:13.2rem;min-width:11.8rem;" @focus="get_account()" @change="get_account()">
-            <el-option v-for="account in c_accountitem" :key="account.id" :label="account.name" :value="account.id" />
+        <el-col
+          :xs="24"
+          :sm="15"
+          :md="9"
+          :lg="8"
+          :xl="6"
+        >
+          <el-select
+            v-model="c_account"
+            :placeholder="$t('c_history.account')"
+            clearable
+            filterable
+            style="width: 25vw;max-width:13.2rem;min-width:11.8rem;"
+            @focus="get_account()"
+            @change="get_account()"
+          >
+            <el-option
+              v-for="account in c_accountitem"
+              :key="account.id"
+              :label="account.name"
+              :value="account.id"
+            />
           </el-select>
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="24" style="padding-top:2vh;">
-          <el-button type="info" plain @click.native.prevent="cleanallselect()">清空篩選</el-button>
+        <el-col
+          :span="24"
+          style="padding-top:2vh;"
+        >
+          <el-button
+            type="info"
+            plain
+            @click.native.prevent="cleanallselect()"
+          >清空篩選</el-button>
         </el-col>
       </el-row>
     </div>
 
     <div class="history_table_container">
       <!--目前使用日期做排序-->
-      <el-table :data="c_user_history" :default-sort="{prop: 'purchasedate', order: 'descending'}" stripe style="width: 100%;" max-height="470" fit>
+      <el-table
+        :data="c_user_history"
+        :default-sort="{prop: 'purchasedate', order: 'descending'}"
+        stripe
+        style="width: 100%;"
+        max-height="470"
+        fit
+      >
         <el-table-column type="expand">
           <template slot-scope="scope">
-            <el-form label-position="left" inline class="table_expand">
+            <el-form
+              label-position="left"
+              inline
+              class="table_expand"
+            >
               <!--
               <el-form-item label="發票隨機碼">
                 <div v-if="scope.row.invoice_id==='-'">
@@ -87,14 +231,23 @@
             </el-form>
           </template>
         </el-table-column>
-        <el-table-column :label="$t('c_history.date')" prop="purchasedate" sortable align="center">
+        <el-table-column
+          :label="$t('c_history.date')"
+          prop="purchasedate"
+          sortable
+          align="center"
+        >
           <template slot-scope="scope">
             <span>
               {{ scope.row.purchasedate }}
             </span>
           </template>
         </el-table-column>
-        <el-table-column :label="$t('c_history.receipt')" prop="invoice_id.number" align="center">
+        <el-table-column
+          :label="$t('c_history.receipt')"
+          prop="invoice_id.number"
+          align="center"
+        >
           <template slot-scope="scope">
             <div v-if="scope.row.invoice_id==='-'">
               <span>
@@ -108,7 +261,11 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column :label="$t('c_history.incomespend')" prop="type" align="center">
+        <el-table-column
+          :label="$t('c_history.incomespend')"
+          prop="type"
+          align="center"
+        >
           <template slot-scope="scope">
             <el-tag :type="scope.row.type==='支出'?'danger':'primary'">
               <span>
@@ -117,81 +274,183 @@
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column :label="$t('c_history.mainsort')" prop="sort_id.name" align="center">
+        <el-table-column
+          :label="$t('c_history.mainsort')"
+          prop="sort_id.name"
+          align="center"
+        >
           <template slot-scope="scope">
             <span>
               {{ scope.row.sort_id.name }}
             </span>
           </template>
         </el-table-column>
-        <el-table-column :label="$t('c_history.subclass')" prop="subsort_id.name" align="center">
+        <el-table-column
+          :label="$t('c_history.subclass')"
+          prop="subsort_id.name"
+          align="center"
+        >
           <template slot-scope="scope">
             <span>
               {{ scope.row.subsort_id.name }}
             </span>
           </template>
         </el-table-column>
-        <el-table-column :label="$t('c_history.project')" prop="project_id.name" align="center">
+        <el-table-column
+          :label="$t('c_history.project')"
+          prop="project_id.name"
+          align="center"
+        >
           <template slot-scope="scope">
             <span>
               {{ scope.row.project_id.name }}
             </span>
           </template>
         </el-table-column>
-        <el-table-column :label="$t('c_history.account')" prop="account_id.name" align="center">
+        <el-table-column
+          :label="$t('c_history.account')"
+          prop="account_id.name"
+          align="center"
+        >
           <template slot-scope="scope">
             <span>
               {{ scope.row.account_id.name }}
             </span>
           </template>
         </el-table-column>
-        <el-table-column :label="$t('c_history.money')" prop="amount" align="center">
+        <el-table-column
+          :label="$t('c_history.money')"
+          prop="amount"
+          align="center"
+        >
           <template slot-scope="scope">
             <span>
               {{ scope.row.amount }}
             </span>
           </template>
         </el-table-column>
-        <el-table-column :label="$t('c_history.operation')" align="center">
+        <el-table-column
+          :label="$t('c_history.operation')"
+          align="center"
+        >
           <template slot-scope="scope">
-            <el-button type="primary" @click="handle_edit(scope.$index,scope.row)">{{ $t('c_history.edit') }}</el-button>
+            <el-button
+              type="primary"
+              @click="handle_edit(scope.$index,scope.row)"
+            >{{ $t('c_history.edit') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
     <div class="dialog_container">
-      <el-dialog :visible.sync="c_history_visible" :title="$t('c_history.edit')" width="80vw" top="5.5vh">
-        <el-form ref="c_history_edit" :model="c_history_edit" label-position="left" inline class="table_history">
+      <el-dialog
+        :visible.sync="c_history_visible"
+        :title="$t('c_history.edit')"
+        width="80vw"
+        top="5.5vh"
+      >
+        <el-form
+          ref="c_history_edit"
+          :model="c_history_edit"
+          label-position="left"
+          inline
+          class="table_history"
+        >
           <el-form-item>
             <span>{{ $t('c_history.notmodify') }}</span>
           </el-form-item>
           <el-form-item>
             <span />
           </el-form-item>
-          <el-form-item :label="$t('c_history.date')" prop="date">
-            <el-date-picker v-model="c_history_edit.date" :placeholder="c_history_date_p" type="date" />
+          <el-form-item
+            :label="$t('c_history.date')"
+            prop="date"
+          >
+            <el-date-picker
+              v-model="c_history_edit.date"
+              :placeholder="c_history_date_p"
+              type="date"
+            />
           </el-form-item>
-          <el-form-item :label="$t('c_history.receiptnumber')" prop="invoice">
-            <el-input v-model="c_history_edit.invoice" :placeholder="c_history_invoice_p" clearable />
+          <el-form-item
+            :label="$t('c_history.receiptnumber')"
+            prop="invoice"
+          >
+            <el-input
+              v-model="c_history_edit.invoice"
+              :placeholder="c_history_invoice_p"
+              clearable
+            />
           </el-form-item>
-          <el-form-item :label="$t('c_history.account')" prop="account">
-            <el-select v-model="c_history_edit.account" :placeholder="c_history_account_p" clearable filterable @focus="get_account()" @change="get_account()">
-              <el-option v-for="account in c_accountitem" :key="account.id" :label="account.name" :value="account.id" />
+          <el-form-item
+            :label="$t('c_history.account')"
+            prop="account"
+          >
+            <el-select
+              v-model="c_history_edit.account"
+              :placeholder="c_history_account_p"
+              clearable
+              filterable
+              @focus="get_account()"
+              @change="get_account()"
+            >
+              <el-option
+                v-for="account in c_accountitem"
+                :key="account.id"
+                :label="account.name"
+                :value="account.id"
+              />
             </el-select>
           </el-form-item>
-          <el-form-item label="隨機碼" prop="random">
-            <el-input v-model="c_history_edit.random" :placeholder="c_history_random_p" clearable />
+          <el-form-item
+            label="隨機碼"
+            prop="random"
+          >
+            <el-input
+              v-model="c_history_edit.random"
+              :placeholder="c_history_random_p"
+              clearable
+            />
           </el-form-item>
-          <el-form-item label="專案" prop="project">
-            <el-select v-model="c_history_edit.project" :placeholder="c_history_project_p" clearable filterable @focus="get_project()" @change="get_project()">
-              <el-option v-for="project in c_projectitem" :key="project.id" :label="project.name" :value="project.id" />
+          <el-form-item
+            label="專案"
+            prop="project"
+          >
+            <el-select
+              v-model="c_history_edit.project"
+              :placeholder="c_history_project_p"
+              clearable
+              filterable
+              @focus="get_project()"
+              @change="get_project()"
+            >
+              <el-option
+                v-for="project in c_projectitem"
+                :key="project.id"
+                :label="project.name"
+                :value="project.id"
+              />
             </el-select>
           </el-form-item>
-          <el-form-item :label="$t('c_history.money')" prop="amount">
-            <el-input v-model="c_history_edit.amount" :placeholder="c_history_amount_p" clearable />
+          <el-form-item
+            :label="$t('c_history.money')"
+            prop="amount"
+          >
+            <el-input
+              v-model="c_history_edit.amount"
+              :placeholder="c_history_amount_p"
+              clearable
+            />
           </el-form-item>
-          <el-form-item label="備註" prop="comment">
-            <el-input v-model="c_history_edit.comment" :placeholder="c_history_comment_p" clearable />
+          <el-form-item
+            label="備註"
+            prop="comment"
+          >
+            <el-input
+              v-model="c_history_edit.comment"
+              :placeholder="c_history_comment_p"
+              clearable
+            />
           </el-form-item>
           <hr>
           <el-form-item>
@@ -200,30 +459,93 @@
           <el-form-item>
             <span />
           </el-form-item>
-          <el-form-item :label="$t('c_history.incomespend')" prop="payorin">
-            <el-select v-model="c_history_edit.payorin" :placeholder="$t('c_history.incomespend')" style="width: 25vw;max-width:7.5rem;min-width:6.5rem;" @change="get_confi_sort()">
-              <el-option v-for="payorin in c_pay_in" :key="payorin.value" :label="payorin.label" :value="payorin.value" />
+          <el-form-item
+            :label="$t('c_history.incomespend')"
+            prop="payorin"
+          >
+            <el-select
+              v-model="c_history_edit.payorin"
+              :placeholder="$t('c_history.incomespend')"
+              style="width: 25vw;max-width:7.5rem;min-width:6.5rem;"
+              @change="get_confi_sort()"
+            >
+              <el-option
+                v-for="payorin in c_pay_in"
+                :key="payorin.value"
+                :label="payorin.label"
+                :value="payorin.value"
+              />
             </el-select>
           </el-form-item>
-          <el-form-item :label="$t('c_history.mainsort')" prop="sort">
-            <el-select v-model="c_history_edit.sort" :disabled="c_confi_sort_disable" :placeholder="$t('c_history.mainsort')" clearable filterable style="width: 25vw;max-width:7.5rem;min-width:6.5rem;" @focus="get_confi_sort()" @change="get_confi_subsort()">
-              <el-option v-for="sort in c_confi_sort_payorinitem" :key="sort.id" :label="sort.name" :value="sort.id" />
+          <el-form-item
+            :label="$t('c_history.mainsort')"
+            prop="sort"
+          >
+            <el-select
+              v-model="c_history_edit.sort"
+              :disabled="c_confi_sort_disable"
+              :placeholder="$t('c_history.mainsort')"
+              clearable
+              filterable
+              style="width: 25vw;max-width:7.5rem;min-width:6.5rem;"
+              @focus="get_confi_sort()"
+              @change="get_confi_subsort()"
+            >
+              <el-option
+                v-for="sort in c_confi_sort_payorinitem"
+                :key="sort.id"
+                :label="sort.name"
+                :value="sort.id"
+              />
             </el-select>
           </el-form-item>
-          <el-form-item :label="$t('c_history.subclass')" prop="subsort">
-            <el-select v-model="c_history_edit.subsort" :disabled="c_confi_subsort_disable" :placeholder="$t('c_history.subclass')" clearable filterable style="width: 25vw;max-width:7.5rem;min-width:6.5rem;">
-              <el-option v-for="subsort in c_confi_subsort_payorinitem" :key="subsort.id" :label="subsort.name" :value="subsort.id" />
+          <el-form-item
+            :label="$t('c_history.subclass')"
+            prop="subsort"
+          >
+            <el-select
+              v-model="c_history_edit.subsort"
+              :disabled="c_confi_subsort_disable"
+              :placeholder="$t('c_history.subclass')"
+              clearable
+              filterable
+              style="width: 25vw;max-width:7.5rem;min-width:6.5rem;"
+            >
+              <el-option
+                v-for="subsort in c_confi_subsort_payorinitem"
+                :key="subsort.id"
+                :label="subsort.name"
+                :value="subsort.id"
+              />
             </el-select>
           </el-form-item>
 
         </el-form>
         <span>
-          <el-input v-model="show_ori_category" readonly style="border:0;" />
+          <el-input
+            v-model="show_ori_category"
+            readonly
+            style="border:0;"
+          />
         </span>
-        <span slot="footer" class="invoice_dialog_footer">
-          <el-button type="danger" plain @click="c_history_del()">{{ $t('c_history.delete') }}</el-button>
-          <el-button type="primary" @click="c_history_confirm()">{{ $t('c_history.confirm') }}</el-button>
-          <el-button type="info" plain @click="c_history_cal()">{{ $t('c_history.cancel') }}</el-button>
+        <span
+          slot="footer"
+          class="invoice_dialog_footer"
+        >
+          <el-button
+            type="danger"
+            plain
+            @click="c_history_del()"
+          >{{ $t('c_history.delete') }}</el-button>
+          <el-button
+            type="primary"
+            @click="c_history_confirm()"
+          >{{ $t('c_history.confirm') }}</el-button>
+          <el-button
+            type="info"
+            plain
+            @click="c_history_cal()"
+          >{{ $t('c_history.cancel') }}</el-button>
         </span>
 
       </el-dialog>
@@ -231,16 +553,21 @@
   </div>
 </template>
 <script>
-
 import waves from '@/directive/waves' // 水波紋指令
 
-import { getaccounting_all, getaccounting_single } from '@/api/accounting/getaccounting'
+import {
+  getaccounting_all,
+  getaccounting_single
+} from '@/api/accounting/getaccounting'
 import { getsort_pay, getsort_in } from '@/api/sort/getsort'
 import { getsubsort } from '@/api/subsort/getsubsort'
 import { getproject } from '@/api/project/getproject'
 import { getaccount_all, getaccountsingledata } from '@/api/account/getaccount'
 import { patchaccount_modify } from '@/api/account/patchaccount'
-import { patchaccounting_confi, patchaccounting_del } from '@/api/accounting/patchaccounting'
+import {
+  patchaccounting_confi,
+  patchaccounting_del
+} from '@/api/accounting/patchaccounting'
 import { postinvoice } from '@/api/invoice/postinvoice'
 import { patchinvoice } from '@/api/invoice/patchinvoice'
 import { postmemberinvoice } from '@/api/memberinvoice/postmemberinvoice'
@@ -264,8 +591,7 @@ export default {
       c_subsort: '',
       c_project: '',
       c_account: '',
-      c_history_edit:
-      {
+      c_history_edit: {
         id: '',
         date: '',
         invoice: '',
@@ -357,7 +683,8 @@ export default {
               start.setTime(start.getTime() - 3600 * 1000 * 24 * 180)
               picker.$emit('pick', [start, end])
             }
-          }]
+          }
+        ]
       }
     }
   },
@@ -435,8 +762,20 @@ export default {
   },
   created() {
     this.get_getaccounting_all()
+    this.fullloading()
   },
   methods: {
+    fullloading() {
+      const loading = this.$loading({
+        lock: true,
+        text: '正在幫你載入所有所有帳務中.......',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.9)'
+      })
+      setTimeout(() => {
+        loading.close()
+      }, 2000)
+    },
     cleanallselect() {
       const start = new Date()
       start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
@@ -467,7 +806,16 @@ export default {
       } else {
         payinval = ''
       }
-      getaccounting_all(getToken(), startdate, enddate, payinval, this.c_sort, this.c_subsort, this.c_project, this.c_account).then((res) => {
+      getaccounting_all(
+        getToken(),
+        startdate,
+        enddate,
+        payinval,
+        this.c_sort,
+        this.c_subsort,
+        this.c_project,
+        this.c_account
+      ).then(res => {
         this.c_user_history = res.data
         this.c_user_history.forEach(items => {
           if (items.type === false) {
@@ -483,75 +831,94 @@ export default {
     },
     get_sort() {
       if (this.c_payorin === 0) {
-        getsort_pay(getToken()).then(response => {
-          this.c_sort_payorinitem = response.data
-          this.get_getaccounting_all()
-        }).catch((error) => {
-          console.log(error)
-        })
+        getsort_pay(getToken())
+          .then(response => {
+            this.c_sort_payorinitem = response.data
+            this.get_getaccounting_all()
+          })
+          .catch(error => {
+            console.log(error)
+          })
       } else {
-        getsort_in(getToken()).then(response => {
-          this.c_sort_payorinitem = response.data
-          this.get_getaccounting_all()
-        }).catch((error) => {
-          console.log(error)
-        })
+        getsort_in(getToken())
+          .then(response => {
+            this.c_sort_payorinitem = response.data
+            this.get_getaccounting_all()
+          })
+          .catch(error => {
+            console.log(error)
+          })
       }
     },
     get_subsort() {
-      getsubsort(getToken(), this.c_sort).then(response => {
-        if (response.data.length !== 0) {
-          this.c_subsort_payorinitem = response.data
-          this.get_getaccounting_all()
-        } else {
-          this.c_subsort_disable = true
-          this.get_getaccounting_all()
-        }
-      }).catch((error) => {
-        console.log(error)
-      })
+      getsubsort(getToken(), this.c_sort)
+        .then(response => {
+          if (response.data.length !== 0) {
+            this.c_subsort_payorinitem = response.data
+            this.get_getaccounting_all()
+          } else {
+            this.c_subsort_disable = true
+            this.get_getaccounting_all()
+          }
+        })
+        .catch(error => {
+          console.log(error)
+        })
     },
     get_confi_sort() {
-      if (this.c_history_edit.payorin === 0 || this.c_history_edit.payorin === '支出') {
-        getsort_pay(getToken()).then(response => {
-          this.c_confi_sort_payorinitem = response.data
-        }).catch((error) => {
-          console.log(error)
-        })
+      if (
+        this.c_history_edit.payorin === 0 ||
+        this.c_history_edit.payorin === '支出'
+      ) {
+        getsort_pay(getToken())
+          .then(response => {
+            this.c_confi_sort_payorinitem = response.data
+          })
+          .catch(error => {
+            console.log(error)
+          })
       } else {
-        getsort_in(getToken()).then(response => {
-          this.c_confi_sort_payorinitem = response.data
-        }).catch((error) => {
-          console.log(error)
-        })
+        getsort_in(getToken())
+          .then(response => {
+            this.c_confi_sort_payorinitem = response.data
+          })
+          .catch(error => {
+            console.log(error)
+          })
       }
     },
     get_confi_subsort() {
-      getsubsort(getToken(), this.c_history_edit.sort).then(response => {
-        if (this.c_history_edit.sort - 1 < 0) {
-          this.c_confi_subsort_disable = true
-        } else if (response.data.length !== 0) {
-          this.c_confi_subsort_payorinitem = response.data
-        }
-      }).catch((error) => {
-        console.log(error)
-      })
+      getsubsort(getToken(), this.c_history_edit.sort)
+        .then(response => {
+          if (this.c_history_edit.sort - 1 < 0) {
+            this.c_confi_subsort_disable = true
+          } else if (response.data.length !== 0) {
+            this.c_confi_subsort_payorinitem = response.data
+          }
+        })
+        .catch(error => {
+          console.log(error)
+        })
     },
     get_project() {
-      getproject(getToken()).then(response => {
-        this.c_projectitem = response.data
-        this.get_getaccounting_all()
-      }).catch((error) => {
-        console.log(error)
-      })
+      getproject(getToken())
+        .then(response => {
+          this.c_projectitem = response.data
+          this.get_getaccounting_all()
+        })
+        .catch(error => {
+          console.log(error)
+        })
     },
     get_account() {
-      getaccount_all(getToken()).then(response => {
-        this.c_accountitem = response.data
-        this.get_getaccounting_all()
-      }).catch((error) => {
-        console.log(error)
-      })
+      getaccount_all(getToken())
+        .then(response => {
+          this.c_accountitem = response.data
+          this.get_getaccounting_all()
+        })
+        .catch(error => {
+          console.log(error)
+        })
     },
     handle_edit(index, row) {
       this.c_history_visible = true
@@ -592,97 +959,157 @@ export default {
       this.c_history_sort_p = row.sort_id.id
       this.c_history_subsort_p = row.subsort_id.id
 
-      this.show_ori_category = '原帳務分類：★收支出： ' + this.send_payorin + '   /   ★主分類： ' + this.show_sort + '   /   ★子分類： ' + this.show_subsort
+      this.show_ori_category =
+        '原帳務分類：★收支出： ' +
+        this.send_payorin +
+        '   /   ★主分類： ' +
+        this.show_sort +
+        '   /   ★子分類： ' +
+        this.show_subsort
     },
     c_account_configure_yiv() {
       let ori_balance
       let new_balance
 
       getaccounting_single(getToken(), this.send_id)
-        .then((res_gats) => {
+        .then(res_gats => {
           getaccountsingledata(getToken(), this.c_history_account_prep)
-            .then((res_gas) => {
+            .then(res_gas => {
               if (this.c_history_payorin_p === '支出') {
                 this.c_history_payorin_p = 0
               } else {
                 this.c_history_payorin_p = 1
               }
               // reback ori-amount
-              if (this.c_history_account_prep === this.c_history_edit.account_id) {
-                if (this.c_history_edit.payorin === '' || this.c_history_payorin_p === this.c_history_edit.payorin) {
+              if (
+                this.c_history_account_prep === this.c_history_edit.account_id
+              ) {
+                if (
+                  this.c_history_edit.payorin === '' ||
+                  this.c_history_payorin_p === this.c_history_edit.payorin
+                ) {
                   if (res_gats.data.type === false) {
-                    ori_balance = Number(res_gas.data.balance) + Number(this.c_history_amount_p) - Number(this.c_history_edit.amount)
+                    ori_balance =
+                      Number(res_gas.data.balance) +
+                      Number(this.c_history_amount_p) -
+                      Number(this.c_history_edit.amount)
                   } else {
-                    ori_balance = Number(res_gas.data.balance) - Number(this.c_history_amount_p) + Number(this.c_history_edit.amount)
+                    ori_balance =
+                      Number(res_gas.data.balance) -
+                      Number(this.c_history_amount_p) +
+                      Number(this.c_history_edit.amount)
                   }
                 } else {
-                  if (res_gats.data.type === false && this.c_history_edit.payorin === 0) {
-                    ori_balance = Number(res_gas.data.balance) - Number(this.c_history_amount_p) - Number(this.c_history_edit.amount)
+                  if (
+                    res_gats.data.type === false &&
+                    this.c_history_edit.payorin === 0
+                  ) {
+                    ori_balance =
+                      Number(res_gas.data.balance) -
+                      Number(this.c_history_amount_p) -
+                      Number(this.c_history_edit.amount)
                   } else {
-                    ori_balance = Number(res_gas.data.balance) + Number(this.c_history_amount_p) + Number(this.c_history_edit.amount)
+                    ori_balance =
+                      Number(res_gas.data.balance) +
+                      Number(this.c_history_amount_p) +
+                      Number(this.c_history_edit.amount)
                   }
                 }
               } else {
-                if (this.c_history_edit.payorin === '' || this.c_history_payorin_p === this.c_history_edit.payorin) {
+                if (
+                  this.c_history_edit.payorin === '' ||
+                  this.c_history_payorin_p === this.c_history_edit.payorin
+                ) {
                   if (res_gats.data.type === false) {
-                    ori_balance = Number(res_gas.data.balance) + Number(this.c_history_edit.amount)
+                    ori_balance =
+                      Number(res_gas.data.balance) +
+                      Number(this.c_history_edit.amount)
                   } else {
-                    ori_balance = Number(res_gas.data.balance) - Number(this.c_history_edit.amount)
+                    ori_balance =
+                      Number(res_gas.data.balance) -
+                      Number(this.c_history_edit.amount)
                   }
                 } else {
-                  if (res_gats.data.type === false && this.c_history_edit.payorin === 0) {
-                    ori_balance = Number(res_gas.data.balance) - Number(this.c_history_edit.amount)
+                  if (
+                    res_gats.data.type === false &&
+                    this.c_history_edit.payorin === 0
+                  ) {
+                    ori_balance =
+                      Number(res_gas.data.balance) -
+                      Number(this.c_history_edit.amount)
                   } else {
-                    ori_balance = Number(res_gas.data.balance) + Number(this.c_history_edit.amount)
+                    ori_balance =
+                      Number(res_gas.data.balance) +
+                      Number(this.c_history_edit.amount)
                   }
-                  console.log(ori_balance, res_gas.data.balance, this.c_history_edit.amount)
+                  console.log(
+                    ori_balance,
+                    res_gas.data.balance,
+                    this.c_history_edit.amount
+                  )
                 }
               }
-              patchaccount_modify(getToken()
-                , this.c_history_account_prep
-                , res_gas.data.name
-                , ori_balance
-                , this.globledate)
-                .then(() => {
-                  // get new account data
-                  getaccountsingledata(getToken()
-                    , this.c_history_edit.account_id)
-                    .then((res_gnas) => {
-                      if (this.c_history_edit.payorin === '') {
-                        if (this.c_history_payorin_p === 0) {
-                          new_balance = Number(res_gnas.data.balance) - Number(this.c_history_edit.amount)
-                        } else {
-                          new_balance = Number(res_gnas.data.balance) + Number(this.c_history_edit.amount)
-                        }
+              patchaccount_modify(
+                getToken(),
+                this.c_history_account_prep,
+                res_gas.data.name,
+                ori_balance,
+                this.globledate
+              ).then(() => {
+                // get new account data
+                getaccountsingledata(getToken(), this.c_history_edit.account_id)
+                  .then(res_gnas => {
+                    if (this.c_history_edit.payorin === '') {
+                      if (this.c_history_payorin_p === 0) {
+                        new_balance =
+                          Number(res_gnas.data.balance) -
+                          Number(this.c_history_edit.amount)
                       } else {
-                        if (this.c_history_edit.payorin === 0) {
-                          new_balance = Number(res_gnas.data.balance) - Number(this.c_history_edit.amount)
-                        } else {
-                          new_balance = Number(res_gnas.data.balance) + Number(this.c_history_edit.amount)
-                        }
-                        console.log(new_balance, Number(res_gnas.data.balance), Number(this.c_history_edit.amount))
+                        new_balance =
+                          Number(res_gnas.data.balance) +
+                          Number(this.c_history_edit.amount)
                       }
-                      // update new account and assign new balance
-                      patchaccount_modify(getToken()
-                        , res_gnas.data.id
-                        , res_gnas.data.name
-                        , new_balance
-                        , this.globledate)
-                        .then(() => {
-                          return true
-                        })
-                        .catch(() => {
-                          return false
-                        })
-                    })
-                    .catch(() => {
-                      return false
-                    })
-                })
-            }).catch(() => {
+                    } else {
+                      if (this.c_history_edit.payorin === 0) {
+                        new_balance =
+                          Number(res_gnas.data.balance) -
+                          Number(this.c_history_edit.amount)
+                      } else {
+                        new_balance =
+                          Number(res_gnas.data.balance) +
+                          Number(this.c_history_edit.amount)
+                      }
+                      console.log(
+                        new_balance,
+                        Number(res_gnas.data.balance),
+                        Number(this.c_history_edit.amount)
+                      )
+                    }
+                    // update new account and assign new balance
+                    patchaccount_modify(
+                      getToken(),
+                      res_gnas.data.id,
+                      res_gnas.data.name,
+                      new_balance,
+                      this.globledate
+                    )
+                      .then(() => {
+                        return true
+                      })
+                      .catch(() => {
+                        return false
+                      })
+                  })
+                  .catch(() => {
+                    return false
+                  })
+              })
+            })
+            .catch(() => {
               return false
             })
-        }).catch(() => {
+        })
+        .catch(() => {
           return false
         })
     },
@@ -708,82 +1135,108 @@ export default {
         this.send_subsort = this.c_history_edit.subsort
       }
       // 有發票，其他處理皆包含
-      if (this.c_history_edit.invoice_id !== undefined && this.c_history_edit.random !== '') {
-        patchinvoice(getToken()
-          , this.c_history_edit.invoice_id
-          , this.c_history_edit.invoice
-          , this.c_history_edit.random
-          , this.c_history_edit.amount
-          , this.globledate).then(() => {
-          patchaccounting_confi(getToken()
-            , this.send_id
-            , this.c_history_edit.date
-            , this.c_history_edit.amount
-            , this.c_history_edit.comment
-            , this.send_payorin
-            , this.send_sort
-            , this.send_subsort
-            , this.c_history_edit.account_id
-            , this.c_history_edit.project_id
-            , this.send_invoice_id
-            , this.globledate)
-            .then(() => {
-              // change about amount or account
-              if (this.c_history_account_prep !== this.c_history_edit.account_id || this.c_history_amount_p !== this.c_history_edit.amount || this.c_history_edit.payorin !== '') {
-                this.c_account_configure_yiv()
-                this.c_user_history = []
-                this.get_getaccounting_all()
-              } else {
-                // not change about amount or account
-                console.log('func2')
-                this.$message({
-                  type: 'success',
-                  message: '修改成功'
-                })
-                this.c_user_history = []
-                this.get_getaccounting_all()
-              }
-            })
-            .catch((error) => {
-              console.log(error)
-              this.$message({
-                type: 'error',
-                message: '發生一點錯誤，請稍後再做修改'
-              })
-            })
-        }).catch((error) => {
-          console.log(error)
-          this.$message({
-            type: 'error',
-            message: '發生一點錯誤，請稍後再做修改'
-          })
-        })
-      } else if (this.c_history_edit.invoice_id === undefined && this.c_history_edit.invoice !== undefined && this.c_history_edit.random !== undefined) {
-        // 沒發票，但想新增發票，
-        postinvoice(getToken()
-          , this.c_history_edit.invoice
-          , this.c_history_edit.random
-          , this.c_history_edit.amount
-          , this.globledate)
-          .then((res) => {
-            postmemberinvoice(getToken()
-              , res.data.id)
+      if (
+        this.c_history_edit.invoice_id !== undefined &&
+        this.c_history_edit.random !== ''
+      ) {
+        patchinvoice(
+          getToken(),
+          this.c_history_edit.invoice_id,
+          this.c_history_edit.invoice,
+          this.c_history_edit.random,
+          this.c_history_edit.amount,
+          this.globledate
+        )
+          .then(() => {
+            patchaccounting_confi(
+              getToken(),
+              this.send_id,
+              this.c_history_edit.date,
+              this.c_history_edit.amount,
+              this.c_history_edit.comment,
+              this.send_payorin,
+              this.send_sort,
+              this.send_subsort,
+              this.c_history_edit.account_id,
+              this.c_history_edit.project_id,
+              this.send_invoice_id,
+              this.globledate
+            )
               .then(() => {
-                patchaccounting_confi(getToken()
-                  , this.send_id
-                  , this.c_history_edit.date
-                  , this.c_history_edit.amount
-                  , this.c_history_edit.comment
-                  , this.send_payorin
-                  , this.send_sort
-                  , this.send_subsort
-                  , this.c_history_edit.account_id
-                  , this.c_history_edit.project_id
-                  , res.data.id
-                  , this.globledate)
+                // change about amount or account
+                if (
+                  this.c_history_account_prep !==
+                    this.c_history_edit.account_id ||
+                  this.c_history_amount_p !== this.c_history_edit.amount ||
+                  this.c_history_edit.payorin !== ''
+                ) {
+                  this.c_account_configure_yiv()
+                  this.c_user_history = []
+                  this.get_getaccounting_all()
+                } else {
+                  // not change about amount or account
+                  console.log('func2')
+                  this.$message({
+                    type: 'success',
+                    message: '修改成功'
+                  })
+                  this.c_user_history = []
+                  this.get_getaccounting_all()
+                }
+              })
+              .catch(error => {
+                console.log(error)
+                this.$message({
+                  type: 'error',
+                  message: '發生一點錯誤，請稍後再做修改'
+                })
+              })
+          })
+          .catch(error => {
+            console.log(error)
+            this.$message({
+              type: 'error',
+              message: '發生一點錯誤，請稍後再做修改'
+            })
+          })
+      } else if (
+        this.c_history_edit.invoice_id === undefined &&
+        this.c_history_edit.invoice !== undefined &&
+        this.c_history_edit.random !== undefined
+      ) {
+        // 沒發票，但想新增發票，
+        postinvoice(
+          getToken(),
+          this.c_history_edit.invoice,
+          this.c_history_edit.random,
+          this.c_history_edit.amount,
+          this.globledate
+        )
+          .then(res => {
+            postmemberinvoice(getToken(), res.data.id)
+              .then(() => {
+                patchaccounting_confi(
+                  getToken(),
+                  this.send_id,
+                  this.c_history_edit.date,
+                  this.c_history_edit.amount,
+                  this.c_history_edit.comment,
+                  this.send_payorin,
+                  this.send_sort,
+                  this.send_subsort,
+                  this.c_history_edit.account_id,
+                  this.c_history_edit.project_id,
+                  res.data.id,
+                  this.globledate
+                )
                   .then(() => {
                     // change about amount or account
-                    if (this.c_history_account_prep !== this.c_history_edit.account_id || this.c_history_amount_p !== this.c_history_edit.amount || this.c_history_edit.payorin !== '') {
+                    if (
+                      this.c_history_account_prep !==
+                        this.c_history_edit.account_id ||
+                      this.c_history_amount_p !== this.c_history_edit.amount ||
+                      this.c_history_edit.payorin !== ''
+                    ) {
                       this.c_account_configure_yiv()
                       this.c_user_history = []
                       this.get_getaccounting_all()
@@ -796,7 +1249,8 @@ export default {
                       this.c_user_history = []
                       this.get_getaccounting_all()
                     }
-                  }).catch((error) => {
+                  })
+                  .catch(error => {
                     console.log(error)
                     this.$message({
                       type: 'error',
@@ -804,7 +1258,7 @@ export default {
                     })
                   })
               })
-              .catch((error) => {
+              .catch(error => {
                 console.log(error)
                 this.$message({
                   type: 'error',
@@ -812,7 +1266,7 @@ export default {
                 })
               })
           })
-          .catch((error) => {
+          .catch(error => {
             console.log(error)
             this.$message({
               type: 'error',
@@ -825,21 +1279,27 @@ export default {
         if (this.send_invoice_id === '-') {
           this.send_invoice_id = null
         }
-        patchaccounting_confi(getToken()
-          , this.send_id
-          , this.c_history_edit.date
-          , this.c_history_edit.amount
-          , this.c_history_edit.comment
-          , this.send_payorin
-          , this.send_sort
-          , this.send_subsort
-          , this.c_history_edit.account_id
-          , this.c_history_edit.project_id
-          , this.send_invoice_id
-          , this.globledate)
+        patchaccounting_confi(
+          getToken(),
+          this.send_id,
+          this.c_history_edit.date,
+          this.c_history_edit.amount,
+          this.c_history_edit.comment,
+          this.send_payorin,
+          this.send_sort,
+          this.send_subsort,
+          this.c_history_edit.account_id,
+          this.c_history_edit.project_id,
+          this.send_invoice_id,
+          this.globledate
+        )
           .then(() => {
             // change about amount or account
-            if (this.c_history_account_prep !== this.c_history_edit.account_id || this.c_history_amount_p !== this.c_history_edit.amount || this.c_history_edit.payorin !== '') {
+            if (
+              this.c_history_account_prep !== this.c_history_edit.account_id ||
+              this.c_history_amount_p !== this.c_history_edit.amount ||
+              this.c_history_edit.payorin !== ''
+            ) {
               this.c_account_configure_yiv()
               this.c_user_history = []
               this.get_getaccounting_all()
@@ -853,7 +1313,7 @@ export default {
               this.get_getaccounting_all()
             }
           })
-          .catch((error) => {
+          .catch(error => {
             console.log(error)
             this.$message({
               type: 'error',
@@ -875,53 +1335,55 @@ export default {
         cancelButtonText: '取消',
         confirmButtonText: '確認',
         type: 'warning'
-      }).then(() => {
-        this.$confirm('請在確認一次是否要刪除該筆資料', '警告', {
-          cancelButtonText: '取消',
-          confirmButtonText: '確認',
-          type: 'warning'
-        }).then(() => {
-          if (this.send_payorin === '支出' || this.send_payorin === 0) {
-            this.send_payorin = 0
-          } else {
-            this.send_payorin = 1
-          }
-          if (this.send_invoice_id === '-') {
-            this.send_invoice_id = null
-          }
-          patchaccounting_del(getToken()
-            , this.send_id
-            , this.globledate)
+      })
+        .then(() => {
+          this.$confirm('請在確認一次是否要刪除該筆資料', '警告', {
+            cancelButtonText: '取消',
+            confirmButtonText: '確認',
+            type: 'warning'
+          })
             .then(() => {
-              this.$message({
-                type: 'success',
-                message: '刪除成功'
-              })
-              this.c_user_history = []
-              this.get_getaccounting_all()
+              if (this.send_payorin === '支出' || this.send_payorin === 0) {
+                this.send_payorin = 0
+              } else {
+                this.send_payorin = 1
+              }
+              if (this.send_invoice_id === '-') {
+                this.send_invoice_id = null
+              }
+              patchaccounting_del(getToken(), this.send_id, this.globledate)
+                .then(() => {
+                  this.$message({
+                    type: 'success',
+                    message: '刪除成功'
+                  })
+                  this.c_user_history = []
+                  this.get_getaccounting_all()
+                })
+                .catch(error => {
+                  console.log(error)
+                  this.$message({
+                    type: 'error',
+                    message: '發生一點錯誤，請稍後再做修改'
+                  })
+                })
+              this.c_history_visible = false
             })
-            .catch((error) => {
-              console.log(error)
+            .catch(() => {
               this.$message({
-                type: 'error',
-                message: '發生一點錯誤，請稍後再做修改'
+                type: 'info',
+                message: '已取消刪除'
               })
+              this.c_history_visible = false
             })
-          this.c_history_visible = false
-        }).catch(() => {
+        })
+        .catch(() => {
           this.$message({
             type: 'info',
             message: '已取消刪除'
           })
           this.c_history_visible = false
         })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消刪除'
-        })
-        this.c_history_visible = false
-      })
     }
   }
 }

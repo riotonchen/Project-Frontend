@@ -32,12 +32,12 @@
 </template>
 
 <script>
-import PanelGroup from './components/PanelGroup';
+import PanelGroup from './components/PanelGroup'
 
-import TransactionTable from './components/TransactionTable';
+import TransactionTable from './components/TransactionTable'
 
-import YLineChart from './components/YLineChart';
-import MLineChart from './components/MLineChart';
+import YLineChart from './components/YLineChart'
+import MLineChart from './components/MLineChart'
 
 const lineChartData = {
   messages: {

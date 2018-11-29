@@ -84,16 +84,16 @@
 </template>
 
 <script>
-import PanelGroup from './components/PanelGroup';
+import PanelGroup from './components/PanelGroup'
 
-import TransactionTable from './components/TransactionTable';
+import TransactionTable from './components/TransactionTable'
 
-import YLineChart from './components/YLineChart';
-import MLineChart from './components/MLineChart';
-import YStackLine from './components/YStackLine';
-import MStackLine from './components/MStackLine';
-import YINPie from './components/YINPie';
-import YPAYPie from './components/YPAYPie';
+import YLineChart from './components/YLineChart'
+import MLineChart from './components/MLineChart'
+import YStackLine from './components/YStackLine'
+import MStackLine from './components/MStackLine'
+import YINPie from './components/YINPie'
+import YPAYPie from './components/YPAYPie'
 const lineChartData = {
   messages: {
     paydata: [130, 140, 50, 142, 70, 150, 160],

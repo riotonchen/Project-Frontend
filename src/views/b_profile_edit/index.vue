@@ -1,8 +1,6 @@
 <template>
   <div class="app-container">
-    <title>
-      {{ $t('route.b_profile_edit') }}
-    </title>
+    <title>{{ $t('route.b_profile_edit') }}</title>
     <div class="b_b_personal_edit_form">
       <el-card>
         <el-form
@@ -38,7 +36,7 @@
             <el-input
               v-model="profile_edit_form.manager"
               :placeholder="$t('b_profile_edit.h1')"
-              name=""
+              name
             />
           </el-form-item>
           <el-form-item
@@ -104,17 +102,16 @@
             class="btn"
             @click.native.prevent="goprofile_view"
           >{{ $t('b_profile_edit.cancel') }}</el-button>
-
         </el-form>
       </el-card>
     </div>
   </div>
 </template>
 <script>
-import { getUserInfo } from '@/api/login';
-import { getToken } from '@/utils/auth';
+import { getUserInfo } from '@/api/login'
+import { getToken } from '@/utils/auth'
 /* import { validateuninum } from '@/utils/validate'*/
-import { patchprofile, patchprofilepswd } from '@/api/profile/patchprofile';
+import { patchprofile, patchprofilepswd } from '@/api/profile/patchprofile'
 
 export default {
   name: 'CProfileEdit',
@@ -262,9 +259,9 @@ export default {
           getUserInfo(getToken()).then(response => {
             var ori_name = response.name
             var ori_uni_num = response.uni_num
-            var send_name = '';
-            var send_uni_num = '';
-            var send_phone_num = '';
+            var send_name = ''
+            var send_uni_num = ''
+            var send_phone_num = ''
 
             if (this.profile_edit_form.name === '') {
               send_name = ori_name

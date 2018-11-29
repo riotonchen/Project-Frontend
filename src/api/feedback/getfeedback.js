@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 export function getfeedback(token) {
-  var requ_url = 'https://www.177together.com/api/feedback/?status=0'
+  var requ_url = 'https://www.177together.com/api/feedback/'
 
   return request({
 
