@@ -22,7 +22,7 @@
             <div class="card-panel-text">會員總人數</div>
             <count-to
               :start-val="0"
-              :end-val="c_user_y_history_in"
+              :end-val="totalmember_num"
               :duration="3500"
               class="card-panel-num"
             />
@@ -46,7 +46,7 @@
             <div class="card-panel-text">普通會員人數</div>
             <count-to
               :start-val="0"
-              :end-val="c_user_y_history_pay"
+              :end-val="member_num"
               :duration="3500"
               class="card-panel-num"
             />
@@ -70,7 +70,7 @@
             <div class="card-panel-text">商家會員人數</div>
             <count-to
               :start-val="0"
-              :end-val="c_user_y_history_balance"
+              :end-val="ent_num"
               :duration="3500"
               class="card-panel-num"
             />
@@ -82,12 +82,9 @@
 </template>
 
 <script>
-import CountTo from 'vue-count-to'
-import { getToken } from '@/utils/auth'
-import { getaccount_all } from '@/api/account/getaccount'
-import { getaccounting_all } from '@/api/accounting/getaccounting'
-import { getsortbudget_all } from '@/api/sortbudget/getsortbudget'
-import { formatdate_inc_time } from '@/utils/index'
+import CountTo from 'vue-count-to';
+import { getToken } from '@/utils/auth';
+import { getmember, getmemberlist } from '@/api/member/getmember';
 
 export default {
   components: {
@@ -95,152 +92,66 @@ export default {
   },
   data() {
     return {
-      account_all_data: [],
-      account_all_balance: [],
-      c_user_m_history: [],
-      c_user_m_history_pay: [],
-      c_user_m_history_in: [],
-      c_user_y_history: [],
-      c_user_y_history_pay: [],
-      c_user_y_history_in: [],
-      c_category_m_list: [],
-      c_user_y_history_balance: ''
+      member_num: '',
+      ent_num: '',
+      totalmember_num: '',
+      a_all_ent_data: [],
+      a_all_member_data: []
     }
   },
   created() {
-    this.getaccount_all_data()
-    this.get_getaccounting_all()
-    this.get_getproject_all()
+    this.get_member_all()
   },
   methods: {
-    handleSetLineChartData(type) {
-      this.$emit('handleSetLineChartData', type)
+    get_member_num() {
+      this.member_num = this.a_all_member_data.length
+      this.ent_num = this.a_all_ent_data.length
+      this.totalmember_num = this.member_num + this.ent_num
     },
-    getaccount_all_data() {
-      getaccount_all(getToken()).then(res_month => {
-        this.account_all_data = res_month.data
-        this.account_all_balance = this.account_all_data.reduce(function(
-          accumulator,
-          currentValue
-        ) {
-          return accumulator + currentValue.balance
-        },
-        0)
+    get_member_all() {
+      getmember(getToken()).then(res => {
+        const testmember = res.data
+        const ori_data = []
+        let testnum = testmember.length
+        for (let i = 1; i <= testnum; i++) {
+          getmemberlist(getToken(), i)
+            .then(res_data => {
+              setTimeout(() => {
+                ori_data.push(res_data.data)
+                this.a_all_ent_data = ori_data.filter(function(
+                  item,
+                  index,
+                  array
+                ) {
+                  return item.membertype === 5
+                })
+              }, i * 50)
+            })
+            .catch(() => {
+              testnum = testnum + 1
+              this.get_member_all_ext(testnum)
+            })
+        }
       })
     },
-    get_getaccounting_all() {
-      const date = new Date()
-      const startmonth = new Date(date.getFullYear(), date.getMonth(), 1)
-      const endmonth = new Date(date.getFullYear(), date.getMonth() + 1, 0)
-      const startyear = new Date(date.getFullYear(), 0, 1)
-      const endyear = new Date(date.getFullYear(), 12, 0)
-      this.c_user_history = []
-      getaccounting_all(
-        getToken(),
-        formatdate_inc_time(startmonth, 'yyyy-mm-dd'),
-        formatdate_inc_time(endmonth, 'yyyy-mm-dd')
-      ).then(res_month => {
-        getaccounting_all(
-          getToken(),
-          formatdate_inc_time(startyear, 'yyyy-mm-dd'),
-          formatdate_inc_time(endyear, 'yyyy-mm-dd')
-        ).then(res_year => {
-          this.c_user_y_history = res_year.data
-          this.c_user_y_history.forEach(items => {
-            if (items.type === false) {
-              items.type = '支出'
-            } else {
-              items.type = '收入'
-            }
-            if (items.invoice_id === null || items.invoice_id === undefined) {
-              items.invoice_id = '-'
-            }
-          })
-          this.c_user_y_history_pay = this.c_user_y_history.filter(function(
-            item
-          ) {
-            return item.type === '支出'
-          })
-
-          this.c_user_y_history_pay = this.c_user_y_history_pay.reduce(function(
-            accumulator,
-            currentValue
-          ) {
-            return accumulator + currentValue.amount
-          },
-          0)
-          this.c_user_y_history_in = this.c_user_y_history.filter(function(
-            item
-          ) {
-            return item.type === '收入'
-          })
-          this.c_user_y_history_in = this.c_user_y_history_in.reduce(function(
-            accumulator,
-            currentValue
-          ) {
-            return accumulator + currentValue.amount
-          },
-          0)
-          this.c_user_y_history_balance =
-            this.c_user_y_history_in - this.c_user_y_history_pay
-
-          this.c_user_m_history = res_month.data
-          this.c_user_m_history.forEach(items => {
-            if (items.type === false) {
-              items.type = '支出'
-            } else {
-              items.type = '收入'
-            }
-            if (items.invoice_id === null || items.invoice_id === undefined) {
-              items.invoice_id = '-'
-            }
-          })
-          this.c_user_m_history_pay = this.c_user_m_history.filter(function(
-            item
-          ) {
-            return item.type === '支出'
-          })
-
-          this.c_user_m_history_pay = this.c_user_m_history_pay.reduce(function(
-            accumulator,
-            currentValue
-          ) {
-            return accumulator + currentValue.amount
-          },
-          0)
-          this.c_user_m_history_in = this.c_user_m_history.filter(function(
-            item
-          ) {
-            return item.type === '收入'
-          })
-          this.c_user_m_history_in = this.c_user_m_history_in.reduce(function(
-            accumulator,
-            currentValue
-          ) {
-            return accumulator + currentValue.amount
-          },
-          0)
+    get_member_all_ext(testnum) {
+      getmemberlist(getToken(), testnum)
+        .then(res_data => {
+          setTimeout(() => {
+            this.a_all_ent_data.push(res_data.data)
+            this.a_all_ent_data = this.a_all_ent_data.filter(function(
+              item,
+              index,
+              array
+            ) {
+              return item.membertype === 5
+            })
+          }, testnum * 50)
         })
-      })
-    },
-    get_getproject_all() {
-      this.c_category_m_list = []
-      const date = new Date()
-      const startmonth = new Date(date.getFullYear(), date.getMonth(), 1)
-      getsortbudget_all(
-        getToken(),
-        formatdate_inc_time(startmonth, 'yyyy'),
-        formatdate_inc_time(startmonth, 'mm')
-      ).then(res_month => {
-        this.c_category_m_list = res_month.data
-        this.c_category_m_list = this.c_category_m_list.reduce(function(
-          accumulator,
-          currentValue
-        ) {
-          return accumulator + currentValue.balance
-        },
-        0)
-      })
+        .catch(() => {
+          testnum = testnum + 1
+          this.get_member_all_ext(testnum)
+        })
     }
   }
 }

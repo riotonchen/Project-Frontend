@@ -168,11 +168,20 @@
               :placeholder="c_category_sortname_p"
               name="name"
               clearable
-              @focus="clean_name()"
+              @focus="clean_editsortname()"
             />
           </el-form-item>
-          <el-form-item>
-            <span />
+          <el-form-item
+            label="分類預算"
+            prop="budget"
+          >
+            <el-input
+              v-model="c_category_editsort.budget"
+              :placeholder="c_category_sortbudget_p"
+              name="name"
+              clearable
+              @focus="clean_editsortbudget()"
+            />
           </el-form-item>
           <el-form-item>
             <span />
@@ -215,6 +224,16 @@
           inline
           class="table_sort"
         >
+          <el-form-item
+            label="目前年月"
+            prop="time"
+            class="sortadd_time"
+          >
+            <el-input
+              v-model="c_sort_add.time"
+              readonly
+            />
+          </el-form-item>
 
           <el-form-item
             :label="$t('c_category.mainsortname')"
@@ -241,6 +260,17 @@
           >
             <el-input
               v-model="c_sort_add.name"
+              :placeholder="$t('c_category.amount')"
+              name="name"
+              clearable
+            />
+          </el-form-item>
+          <el-form-item
+            label="初始預算"
+            prop="name"
+          >
+            <el-input
+              v-model="c_sort_add.budget"
               :placeholder="$t('c_category.amount')"
               name="name"
               clearable
@@ -455,18 +485,19 @@
   </div>
 </template>
 <script>
-import waves from '@/directive/waves' // 水波紋指令
-import { getsortbudget_all } from '@/api/sortbudget/getsortbudget'
-import { postsort } from '@/api/sort/postsort'
-import { patchsort_update, patchsort_delete } from '@/api/sort/patchsort'
-import { postsubsort } from '@/api/subsort/postsubsort'
-import { getsubsort, getsinglesubsort } from '@/api/subsort/getsubsort'
+import waves from '@/directive/waves'; // 水波紋指令
+import { getsortbudget_all } from '@/api/sortbudget/getsortbudget';
+import { postsort } from '@/api/sort/postsort';
+import { patchsort_update, patchsort_delete } from '@/api/sort/patchsort';
+import { postsubsort } from '@/api/subsort/postsubsort';
+import { postsortbudget } from '@/api/sortbudget/postsortbudget';
+import { getsubsort, getsinglesubsort } from '@/api/subsort/getsubsort';
 import {
   patchsubsort_update,
   patchsubsort_delete
-} from '@/api/subsort/patchsubsort'
-import { getToken } from '@/utils/auth'
-import { formatdate } from '@/utils/index'
+} from '@/api/subsort/patchsubsort';
+import { getToken } from '@/utils/auth';
+import { formatdate } from '@/utils/index';
 
 export default {
   name: 'CCategoryory',
@@ -520,14 +551,18 @@ export default {
         subname: ''
       },
       c_sort_add: {
+        time: '',
         name: '',
-        payorin: ''
+        payorin: '',
+        budget: ''
       },
       c_category_sortname_p: '',
+      c_category_sortbudget_p: '',
       c_category_editsort: {
         id: '',
         name: '',
-        type: ''
+        type: '',
+        budget: ''
       },
       c_sort_payorinitem: [],
       c_subsort_payorinitem: [],
@@ -570,9 +605,9 @@ export default {
     c_sort_payorin: function(newpi, oldpi) {
       if (this.c_sort_payorin === null || this.c_sort_payorin === '') {
         this.c_sort_disable = true
-        this.c_sort_id = ''
+        this.c_sort_id = '';
       } else if (newpi !== oldpi) {
-        this.c_sort_id = ''
+        this.c_sort_id = '';
         this.c_sort_disable = false
       } else {
         this.c_sort_disable = false
@@ -608,16 +643,22 @@ export default {
       }, 1500)
     },
     clean_name() {
-      this.c_subsort_edit.name = ''
+      this.c_subsort_edit.name = '';
+    },
+    clean_editsortname() {
+      this.c_category_editsort.name = '';
+    },
+    clean_editsortbudget() {
+      this.c_category_editsort.budget = '';
     },
     get_category() {
       this.c_category_list = []
       let send_payin
       if (this.c_sort_payorin !== '') {
         if (this.c_sort_payorin === 0) {
-          send_payin = 'False'
+          send_payin = 'False';
         } else {
-          send_payin = 'True'
+          send_payin = 'True';
         }
         getsortbudget_all(
           getToken(),
@@ -670,7 +711,7 @@ export default {
       this.c_category_visible = true
       this.c_sort_row_id = row.sort_id.id
       this.c_sort_row_type = row.sort_id.type
-      this.c_subsort_id = ''
+      this.c_subsort_id = '';
       this.get_subsort()
     },
     handle_in_edit(index, row) {
@@ -684,25 +725,47 @@ export default {
       this.c_category_editsort.id = row.sort_id.id
       this.c_category_editsort.name = row.sort_id.name
       this.c_category_sortname_p = row.sort_id.name
+      this.c_category_editsort.budget = row.budget
+      this.c_category_sortbudget_p = row.budget
     },
     visible_subsort_table() {
       this.c_category_subsort_table_visible = true
     },
     handle_add_mainsort() {
       this.c_category_sort_add_visible = true
+      this.c_sort_add.time = this.startenddate
     },
     c_category_sortadd() {
       this.$refs.c_sort_add.validate(valid => {
         if (valid) {
           postsort(getToken(), this.c_sort_add.payorin, this.c_sort_add.name)
-            .then(() => {
-              this.$message({
-                type: 'success',
-                message: '已新增一筆主分類'
-              })
-              this.c_sort_payorin = ''
-              this.c_sort_id = ''
-              this.get_category()
+            .then(res => {
+              this.startenddate = formatdate('yyyy-mm')
+              const year = this.startenddate.substring(0, 4)
+              const month = this.startenddate.substring(5, 8)
+              postsortbudget(
+                getToken(),
+                res.data.id,
+                this.c_sort_add.budget,
+                year,
+                month
+              )
+                .then(() => {
+                  this.$message({
+                    type: 'success',
+                    message: '已新增一筆主分類'
+                  })
+                  this.c_sort_payorin = '';
+                  this.c_sort_id = '';
+                  this.get_category()
+                })
+                .catch(error => {
+                  console.log(error)
+                  this.$message({
+                    type: 'error',
+                    message: '發生一點錯誤，請稍後再做修改'
+                  })
+                })
             })
             .catch(error => {
               console.log(error)
@@ -765,8 +828,8 @@ export default {
                 type: 'success',
                 message: '已完成該筆分類相關修改'
               })
-              this.c_sort_payorin = ''
-              this.c_sort_id = ''
+              this.c_sort_payorin = '';
+              this.c_sort_id = '';
               this.get_category()
             })
             .catch(error => {
@@ -969,6 +1032,9 @@ export default {
   margin-right: 0;
   //margin-bottom: 0;
   width: 50%;
+}
+.table_sort .sortadd_time input {
+  border: 0;
 }
 </style>
 

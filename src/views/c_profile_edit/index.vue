@@ -6,24 +6,78 @@
     <div class="personal_edit_form">
       <!--個人資料修改-->
       <el-card>
-        <el-form ref="profile_edit_form" :model="profile_edit_form" :rules="profile_edit_form_rules" label-position="left" inline class="personal_edit">
+        <el-form
+          ref="profile_edit_form"
+          :model="profile_edit_form"
+          :rules="profile_edit_form_rules"
+          label-position="left"
+          inline
+          class="personal_edit"
+        >
           <el-form-item :label="$t('c_profile_edit.email')">
-            <el-input v-model="profile_edit_form.account" type="textarea" resize="none" readonly />
+            <el-input
+              v-model="profile_edit_form.account"
+              type="textarea"
+              resize="none"
+              readonly
+            />
           </el-form-item>
-          <el-form-item :label="$t('c_profile_edit.name')" prop="name">
-            <el-input v-model="profile_edit_form.name" :placeholder="$t('c_profile_edit.h1')" name="name" @focus="clean_name()" />
+          <el-form-item
+            :label="$t('c_profile_edit.name')"
+            prop="name"
+          >
+            <el-input
+              v-model="profile_edit_form.name"
+              :placeholder="$t('c_profile_edit.h1')"
+              name="name"
+              @focus="clean_name()"
+            />
           </el-form-item>
-          <el-form-item label="ToID" prop="toid">
-            <el-input v-model="profile_edit_form.toid" :placeholder="$t('c_profile_edit.h2')" name="toid" @focus="clean_toid()" />
+          <el-form-item
+            label="ToID"
+            prop="toid"
+          >
+            <el-input
+              v-model="profile_edit_form.toid"
+              :placeholder="$t('c_profile_edit.h2')"
+              name="toid"
+              @focus="clean_toid()"
+            />
           </el-form-item>
-          <el-form-item :label="$t('c_profile_edit.newpswd')" prop="pswd">
-            <el-input v-model="profile_edit_form.pswd" :placeholder="$t('c_profile_edit.h3')" type="password" name="pswd" />
+          <el-form-item
+            :label="$t('c_profile_edit.newpswd')"
+            prop="pswd"
+          >
+            <el-input
+              v-model="profile_edit_form.pswd"
+              :placeholder="$t('c_profile_edit.h3')"
+              type="password"
+              name="pswd"
+            />
           </el-form-item>
-          <el-form-item :label="$t('c_profile_edit.input')" prop="pswd2">
-            <el-input v-model="profile_edit_form.pswd2" :placeholder="$t('c_profile_edit.h3')" type="password" name="pswd2" />
+          <el-form-item
+            :label="$t('c_profile_edit.input')"
+            prop="pswd2"
+          >
+            <el-input
+              v-model="profile_edit_form.pswd2"
+              :placeholder="$t('c_profile_edit.h3')"
+              type="password"
+              name="pswd2"
+            />
           </el-form-item>
-          <el-button :loading="loadingprofile_view_send" type="primary" class="btn2" @click.native.prevent="handleprofile_edit">{{ $t('c_profile_edit.confirm') }}</el-button>
-          <el-button :loading="loadingprofile_view_cancal" type="info" class="btn" @click.native.prevent="goprofile_view">{{ $t('c_profile_edit.cancel') }}</el-button>
+          <el-button
+            :loading="loadingprofile_view_send"
+            type="primary"
+            class="btn2"
+            @click.native.prevent="handleprofile_edit"
+          >{{ $t('c_profile_edit.confirm') }}</el-button>
+          <el-button
+            :loading="loadingprofile_view_cancal"
+            type="info"
+            class="btn"
+            @click.native.prevent="goprofile_view"
+          >{{ $t('c_profile_edit.cancel') }}</el-button>
 
         </el-form>
       </el-card>
@@ -31,10 +85,10 @@
   </div>
 </template>
 <script>
-import { getUserInfo } from '@/api/login'
-import { getToken } from '@/utils/auth'
-import { validatetoid } from '@/utils/validate'
-import { patchprofile, patchprofilepswd } from '@/api/profile/patchprofile'
+import { getUserInfo } from '@/api/login';
+import { getToken } from '@/utils/auth';
+import { validatetoid } from '@/utils/validate';
+import { patchprofile, patchprofilepswd } from '@/api/profile/patchprofile';
 
 export default {
   name: 'CProfileEdit',
@@ -69,7 +123,7 @@ export default {
       }
     }
     const validatedoublepswd = (rule, value, callback) => {
-      if (value === '' && (this.profile_edit_form.pswd).length < 1) {
+      if (value === '' && this.profile_edit_form.pswd.length < 1) {
         callback()
       } else if (value !== this.profile_edit_form.pswd) {
         callback(new Error('二次密碼不一樣，請再次輸入！'))
@@ -93,9 +147,15 @@ export default {
       },
       profile_edit_form_rules: {
         name: [{ required: false, trigger: 'change', validator: validatename }],
-        toid: [{ required: false, trigger: 'change', validator: _validatetoid }],
-        pswd: [{ required: false, trigger: 'change', validator: validatePassword }],
-        pswd2: [{ required: false, trigger: 'change', validator: validatedoublepswd }]
+        toid: [
+          { required: false, trigger: 'change', validator: _validatetoid }
+        ],
+        pswd: [
+          { required: false, trigger: 'change', validator: validatePassword }
+        ],
+        pswd2: [
+          { required: false, trigger: 'change', validator: validatedoublepswd }
+        ]
       },
       redirect: undefined
     }
@@ -113,10 +173,10 @@ export default {
   },
   methods: {
     clean_name() {
-      this.profile_edit_form.name = ''
+      this.profile_edit_form.name = '';
     },
     clean_toid() {
-      this.profile_edit_form.toid = ''
+      this.profile_edit_form.toid = '';
     },
     getinfo() {
       getUserInfo(getToken()).then(response => {
@@ -144,9 +204,9 @@ export default {
           getUserInfo(getToken()).then(response => {
             var ori_name = response.name
             var ori_toid = response.toid
-            var send_name = ''
-            var send_toid = ''
-            var send_pswd = ''
+            var send_name = '';
+            var send_toid = '';
+            var send_pswd = '';
             if (this.profile_edit_form.name === '') {
               send_name = ori_name
             } else {
@@ -161,27 +221,36 @@ export default {
               send_pswd = this.profile_edit_form.pswd
               patchprofilepswd(getToken(), send_pswd)
             }
-            patchprofile(getToken(), send_name, send_toid).then(() => {
-              const h = this.$createElement
-              this.$notify({
-                title: '送出成功',
-                message: h('b', { style: 'color: teal' }, '你的個人資料已更新'),
-                type: 'success'
+            patchprofile(getToken(), send_name, send_toid)
+              .then(() => {
+                const h = this.$createElement
+                this.$notify({
+                  title: '送出成功',
+                  message: h(
+                    'b',
+                    { style: 'color: teal' },
+                    '你的個人資料已更新'
+                  ),
+                  type: 'success'
+                })
+                this.loadingsend = false
+                this.$router.push({
+                  path: this.redirect || '/profile/profile-view'
+                })
               })
-              this.loadingsend = false
-              this.$router.push({ path: this.redirect || '/profile/profile-view' })
-            })
-              .catch((error) => {
+              .catch(error => {
                 console.log(error.response)
                 this.loadingsend = false
                 if (error.response.data.toid !== '') {
                   const h = this.$createElement
                   this.$notify.error({
                     title: '送出失敗',
-                    message: h('b', { style: 'color: teal' }, '你的ToID已經被使用過，請再重新輸入一次！(3秒後幫你刷空資料)')
+                    message: h(
+                      'b',
+                      { style: 'color: teal' },
+                      '你的ToID已經被使用過，請再重新輸入一次！(3秒後幫你刷空資料)'
+                    )
                   })
-                  console.log(this.imageUrl)
-
                   setTimeout(() => {
                     location.reload()
                   }, 3000)
@@ -189,7 +258,11 @@ export default {
                   const h = this.$createElement
                   this.$notify.error({
                     title: '註冊失敗',
-                    message: h('b', { style: 'color: red' }, '發生了一點錯誤，請在試一次，如果一直發生請與我們聯繫，造成您的不良體驗，實在非常抱歉！ 5秒自動幫你跳轉'),
+                    message: h(
+                      'b',
+                      { style: 'color: red' },
+                      '發生了一點錯誤，請在試一次，如果一直發生請與我們聯繫，造成您的不良體驗，實在非常抱歉！ 5秒自動幫你跳轉'
+                    ),
                     position: 'top-left',
                     showClose: false
                   })
@@ -204,7 +277,6 @@ export default {
     }
   }
 }
-
 </script>
 <style rel="stylesheet/scss" lang="scss" >
 .personal_edit_form {

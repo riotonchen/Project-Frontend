@@ -214,7 +214,7 @@
             <el-button
               type="primary"
               class="info_btns"
-              @click.native.prevent="cofigure_member_info()"
+              @click.native.prevent="cofigure__member_info()"
             >{{ $t('c_profile_edit.confirm') }}</el-button>
             <el-button
               type="info"
@@ -957,17 +957,18 @@
 </template>
 
 <script>
-import waves from '@/directive/waves' // 水波紋指令
-import { getcardforadmin } from '@/api/card/getcard'
-import { getmember, getmemberlist } from '@/api/member/getmember'
-import { getToken } from '@/utils/auth'
-import { formatdate, formatdate_inc_time } from '@/utils/index'
-import { getaccountforadmin, getaccounttype } from '@/api/account/getaccount'
-import { getprojectforadmin } from '@/api/project/getproject'
-import { getsortbudgetforadmin } from '@/api/sortbudget/getsortbudget'
-import { getaccountingforadmin } from '@/api/accounting/getaccounting'
-import { getsortforadmin } from '@/api/sort/getsort'
-import { getsubsortforadmin } from '@/api/subsort/getsubsort'
+import waves from '@/directive/waves'; // 水波紋指令
+import { getcardforadmin } from '@/api/card/getcard';
+import { getmember, getmemberlist } from '@/api/member/getmember';
+import { getToken } from '@/utils/auth';
+import { formatdate, formatdate_inc_time } from '@/utils/index';
+import { getaccountforadmin, getaccounttype } from '@/api/account/getaccount';
+import { getprojectforadmin } from '@/api/project/getproject';
+import { getsortbudgetforadmin } from '@/api/sortbudget/getsortbudget';
+import { getaccountingforadmin } from '@/api/accounting/getaccounting';
+import { getsortforadmin } from '@/api/sort/getsort';
+import { getsubsortforadmin } from '@/api/subsort/getsubsort';
+import { patchprofile, patchprofilepswd } from '@/api/profile/patchprofile';
 
 export default {
   name: 'AManageMember',
@@ -1096,19 +1097,19 @@ export default {
   watch: {
     c_account: function(new_type, old_type) {
       if (new_type !== '') {
-        this.c_account_name = ''
+        this.c_account_name = '';
         this.c_account_name_disable = false
       } else if (new_type !== old_type) {
-        this.c_account_name = ''
+        this.c_account_name = '';
         this.get_account_info()
       }
     },
     c_category_sort_payorin: function(newpi, oldpi) {
       if (this.c_category_sort_payorin === '') {
         this.c_sort_disable = true
-        this.c_category_sort_id = ''
+        this.c_category_sort_id = '';
       } else if (newpi !== oldpi) {
-        this.c_category_sort_id = ''
+        this.c_category_sort_id = '';
         this.c_sort_disable = false
       }
     },
@@ -1134,18 +1135,18 @@ export default {
       if (oldc_payorin === '') {
         this.c_accounting_sort_disable = false
       } else if (newc_payorin === '') {
-        this.c_accounting_sort = ''
-        this.c_accounting_subsort = ''
+        this.c_accounting_sort = '';
+        this.c_accounting_subsort = '';
         this.c_accounting_sort_disable = true
         this.get_accounting_info()
       } else if (newc_payorin !== 1 && newc_payorin !== 0) {
         this.c_accounting_sort_disable = true
         this.c_accounting_subsort_disable = true
-        this.c_accounting_sort = ''
-        this.c_accounting_subsort = ''
+        this.c_accounting_sort = '';
+        this.c_accounting_subsort = '';
       } else if (newc_payorin !== oldc_payorin) {
-        this.c_accounting_sort = ''
-        this.c_accounting_subsort = ''
+        this.c_accounting_sort = '';
+        this.c_accounting_subsort = '';
         this.get_accounting_info()
       }
     },
@@ -1153,10 +1154,10 @@ export default {
       if (oldc_sort === '') {
         this.c_accounting_subsort_disable = false
       } else if (newc_sort === '') {
-        this.c_accounting_subsort = ''
+        this.c_accounting_subsort = '';
         this.c_accounting_subsort_disable = true
       } else if (newc_sort !== oldc_sort) {
-        this.c_accounting_subsort = ''
+        this.c_accounting_subsort = '';
       }
     },
     c_accounting_subsort: function(newc_subsort, oldc_subsort) {
@@ -1201,10 +1202,10 @@ export default {
                   return item.membertype < 5 && item.membertype > 1
                 })
               }, i * 50)
+              console.log(this.a_all_member_data)
             })
             .catch(() => {
               testnum = testnum + 1
-              this.get_member_all_ext(testnum)
             })
         }
       })
@@ -1252,17 +1253,17 @@ export default {
           'yyyy-mm-dd'
         )
       } else {
-        startdate = ''
-        enddate = ''
+        startdate = '';
+        enddate = '';
       }
       let send_payin
       if (this.c_accounting_payorin === 0) {
-        send_payin = 'False'
+        send_payin = 'False';
       } else if (this.c_accounting_payorin === 1) {
-        send_payin = 'True'
+        send_payin = 'True';
       } else {
-        send_payin = ''
-        this.c_accounting_sort_id = ''
+        send_payin = '';
+        this.c_accounting_sort_id = '';
       }
       getaccountforadmin(getToken(), this.profile_edit_form.id).then(res => {
         this.c_accounting_accountitem = res.data
@@ -1297,12 +1298,12 @@ export default {
         this.c_user_history = res.data
         this.c_user_history.forEach(items => {
           if (items.type === false) {
-            items.type = '支出'
+            items.type = '支出';
           } else {
-            items.type = '收入'
+            items.type = '收入';
           }
           if (items.invoice_id === null || items.invoice_id === undefined) {
-            items.invoice_id = '-'
+            items.invoice_id = '-';
           }
         })
       })
@@ -1355,12 +1356,12 @@ export default {
       this.a_adv_category_visible = true
       let send_payin
       if (this.c_category_sort_payorin === 0) {
-        send_payin = 'False'
+        send_payin = 'False';
       } else if (this.c_category_sort_payorin === 1) {
-        send_payin = 'True'
+        send_payin = 'True';
       } else {
-        send_payin = ''
-        this.c_category_sort_id = ''
+        send_payin = '';
+        this.c_category_sort_id = '';
       }
 
       getsortbudgetforadmin(
@@ -1409,17 +1410,17 @@ export default {
       this.profile_edit_form.id = row.id
     },
     clean_name() {
-      this.profile_edit_form.name = ''
+      this.profile_edit_form.name = '';
     },
     clean_toid() {
-      this.profile_edit_form.toid = ''
+      this.profile_edit_form.toid = '';
     },
     clean_accounting_allselect() {
-      this.c_accounting_payorin = ''
-      this.c_accounting_sort = ''
-      this.c_accounting_subsort = ''
-      this.c_accounting_project = ''
-      this.c_accounting_account = ''
+      this.c_accounting_payorin = '';
+      this.c_accounting_sort = '';
+      this.c_accounting_subsort = '';
+      this.c_accounting_project = '';
+      this.c_accounting_account = '';
       const start = new Date()
       start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
       this.accounting_startenddate = [
@@ -1427,6 +1428,56 @@ export default {
         formatdate('yyyy-mm-dd HH:MM:ss.l')
       ]
       this.get_accounting_info()
+    },
+    cofigure__member_info() {
+      if (this.profile_edit_form.name !== '') {
+        const send_pswd = this.profile_edit_form.pswd
+        patchprofilepswd(getToken(), send_pswd)
+      }
+      patchprofile(
+        getToken(),
+        this.profile_edit_form.name,
+        this.profile_edit_form.toid
+      )
+        .then(() => {
+          const h = this.$createElement
+          this.$notify({
+            title: '送出成功',
+            message: h('b', { style: 'color: teal' }, '該會員個人資料已更新'),
+            type: 'success'
+          })
+          this.$router.push({ path: this.redirect || '/membermanage/member' })
+        })
+        .catch(error => {
+          console.log(error.response)
+          this.loadingsend = false
+          if (error.response.data.toid !== '') {
+            const h = this.$createElement
+            this.$notify.error({
+              title: '送出失敗',
+              message: h(
+                'b',
+                { style: 'color: teal' },
+                '輸入的的ToID已經被使用過，請再重新輸入一次！'
+              )
+            })
+          } else {
+            const h = this.$createElement
+            this.$notify.error({
+              title: '註冊失敗',
+              message: h(
+                'b',
+                { style: 'color: red' },
+                '發生了一點錯誤，請在試一次，如果一直發生請與我們聯繫，造成您的不良體驗，實在非常抱歉！ 5秒自動幫你跳轉'
+              ),
+              position: 'top-left',
+              showClose: false
+            })
+            setTimeout(() => {
+              location.reload()
+            }, 5000)
+          }
+        })
     },
     in_adv_motion_cal() {
       // 3層以上的功能

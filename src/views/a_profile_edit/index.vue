@@ -157,7 +157,7 @@ export default {
                 type: 'success'
               })
               this.loadingsend = false
-              this.$router.push({ path: this.redirect || '/profile/profile-view' })
+              this.$router.push({ path: this.redirect || '/profile/admin-profile-view' })
             })
               .catch((error) => {
                 console.log(error.response)
