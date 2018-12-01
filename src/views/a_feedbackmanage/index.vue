@@ -34,6 +34,7 @@
             range-separator="-"
             align="center"
             type="daterange"
+            @change="get_feedback_all()"
           />
         </el-col>
       </el-row>
@@ -100,11 +101,18 @@
           align="center"
         >
           <template slot-scope="scope">
-            <el-button
-              type="primary"
-              plain
-              @click.native.prevent="handleDetailed(scope.$index,scope.row)"
-            >{{ $t('a_feebackmanager.detailed') }}</el-button>
+            <div v-if="scope.row.status==='已回覆'">
+              <el-tag type="success">
+                <span>該案件已回覆</span>
+              </el-tag>
+            </div>
+            <div v-else>
+              <el-button
+                type="primary"
+                plain
+                @click.native.prevent="handleDetailed(scope.$index,scope.row)"
+              >{{ $t('a_feebackmanager.detailed') }}</el-button>
+            </div>
           </template>
         </el-table-column>
       </el-table>
@@ -156,8 +164,12 @@
         width="80vw"
       >
         <el-form
+          v-loading="replyloding"
           :ref="a_feedback_reply"
           :model="a_feedback_reply"
+          element-loading-text="正在幫你寄一封信給該用戶中......"
+          element-loading-spinner="el-icon-loading"
+          element-loading-background="rgba(0, 0, 0, 0.9)"
           label-position="top"
           inline
           class="table_fdback_view"
@@ -182,10 +194,12 @@
           class="invoice_dialog_footer"
         >
           <el-button
+            :loading="replyloding"
             type="primary"
             @click.native.prevent="send_reback()"
           >{{ $t('a_feebackmanager.confirm') }}</el-button>
           <el-button
+            :loading="replyloding"
             type="info"
             plain
             @click.native.prevent="a_feeback_cal()"
@@ -198,13 +212,13 @@
 </template>
 
 <script>
-import waves from '@/directive/waves'
-import { formatdate } from '@/utils/index'
-import { getfeedback } from '@/api/feedback/getfeedback'
-import { patchfeedback } from '@/api/feedback/patchfeedback'
-import { getmemberlist } from '@/api/member/getmember'
-import { getToken } from '@/utils/auth'
-import { formatdate_inc_time } from '@/utils/index'
+import waves from '@/directive/waves';
+import { formatdate } from '@/utils/index';
+import { getfeedback } from '@/api/feedback/getfeedback';
+import { patchfeedback } from '@/api/feedback/patchfeedback';
+import { getmemberlist } from '@/api/member/getmember';
+import { getToken } from '@/utils/auth';
+import { formatdate_inc_time } from '@/utils/index';
 
 export default {
   name: 'AFeedbackmanage',
@@ -231,8 +245,18 @@ export default {
       select: '',
       a_feedback_visible: false,
       a_feedbackreply_visible: false,
+      replyloding: false,
       feeddateselect: {
         shortcuts: [
+          {
+            text: '今天',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime())
+              picker.$emit('pick', [start, end])
+            }
+          },
           {
             text: '最近一週',
             onClick(picker) {
@@ -292,13 +316,22 @@ export default {
       }, 2000)
     },
     get_feedback_all() {
-      getfeedback(getToken()).then(res => {
+      let startdate
+      let enddate
+      if (this.startenddate.length === 2) {
+        startdate = formatdate_inc_time(this.startenddate[0], 'yyyy-mm-dd')
+        enddate = formatdate_inc_time(this.startenddate[1], 'yyyy-mm-dd')
+      } else {
+        startdate = '';
+        enddate = '';
+      }
+      getfeedback(getToken(), startdate, enddate).then(res => {
         this.feedbackdata = res.data
         this.feedbackdata.forEach(items => {
           if (items.status === 0) {
-            items.status = '未回覆'
+            items.status = '未回覆';
           } else {
-            items.status = '已回覆'
+            items.status = '已回覆';
           }
           items.time = items.time
             .toString()
@@ -320,27 +353,36 @@ export default {
     },
     /* 點擊回覆框按鈕*/
     send_reback() {
-      patchfeedback(
-        getToken(),
-        this.a_feedback_form.id,
-        this.a_feedback_reply.content
-      )
-        .then(() => {
-          this.a_feedbackreply_visible = false /* 關掉詳細內容框*/
-          this.a_feedback_visible = false /* 關掉回覆框*/
-          const h = this.$createElement
-          this.$notify({
-            title: '回覆成功',
-            message: h('b', { style: 'color: teal' }, '該問題已經回覆')
+      this.replyloding = true
+      setTimeout(() => {
+        patchfeedback(
+          getToken(),
+          this.a_feedback_form.id,
+          this.a_feedback_reply.content
+        )
+          .then(() => {
+            this.replyloding = false
+            this.a_feedbackreply_visible = false /* 關掉詳細內容框*/
+            this.a_feedback_visible = false /* 關掉回覆框*/
+            const h = this.$createElement
+            this.$notify({
+              title: '回覆成功',
+              message: h('b', { style: 'color: teal' }, '該問題已經回覆')
+            })
+            this.a_feedback_reply.content = '';
+            this.get_feedback_all()
           })
-        })
-        .catch(error => {
-          console.log(error)
-          this.$message({
-            type: 'error',
-            message: '發生一點錯誤，請稍後送出一次'
+          .catch(error => {
+            this.replyloding = false
+            console.log(error)
+            this.$message({
+              type: 'error',
+              message: '發生一點錯誤，請稍後送出一次'
+            })
+            this.a_feedback_reply.content = '';
+            this.get_feedback_all()
           })
-        })
+      }, 3500)
     },
     a_feeback_cal() {
       this.$message({

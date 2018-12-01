@@ -19,6 +19,7 @@
               v-model="profile_edit_form.account"
               type="textarea"
               resize="none"
+              autosize
               readonly
             />
           </el-form-item>

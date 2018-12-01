@@ -7,8 +7,8 @@
     >
       <el-col
         :xs="24"
-        :sm="8"
-        :lg="8"
+        :sm="6"
+        :lg="6"
         class="card-panel-col"
       >
         <div class="card-panel">
@@ -31,8 +31,32 @@
       </el-col>
       <el-col
         :xs="24"
-        :sm="8"
-        :lg="8"
+        :sm="6"
+        :lg="6"
+        class="card-panel-col"
+      >
+        <div class="card-panel">
+          <div class="card-panel-icon-wrapper icon-message">
+            <svg-icon
+              icon-class="message"
+              class-name="card-panel-icon"
+            />
+          </div>
+          <div class="card-panel-description">
+            <div class="card-panel-text">管理員人數</div>
+            <count-to
+              :start-val="0"
+              :end-val="admin_num"
+              :duration="3500"
+              class="card-panel-num"
+            />
+          </div>
+        </div>
+      </el-col>
+      <el-col
+        :xs="24"
+        :sm="6"
+        :lg="6"
         class="card-panel-col"
       >
         <div class="card-panel">
@@ -55,8 +79,8 @@
       </el-col>
       <el-col
         :xs="24"
-        :sm="8"
-        :lg="8"
+        :sm="6"
+        :lg="6"
         class="card-panel-col"
       >
         <div class="card-panel">
@@ -94,6 +118,7 @@ export default {
     return {
       member_num: '',
       ent_num: '',
+      admin_num: '',
       totalmember_num: '',
       a_all_ent_data: [],
       a_all_member_data: []
@@ -103,55 +128,28 @@ export default {
     this.get_member_all()
   },
   methods: {
-    get_member_num() {
-      this.member_num = this.a_all_member_data.length
-      this.ent_num = this.a_all_ent_data.length
-      this.totalmember_num = this.member_num + this.ent_num
-    },
     get_member_all() {
       getmember(getToken()).then(res => {
-        const testmember = res.data
-        const ori_data = []
-        let testnum = testmember.length
-        for (let i = 1; i <= testnum; i++) {
-          getmemberlist(getToken(), i)
-            .then(res_data => {
-              setTimeout(() => {
-                ori_data.push(res_data.data)
-                this.a_all_ent_data = ori_data.filter(function(
-                  item,
-                  index,
-                  array
-                ) {
-                  return item.membertype === 5
-                })
-              }, i * 50)
-            })
-            .catch(() => {
-              testnum = testnum + 1
-              this.get_member_all_ext(testnum)
-            })
+        const oridata_admin_info = []
+        const oridata_mbr_info = []
+        const oridata_ent_info = []
+        const oridata = res.data
+        this.totalmember_num = oridata.length
+        for (let i = 0; i < oridata.length; i++) {
+          getmemberlist(getToken(), oridata[i].id).then(resinfo => {
+            if (resinfo.data.membertype === 5) {
+              oridata_ent_info.push(resinfo.data)
+            } else if (resinfo.data.membertype === 1) {
+              oridata_admin_info.push(resinfo.data)
+            } else {
+              oridata_mbr_info.push(resinfo.data)
+            }
+            this.ent_num = oridata_ent_info.length
+            this.admin_num = oridata_admin_info.length
+            this.member_num = oridata_mbr_info.length
+          })
         }
       })
-    },
-    get_member_all_ext(testnum) {
-      getmemberlist(getToken(), testnum)
-        .then(res_data => {
-          setTimeout(() => {
-            this.a_all_ent_data.push(res_data.data)
-            this.a_all_ent_data = this.a_all_ent_data.filter(function(
-              item,
-              index,
-              array
-            ) {
-              return item.membertype === 5
-            })
-          }, testnum * 50)
-        })
-        .catch(() => {
-          testnum = testnum + 1
-          this.get_member_all_ext(testnum)
-        })
     }
   }
 }

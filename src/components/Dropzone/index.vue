@@ -27,7 +27,7 @@ export default {
     },
     defaultMsg: {
       type: String,
-      default: '上传图片'
+      default: '上傳圖片'
     },
     acceptedFiles: {
       type: String,
