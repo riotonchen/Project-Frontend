@@ -83,8 +83,8 @@
               type="primary"
               class="adv_in_btn"
               plain
-              @click="get_member_info()"
-            >修改資料</el-button>
+              @click="get_project_info()"
+            >專案管理</el-button>
           </el-col>
           <el-col :span="12">
             <el-button
@@ -123,12 +123,7 @@
             >分類管理</el-button>
           </el-col>
           <el-col :span="12">
-            <el-button
-              type="primary"
-              class="adv_in_btn"
-              plain
-              @click="get_project_info()"
-            >專案管理</el-button>
+            <span />
           </el-col>
         </el-row>
         <el-row>
@@ -138,89 +133,6 @@
               class="adv_calbtn"
               @click="adv_cal()"
             >回管理頁</el-button>
-          </el-col>
-        </el-row>
-      </el-dialog>
-    </div>
-
-    <div class="editinfo_dialog">
-      <el-dialog
-        :visible.sync="c_member_confiinfo_visible"
-        title="修改會員資訊"
-        width="80%"
-      >
-        <el-row>
-          <el-col :span="24">
-            <el-form
-              ref="profile_edit_form"
-              :model="profile_edit_form"
-              label-position="left"
-              inline
-              class="personal_edit"
-            >
-              <el-form-item :label="$t('c_profile_edit.email')">
-                <el-input
-                  v-model="profile_edit_form.account"
-                  type="textarea"
-                  resize="none"
-                  readonly
-                />
-              </el-form-item>
-              <el-form-item
-                :label="$t('c_profile_edit.name')"
-                prop="name"
-              >
-                <el-input
-                  v-model="profile_edit_form.name"
-                  :placeholder="$t('c_profile_edit.h1')"
-                  @focus="clean_name()"
-                />
-              </el-form-item>
-              <el-form-item
-                label="ToID"
-                prop="toid"
-              >
-                <el-input
-                  v-model="profile_edit_form.toid"
-                  :placeholder="$t('c_profile_edit.h2')"
-                  @focus="clean_toid()"
-                />
-              </el-form-item>
-              <el-form-item
-                :label="$t('c_profile_edit.newpswd')"
-                prop="pswd"
-              >
-                <el-input
-                  v-model="profile_edit_form.pswd"
-                  :placeholder="$t('c_profile_edit.h3')"
-                  type="password"
-                />
-              </el-form-item>
-              <el-form-item
-                :label="$t('c_profile_edit.input')"
-                prop="pswd2"
-              >
-                <el-input
-                  v-model="profile_edit_form.pswd2"
-                  :placeholder="$t('c_profile_edit.h3')"
-                  type="password"
-                />
-              </el-form-item>
-            </el-form>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="24">
-            <el-button
-              type="primary"
-              class="info_btns"
-              @click.native.prevent="cofigure__member_info()"
-            >{{ $t('c_profile_edit.confirm') }}</el-button>
-            <el-button
-              type="info"
-              class="info_btns"
-              @click.native.prevent="in_adv_motion_cal()"
-            >{{ $t('c_profile_edit.cancel') }}</el-button>
           </el-col>
         </el-row>
       </el-dialog>
@@ -968,7 +880,6 @@ import { getsortbudgetforadmin } from '@/api/sortbudget/getsortbudget';
 import { getaccountingforadmin } from '@/api/accounting/getaccounting';
 import { getsortforadmin } from '@/api/sort/getsort';
 import { getsubsortforadmin } from '@/api/subsort/getsubsort';
-import { patchprofile, patchprofilepswd } from '@/api/profile/patchprofile';
 
 export default {
   name: 'AManageMember',
@@ -983,19 +894,13 @@ export default {
       datepickerclea: false,
       // ori-page
       profile_edit_form: {
-        id: '', // member id for all confi
-        account: '',
-        name: '',
-        toid: '',
-        pswd: '',
-        pswd2: ''
+        id: '' // member id for all confi
       },
       a_select_account: '',
       a_select_name: '',
       a_select_toid: '',
       a_all_member_data: [],
       a_member_adv_visible: false,
-      c_member_confiinfo_visible: false,
       a_adv_accountung_visible: false,
       a_adv_account_visible: false,
       a_adv_card_visible: false,
@@ -1229,15 +1134,6 @@ export default {
           this.get_member_all_ext(testnum)
         })
     },
-    get_member_info() {
-      this.c_member_confiinfo_visible = true
-      getmemberlist(getToken(), this.profile_edit_form.id).then(res => {
-        this.profile_edit_form.account = res.data.account
-        this.profile_edit_form.name = res.data.name
-        this.profile_edit_form.toid = res.data.toid
-        console.log(res.data)
-      })
-    },
     get_accounting_info() {
       // not done
       this.a_adv_accountung_visible = true
@@ -1429,61 +1325,11 @@ export default {
       ]
       this.get_accounting_info()
     },
-    cofigure__member_info() {
-      if (this.profile_edit_form.name !== '') {
-        const send_pswd = this.profile_edit_form.pswd
-        patchprofilepswd(getToken(), send_pswd)
-      }
-      patchprofile(
-        getToken(),
-        this.profile_edit_form.name,
-        this.profile_edit_form.toid
-      )
-        .then(() => {
-          const h = this.$createElement
-          this.$notify({
-            title: '送出成功',
-            message: h('b', { style: 'color: teal' }, '該會員個人資料已更新'),
-            type: 'success'
-          })
-          this.$router.push({ path: this.redirect || '/membermanage/member' })
-        })
-        .catch(error => {
-          console.log(error.response)
-          this.loadingsend = false
-          if (error.response.data.toid !== '') {
-            const h = this.$createElement
-            this.$notify.error({
-              title: '送出失敗',
-              message: h(
-                'b',
-                { style: 'color: teal' },
-                '輸入的的ToID已經被使用過，請再重新輸入一次！'
-              )
-            })
-          } else {
-            const h = this.$createElement
-            this.$notify.error({
-              title: '註冊失敗',
-              message: h(
-                'b',
-                { style: 'color: red' },
-                '發生了一點錯誤，請在試一次，如果一直發生請與我們聯繫，造成您的不良體驗，實在非常抱歉！ 5秒自動幫你跳轉'
-              ),
-              position: 'top-left',
-              showClose: false
-            })
-            setTimeout(() => {
-              location.reload()
-            }, 5000)
-          }
-        })
-    },
+
     in_adv_motion_cal() {
       // 3層以上的功能
       // btn-cal in add confi del finc view
       this.c_account_add_visible = false
-      this.c_member_confiinfo_visible = false
       this.$message({
         type: 'info',
         message: '已取消動作'
