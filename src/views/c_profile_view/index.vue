@@ -154,6 +154,7 @@ export default {
 }
 .userpicture {
   position: absolute;
+  border-radius: 20px;
   margin-left: 1.5vw;
   margin-top: 1.5vw;
   height: 16rem;

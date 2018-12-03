@@ -232,5 +232,6 @@ export default {
 .userpicture {
   height: 20vw;
   width: 20vw;
+  border-radius: 20px;
 }
 </style>

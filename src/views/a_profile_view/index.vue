@@ -8,50 +8,70 @@
         body-style="padding:3.125rem"
         class="a_admin_info"
       >
-        <el-form
-          :model="infoform"
-          label-position="left"
-          inline
-          class="personal_view"
-        >
-          <el-form-item :label="$t('a_profile_view.email')">
-            <el-input
-              v-model="infoform.useraccount"
-              type="textarea"
-              autosize
-              readonly
-            />
-          </el-form-item>
-          <el-form-item
-            :label="$t('a_profile_view.name')"
-            class="label2"
+        <el-row>
+          <el-col
+            :xs="24"
+            :sm="12"
+            :lg="12"
           >
-            <el-input
-              v-model="infoform.username"
-              type="text"
-              readonly
-            />
-          </el-form-item>
-          <el-form-item
-            label="加入日期"
-            class="label3"
-          >
-            <el-input
-              v-model="infoform.userjoin"
-              type="text"
-              readonly
-            />
-          </el-form-item>
+            <el-form
+              :model="infoform"
+              label-position="left"
+              inline
+              class="personal_view"
+            >
+              <el-form-item :label="$t('a_profile_view.email')">
+                <el-input
+                  v-model="infoform.useraccount"
+                  type="textarea"
+                  autosize
+                  readonly
+                />
+              </el-form-item>
+              <el-form-item
+                :label="$t('a_profile_view.name')"
+                class="label2"
+              >
+                <el-input
+                  v-model="infoform.username"
+                  type="text"
+                  readonly
+                />
+              </el-form-item>
+              <el-form-item
+                label="加入日期"
+                class="label3"
+              >
+                <el-input
+                  v-model="infoform.userjoin"
+                  type="text"
+                  readonly
+                />
+              </el-form-item>
 
-          <el-button
-            :loading="loadingprofile_edit"
-            type="primary"
-            class="btn"
-            @click.native.prevent="goprofile_edit"
+            </el-form>
+          </el-col>
+          <el-col
+            :sm="12"
+            :lg="12"
+            class="hidden-sm-and-down"
           >
-            {{ $t('a_profile_view.alter') }}
-          </el-button>
-        </el-form>
+            <div>
+              <img
+                :src="userinfo_picture"
+                class="userpicture"
+              >
+            </div>
+          </el-col>
+        </el-row>
+        <el-button
+          :loading="loadingprofile_edit"
+          type="primary"
+          class="btn"
+          @click.native.prevent="goprofile_edit"
+        >
+          {{ $t('a_profile_view.alter') }}
+        </el-button>
       </el-card>
     </div>
   </div>
@@ -60,6 +80,7 @@
 import { getUserInfo } from '@/api/login';
 import { getToken } from '@/utils/auth';
 import { formatdate_inc_time } from '@/utils/index';
+import store from '@/store';
 
 export default {
   name: 'AProfileView',
@@ -71,7 +92,8 @@ export default {
         useraccount: '',
         username: '',
         userjoin: ''
-      }
+      },
+      userinfo_picture: ''
     }
   },
   created() {
@@ -88,6 +110,7 @@ export default {
           'yyyy-mm-dd HH:MM:ss'
         )
       })
+      this.userinfo_picture = store.getters.dbpicture
     },
     goprofile_edit() {
       this.loadingprofile_edit = true
@@ -135,6 +158,14 @@ export default {
 }
 .personal_view .el-form-item {
   width: 100%;
+}
+.userpicture {
+  position: absolute;
+  border-radius: 20px;
+  margin-left: 1.5vw;
+  margin-top: 1.5vw;
+  height: 16rem;
+  width: 16rem;
 }
 </style>
 

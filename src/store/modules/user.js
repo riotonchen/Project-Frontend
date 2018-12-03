@@ -187,7 +187,7 @@ const user = {
             if (data.dbpicture === null || data.dbpicture === '') {
               commit(
                 'SET_DBPICTURE',
-                'https://cdn.dribbble.com/users/366584/screenshots/2555847/green_monster.gif'
+                'https://cdn.dribbble.com/users/662463/screenshots/2944637/ostrich_rider_moncho_masse.gif'
               )
             } else {
               commit('SET_DBPICTURE', data.dbpicture)
