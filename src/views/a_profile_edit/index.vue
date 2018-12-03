@@ -74,10 +74,10 @@
   </div>
 </template>
 <script>
-import { getUserInfo } from '@/api/login';
-import { getToken } from '@/utils/auth';
-import { validatetoid } from '@/utils/validate';
-import { patchprofile, patchprofilepswd } from '@/api/profile/patchprofile';
+import { getUserInfo } from '@/api/login'
+import { getToken } from '@/utils/auth'
+import { validatetoid } from '@/utils/validate'
+import { patchprofile, patchprofilepswd } from '@/api/profile/patchprofile'
 
 export default {
   name: 'AProfileEdit',
@@ -146,7 +146,7 @@ export default {
   },
   methods: {
     clean_name() {
-      this.profile_edit_form.name = '';
+      this.profile_edit_form.name = ''
     },
     getinfo() {
       getUserInfo(getToken()).then(response => {
@@ -172,8 +172,8 @@ export default {
           this.loadingprofile_view_send = true
           getUserInfo(getToken()).then(response => {
             var ori_name = response.data.name
-            var send_name = '';
-            var send_pswd = '';
+            var send_name = ''
+            var send_pswd = ''
             if (this.profile_edit_form.name === '') {
               send_name = ori_name
             } else {

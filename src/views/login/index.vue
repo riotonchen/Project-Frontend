@@ -105,9 +105,9 @@
 </template>
 
 <script>
-import { validateEmail } from '@/utils/validate'
-import LangSelect from '@/components/LangSelect'
-import SocialSign from './socialsignin'
+import { validateEmail } from '@/utils/validate';
+import LangSelect from '@/components/LangSelect';
+import SocialSign from './socialsignin';
 
 export default {
   name: 'Login',
@@ -175,9 +175,9 @@ export default {
   methods: {
     showPwd() {
       if (this.passwordType === 'password') {
-        this.passwordType = ''
+        this.passwordType = '';
       } else {
-        this.passwordType = 'password'
+        this.passwordType = 'password';
       }
     },
     handleLogin() {
@@ -188,8 +188,10 @@ export default {
             .dispatch('LoginByUsername', this.loginForm)
             .then(() => {
               this.loadingsend = false
-              this.$router.push({ path: this.redirect || '/' })
-              location.reload()
+              this.$router.push({ path: '/' })
+              setTimeout(() => {
+                location.reload()
+              }, 50)
             })
             .catch(() => {
               this.loadingsend = false

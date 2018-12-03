@@ -5,12 +5,24 @@
     <!--<panel-group @handleSetLineChartData="handleSetLineChartData" />-->
     <!--style="background:#fff;padding:1rem 1rem 0;margin-bottom:2rem;"-->
     <el-row :gutter="40">
-      <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+      <el-col
+        :xs="24"
+        :sm="24"
+        :md="12"
+        :lg="12"
+        :xl="12"
+      >
         <div class="chart-wrapper">
           <YLineChart :chart-data="lineChartData" />
         </div>
       </el-col>
-      <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+      <el-col
+        :xs="24"
+        :sm="24"
+        :md="12"
+        :lg="12"
+        :xl="12"
+      >
         <div class="chart-wrapper">
           <MLineChart :chart-data="lineChartData" />
         </div>
@@ -18,25 +30,49 @@
     </el-row>
 
     <el-row :gutter="40">
-      <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+      <el-col
+        :xs="24"
+        :sm="24"
+        :md="12"
+        :lg="12"
+        :xl="12"
+      >
         <div class="chart-wrapper">
           <YStackLine :chart-data="lineChartData" />
         </div>
       </el-col>
-      <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+      <el-col
+        :xs="24"
+        :sm="24"
+        :md="12"
+        :lg="12"
+        :xl="12"
+      >
         <div class="chart-wrapper">
           <MStackLine :chart-data="lineChartData" />
         </div>
       </el-col>
     </el-row>
     <el-row :gutter="40">
-      <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+      <el-col
+        :xs="24"
+        :sm="24"
+        :md="12"
+        :lg="12"
+        :xl="12"
+      >
         <div class="chart-wrapper">
           <YINPie :chart-data="lineChartData" />
         </div>
       </el-col>
 
-      <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+      <el-col
+        :xs="24"
+        :sm="24"
+        :md="12"
+        :lg="12"
+        :xl="12"
+      >
         <div class="chart-wrapper">
           <YPAYPie :chart-data="lineChartData" />
         </div>
@@ -45,7 +81,14 @@
     </el-row>
 
     <el-row>
-      <el-col :xs="{span: 24}" :sm="{span: 24}" :md="{span: 24}" :lg="{span: 24}" :xl="{span: 24}" style="margin-bottom:30px;">
+      <el-col
+        :xs="{span: 24}"
+        :sm="{span: 24}"
+        :md="{span: 24}"
+        :lg="{span: 24}"
+        :xl="{span: 24}"
+        style="margin-bottom:30px;"
+      >
         <transaction-table />
       </el-col>
     </el-row>
@@ -54,18 +97,20 @@
 </template>
 
 <script>
-import PanelGroup from './components/PanelGroup'
+import PanelGroup from './components/PanelGroup';
 
-import TransactionTable from './components/TransactionTable'
+import TransactionTable from './components/TransactionTable';
 
-import YLineChart from './components/YLineChart'
-import MLineChart from './components/MLineChart'
-import YStackLine from './components/YStackLine'
-import MStackLine from './components/MStackLine'
-import YINPie from './components/YINPie'
-import YPAYPie from './components/YPAYPie'
-import { getaccount_all } from '@/api/account/getaccount'
-import { getToken } from '@/utils/auth'
+import YLineChart from './components/YLineChart';
+import MLineChart from './components/MLineChart';
+import YStackLine from './components/YStackLine';
+import MStackLine from './components/MStackLine';
+import YINPie from './components/YINPie';
+import YPAYPie from './components/YPAYPie';
+import { getaccounting_all } from '@/api/accounting/getaccounting';
+import { getToken } from '@/utils/auth';
+import { formatdate_inc_time } from '@/utils/index';
+
 const lineChartData = {
   messages: {
     paydata: [130, 140, 50, 142, 70, 150, 160],
@@ -95,8 +140,14 @@ export default {
   },
   data() {
     return {
-      lineChartData: lineChartData.messages
+      lineChartData: {
+        paydata: [],
+        indata: []
+      }
     }
+  },
+  created() {
+    this.get_account_all()
   },
   methods: {
     handleSetLineChartData(type) {
@@ -114,6 +165,286 @@ export default {
         this.MLineChartshow = true
       }, 300)
       this.YLineChartshow = false
+    },
+    get_account_all() {
+      // ynows4,ynowe4 為中間值
+      const ypaydata = []
+      const yindata = []
+      const start = new Date()
+      const enddate = new Date()
+      start.setYear(start.getFullYear() + 3)
+      start.setMonth(0)
+      start.setDate(1)
+      enddate.setYear(start.getFullYear())
+      enddate.setMonth(12)
+      enddate.setDate(1)
+      const ynows7 = formatdate_inc_time(start, 'yyyy-mm-dd')
+      const ynowe7 = formatdate_inc_time(
+        enddate.setDate(enddate.getDate() - 1),
+        'yyyy-mm-dd'
+      )
+      start.setYear(start.getFullYear() - 1)
+      enddate.setYear(start.getFullYear())
+      const ynows6 = formatdate_inc_time(start, 'yyyy-mm-dd')
+      const ynowe6 = formatdate_inc_time(
+        enddate.setDate(enddate.getDate()),
+        'yyyy-mm-dd'
+      )
+      start.setYear(start.getFullYear() - 1)
+      enddate.setYear(start.getFullYear())
+      const ynows5 = formatdate_inc_time(start, 'yyyy-mm-dd')
+      const ynowe5 = formatdate_inc_time(
+        enddate.setDate(enddate.getDate()),
+        'yyyy-mm-dd'
+      )
+      start.setYear(start.getFullYear() - 1)
+      enddate.setYear(start.getFullYear())
+      const ynows4 = formatdate_inc_time(start, 'yyyy-mm-dd')
+      const ynowe4 = formatdate_inc_time(
+        enddate.setDate(enddate.getDate()),
+        'yyyy-mm-dd'
+      )
+      start.setYear(start.getFullYear() - 1)
+      enddate.setYear(start.getFullYear())
+      const ynows3 = formatdate_inc_time(start, 'yyyy-mm-dd')
+      const ynowe3 = formatdate_inc_time(
+        enddate.setDate(enddate.getDate()),
+        'yyyy-mm-dd'
+      )
+      start.setYear(start.getFullYear() - 1)
+      enddate.setYear(start.getFullYear())
+      const ynows2 = formatdate_inc_time(start, 'yyyy-mm-dd')
+      const ynowe2 = formatdate_inc_time(
+        enddate.setDate(enddate.getDate()),
+        'yyyy-mm-dd'
+      )
+      start.setYear(start.getFullYear() - 1)
+      enddate.setYear(start.getFullYear())
+      const ynows1 = formatdate_inc_time(start, 'yyyy-mm-dd')
+      const ynowe1 = formatdate_inc_time(
+        enddate.setDate(enddate.getDate()),
+        'yyyy-mm-dd'
+      )
+      getaccounting_all(getToken(), ynows1, ynowe1).then(res => {
+        let datapay = []
+        let datain = []
+        res.data.forEach(items => {
+          if (items.type === false) {
+            items.type = '支出';
+          } else {
+            items.type = '收入';
+          }
+        })
+        datapay = res.data.filter(function(item, index, array) {
+          return item.type === '支出';
+        })
+        ypaydata.push(
+          datapay.reduce(function(accumulator, currentValue) {
+            return accumulator + currentValue.amount
+          }, 0)
+        )
+        datain = res.data.filter(function(item, index, array) {
+          return item.type === '收入';
+        })
+        yindata.push(
+          datain.reduce(function(accumulator, currentValue) {
+            return accumulator + currentValue.amount
+          }, 0)
+        )
+
+        getaccounting_all(getToken(), ynows1, ynowe1).then(res => {
+          let datapay = []
+          let datain = []
+          res.data.forEach(items => {
+            if (items.type === false) {
+              items.type = '支出';
+            } else {
+              items.type = '收入';
+            }
+          })
+          datapay = res.data.filter(function(item, index, array) {
+            return item.type === '支出';
+          })
+          ypaydata.push(
+            datapay.reduce(function(accumulator, currentValue) {
+              return accumulator + currentValue.amount
+            }, 0)
+          )
+          datain = res.data.filter(function(item, index, array) {
+            return item.type === '收入';
+          })
+          yindata.push(
+            datain.reduce(function(accumulator, currentValue) {
+              return accumulator + currentValue.amount
+            }, 0)
+          )
+          getaccounting_all(getToken(), ynows2, ynowe2).then(res => {
+            let datapay = []
+            let datain = []
+            res.data.forEach(items => {
+              if (items.type === false) {
+                items.type = '支出';
+              } else {
+                items.type = '收入';
+              }
+            })
+            datapay = res.data.filter(function(item, index, array) {
+              return item.type === '支出';
+            })
+            ypaydata.push(
+              datapay.reduce(function(accumulator, currentValue) {
+                return accumulator + currentValue.amount
+              }, 0)
+            )
+            datain = res.data.filter(function(item, index, array) {
+              return item.type === '收入';
+            })
+            yindata.push(
+              datain.reduce(function(accumulator, currentValue) {
+                return accumulator + currentValue.amount
+              }, 0)
+            )
+            getaccounting_all(getToken(), ynows3, ynowe3).then(res => {
+              let datapay = []
+              let datain = []
+              res.data.forEach(items => {
+                if (items.type === false) {
+                  items.type = '支出';
+                } else {
+                  items.type = '收入';
+                }
+              })
+              datapay = res.data.filter(function(item, index, array) {
+                return item.type === '支出';
+              })
+              ypaydata.push(
+                datapay.reduce(function(accumulator, currentValue) {
+                  return accumulator + currentValue.amount
+                }, 0)
+              )
+              datain = res.data.filter(function(item, index, array) {
+                return item.type === '收入';
+              })
+              yindata.push(
+                datain.reduce(function(accumulator, currentValue) {
+                  return accumulator + currentValue.amount
+                }, 0)
+              )
+              getaccounting_all(getToken(), ynows4, ynowe4).then(res => {
+                let datapay = []
+                let datain = []
+                res.data.forEach(items => {
+                  if (items.type === false) {
+                    items.type = '支出';
+                  } else {
+                    items.type = '收入';
+                  }
+                })
+                datapay = res.data.filter(function(item, index, array) {
+                  return item.type === '支出';
+                })
+                ypaydata.push(
+                  datapay.reduce(function(accumulator, currentValue) {
+                    return accumulator + currentValue.amount
+                  }, 0)
+                )
+                datain = res.data.filter(function(item, index, array) {
+                  return item.type === '收入';
+                })
+                yindata.push(
+                  datain.reduce(function(accumulator, currentValue) {
+                    return accumulator + currentValue.amount
+                  }, 0)
+                )
+                getaccounting_all(getToken(), ynows5, ynowe5).then(res => {
+                  let datapay = []
+                  let datain = []
+                  res.data.forEach(items => {
+                    if (items.type === false) {
+                      items.type = '支出';
+                    } else {
+                      items.type = '收入';
+                    }
+                  })
+                  datapay = res.data.filter(function(item, index, array) {
+                    return item.type === '支出';
+                  })
+                  ypaydata.push(
+                    datapay.reduce(function(accumulator, currentValue) {
+                      return accumulator + currentValue.amount
+                    }, 0)
+                  )
+                  datain = res.data.filter(function(item, index, array) {
+                    return item.type === '收入';
+                  })
+                  yindata.push(
+                    datain.reduce(function(accumulator, currentValue) {
+                      return accumulator + currentValue.amount
+                    }, 0)
+                  )
+                  getaccounting_all(getToken(), ynows6, ynowe6).then(res => {
+                    let datapay = []
+                    let datain = []
+                    res.data.forEach(items => {
+                      if (items.type === false) {
+                        items.type = '支出';
+                      } else {
+                        items.type = '收入';
+                      }
+                    })
+                    datapay = res.data.filter(function(item, index, array) {
+                      return item.type === '支出';
+                    })
+                    ypaydata.push(
+                      datapay.reduce(function(accumulator, currentValue) {
+                        return accumulator + currentValue.amount
+                      }, 0)
+                    )
+                    datain = res.data.filter(function(item, index, array) {
+                      return item.type === '收入';
+                    })
+                    yindata.push(
+                      datain.reduce(function(accumulator, currentValue) {
+                        return accumulator + currentValue.amount
+                      }, 0)
+                    )
+                    getaccounting_all(getToken(), ynows7, ynowe7).then(res => {
+                      let datapay = []
+                      let datain = []
+                      res.data.forEach(items => {
+                        if (items.type === false) {
+                          items.type = '支出';
+                        } else {
+                          items.type = '收入';
+                        }
+                      })
+                      datapay = res.data.filter(function(item, index, array) {
+                        return item.type === '支出';
+                      })
+                      ypaydata.push(
+                        datapay.reduce(function(accumulator, currentValue) {
+                          return accumulator + currentValue.amount
+                        }, 0)
+                      )
+                      datain = res.data.filter(function(item, index, array) {
+                        return item.type === '收入';
+                      })
+                      yindata.push(
+                        datain.reduce(function(accumulator, currentValue) {
+                          return accumulator + currentValue.amount
+                        }, 0)
+                      )
+                      this.lineChartData.paydata = ypaydata
+                      this.lineChartData.indata = yindata
+                      console.log(yindata)
+                    })
+                  })
+                })
+              })
+            })
+          })
+        })
+      })
     }
   }
 }

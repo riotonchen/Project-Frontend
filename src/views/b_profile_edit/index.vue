@@ -131,12 +131,12 @@
   </div>
 </template>
 <script>
-import { getUserInfo } from '@/api/login';
-import { getToken } from '@/utils/auth';
+import { getUserInfo } from '@/api/login'
+import { getToken } from '@/utils/auth'
 /* import { validateuninum } from '@/utils/validate'*/
-import { patchprofile, patchprofilepswd } from '@/api/profile/patchprofile';
-import { patchentprofile } from '@/api/ent-profile/patchentprofile';
-import { getentprofile } from '@/api/ent-profile/getentprofile';
+import { patchprofile, patchprofilepswd } from '@/api/profile/patchprofile'
+import { patchentprofile } from '@/api/ent-profile/patchentprofile'
+import { getentprofile } from '@/api/ent-profile/getentprofile'
 
 export default {
   name: 'CProfileEdit',

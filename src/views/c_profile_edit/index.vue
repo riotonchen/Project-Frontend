@@ -100,10 +100,10 @@
   </div>
 </template>
 <script>
-import { getUserInfo } from '@/api/login';
-import { getToken } from '@/utils/auth';
-import { validatetoid } from '@/utils/validate';
-import { patchprofile, patchprofilepswd } from '@/api/profile/patchprofile';
+import { getUserInfo } from '@/api/login'
+import { getToken } from '@/utils/auth'
+import { validatetoid } from '@/utils/validate'
+import { patchprofile, patchprofilepswd } from '@/api/profile/patchprofile'
 
 export default {
   name: 'CProfileEdit',
@@ -188,10 +188,10 @@ export default {
   },
   methods: {
     clean_name() {
-      this.profile_edit_form.name = '';
+      this.profile_edit_form.name = ''
     },
     clean_toid() {
-      this.profile_edit_form.toid = '';
+      this.profile_edit_form.toid = ''
     },
     getinfo() {
       getUserInfo(getToken()).then(response => {
@@ -219,9 +219,9 @@ export default {
           getUserInfo(getToken()).then(response => {
             var ori_name = response.name
             var ori_toid = response.toid
-            var send_name = '';
-            var send_toid = '';
-            var send_pswd = '';
+            var send_name = ''
+            var send_toid = ''
+            var send_pswd = ''
             if (this.profile_edit_form.name === '') {
               send_name = ori_name
             } else {
