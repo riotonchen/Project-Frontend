@@ -26,7 +26,6 @@ export default {
     b_profile_edit: 'Enterprise Edit Info',
     b_activity_add: 'Add Partial Info',
     b_activity_history: 'History Partial Info'
-
   },
   login: {
     title: 'Login Form',
@@ -35,7 +34,8 @@ export default {
     password: 'Password',
     any: 'any',
     thirdparty: 'Or connect with',
-    thirdpartyTips: 'Can not be simulated on local, so please combine you own business simulation! ! !'
+    thirdpartyTips:
+      'Can not be simulated on local, so please combine you own business simulation! ! !'
   },
   b_profile_edit: {
     email: 'email',
@@ -76,19 +76,24 @@ export default {
     edit: 'Edit'
   },
 
-  a_manage_business_view: {
-    businessmember: 'Businessmember',
-    number: 'Businessnumber',
-    name: 'Businessname',
+  a_manage_business: {
+    account: 'Business Account',
+    businessmember: 'Business Member',
+    number: 'Business Number',
+    name: 'Business Name',
     id: 'Businessid',
     operating: 'Operating',
+    advanced: 'Advanced',
     detail: 'Detail',
+    history: 'History',
+    page: 'Management page',
+    modify: 'Modify',
     activity: 'Activity',
     princiapl: 'Princiapl',
     taxID: 'TaxID',
-    telephone: 'Telephone number',
-    cellphone: 'Cellphone number',
-    extension: 'Extension number',
+    telephone: 'Telephone Number',
+    cellphone: 'Cellphone Number',
+    extension: 'Extension Number',
     address: 'Address',
     picture: 'Picture',
     preferentialname: 'Preferential name',
@@ -100,8 +105,52 @@ export default {
     cancel: 'Cancel',
     delete: 'Delete',
     edit: 'Edit',
-    notmodify: 'If the following do not need to revise，please keep the blank space.'
+    notmodify:
+      'If the following do not need to revise，please keep the blank space.',
+    information: 'Detail member information',
+    operate: 'Business & Member Various operations'
   },
+  a_manage_member: {
+    picture: 'Big Head Sticker',
+    account: 'Member account',
+    membername: 'Member name',
+    number: 'Member number',
+    operating: 'Operation',
+    advanced: 'Advanced',
+    operate: 'Member Various operations',
+    modify: 'Modify Data',
+    history: 'Historical Billing Services',
+    accountmanage: 'Account Management',
+    card: 'Card Management',
+    category: 'Category Management',
+    project: 'Project Management',
+    page: 'Management page',
+    information: 'Modify member Information',
+    email: 'Email',
+    name: 'Name',
+    newpswd: 'Password',
+    toid_ipt: 'Please enter 8 numbers',
+    password_ipt: 'If not modified, blank',
+    input: 'Pswd Again',
+    confirm: 'Confirm',
+    cancel: 'Cancel',
+    h1: '25 words at the most',
+    h2: '8 digit numbers at the most',
+    h3: 'If u dont edit, leave the space',
+    memberhistory: 'Member History Account',
+    clean: 'Empty filter',
+    receipt: 'Receipt Random Number',
+    memberaccount: 'Member Account Manage',
+    membercard: 'Member Card Manage',
+    action: 'Action page',
+    membercategory: 'Member Category Manage',
+    memberproject: 'Member Project Manage',
+    projectname: 'Project Name',
+    call: 'Name',
+    income: 'Total income',
+    spend: 'Total spend'
+  },
+
   b_profile_view: {
     businessview: 'Buiness view',
     email: 'Email',
@@ -138,7 +187,6 @@ export default {
     delete: 'Delete',
     cancel: 'Cancel',
     confirm: 'confirm'
-
   },
   c_connection: {
     subject: 'Subject',
@@ -173,7 +221,6 @@ export default {
     budgetmonth: 'Budget for the Month',
     spendingmonth: 'Expenditure for the month',
     remainingbudget: 'Remaining budget'
-
   },
   c_accountmanager: {
     accountname: 'Account',
@@ -274,8 +321,10 @@ export default {
   a_profile_view: {
     email: 'Email',
     name: 'Name',
-    alter: 'Modify'
+    alter: 'Modify',
+    date: 'Date'
   },
+
   a_profile_edit: {
     email: 'Email',
     name: 'Name',
@@ -289,6 +338,7 @@ export default {
     h2: '8 digit numbers at the most',
     h3: 'If u dont edit, leave the space'
   },
+
   a_signup: {
     title: 'Create an Administrator account',
     username: 'Account(Email)',
@@ -350,17 +400,24 @@ export default {
     switchRoles: 'Switch roles'
   },
   guide: {
-    description: 'The guide page is useful for some people who entered the project for the first time. You can briefly introduce the features of the project. Demo is based on ',
+    description:
+      'The guide page is useful for some people who entered the project for the first time. You can briefly introduce the features of the project. Demo is based on ',
     button: 'Show Guide'
   },
   components: {
     documentation: 'Documentation',
-    tinymceTips: 'Rich text editor is a core part of management system, but at the same time is a place with lots of problems. In the process of selecting rich texts, I also walked a lot of detours. The common rich text editors in the market are basically used, and the finally chose Tinymce. See documentation for more detailed rich text editor comparisons and introductions.',
-    dropzoneTips: 'Because my business has special needs, and has to upload images to qiniu, so instead of a third party, I chose encapsulate it by myself. It is very simple, you can see the detail code in @/components/Dropzone.',
-    stickyTips: 'when the page is scrolled to the preset position will be sticky on the top.',
-    backToTopTips1: 'When the page is scrolled to the specified position, the Back to Top button appears in the lower right corner',
-    backToTopTips2: 'You can customize the style of the button, show / hide, height of appearance, height of the return. If you need a text prompt, you can use element-ui el-tooltip elements externally',
-    imageUploadTips: 'Since I was using only the vue@1 version, and it is not compatible with mockjs at the moment, I modified it myself, and if you are going to use it, it is better to use official version.'
+    tinymceTips:
+      'Rich text editor is a core part of management system, but at the same time is a place with lots of problems. In the process of selecting rich texts, I also walked a lot of detours. The common rich text editors in the market are basically used, and the finally chose Tinymce. See documentation for more detailed rich text editor comparisons and introductions.',
+    dropzoneTips:
+      'Because my business has special needs, and has to upload images to qiniu, so instead of a third party, I chose encapsulate it by myself. It is very simple, you can see the detail code in @/components/Dropzone.',
+    stickyTips:
+      'when the page is scrolled to the preset position will be sticky on the top.',
+    backToTopTips1:
+      'When the page is scrolled to the specified position, the Back to Top button appears in the lower right corner',
+    backToTopTips2:
+      'You can customize the style of the button, show / hide, height of appearance, height of the return. If you need a text prompt, you can use element-ui el-tooltip elements externally',
+    imageUploadTips:
+      'Since I was using only the vue@1 version, and it is not compatible with mockjs at the moment, I modified it myself, and if you are going to use it, it is better to use official version.'
   },
   table: {
     dynamicTips1: 'Fixed header, sorted by header order',
@@ -390,7 +447,8 @@ export default {
   },
   errorLog: {
     tips: 'Please click the bug icon in the upper right corner',
-    description: 'Now the management system are basically the form of the spa, it enhances the user experience, but it also increases the possibility of page problems, a small negligence may lead to the entire page deadlock. Fortunately Vue provides a way to catch handling exceptions, where you can handle errors or report exceptions.',
+    description:
+      'Now the management system are basically the form of the spa, it enhances the user experience, but it also increases the possibility of page problems, a small negligence may lead to the entire page deadlock. Fortunately Vue provides a way to catch handling exceptions, where you can handle errors or report exceptions.',
     documentation: 'Document introduction'
   },
   excel: {
@@ -405,7 +463,8 @@ export default {
   theme: {
     change: 'Change Theme',
     documentation: 'Theme documentation',
-    tips: 'Tips: It is different from the theme-pick on the navbar is two different skinning methods, each with different application scenarios. Refer to the documentation for details.'
+    tips:
+      'Tips: It is different from the theme-pick on the navbar is two different skinning methods, each with different application scenarios. Refer to the documentation for details.'
   },
   tagsView: {
     refresh: 'Refresh',

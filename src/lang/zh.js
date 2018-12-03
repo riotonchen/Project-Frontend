@@ -27,7 +27,6 @@ export default {
     b_activity_history: '歷史優惠資訊',
     b_profile_view: '商家資訊',
     b_profile_edit: '商家編輯資訊'
-
   },
   b_profile_edit: {
     email: '信箱',
@@ -117,7 +116,6 @@ export default {
     h1: '上限25個中英數字',
     h2: 'ToID 只限定於 8 碼',
     h3: '如不修改，空白即可'
-
   },
   c_profile_view: {
     email: '信箱',
@@ -168,7 +166,6 @@ export default {
     budgetmonth: '本月預算',
     spendingmonth: '本月支出',
     remainingbudget: '預算餘額'
-
   },
   c_connection: {
     subject: '主旨',
@@ -247,7 +244,8 @@ export default {
   a_profile_view: {
     email: '信箱',
     name: '姓名',
-    alter: '修改'
+    alter: '修改',
+    date: '加入日期'
   },
   a_profile_edit: {
     email: '信箱',
@@ -256,8 +254,8 @@ export default {
     toid_ipt: '請輸入8位數字',
     password_ipt: '如不修改，空白即可',
     input: '再次輸入',
-    confirm: '確 認',
-    cancel: '取 消',
+    confirm: '確認',
+    cancel: '取消',
     h1: '上限25個中英數字',
     h2: 'ToID 只限定於 8 碼',
     h3: '如不修改，空白即可'
@@ -291,13 +289,18 @@ export default {
     replycontent: '回覆內容',
     input: '請輸入'
   },
-  a_manage_business_view: {
+  a_manage_business: {
+    account: '商家帳號',
     businessmember: '商家會員',
     number: '商家編號',
     name: '商家名稱',
     id: '商家帳號',
     operating: '操作',
+    advanced: '進階',
     detail: '詳細資料',
+    history: '歷史活動',
+    page: '回管理頁',
+    modify: '修改',
     activity: '活動紀錄',
     princiapl: '負責人',
     taxID: '統一編號',
@@ -314,8 +317,52 @@ export default {
     confirm: '確定',
     cancel: '取消',
     delete: '刪除',
-    notmodify: '以下如不修改保持空白即可'
+    notmodify: '以下如不修改保持空白即可',
+    information: '詳細會員資訊',
+    operate: '商家會員各項操作'
   },
+
+  a_manage_member: {
+    picture: '大頭貼',
+    account: '會員帳號',
+    membername: '會員名稱',
+    number: '會員編號',
+    operating: '操作',
+    advanced: '進階',
+    operate: '普通會員各項操作',
+    modify: '修改資料',
+    history: '歷史帳務',
+    accountmanage: '帳戶管理',
+    card: '卡片管理',
+    category: '分類管理',
+    project: '專案管理',
+    page: '回管理頁',
+    information: '修改會員資訊',
+    email: '信箱',
+    name: '姓名',
+    newpswd: '密碼',
+    toid_ipt: '請輸入8位數字',
+    password_ipt: '如不修改，空白即可',
+    input: '再次輸入',
+    confirm: '確認',
+    cancel: '取消',
+    h1: '上限25個中英數字',
+    h2: 'ToID 只限定於 8 碼',
+    h3: '如不修改，空白即可',
+    memberhistory: '會員歷史帳務',
+    clean: '清空篩選',
+    receipt: '發票隨機碼',
+    memberaccount: '會員帳戶管理',
+    membercard: '會員卡片管理',
+    action: '回操作頁',
+    membercategory: '會員分類管理',
+    memberproject: '會員專案管理',
+    projectname: '專案名稱',
+    call: '名稱',
+    income: '總收入',
+    spend: '總支出'
+  },
+
   c_accounting: {
     date: '發票日期',
     invoice: '發票號碼',
@@ -376,17 +423,22 @@ export default {
     switchRoles: '切换權限'
   },
   guide: {
-    description: '引導頁對於一些第一次進入項目的人很有用，你可以簡單介紹下項目的功能。本 Demo 是基於',
+    description:
+      '引導頁對於一些第一次進入項目的人很有用，你可以簡單介紹下項目的功能。本 Demo 是基於',
     button: '打開引導'
   },
   components: {
     documentation: '文檔',
-    tinymceTips: '副文本是管理後台一个核心的功能，但同時又是一個有很多坑的地方。在選擇副文本的過程中我也走了不少的彎路，市面上常見的副文本都基本用過了，最終均衡了一下選擇了Tinymce。更詳細的副文本比较和介绍見',
-    dropzoneTips: '由於我司業務有特殊需求，而且要傳七牛 所以没用第三方，選擇了自己封裝。代碼非常的簡單，具體代碼你可以在這裡看到 @/components/Dropzone',
+    tinymceTips:
+      '副文本是管理後台一个核心的功能，但同時又是一個有很多坑的地方。在選擇副文本的過程中我也走了不少的彎路，市面上常見的副文本都基本用過了，最終均衡了一下選擇了Tinymce。更詳細的副文本比较和介绍見',
+    dropzoneTips:
+      '由於我司業務有特殊需求，而且要傳七牛 所以没用第三方，選擇了自己封裝。代碼非常的簡單，具體代碼你可以在這裡看到 @/components/Dropzone',
     stickyTips: '當頁面滾動到預設的位置會吸附在頂部',
     backToTopTips1: '頁面滾動到指定位置會在右下角出现返回頂部按鈕',
-    backToTopTips2: '可自定義按鈕的樣式、show/hide、出現的高度、返回的位置 如需文字提示，可在外部使用Element的el-tooltip元素',
-    imageUploadTips: '由於我在使用時它只有vue@1版本，而且和mockjs不兼容，所以自己改造了一下，如果大家要使用的话，優先還是使用官方版本。'
+    backToTopTips2:
+      '可自定義按鈕的樣式、show/hide、出現的高度、返回的位置 如需文字提示，可在外部使用Element的el-tooltip元素',
+    imageUploadTips:
+      '由於我在使用時它只有vue@1版本，而且和mockjs不兼容，所以自己改造了一下，如果大家要使用的话，優先還是使用官方版本。'
   },
   table: {
     dynamicTips1: '固定表頭, 按照表頭順序排序',
@@ -418,11 +470,11 @@ export default {
     class: '分類',
     subclass: '子分類',
     money: '金額'
-
   },
   errorLog: {
     tips: '請點擊右上角bug小圖示',
-    description: '現在的管理後台基本都是spa的形式了，它增強了用戶體驗，但同時也會增加頁面出問題的可能性，可能一个小小的疏忽就導致整個頁面的死鎖。好在 Vue 官網提供了一個方法来捕獲處理異常，你可以在其中進行錯誤處理或者異常上報。',
+    description:
+      '現在的管理後台基本都是spa的形式了，它增強了用戶體驗，但同時也會增加頁面出問題的可能性，可能一个小小的疏忽就導致整個頁面的死鎖。好在 Vue 官網提供了一個方法来捕獲處理異常，你可以在其中進行錯誤處理或者異常上報。',
     documentation: '文檔介紹'
   },
   excel: {
@@ -437,7 +489,8 @@ export default {
   theme: {
     change: '換膚',
     documentation: '換膚文檔',
-    tips: 'Tips: 它區別於 navbar 上的 theme-pick, 是兩種不同的換膚方法，各自有不同的應用場景，具體請參考文檔。'
+    tips:
+      'Tips: 它區別於 navbar 上的 theme-pick, 是兩種不同的換膚方法，各自有不同的應用場景，具體請參考文檔。'
   },
   tagsView: {
     refresh: '刷新',
@@ -445,5 +498,4 @@ export default {
     closeOthers: '關閉其它',
     closeAll: '關閉所有'
   }
-
 }

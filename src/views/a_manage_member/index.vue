@@ -4,7 +4,7 @@
     <title>
       {{ $t('route.a_manage_member') }}
     </title>
-
+    <!--主畫面-->
     <div class="memberinfo_table">
       <el-table
         :data="a_all_member_data"
@@ -20,7 +20,7 @@
               inline
               class="table_expand"
             >
-              <el-form-item label="大頭貼">
+              <el-form-item :label="$t('a_manage_member.picture')">
                 <span>{{ scope.row.localpicture }}</span>
               </el-form-item>
             </el-form>
@@ -30,7 +30,7 @@
           type="index"
           align="center"
         />
-        <el-table-column label="會員帳號">
+        <el-table-column :label="$t('a_manage_member.account')">
           <template
             slot-scope="scope"
             prop="account"
@@ -39,7 +39,7 @@
             <span>{{ scope.row.account }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="會員名稱">
+        <el-table-column :label="$t('a_manage_member.membername')">
           <template
             slot-scope="scope"
             prop="name"
@@ -48,7 +48,7 @@
             <span>{{ scope.row.name }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="會員編號">
+        <el-table-column :label="$t('a_manage_member.number')">
           <template
             slot-scope="scope"
             prop="name"
@@ -67,23 +67,23 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="操作"
+          :label="$t('a_manage_member.operating')"
           align="center"
         >
           <template slot-scope="scope">
             <el-button
               type="primary"
               @click="handle_advance(scope.$index,scope.row)"
-            >進階</el-button>
+            >{{ $t('a_manage_member.advanced') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
-
+    <!--操作區的進階表單-->
     <div class="advance_dialog">
       <el-dialog
         :visible.sync="a_member_adv_visible"
-        title="普通會員各項操作"
+        :title="$t('a_manage_member.operate')"
         width="90%"
       >
         <el-row>
@@ -93,7 +93,7 @@
               class="adv_in_btn"
               plain
               @click="get_project_info()"
-            >專案管理</el-button>
+            >{{ $t('a_manage_member.project') }}</el-button>
           </el-col>
           <el-col :span="12">
             <el-button
@@ -101,7 +101,7 @@
               class="adv_in_btn"
               plain
               @click="get_accounting_info()"
-            >歷史帳務</el-button>
+            >{{ $t('a_manage_member.history') }}</el-button>
           </el-col>
         </el-row>
         <el-row>
@@ -111,7 +111,7 @@
               class="adv_in_btn"
               plain
               @click="get_account_info()"
-            >帳戶管理</el-button>
+            >{{ $t('a_manage_member.accountmanage') }}</el-button>
           </el-col>
           <el-col :span="12">
             <el-button
@@ -119,7 +119,7 @@
               class="adv_in_btn"
               plain
               @click="get_card_info()"
-            >卡片管理</el-button>
+            >{{ $t('a_manage_member.card') }}</el-button>
           </el-col>
         </el-row>
         <el-row>
@@ -129,7 +129,7 @@
               class="adv_in_btn"
               plain
               @click="get_category_info()"
-            >分類管理</el-button>
+            >{{ $t('a_manage_member.category') }}</el-button>
           </el-col>
           <el-col :span="12">
             <span />
@@ -141,7 +141,7 @@
               type="info"
               class="adv_calbtn"
               @click="adv_cal()"
-            >回管理頁</el-button>
+            >{{ $t('a_manage_member.page') }}</el-button>
           </el-col>
         </el-row>
       </el-dialog>
@@ -150,8 +150,8 @@
     <div class="accounting_dialog">
       <el-dialog
         :visible.sync="a_adv_accountung_visible"
+        :title="$t('a_manage_member.memberhistory')"
         width="80%"
-        title="會員歷史帳務"
         top="5vh"
       >
         <div class="filter_container">
@@ -337,7 +337,7 @@
                 type="info"
                 plain
                 @click.native.prevent="clean_accounting_allselect()"
-              >清空篩選</el-button>
+              >{{ $t('a_manage_member.clean') }}</el-button>
             </el-col>
           </el-row>
         </div>
@@ -361,7 +361,7 @@
                       class="table_expand"
                     >
 
-                      <el-form-item label="發票隨機碼">
+                      <el-form-item :label="$t('a_manage_member.receipt')">
                         <div v-if="scope.row.invoice_id==='-'">
                           <span>
                             {{ scope.row.invoice_id }}
@@ -490,7 +490,7 @@
                 type="info"
                 class="adv_calbtn"
                 @click="in_adv_cal()"
-              >回操作頁</el-button>
+              >{{ $t('a_manage_member.action') }}</el-button>
             </el-col>
           </el-row>
         </div>
@@ -501,8 +501,8 @@
 
       <el-dialog
         :visible.sync="a_adv_account_visible"
+        :title="$t('a_manage_member.memberaccount')"
         width="80%"
-        title="會員帳戶管理"
         top="9vh"
       >
         <div class="filter_container">
@@ -591,7 +591,7 @@
                 type="info"
                 class="adv_calbtn"
                 @click="in_adv_cal()"
-              >回操作頁</el-button>
+              >{{ $t('a_manage_member.action') }}</el-button>
             </el-col>
           </el-row>
         </div>
@@ -601,8 +601,8 @@
     <div class="card_dialog">
       <el-dialog
         :visible.sync="a_adv_card_visible"
+        :title="$t('a_manage_member.membercard')"
         width="80%"
-        title="會員卡片管理"
         top="9vh"
       >
         <div class="filter_container">
@@ -666,7 +666,7 @@
                 type="info"
                 class="adv_calbtn"
                 @click="in_adv_cal()"
-              >回操作頁</el-button>
+              >{{ $t('a_manage_member.action') }}</el-button>
             </el-col>
           </el-row>
         </div>
@@ -676,8 +676,8 @@
     <div class="category_dialog">
       <el-dialog
         :visible.sync="a_adv_category_visible"
+        :title="$t('a_manage_member.membercategory')"
         width="80%"
-        title="會員分類管理"
         top="9vh"
       >
         <div class="filter_container">
@@ -782,7 +782,7 @@
                   type="info"
                   class="adv_calbtn"
                   @click="in_adv_cal()"
-                >回操作頁</el-button>
+                >{{ $t('a_manage_member.action') }}</el-button>
               </el-col>
             </el-row>
           </el-row>
@@ -793,14 +793,14 @@
     <div class="project_dialog">
       <el-dialog
         :visible.sync="a_adv_project_visible"
+        :title="$t('a_manage_member.memberproject')"
         width="80%"
-        title="會員專案管理"
         top="9vh"
       >
         <div class="filter-container">
           <el-select
             v-model="c_project"
-            placeholder="專案名稱"
+            :placeholder="$t('a_manage_member.projectname')"
             clearable
             filterable
             style="width: 25vw;max-width:7.5rem;min-width:5.5rem;"
@@ -831,7 +831,7 @@
                   align="center"
                 />
                 <el-table-column
-                  label="名稱"
+                  :label="$t('a_manage_member.call')"
                   prop="name"
                   align="center"
                 >
@@ -840,7 +840,7 @@
                   </template>
                 </el-table-column>
                 <el-table-column
-                  label="總收入"
+                  :label="$t('a_manage_member.income')"
                   prop="total_income"
                   align="center"
                 >
@@ -849,7 +849,7 @@
                   </template>
                 </el-table-column>
                 <el-table-column
-                  label="總支出"
+                  :label="$t('a_manage_member.spend')"
                   prop="total_expenses"
                   align="center"
                 >
@@ -866,7 +866,7 @@
                 type="info"
                 class="adv_calbtn"
                 @click="in_adv_cal()"
-              >回操作頁</el-button>
+              >{{ $t('a_manage_member.action') }}</el-button>
             </el-col>
           </el-row>
         </div>
@@ -878,17 +878,17 @@
 </template>
 
 <script>
-import waves from '@/directive/waves' // 水波紋指令
-import { getcardforadmin } from '@/api/card/getcard'
-import { getmember, getmemberlist } from '@/api/member/getmember'
-import { getToken } from '@/utils/auth'
-import { formatdate, formatdate_inc_time } from '@/utils/index'
-import { getaccountforadmin, getaccounttype } from '@/api/account/getaccount'
-import { getprojectforadmin } from '@/api/project/getproject'
-import { getsortbudgetforadmin } from '@/api/sortbudget/getsortbudget'
-import { getaccountingforadmin } from '@/api/accounting/getaccounting'
-import { getsortforadmin } from '@/api/sort/getsort'
-import { getsubsortforadmin } from '@/api/subsort/getsubsort'
+import waves from '@/directive/waves'; // 水波紋指令
+import { getcardforadmin } from '@/api/card/getcard';
+import { getmember, getmemberlist } from '@/api/member/getmember';
+import { getToken } from '@/utils/auth';
+import { formatdate, formatdate_inc_time } from '@/utils/index';
+import { getaccountforadmin, getaccounttype } from '@/api/account/getaccount';
+import { getprojectforadmin } from '@/api/project/getproject';
+import { getsortbudgetforadmin } from '@/api/sortbudget/getsortbudget';
+import { getaccountingforadmin } from '@/api/accounting/getaccounting';
+import { getsortforadmin } from '@/api/sort/getsort';
+import { getsubsortforadmin } from '@/api/subsort/getsubsort';
 
 export default {
   name: 'AManageMember',
@@ -1011,19 +1011,19 @@ export default {
   watch: {
     c_account: function(new_type, old_type) {
       if (new_type !== '') {
-        this.c_account_name = ''
+        this.c_account_name = '';
         this.c_account_name_disable = false
       } else if (new_type !== old_type) {
-        this.c_account_name = ''
+        this.c_account_name = '';
         this.get_account_info()
       }
     },
     c_category_sort_payorin: function(newpi, oldpi) {
       if (this.c_category_sort_payorin === '') {
         this.c_sort_disable = true
-        this.c_category_sort_id = ''
+        this.c_category_sort_id = '';
       } else if (newpi !== oldpi) {
-        this.c_category_sort_id = ''
+        this.c_category_sort_id = '';
         this.c_sort_disable = false
       }
     },
@@ -1049,18 +1049,18 @@ export default {
       if (oldc_payorin === '') {
         this.c_accounting_sort_disable = false
       } else if (newc_payorin === '') {
-        this.c_accounting_sort = ''
-        this.c_accounting_subsort = ''
+        this.c_accounting_sort = '';
+        this.c_accounting_subsort = '';
         this.c_accounting_sort_disable = true
         this.get_accounting_info()
       } else if (newc_payorin !== 1 && newc_payorin !== 0) {
         this.c_accounting_sort_disable = true
         this.c_accounting_subsort_disable = true
-        this.c_accounting_sort = ''
-        this.c_accounting_subsort = ''
+        this.c_accounting_sort = '';
+        this.c_accounting_subsort = '';
       } else if (newc_payorin !== oldc_payorin) {
-        this.c_accounting_sort = ''
-        this.c_accounting_subsort = ''
+        this.c_accounting_sort = '';
+        this.c_accounting_subsort = '';
         this.get_accounting_info()
       }
     },
@@ -1068,10 +1068,10 @@ export default {
       if (oldc_sort === '') {
         this.c_accounting_subsort_disable = false
       } else if (newc_sort === '') {
-        this.c_accounting_subsort = ''
+        this.c_accounting_subsort = '';
         this.c_accounting_subsort_disable = true
       } else if (newc_sort !== oldc_sort) {
-        this.c_accounting_subsort = ''
+        this.c_accounting_subsort = '';
       }
     },
     c_accounting_subsort: function(newc_subsort, oldc_subsort) {
@@ -1131,17 +1131,17 @@ export default {
           'yyyy-mm-dd'
         )
       } else {
-        startdate = ''
-        enddate = ''
+        startdate = '';
+        enddate = '';
       }
       let send_payin
       if (this.c_accounting_payorin === 0) {
-        send_payin = 'False'
+        send_payin = 'False';
       } else if (this.c_accounting_payorin === 1) {
-        send_payin = 'True'
+        send_payin = 'True';
       } else {
-        send_payin = ''
-        this.c_accounting_sort_id = ''
+        send_payin = '';
+        this.c_accounting_sort_id = '';
       }
       getaccountforadmin(getToken(), this.profile_edit_form.id).then(res => {
         this.c_accounting_accountitem = res.data
@@ -1176,12 +1176,12 @@ export default {
         this.c_user_history = res.data
         this.c_user_history.forEach(items => {
           if (items.type === false) {
-            items.type = '支出'
+            items.type = '支出';
           } else {
-            items.type = '收入'
+            items.type = '收入';
           }
           if (items.invoice_id === null || items.invoice_id === undefined) {
-            items.invoice_id = '-'
+            items.invoice_id = '-';
           }
         })
       })
@@ -1234,12 +1234,12 @@ export default {
       this.a_adv_category_visible = true
       let send_payin
       if (this.c_category_sort_payorin === 0) {
-        send_payin = 'False'
+        send_payin = 'False';
       } else if (this.c_category_sort_payorin === 1) {
-        send_payin = 'True'
+        send_payin = 'True';
       } else {
-        send_payin = ''
-        this.c_category_sort_id = ''
+        send_payin = '';
+        this.c_category_sort_id = '';
       }
 
       getsortbudgetforadmin(
@@ -1288,17 +1288,17 @@ export default {
       this.profile_edit_form.id = row.id
     },
     clean_name() {
-      this.profile_edit_form.name = ''
+      this.profile_edit_form.name = '';
     },
     clean_toid() {
-      this.profile_edit_form.toid = ''
+      this.profile_edit_form.toid = '';
     },
     clean_accounting_allselect() {
-      this.c_accounting_payorin = ''
-      this.c_accounting_sort = ''
-      this.c_accounting_subsort = ''
-      this.c_accounting_project = ''
-      this.c_accounting_account = ''
+      this.c_accounting_payorin = '';
+      this.c_accounting_sort = '';
+      this.c_accounting_subsort = '';
+      this.c_accounting_project = '';
+      this.c_accounting_account = '';
       const start = new Date()
       start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
       this.accounting_startenddate = [

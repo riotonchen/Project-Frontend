@@ -14,7 +14,7 @@
           type="index"
           align="center"
         />
-        <el-table-column label="商家帳號">
+        <el-table-column :label="$t('a_manage_business.account')">
           <template
             slot-scope="scope"
             prop="account"
@@ -23,7 +23,7 @@
             <span>{{ scope.row.account }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="商家名稱">
+        <el-table-column :label="$t('a_manage_business.name')">
           <template
             slot-scope="scope"
             prop="name"
@@ -32,7 +32,7 @@
             <span>{{ scope.row.name }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="商家編號">
+        <el-table-column :label="$t('a_manage_business.number')">
           <template
             slot-scope="scope"
             prop="id"
@@ -42,14 +42,14 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="操作"
+          :label="$t('a_manage_business.operating')"
           align="center"
         >
           <template slot-scope="scope">
             <el-button
               type="primary"
               @click="handle_advance(scope.$index,scope.row)"
-            >進階</el-button>
+            >{{ $t('a_manage_business.advanced') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -57,7 +57,7 @@
     <div class="advance_dialog">
       <el-dialog
         :visible.sync="a_ent_adv_visible"
-        title="商家會員各項操作"
+        :title="$t('a_manage_business.operate')"
         width="90%"
       >
         <el-row>
@@ -67,7 +67,7 @@
               class="adv_in_btn"
               plain
               @click="get_ent_info()"
-            >詳細資料</el-button>
+            >{{ $t('a_manage_business.detail') }}</el-button>
           </el-col>
           <el-col :span="12">
             <el-button
@@ -75,7 +75,7 @@
               class="adv_in_btn"
               plain
               @click="get_accounting_info()"
-            >歷史活動</el-button>
+            >{{ $t('a_manage_business.history') }}</el-button>
           </el-col>
         </el-row>
         <el-row>
@@ -102,7 +102,7 @@
                 type="info"
                 class="adv_calbtn"
                 @click="adv_cal()"
-              >回管理頁</el-button>
+              >{{ $t('a_manage_business.page') }}</el-button>
             </el-col>
           </el-row>
         </el-row>
@@ -111,7 +111,7 @@
     <div class="editinfo_dialog">
       <el-dialog
         :visible.sync="c_ent_confiinfo_visible"
-        title="詳細會員資訊"
+        :title="$t('a_manage_business.information')"
         width="80%"
       >
         <transition name="el-fade-in-linear">
@@ -128,56 +128,56 @@
                   inline
                   class="ent_view"
                 >
-                  <el-form-item label="商家帳號">
+                  <el-form-item :label="$t('a_manage_business.account')">
                     <el-input
                       v-model="profile_edit_form.account"
                       type="text"
                       readonly
                     />
                   </el-form-item>
-                  <el-form-item :label="$t('a_manage_business_view.princiapl')">
+                  <el-form-item :label="$t('a_manage_business.princiapl')">
                     <el-input
                       v-model="profile_edit_form.manager"
                       type="text"
                       readonly
                     />
                   </el-form-item>
-                  <el-form-item :label="$t('a_manage_business_view.name')">
+                  <el-form-item :label="$t('a_manage_business.name')">
                     <el-input
                       v-model="profile_edit_form.name"
                       type="text"
                       readonly
                     />
                   </el-form-item>
-                  <el-form-item :label="$t('a_manage_business_view.taxID')">
+                  <el-form-item :label="$t('a_manage_business.taxID')">
                     <el-input
                       v-model="profile_edit_form.uni_num"
                       type="text"
                       readonly
                     />
                   </el-form-item>
-                  <el-form-item :label="$t('a_manage_business_view.telephone')">
+                  <el-form-item :label="$t('a_manage_business.telephone')">
                     <el-input
                       v-model="profile_edit_form.mobile_num"
                       type="text"
                       readonly
                     />
                   </el-form-item>
-                  <el-form-item :label="$t('a_manage_business_view.cellphone')">
+                  <el-form-item :label="$t('a_manage_business.cellphone')">
                     <el-input
                       v-model="profile_edit_form.phone_num"
                       type="text"
                       readonly
                     />
                   </el-form-item>
-                  <el-form-item :label="$t('a_manage_business_view.extension')">
+                  <el-form-item :label="$t('a_manage_business.extension')">
                     <el-input
                       v-model="profile_edit_form.extension"
                       type="text"
                       readonly
                     />
                   </el-form-item>
-                  <el-form-item :label="$t('a_manage_business_view.address')">
+                  <el-form-item :label="$t('a_manage_business.address')">
                     <el-input
                       v-model="profile_edit_form.address"
                       type="text"
@@ -193,7 +193,7 @@
                   type="info"
                   class="info_btns"
                   @click.native.prevent="in_adv_motion_cal()"
-                >回管理頁</el-button>
+                >{{ $t('a_manage_business.page') }}</el-button>
               </el-col>
             </el-row>
           </div>
@@ -212,7 +212,7 @@
                   inline
                   class="ent_edit"
                 >
-                  <el-form-item label="商家帳號">
+                  <el-form-item :label="$t('a_manage_business.account')">
                     <el-input
                       v-model="profile_edit_form.account"
                       type="text"
@@ -220,7 +220,7 @@
                       class="account"
                     />
                   </el-form-item>
-                  <el-form-item :label="$t('a_manage_business_view.princiapl')">
+                  <el-form-item :label="$t('a_manage_business.princiapl')">
                     <el-input
                       v-model="profile_edit_form.manager"
                       :placeholder="profile_edit_form_manage_p"
@@ -228,7 +228,7 @@
                       type="text"
                     />
                   </el-form-item>
-                  <el-form-item :label="$t('a_manage_business_view.name')">
+                  <el-form-item :label="$t('a_manage_business.name')">
                     <el-input
                       v-model="profile_edit_form.name"
                       :placeholder="profile_edit_form_name_p"
@@ -236,7 +236,7 @@
                       type="text"
                     />
                   </el-form-item>
-                  <el-form-item :label="$t('a_manage_business_view.taxID')">
+                  <el-form-item :label="$t('a_manage_business.taxID')">
                     <el-input
                       v-model="profile_edit_form.uni_num"
                       :placeholder="profile_edit_form_uni_num_p"
@@ -244,7 +244,7 @@
                       type="text"
                     />
                   </el-form-item>
-                  <el-form-item :label="$t('a_manage_business_view.telephone')">
+                  <el-form-item :label="$t('a_manage_business.telephone')">
                     <el-input
                       v-model="profile_edit_form.mobile_num"
                       :placeholder="profile_edit_form_mobile_num_p"
@@ -252,7 +252,7 @@
                       type="text"
                     />
                   </el-form-item>
-                  <el-form-item :label="$t('a_manage_business_view.cellphone')">
+                  <el-form-item :label="$t('a_manage_business.cellphone')">
                     <el-input
                       v-model="profile_edit_form.phone_num"
                       :placeholder="profile_edit_form_phone_num_p"
@@ -260,7 +260,7 @@
                       type="text"
                     />
                   </el-form-item>
-                  <el-form-item :label="$t('a_manage_business_view.extension')">
+                  <el-form-item :label="$t('a_manage_business.extension')">
                     <el-input
                       v-model="profile_edit_form.extension"
                       :placeholder="profile_edit_form_extension_p"
@@ -268,7 +268,7 @@
                       type="text"
                     />
                   </el-form-item>
-                  <el-form-item :label="$t('a_manage_business_view.address')">
+                  <el-form-item :label="$t('a_manage_business.address')">
                     <el-input
                       v-model="profile_edit_form.address"
                       :placeholder="profile_edit_form_address_p"
@@ -285,12 +285,12 @@
                   type="primary"
                   class="info_btns"
                   @click.native.prevent="cofigure_ent_info()"
-                >確認</el-button>
+                >{{ $t('a_manage_business.confirm') }}</el-button>
                 <el-button
                   type="info"
                   class="info_btns"
                   @click.native.prevent="changetoinfoview()"
-                >{{ $t('c_profile_edit.cancel') }}</el-button>
+                >{{ $t('a_manage_business.cancel') }}</el-button>
               </el-col>
             </el-row>
           </div>
@@ -300,11 +300,11 @@
   </div>
 </template>
 <script>
-import waves from '@/directive/waves' // 水波紋指令
-import { getToken } from '@/utils/auth'
-import { getmember, getmemberlist } from '@/api/member/getmember'
-import { getentprofile } from '@/api/ent-profile/getentprofile'
-import { patchentprofile } from '@/api/ent-profile/patchentprofile'
+import waves from '@/directive/waves'; // 水波紋指令
+import { getToken } from '@/utils/auth';
+import { getmember, getmemberlist } from '@/api/member/getmember';
+import { getentprofile } from '@/api/ent-profile/getentprofile';
+import { patchentprofile } from '@/api/ent-profile/patchentprofile';
 export default {
   name: 'BManageBusiness',
   directives: {
@@ -410,13 +410,13 @@ export default {
     get_ent_info() {
       this.c_ent_confiinfo_visible = true
       getentprofile(getToken(), this.profile_edit_form.account).then(res => {
-        this.profile_edit_form.name = ''
-        this.profile_edit_form.manager = ''
-        this.profile_edit_form.uni_num = ''
-        this.profile_edit_form.mobile_num = ''
-        this.profile_edit_form.phone_num = ''
-        this.profile_edit_form.extension = ''
-        this.profile_edit_form.address = ''
+        this.profile_edit_form.name = '';
+        this.profile_edit_form.manager = '';
+        this.profile_edit_form.uni_num = '';
+        this.profile_edit_form.mobile_num = '';
+        this.profile_edit_form.phone_num = '';
+        this.profile_edit_form.extension = '';
+        this.profile_edit_form.address = '';
         this.profile_edit_form.id = res.data[0].store_id
         this.profile_edit_form.name = res.data[0].name
         this.profile_edit_form.manager = res.data[0].manager

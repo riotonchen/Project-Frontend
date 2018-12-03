@@ -74,173 +74,173 @@
   </div>
 </template>
 <script>
-import { getUserInfo } from '@/api/login'
-import { getToken } from '@/utils/auth'
-import { validatetoid } from '@/utils/validate'
-import { patchprofile, patchprofilepswd } from '@/api/profile/patchprofile'
+import { getUserInfo } from "@/api/login";
+import { getToken } from "@/utils/auth";
+import { validatetoid } from "@/utils/validate";
+import { patchprofile, patchprofilepswd } from "@/api/profile/patchprofile";
 
 export default {
-  name: 'AProfileEdit',
+  name: "AProfileEdit",
   data() {
     const validatename = (rule, value, callback) => {
       if (value.length < 1) {
-        callback(new Error('姓名不得為空'))
+        callback(new Error("姓名不得為空"));
       } else if (value.length > 25) {
-        callback(new Error('姓名不可以大於 25 個字'))
+        callback(new Error("姓名不可以大於 25 個字"));
       } else {
-        callback()
+        callback();
       }
-    }
+    };
     const validatePassword = (rule, value, callback) => {
-      if (value === '') {
-        callback()
+      if (value === "") {
+        callback();
       } else if (value.length < 8) {
-        callback(new Error('密碼不可以小於 8 碼'))
+        callback(new Error("密碼不可以小於 8 碼"));
       } else {
-        callback()
+        callback();
       }
-    }
+    };
     const validatedoublepswd = (rule, value, callback) => {
-      if (value === '') {
-        callback()
+      if (value === "") {
+        callback();
       } else if (value !== this.profile_edit_form.pswd) {
-        callback(new Error('二次密碼不一樣，請再次輸入！'))
-      } else if (value === '' && this.profile_edit_form.pswd !== '') {
-        callback(new Error('請輸入，不可空白'))
+        callback(new Error("二次密碼不一樣，請再次輸入！"));
+      } else if (value === "" && this.profile_edit_form.pswd !== "") {
+        callback(new Error("請輸入，不可空白"));
       } else {
-        callback()
+        callback();
       }
-    }
+    };
     return {
-      imageUrl: '',
-      labelPosition: 'right',
+      imageUrl: "",
+      labelPosition: "right",
       loadingprofile_view_cancal: false,
       loadingprofile_view_send: false,
       profile_edit_form: {
-        account: '',
-        name: '',
-        pswd: '',
-        pswd2: ''
+        account: "",
+        name: "",
+        pswd: "",
+        pswd2: ""
       },
       profile_edit_form_rules: {
-        name: [{ required: false, trigger: 'change', validator: validatename }],
+        name: [{ required: false, trigger: "change", validator: validatename }],
         pswd: [
-          { required: false, trigger: 'change', validator: validatePassword }
+          { required: false, trigger: "change", validator: validatePassword }
         ],
         pswd2: [
-          { required: false, trigger: 'change', validator: validatedoublepswd }
+          { required: false, trigger: "change", validator: validatedoublepswd }
         ]
       }
-    }
+    };
   },
   watch: {
     $route: {
       handler: function(route) {
-        this.redirect = route.query && route.query.redirect
+        this.redirect = route.query && route.query.redirect;
       },
       immediate: true
     }
   },
   created() {
-    this.getinfo()
+    this.getinfo();
   },
   methods: {
     clean_name() {
-      this.profile_edit_form.name = ''
+      this.profile_edit_form.name = "";
     },
     getinfo() {
       getUserInfo(getToken()).then(response => {
-        const info = response.data
-        this.profile_edit_form.account = info.account
-        this.profile_edit_form.name = response.data.name
-      })
+        const info = response.data;
+        this.profile_edit_form.account = info.account;
+        this.profile_edit_form.name = response.data.name;
+      });
     },
     goprofile_view() {
-      this.loadingprofile_view_cancal = true
+      this.loadingprofile_view_cancal = true;
       setTimeout(() => {
         setTimeout(() => {
-          this.loadingprofile_view_cancal = false
+          this.loadingprofile_view_cancal = false;
           this.$router.push({
-            path: this.redirect || '/profile/admin-profile-view'
-          })
-        }, 300)
-      }, 150)
+            path: this.redirect || "/profile/admin-profile-view"
+          });
+        }, 300);
+      }, 150);
     },
     handleprofile_edit() {
       this.$refs.profile_edit_form.validate(valid => {
         if (valid) {
-          this.loadingprofile_view_send = true
+          this.loadingprofile_view_send = true;
           getUserInfo(getToken()).then(response => {
-            var ori_name = response.data.name
-            var send_name = ''
-            var send_pswd = ''
-            if (this.profile_edit_form.name === '') {
-              send_name = ori_name
+            var ori_name = response.data.name;
+            var send_name = "";
+            var send_pswd = "";
+            if (this.profile_edit_form.name === "") {
+              send_name = ori_name;
             } else {
-              send_name = this.profile_edit_form.name
+              send_name = this.profile_edit_form.name;
             }
-            if (this.profile_edit_form.name !== '') {
-              send_pswd = this.profile_edit_form.pswd
-              patchprofilepswd(getToken(), send_pswd)
+            if (this.profile_edit_form.name !== "") {
+              send_pswd = this.profile_edit_form.pswd;
+              patchprofilepswd(getToken(), send_pswd);
             }
             patchprofile(getToken(), send_name)
               .then(() => {
-                const h = this.$createElement
+                const h = this.$createElement;
                 this.$notify({
-                  title: '送出成功',
+                  title: "送出成功",
                   message: h(
-                    'b',
-                    { style: 'color: teal' },
-                    '你的個人資料已更新'
+                    "b",
+                    { style: "color: teal" },
+                    "你的個人資料已更新"
                   ),
-                  type: 'success'
-                })
-                this.loadingsend = false
+                  type: "success"
+                });
+                this.loadingsend = false;
                 this.$router.push({
-                  path: this.redirect || '/profile/admin-profile-view'
-                })
+                  path: this.redirect || "/profile/admin-profile-view"
+                });
               })
               .catch(error => {
-                console.log(error.response)
-                this.loadingsend = false
-                if (error.response.data.toid !== '') {
-                  const h = this.$createElement
+                console.log(error.response);
+                this.loadingsend = false;
+                if (error.response.data.toid !== "") {
+                  const h = this.$createElement;
                   this.$notify.error({
-                    title: '送出失敗',
+                    title: "送出失敗",
                     message: h(
-                      'b',
-                      { style: 'color: teal' },
-                      '你的ToID已經被使用過，請再重新輸入一次！(3秒後幫你刷空資料)'
+                      "b",
+                      { style: "color: teal" },
+                      "你的ToID已經被使用過，請再重新輸入一次！(3秒後幫你刷空資料)"
                     )
-                  })
-                  console.log(this.imageUrl)
+                  });
+                  console.log(this.imageUrl);
 
                   setTimeout(() => {
-                    location.reload()
-                  }, 3000)
+                    location.reload();
+                  }, 3000);
                 } else {
-                  const h = this.$createElement
+                  const h = this.$createElement;
                   this.$notify.error({
-                    title: '註冊失敗',
+                    title: "註冊失敗",
                     message: h(
-                      'b',
-                      { style: 'color: red' },
-                      '發生了一點錯誤，請在試一次，如果一直發生請與我們聯繫，造成您的不良體驗，實在非常抱歉！ 5秒自動幫你跳轉'
+                      "b",
+                      { style: "color: red" },
+                      "發生了一點錯誤，請在試一次，如果一直發生請與我們聯繫，造成您的不良體驗，實在非常抱歉！ 5秒自動幫你跳轉"
                     ),
-                    position: 'top-left',
+                    position: "top-left",
                     showClose: false
-                  })
+                  });
                   setTimeout(() => {
-                    location.reload()
-                  }, 5000)
+                    location.reload();
+                  }, 5000);
                 }
-              })
-          })
+              });
+          });
         }
-      })
+      });
     }
   }
-}
+};
 </script>
 <style rel="stylesheet/scss" lang="scss" >
 .personal_edit_form {
