@@ -1,7 +1,4 @@
-import {
-  asyncRouterMap,
-  constantRouterMap
-} from '@/router'
+import { asyncRouterMap, constantRouterMap } from '@/router'
 
 /**
  * 通過meta.role判斷是否與當前用户權限匹配
@@ -25,7 +22,8 @@ function filterAsyncRouter(routes, roles) {
   const res = []
 
   routes.forEach(route => {
-    const tmp = { ...route
+    const tmp = {
+      ...route
     }
     if (hasPermission(roles, tmp)) {
       if (tmp.children) {
@@ -50,16 +48,12 @@ const permission = {
     }
   },
   actions: {
-    GenerateRoutes({
-      commit
-    }, data) {
+    GenerateRoutes({ commit }, data) {
       return new Promise(resolve => {
-        const {
-          roles
-        } = data
+        const { roles } = data
         let accessedRouters
         /* roles.includes('admin')*/
-        if (roles === 1 || roles === 2 || roles === 5) {
+        if (roles > 0 && roles < 6) {
           accessedRouters = asyncRouterMap
         } else {
           accessedRouters = filterAsyncRouter(asyncRouterMap, roles)

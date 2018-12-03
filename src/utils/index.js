@@ -55,12 +55,12 @@ export function formatTime(time, option) {
   const diff = (now - d) / 1000
 
   if (diff < 30) {
-    return '刚刚'
+    return '剛剛'
   } else if (diff < 3600) {
     // less 1 hour
-    return Math.ceil(diff / 60) + '分钟前'
+    return Math.ceil(diff / 60) + '分鐘前'
   } else if (diff < 3600 * 24) {
-    return Math.ceil(diff / 3600) + '小时前'
+    return Math.ceil(diff / 3600) + '小時前'
   } else if (diff < 3600 * 24 * 2) {
     return '1天前'
   }
@@ -141,11 +141,11 @@ export function param2Obj(url) {
   }
   return JSON.parse(
     '{"' +
-    decodeURIComponent(search)
-      .replace(/"/g, '\\"')
-      .replace(/&/g, '","')
-      .replace(/=/g, '":"') +
-    '"}'
+      decodeURIComponent(search)
+        .replace(/"/g, '\\"')
+        .replace(/&/g, '","')
+        .replace(/=/g, '":"') +
+      '"}'
   )
 }
 
@@ -192,42 +192,43 @@ export function toggleClass(element, className) {
   element.className = classString
 }
 
-export const pickerOptions = [{
-  text: '今天',
-  onClick(picker) {
-    const end = new Date()
-    const start = new Date(new Date().toDateString())
-    end.setTime(start.getTime())
-    picker.$emit('pick', [start, end])
+export const pickerOptions = [
+  {
+    text: '今天',
+    onClick(picker) {
+      const end = new Date()
+      const start = new Date(new Date().toDateString())
+      end.setTime(start.getTime())
+      picker.$emit('pick', [start, end])
+    }
+  },
+  {
+    text: '最近一周',
+    onClick(picker) {
+      const end = new Date(new Date().toDateString())
+      const start = new Date()
+      start.setTime(end.getTime() - 3600 * 1000 * 24 * 7)
+      picker.$emit('pick', [start, end])
+    }
+  },
+  {
+    text: '最近一個月',
+    onClick(picker) {
+      const end = new Date(new Date().toDateString())
+      const start = new Date()
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+      picker.$emit('pick', [start, end])
+    }
+  },
+  {
+    text: '最近三個月',
+    onClick(picker) {
+      const end = new Date(new Date().toDateString())
+      const start = new Date()
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+      picker.$emit('pick', [start, end])
+    }
   }
-},
-{
-  text: '最近一周',
-  onClick(picker) {
-    const end = new Date(new Date().toDateString())
-    const start = new Date()
-    start.setTime(end.getTime() - 3600 * 1000 * 24 * 7)
-    picker.$emit('pick', [start, end])
-  }
-},
-{
-  text: '最近一个月',
-  onClick(picker) {
-    const end = new Date(new Date().toDateString())
-    const start = new Date()
-    start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-    picker.$emit('pick', [start, end])
-  }
-},
-{
-  text: '最近三个月',
-  onClick(picker) {
-    const end = new Date(new Date().toDateString())
-    const start = new Date()
-    start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-    picker.$emit('pick', [start, end])
-  }
-}
 ]
 
 export function getTime(type) {
@@ -242,7 +243,7 @@ export function debounce(func, wait, immediate) {
   let timeout, args, context, timestamp, result
 
   const later = function() {
-    // 据上一次触发时间间隔
+    // 具上一次觸發時間
     const last = +new Date() - timestamp
 
     // 上次被包装函数被调用时间间隔last小于设定时间间隔wait

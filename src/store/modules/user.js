@@ -4,19 +4,6 @@ import { MessageBox } from 'element-ui'
 
 const user = {
   state: {
-    /*
-    user: '',
-    status: '',
-    code: '',
-    token: getToken(),
-    name: '',
-    avatar: '',
-    introduction: '',
-    roles: [],
-    setting: {
-      articlePlatform: []
-    }
-    */
     id: '',
     toid: '',
     status: '',
@@ -30,32 +17,6 @@ const user = {
     token: getToken()
   },
   mutations: {
-    /*
-    SET_CODE: (state, code) => {
-      state.code = code
-    },
-    SET_TOKEN: (state, token) => {
-      state.token = token
-    },
-    SET_INTRODUCTION: (state, introduction) => {
-      state.introduction = introduction
-    },
-    SET_SETTING: (state, setting) => {
-      state.setting = setting
-    },
-    SET_STATUS: (state, status) => {
-      state.status = status
-    },
-    SET_NAME: (state, name) => {
-      state.name = name
-    },
-    SET_AVATAR: (state, avatar) => {
-      state.avatar = avatar
-    },
-    SET_ROLES: (state, roles) => {
-      state.roles = roles
-    }
-    */
     SET_SETTING: (state, setting) => {
       state.setting = setting
     },
@@ -99,7 +60,7 @@ const user = {
   },
 
   actions: {
-    // 用戶名登錄
+    // 信箱登錄
     LoginByUsername({ commit }, userInfo) {
       // const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
@@ -165,7 +126,6 @@ const user = {
         getUserInfo(state.token)
           .then(response => {
             if (!response.data) {
-              // 由於mockjs 不支持自定義狀態碼只能這樣hack
               reject('error')
             }
             const data = response.data
@@ -193,8 +153,6 @@ const user = {
               commit('SET_DBPICTURE', data.dbpicture)
             }
             commit('SET_RENEW_TIME', data.renew_time)
-            // commit('SET_AVATAR', data.avatar)
-            // commit('SET_INTRODUCTION', data.introduction)
 
             resolve(response)
           })
@@ -218,27 +176,6 @@ const user = {
     //   })
     // },
 
-    // 後端登出 廢除
-    /*
-    LogOut({
-      commit,
-      state
-    }) {
-      return new Promise((resolve, reject) => {
-        logout(state.token)
-          .then(() => {
-            commit('SET_TOKEN', '')
-            commit('SET_ROLES', [])
-            removeToken()
-            resolve()
-          })
-          .catch(error => {
-            reject(error)
-          })
-      })
-    },
-    */
-
     // 前端 登出
     FedLogOut({ commit }) {
       return new Promise(resolve => {
@@ -247,34 +184,6 @@ const user = {
         resolve()
       })
     }
-
-    // 動態修改權限
-    /*
-    ChangeRoles({
-      commit,
-      dispatch
-    }, role) {
-      return new Promise(resolve => {
-        commit('SET_TOKEN', role)
-        setToken(role)
-        getUserInfo(role).then(response => {
-          const data = response.data
-          commit('SET_ROLES', data.roles)
-          commit('SET_ID', data.id)
-          commit('SET_TOID', data.toid)
-          commit('SET_ACCOUNT', data.account)
-          commit('SET_IDENTIFIER', data.identifier)
-          commit('SET_MEMBERTYPE', data.membertype)
-          commit('SET_NAME', data.name)
-          commit('SET_LOCALPICTURE', data.localpicture)
-          commit('SET_DBPICTURE', data.dbpicture)
-          commit('SET_RENEW_TIME', data.renew_time)
-          dispatch('GenerateRoutes', data) // 動態修改權限後 重繪側邊菜單
-          resolve()
-        })
-      })
-    }
-    */
   }
 }
 export default user

@@ -5,7 +5,6 @@ Vue.use(Router)
 
 /* Layout */
 import Layout from '@/views/layout/Layout'
-import store from '../store'
 
 /**
 * hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
