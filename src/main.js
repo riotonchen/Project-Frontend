@@ -22,6 +22,7 @@ import axios from 'axios'
 import * as filters from './filters' // 全局過濾器
 import ElementUI from 'element-ui'
 import locale from 'element-ui/lib/locale/lang/zh-TW'
+import 'element-ui/lib/theme-chalk/display.css'
 
 // axios.defaults.withCredentials = true
 Vue.prototype.$axios = axios

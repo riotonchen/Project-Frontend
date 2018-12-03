@@ -27,6 +27,7 @@
               v-model="profile_edit_form.name"
               :placeholder="$t('b_profile_edit.h1')"
               name="name"
+              @focus="profile_edit_form.name=''"
             />
           </el-form-item>
           <el-form-item
@@ -36,7 +37,7 @@
             <el-input
               v-model="profile_edit_form.manager"
               :placeholder="$t('b_profile_edit.h1')"
-              name
+              @focus="profile_edit_form.manager=''"
             />
           </el-form-item>
           <el-form-item
@@ -46,7 +47,7 @@
             <el-input
               v-model="profile_edit_form.uni_num"
               :placeholder="$t('b_profile_edit.h2')"
-              name="toid"
+              @focus="profile_edit_form.uni_num=''"
             />
           </el-form-item>
           <el-form-item
@@ -56,7 +57,7 @@
             <el-input
               v-model="profile_edit_form.mobile_num"
               :placeholder="$t('b_profile_edit.h3')"
-              name="mobile_num"
+              @focus="profile_edit_form.mobile_num=''"
             />
           </el-form-item>
 
@@ -67,7 +68,7 @@
             <el-input
               v-model="profile_edit_form.phone_num"
               :placeholder="$t('b_profile_edit.h4')"
-              name="phone_num"
+              @focus="profile_edit_form.phone_num=''"
             />
           </el-form-item>
           <el-form-item
@@ -77,7 +78,7 @@
             <el-input
               v-model="profile_edit_form.extension"
               :placeholder="$t('b_profile_edit.h5')"
-              name="extension"
+              @focus="profile_edit_form.extension=''"
             />
           </el-form-item>
           <el-form-item
@@ -87,7 +88,29 @@
             <el-input
               v-model="profile_edit_form.address"
               :placeholder="$t('b_profile_edit.h6')"
-              name="address"
+              @focus="profile_edit_form.address=''"
+            />
+          </el-form-item>
+          <el-form-item
+            :label="$t('c_profile_edit.newpswd')"
+            prop="pswd"
+          >
+            <el-input
+              v-model="profile_edit_form.pswd"
+              :placeholder="$t('c_profile_edit.h3')"
+              type="password"
+              name="pswd"
+            />
+          </el-form-item>
+          <el-form-item
+            :label="$t('c_profile_edit.input')"
+            prop="pswd2"
+          >
+            <el-input
+              v-model="profile_edit_form.pswd2"
+              :placeholder="$t('c_profile_edit.h3')"
+              type="password"
+              name="pswd2"
             />
           </el-form-item>
           <el-button
@@ -108,10 +131,12 @@
   </div>
 </template>
 <script>
-import { getUserInfo } from '@/api/login'
-import { getToken } from '@/utils/auth'
+import { getUserInfo } from '@/api/login';
+import { getToken } from '@/utils/auth';
 /* import { validateuninum } from '@/utils/validate'*/
-import { patchprofile, patchprofilepswd } from '@/api/profile/patchprofile'
+import { patchprofile, patchprofilepswd } from '@/api/profile/patchprofile';
+import { patchentprofile } from '@/api/ent-profile/patchentprofile';
+import { getentprofile } from '@/api/ent-profile/getentprofile';
 
 export default {
   name: 'CProfileEdit',
@@ -186,6 +211,7 @@ export default {
       loadingprofile_view_cancal: false,
       loadingprofile_view_send: false,
       profile_edit_form: {
+        id: '',
         email: '',
         name: '',
         manager: '',
@@ -200,6 +226,7 @@ export default {
         pswd: '',
         pswd2: ''
       },
+      redirect: undefined,
       profile_edit_form_rules: {
         name: [{ required: false, trigger: 'change', validator: validatename }],
         uni_num: [
@@ -236,9 +263,18 @@ export default {
   },
   methods: {
     getinfo() {
-      getUserInfo(getToken()).then(response => {
-        const info = response.data
-        this.profile_edit_form.name = info.account
+      getUserInfo(getToken()).then(res => {
+        getentprofile(getToken(), res.data.account).then(res_info => {
+          this.profile_edit_form.id = res_info.data[0].id
+          this.profile_edit_form.email = res_info.data[0].email
+          this.profile_edit_form.name = res_info.data[0].name
+          this.profile_edit_form.manager = res_info.data[0].manager
+          this.profile_edit_form.uni_num = res_info.data[0].uni_num
+          this.profile_edit_form.phone_num = res_info.data[0].mobile_num
+          this.profile_edit_form.mobile_num = res_info.data[0].phone_num
+          this.profile_edit_form.extension = res_info.data[0].extension
+          this.profile_edit_form.address = res_info.data[0].address
+        })
       })
     },
     goprofile_view() {
@@ -253,32 +289,23 @@ export default {
       }, 150)
     },
     handleprofile_edit() {
-      this.$refs.profile_edit_form.validate(valid => {
-        if (valid) {
-          this.loadingprofile_view_send = true
-          getUserInfo(getToken()).then(response => {
-            var ori_name = response.name
-            var ori_uni_num = response.uni_num
-            var send_name = ''
-            var send_uni_num = ''
-            var send_phone_num = ''
-
-            if (this.profile_edit_form.name === '') {
-              send_name = ori_name
-            } else {
-              send_name = this.profile_edit_form.name
-            }
-            if (this.profile_edit_form.uni_num === '') {
-              send_uni_num = ori_uni_num
-            } else {
-              send_uni_num = this.profile_edit_form.uni_num
-            }
-
-            if (this.profile_edit_form.name !== '') {
-              send_phone_num = this.profile_edit_form.phone_num
-              patchprofilepswd(getToken(), send_phone_num)
-            }
-            patchprofile(getToken(), send_name, send_uni_num)
+      if (this.profile_edit_form.pswd !== '') {
+        patchprofilepswd(getToken(), this.profile_edit_form.pswd)
+      }
+      patchprofile(getToken(), this.profile_edit_form.name, null).then(() => {
+        getUserInfo(getToken()).then(res => {
+          getentprofile(getToken(), res.data.account).then(res_info => {
+            patchentprofile(
+              getToken(),
+              res_info.data[0].store_id,
+              this.profile_edit_form.name,
+              this.profile_edit_form.manager,
+              this.profile_edit_form.uni_num,
+              this.profile_edit_form.mobile_num,
+              this.profile_edit_form.phone_num,
+              this.profile_edit_form.extension,
+              this.profile_edit_form.address
+            )
               .then(() => {
                 const h = this.$createElement
                 this.$notify({
@@ -286,55 +313,36 @@ export default {
                   message: h(
                     'b',
                     { style: 'color: teal' },
-                    '你的商家資料已更新'
+                    '你的個人資料已更新'
                   ),
                   type: 'success'
                 })
                 this.loadingsend = false
                 this.$router.push({
-                  path: this.redirect || '/profile/b_profile_view'
+                  path: this.redirect || '/profile/ent-profile-view'
                 })
               })
               .catch(error => {
                 console.log(error.response)
                 this.loadingsend = false
-                if (error.response.data.uni_num !== '') {
-                  const h = this.$createElement
-                  this.$notify.error({
-                    title: '送出失敗',
-                    message: h(
-                      'b',
-                      { style: 'color: teal' },
-                      '你的統一編號已經被使用過，請再重新輸入一次！(3秒後幫你刷空資料)'
-                    )
-                  })
-                  console.log(this.imageUrl)
 
-                  setTimeout(() => {
-                    location.reload()
-                  }, 3000)
-                } else {
-                  const h = this.$createElement
-                  this.$notify.error({
-                    title: '註冊失敗',
-                    message: h(
-                      'b',
-                      { style: 'color: red' },
-                      '發生了一點錯誤，請在試一次，如果一直發生請與我們聯繫，造成您的不良體驗，實在非常抱歉！ 5秒自動幫你跳轉'
-                    ),
-                    position: 'top-left',
-                    showClose: false
-                  })
-                  setTimeout(() => {
-                    location.reload()
-                  }, 5000)
-                }
+                const h = this.$createElement
+                this.$notify.error({
+                  title: '送出失敗',
+                  message: h(
+                    'b',
+                    { style: 'color: red' },
+                    '發生了一點錯誤，請在試一次，如果一直發生請與我們聯繫，造成您的不良體驗，實在非常抱歉！ 5秒自動幫你跳轉'
+                  ),
+                  position: 'top-left',
+                  showClose: false
+                })
+                setTimeout(() => {
+                  location.reload()
+                }, 5000)
               })
           })
-        } else {
-          console.log('error submit!!')
-          return false
-        }
+        })
       })
     }
   }
@@ -343,7 +351,7 @@ export default {
 <style rel="stylesheet/scss" lang="scss" >
 .b_b_personal_edit_form {
   width: 80%;
-  margin: 2.5vh 9vw;
+  margin: 10vh 9vw;
 }
 .btn {
   float: right;
@@ -364,17 +372,17 @@ export default {
 }
 .b_personal_edit input {
   font-family: "Microsoft JhengHei";
-  width: 130%;
+  width: 25vw;
 }
 .b_personal_edit textarea {
   font-family: "Microsoft JhengHei";
   border: 0;
-  width: 130%;
+  width: 25vw;
   padding-top: 0.65rem;
 }
 .b_personal_edit .el-form-item {
   margin-right: 0;
   //margin-bottom: 0;
-  width: 100%;
+  width: 50%;
 }
 </style>

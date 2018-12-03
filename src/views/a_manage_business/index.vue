@@ -190,11 +190,6 @@
             <el-row>
               <el-col :span="24">
                 <el-button
-                  type="primary"
-                  class="info_btns"
-                  @click.native.prevent="changetoinfoconfi()"
-                >修改</el-button>
-                <el-button
                   type="info"
                   class="info_btns"
                   @click.native.prevent="in_adv_motion_cal()"
@@ -405,12 +400,7 @@ export default {
         message: '已取消動作'
       })
     },
-    changetoinfoconfi() {
-      this.ent_info_view = false
-      setTimeout(() => {
-        this.ent_info_confi = true
-      }, 200)
-    },
+
     changetoinfoview() {
       setTimeout(() => {
         this.ent_info_view = true

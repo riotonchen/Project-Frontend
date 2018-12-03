@@ -67,6 +67,20 @@
               name="pswd2"
             />
           </el-form-item>
+          <!--
+          <el-form-item prop="picture">
+            <el-upload
+              ref="upload"
+              :auto-upload="false"
+              :before-upload="bfupload"
+              :multiple="false"
+              list-type="picture-card"
+              limit="1"
+            >
+              <i class="el-icon-plus" />
+            </el-upload>
+          </el-form-item>
+          -->
           <el-button
             :loading="loadingprofile_view_send"
             type="primary"
@@ -86,10 +100,10 @@
   </div>
 </template>
 <script>
-import { getUserInfo } from '@/api/login'
-import { getToken } from '@/utils/auth'
-import { validatetoid } from '@/utils/validate'
-import { patchprofile, patchprofilepswd } from '@/api/profile/patchprofile'
+import { getUserInfo } from '@/api/login';
+import { getToken } from '@/utils/auth';
+import { validatetoid } from '@/utils/validate';
+import { patchprofile, patchprofilepswd } from '@/api/profile/patchprofile';
 
 export default {
   name: 'CProfileEdit',
@@ -135,7 +149,7 @@ export default {
       }
     }
     return {
-      imageUrl: '',
+      bfupload: true,
       labelPosition: 'right',
       loadingprofile_view_cancal: false,
       loadingprofile_view_send: false,
@@ -174,10 +188,10 @@ export default {
   },
   methods: {
     clean_name() {
-      this.profile_edit_form.name = ''
+      this.profile_edit_form.name = '';
     },
     clean_toid() {
-      this.profile_edit_form.toid = ''
+      this.profile_edit_form.toid = '';
     },
     getinfo() {
       getUserInfo(getToken()).then(response => {
@@ -205,9 +219,9 @@ export default {
           getUserInfo(getToken()).then(response => {
             var ori_name = response.name
             var ori_toid = response.toid
-            var send_name = ''
-            var send_toid = ''
-            var send_pswd = ''
+            var send_name = '';
+            var send_toid = '';
+            var send_pswd = '';
             if (this.profile_edit_form.name === '') {
               send_name = ori_name
             } else {
@@ -303,12 +317,12 @@ export default {
 }
 .personal_edit input {
   font-family: "Microsoft JhengHei";
-  width: 130%;
+  width: 30vw;
 }
 .personal_edit textarea {
   font-family: "Microsoft JhengHei";
   border: 0;
-  width: 130%;
+  width: 30vw;
   padding-top: 0.65rem;
 }
 .personal_edit .el-form-item {

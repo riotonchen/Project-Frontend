@@ -6,28 +6,78 @@
     <div class="card_info">
       <!--個人資料檢視-->
       <el-card body-style="padding:3.125rem">
-        <el-form :model="infoform" label-position="left" inline class="personal_view">
-          <el-form-item :label="$t('c_profile_view.email')">
-            <el-input v-model="infoform.useraccount" type="textarea" autosize readonly />
-          </el-form-item>
-          <el-form-item :label="$t('c_profile_view.name')" class="label2">
-            <el-input v-model="infoform.username" type="text" readonly />
-          </el-form-item>
-          <el-form-item label="ToID" class="label3">
-            <el-input v-model="infoform.usertoid" type="text" readonly />
-          </el-form-item>
+        <el-row>
+          <el-col
+            :xs="24"
+            :sm="12"
+            :lg="12"
+          >
+            <el-form
+              :model="infoform"
+              label-position="left"
+              inline
+              class="personal_view"
+            >
+              <el-form-item :label="$t('c_profile_view.email')">
+                <el-input
+                  v-model="infoform.useraccount"
+                  type="textarea"
+                  autosize
+                  readonly
+                />
+              </el-form-item>
+              <el-form-item
+                :label="$t('c_profile_view.name')"
+                class="label2"
+              >
+                <el-input
+                  v-model="infoform.username"
+                  type="text"
+                  readonly
+                />
+              </el-form-item>
+              <el-form-item
+                label="ToID"
+                class="label3"
+              >
+                <el-input
+                  v-model="infoform.usertoid"
+                  type="text"
+                  readonly
+                />
+              </el-form-item>
+            </el-form>
+          </el-col>
+          <el-col
+            :sm="12"
+            :lg="12"
+            class="hidden-sm-and-down"
+          >
+            <div>
+              <img
+                :src="userinfo_picture"
+                class="userpicture"
+              >
+            </div>
+          </el-col>
+        </el-row>
 
-          <el-button :loading="loadingprofile_edit" type="primary" class="btn" @click.native.prevent="goprofile_edit">
-            {{ $t('c_profile_view.alter') }}
-          </el-button>
-        </el-form>
+        <el-button
+          :loading="loadingprofile_edit"
+          type="primary"
+          class="btn"
+          @click.native.prevent="goprofile_edit"
+        >
+          {{ $t('c_profile_view.alter') }}
+        </el-button>
       </el-card>
     </div>
   </div>
 </template>
 <script>
-import { getUserInfo } from '@/api/login'
-import { getToken } from '@/utils/auth'
+import { getUserInfo } from '@/api/login';
+import { getToken } from '@/utils/auth';
+import store from '@/store';
 export default {
   data() {
     return {
@@ -37,7 +87,8 @@ export default {
         useraccount: '',
         username: '',
         usertoid: ''
-      }
+      },
+      userinfo_picture: ''
     }
   },
   created() {
@@ -51,10 +102,11 @@ export default {
         this.infoform.username = info.name
         this.infoform.usertoid = info.toid
       })
+      this.userinfo_picture = store.getters.dbpicture
     },
     /* 點擊修改按鈕*/
     goprofile_edit() {
-      this.loadingprofile_edit = true/* 載入個人資料修改頁面*/
+      this.loadingprofile_edit = true /* 載入個人資料修改頁面*/
       setTimeout(() => {
         setTimeout(() => {
           this.loadingprofile_edit = false
@@ -64,7 +116,6 @@ export default {
     }
   }
 }
-
 </script>
 <style rel="stylesheet/scss" lang="scss" >
 .card_info {
@@ -100,6 +151,13 @@ export default {
   margin-right: 0;
   //margin-bottom: 0;
   width: 100%;
+}
+.userpicture {
+  position: absolute;
+  margin-left: 1.5vw;
+  margin-top: 1.5vw;
+  height: 16rem;
+  width: 16rem;
 }
 </style>
 

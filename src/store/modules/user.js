@@ -1,15 +1,6 @@
-import {
-  loginByUsername,
-  getUserInfo
-} from '@/api/login'
-import {
-  getToken,
-  setToken,
-  removeToken
-} from '@/utils/auth'
-import {
-  MessageBox
-} from 'element-ui'
+import { loginByUsername, getUserInfo } from '@/api/login'
+import { getToken, setToken, removeToken } from '@/utils/auth'
+import { MessageBox } from 'element-ui'
 
 const user = {
   state: {
@@ -109,9 +100,7 @@ const user = {
 
   actions: {
     // 用戶名登錄
-    LoginByUsername({
-      commit
-    }, userInfo) {
+    LoginByUsername({ commit }, userInfo) {
       // const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
         loginByUsername(
@@ -130,7 +119,8 @@ const user = {
               reject(error)
               MessageBox.confirm(
                 '你的帳號，密碼，或著是會員類別輸入錯誤。',
-                '登入錯誤', {
+                '登入錯誤',
+                {
                   confirmButtonText: '重新登入',
                   showCancelButton: false,
                   type: 'error',
@@ -156,7 +146,8 @@ const user = {
               reject(error)
               this.$notify.error({
                 title: 'ERROR',
-                message: '發生了一點錯誤請稍後再試試看，造成您的不便感到十分抱歉。'
+                message:
+                  '發生了一點錯誤請稍後再試試看，造成您的不便感到十分抱歉。'
               })
               setTimeout(() => {
                 setTimeout(() => {
@@ -169,10 +160,7 @@ const user = {
     },
 
     // 獲取用戶訊息
-    GetUserInfo({
-      commit,
-      state
-    }) {
+    GetUserInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
         getUserInfo(state.token)
           .then(response => {
@@ -188,7 +176,7 @@ const user = {
               reject('資訊: 會員資訊取得錯誤')
             }
             const tostrmembertype = []
-            tostrmembertype.push((data.membertype).toString())
+            tostrmembertype.push(data.membertype.toString())
             commit('SET_ID', data.id)
             commit('SET_TOID', data.toid)
             commit('SET_ACCOUNT', data.account)
@@ -196,8 +184,11 @@ const user = {
             commit('SET_MEMBERTYPE', tostrmembertype)
             commit('SET_NAME', data.name)
             commit('SET_LOCALPICTURE', data.localpicture)
-            if (data.dbpicture === null) {
-              commit('SET_DBPICTURE', 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif')
+            if (data.dbpicture === null || data.dbpicture === '') {
+              commit(
+                'SET_DBPICTURE',
+                'https://cdn.dribbble.com/users/366584/screenshots/2555847/green_monster.gif'
+              )
             } else {
               commit('SET_DBPICTURE', data.dbpicture)
             }
@@ -249,9 +240,7 @@ const user = {
     */
 
     // 前端 登出
-    FedLogOut({
-      commit
-    }) {
+    FedLogOut({ commit }) {
       return new Promise(resolve => {
         commit('SET_TOKEN', '')
         removeToken()

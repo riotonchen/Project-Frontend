@@ -1,8 +1,17 @@
 import request from '@/utils/request'
 
-export function patchentprofile(token, id, name, manager, uni_num, mobile_num, phone_num, extension, address) {
+export function patchentprofile(
+  token,
+  id,
+  name,
+  manager,
+  uni_num,
+  mobile_num,
+  phone_num,
+  extension,
+  address
+) {
   const data = {
-    id,
     name,
     manager,
     uni_num,
