@@ -33,11 +33,11 @@
             />
           </el-form-item>
           <el-form-item
-            label="ToID"
+            label="加入日期"
             class="label3"
           >
             <el-input
-              v-model="infoform.usertoid"
+              v-model="infoform.userjoin"
               type="text"
               readonly
             />
@@ -59,6 +59,8 @@
 <script>
 import { getUserInfo } from '@/api/login';
 import { getToken } from '@/utils/auth';
+import { formatdate_inc_time } from '@/utils/index';
+
 export default {
   name: 'AProfileView',
   data() {
@@ -68,7 +70,7 @@ export default {
       infoform: {
         useraccount: '',
         username: '',
-        usertoid: ''
+        userjoin: ''
       }
     }
   },
@@ -81,7 +83,10 @@ export default {
         const info = response.data
         this.infoform.useraccount = info.account
         this.infoform.username = info.name
-        this.infoform.usertoid = info.toid
+        this.infoform.userjoin = formatdate_inc_time(
+          info.date_joined,
+          'yyyy-mm-dd HH:MM:ss'
+        )
       })
     },
     goprofile_edit() {

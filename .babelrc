@@ -3,9 +3,9 @@
     [
       "env",
       {
-        "modules": false,
+        //"modules": false,
         "targets": {
-          "browsers": ["last 5 versions", "not dead"],
+          "browsers": ["last 10 versions", "not dead"],
           "node": "current"
         }
       }

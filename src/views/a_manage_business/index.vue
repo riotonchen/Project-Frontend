@@ -305,11 +305,11 @@
   </div>
 </template>
 <script>
-import waves from '@/directive/waves' // 水波紋指令
-import { getToken } from '@/utils/auth'
-import { getmember, getmemberlist } from '@/api/member/getmember'
-import { getentprofile } from '@/api/ent-profile/getentprofile'
-import { patchentprofile } from '@/api/ent-profile/patchentprofile'
+import waves from '@/directive/waves'; // 水波紋指令
+import { getToken } from '@/utils/auth';
+import { getmember, getmemberlist } from '@/api/member/getmember';
+import { getentprofile } from '@/api/ent-profile/getentprofile';
+import { patchentprofile } from '@/api/ent-profile/patchentprofile';
 export default {
   name: 'BManageBusiness',
   directives: {
@@ -376,54 +376,21 @@ export default {
       })
       setTimeout(() => {
         loading.close()
-      }, 3000)
+      }, 1500)
     },
     get_member_all() {
+      const oridata = []
       getmember(getToken()).then(res => {
-        const testmember = res.data
-        const ori_data = []
-        let testnum = testmember.length
-        for (let i = 1; i <= testnum; i++) {
-          getmemberlist(getToken(), i)
-            .then(res_data => {
-              setTimeout(() => {
-                ori_data.push(res_data.data)
-                this.a_all_ent_data = ori_data.filter(function(
-                  item,
-                  index,
-                  array
-                ) {
-                  return item.membertype === 5
-                })
-              }, i * 50)
+        for (let i = 0; i <= res.data.length; i++) {
+          getmemberlist(getToken(), res.data[i].id).then(res => {
+            oridata.push(res.data)
+            this.a_all_ent_data = oridata.filter(function(item, index, array) {
+              return item.membertype === 5
             })
-            .catch(() => {
-              testnum = testnum + 1
-              this.get_member_all_ext(testnum)
-            })
+          })
         }
       })
     },
-    get_member_all_ext(testnum) {
-      getmemberlist(getToken(), testnum)
-        .then(res_data => {
-          setTimeout(() => {
-            this.a_all_ent_data.push(res_data.data)
-            this.a_all_ent_data = this.a_all_ent_data.filter(function(
-              item,
-              index,
-              array
-            ) {
-              return item.membertype === 5
-            })
-          }, testnum * 50)
-        })
-        .catch(() => {
-          testnum = testnum + 1
-          this.get_member_all_ext(testnum)
-        })
-    },
-
     handle_advance(index, row) {
       this.a_ent_adv_visible = true
       this.profile_edit_form.account = row.account
@@ -453,13 +420,13 @@ export default {
     get_ent_info() {
       this.c_ent_confiinfo_visible = true
       getentprofile(getToken(), this.profile_edit_form.account).then(res => {
-        this.profile_edit_form.name = ''
-        this.profile_edit_form.manager = ''
-        this.profile_edit_form.uni_num = ''
-        this.profile_edit_form.mobile_num = ''
-        this.profile_edit_form.phone_num = ''
-        this.profile_edit_form.extension = ''
-        this.profile_edit_form.address = ''
+        this.profile_edit_form.name = '';
+        this.profile_edit_form.manager = '';
+        this.profile_edit_form.uni_num = '';
+        this.profile_edit_form.mobile_num = '';
+        this.profile_edit_form.phone_num = '';
+        this.profile_edit_form.extension = '';
+        this.profile_edit_form.address = '';
         this.profile_edit_form.id = res.data[0].store_id
         this.profile_edit_form.name = res.data[0].name
         this.profile_edit_form.manager = res.data[0].manager

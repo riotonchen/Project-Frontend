@@ -111,7 +111,7 @@
     "npm": ">= 3.0.0"
   },
   "browserslist": [
-    "last 5 versions",
+    "last 10 versions",
     "not dead"
   ]
 }

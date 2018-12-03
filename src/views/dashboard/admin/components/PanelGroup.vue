@@ -102,6 +102,83 @@
         </div>
       </el-col>
     </el-row>
+    <el-row
+      :gutter="40"
+      class="panel-group"
+    >
+      <el-col
+        :xs="24"
+        :sm="12"
+        :lg="8"
+        class="card-panel-col"
+      >
+        <div class="card-panel">
+          <div class="card-panel-icon-wrapper icon-message">
+            <svg-icon
+              icon-class="message"
+              class-name="card-panel-icon"
+            />
+          </div>
+          <div class="card-panel-description">
+            <div class="card-panel-text">總共回饋量</div>
+            <count-to
+              :start-val="0"
+              :end-val="all_feedback_num"
+              :duration="3500"
+              class="card-panel-num"
+            />
+          </div>
+        </div>
+      </el-col>
+      <el-col
+        :xs="24"
+        :sm="12"
+        :lg="8"
+        class="card-panel-col"
+      >
+        <div class="card-panel">
+          <div class="card-panel-icon-wrapper icon-message">
+            <svg-icon
+              icon-class="message"
+              class-name="card-panel-icon"
+            />
+          </div>
+          <div class="card-panel-description">
+            <div class="card-panel-text">已回覆回饋</div>
+            <count-to
+              :start-val="0"
+              :end-val="done_feedback_num"
+              :duration="3500"
+              class="card-panel-num"
+            />
+          </div>
+        </div>
+      </el-col>
+      <el-col
+        :xs="24"
+        :sm="12"
+        :lg="8"
+        class="card-panel-col"
+      >
+        <div class="card-panel">
+          <div class="card-panel-icon-wrapper icon-message">
+            <svg-icon
+              icon-class="message"
+              class-name="card-panel-icon"
+            />
+          </div>
+          <div class="card-panel-description">
+            <div class="card-panel-text">尚未回覆回饋</div>
+            <count-to
+              :start-val="0"
+              :end-val="yet_feedback_num"
+              :duration="3500"
+              class="card-panel-num"
+            />
+          </div>
+        </div>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -109,6 +186,7 @@
 import CountTo from 'vue-count-to';
 import { getToken } from '@/utils/auth';
 import { getmember, getmemberlist } from '@/api/member/getmember';
+import { getfeedback } from '@/api/feedback/getfeedback';
 
 export default {
   components: {
@@ -119,6 +197,9 @@ export default {
       member_num: '',
       ent_num: '',
       admin_num: '',
+      all_feedback_num: '',
+      done_feedback_num: '',
+      yet_feedback_num: '',
       totalmember_num: '',
       a_all_ent_data: [],
       a_all_member_data: []
@@ -126,6 +207,7 @@ export default {
   },
   created() {
     this.get_member_all()
+    this.get_feedback_all()
   },
   methods: {
     get_member_all() {
@@ -149,6 +231,21 @@ export default {
             this.member_num = oridata_mbr_info.length
           })
         }
+      })
+    },
+    get_feedback_all() {
+      let doneback = []
+      let yetback = []
+      getfeedback(getToken()).then(res => {
+        this.all_feedback_num = res.data.length
+        doneback = res.data.filter(function(item, index, array) {
+          return item.status === 1
+        })
+        yetback = res.data.filter(function(item, index, array) {
+          return item.status === 0
+        })
+        this.done_feedback_num = doneback.length
+        this.yet_feedback_num = yetback.length
       })
     }
   }

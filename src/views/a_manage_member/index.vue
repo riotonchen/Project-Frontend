@@ -48,6 +48,15 @@
             <span>{{ scope.row.name }}</span>
           </template>
         </el-table-column>
+        <el-table-column label="會員編號">
+          <template
+            slot-scope="scope"
+            prop="name"
+            align="center"
+          >
+            <span>{{ scope.row.id }}</span>
+          </template>
+        </el-table-column>
         <el-table-column label="ToID">
           <template
             slot-scope="scope"
@@ -1087,52 +1096,25 @@ export default {
       })
       setTimeout(() => {
         loading.close()
-      }, 3000)
+      }, 1500)
     },
+
     get_member_all() {
+      const oridata = []
       getmember(getToken()).then(res => {
-        const testmember = res.data
-        const ori_data = []
-        let testnum = testmember.length
-        for (let i = 1; i <= testmember.length; i++) {
-          getmemberlist(getToken(), i)
-            .then(res_data => {
-              setTimeout(() => {
-                ori_data.push(res_data.data)
-                this.a_all_member_data = ori_data.filter(function(
-                  item,
-                  index,
-                  array
-                ) {
-                  return item.membertype < 5 && item.membertype > 1
-                })
-              }, i * 50)
-              console.log(this.a_all_member_data)
-            })
-            .catch(() => {
-              testnum = testnum + 1
-            })
-        }
-      })
-    },
-    get_member_all_ext(testnum) {
-      getmemberlist(getToken(), testnum)
-        .then(res_data => {
-          setTimeout(() => {
-            this.a_all_member_data.push(res_data.data)
-            this.a_all_member_data = this.a_all_member_data.filter(function(
+        for (let i = 0; i <= res.data.length; i++) {
+          getmemberlist(getToken(), res.data[i].id).then(res => {
+            oridata.push(res.data)
+            this.a_all_member_data = oridata.filter(function(
               item,
               index,
               array
             ) {
               return item.membertype < 5 && item.membertype > 1
             })
-          }, testnum * 50)
-        })
-        .catch(() => {
-          testnum = testnum + 1
-          this.get_member_all_ext(testnum)
-        })
+          })
+        }
+      })
     },
     get_accounting_info() {
       // not done

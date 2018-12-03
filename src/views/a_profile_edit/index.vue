@@ -30,18 +30,10 @@
               v-model="profile_edit_form.name"
               :placeholder="$t('a_profile_edit.h1')"
               name="name"
+              @focus="clean_name()"
             />
           </el-form-item>
-          <el-form-item
-            label="ToID"
-            prop="toid"
-          >
-            <el-input
-              v-model="profile_edit_form.toid"
-              :placeholder="$t('a_profile_edit.h2')"
-              name="toid"
-            />
-          </el-form-item>
+
           <el-form-item
             :label="$t('a_profile_edit.newpswd')"
             prop="pswd"
@@ -90,17 +82,6 @@ import { patchprofile, patchprofilepswd } from '@/api/profile/patchprofile';
 export default {
   name: 'AProfileEdit',
   data() {
-    const _validatetoid = (rule, value, callback) => {
-      if (value.length < 1) {
-        callback(new Error('ToID 不得為空'))
-      } else if (!validatetoid(value)) {
-        callback(new Error('ToID 只能有大小寫英數'))
-      } else if (value.length !== 8) {
-        callback(new Error('ToID 只限定於 8 碼'))
-      } else {
-        callback()
-      }
-    }
     const validatename = (rule, value, callback) => {
       if (value.length < 1) {
         callback(new Error('姓名不得為空'))
@@ -138,15 +119,11 @@ export default {
       profile_edit_form: {
         account: '',
         name: '',
-        toid: '',
         pswd: '',
         pswd2: ''
       },
       profile_edit_form_rules: {
         name: [{ required: false, trigger: 'change', validator: validatename }],
-        toid: [
-          { required: false, trigger: 'change', validator: _validatetoid }
-        ],
         pswd: [
           { required: false, trigger: 'change', validator: validatePassword }
         ],
@@ -168,10 +145,14 @@ export default {
     this.getinfo()
   },
   methods: {
+    clean_name() {
+      this.profile_edit_form.name = '';
+    },
     getinfo() {
       getUserInfo(getToken()).then(response => {
         const info = response.data
         this.profile_edit_form.account = info.account
+        this.profile_edit_form.name = response.data.name
       })
     },
     goprofile_view() {
@@ -190,26 +171,19 @@ export default {
         if (valid) {
           this.loadingprofile_view_send = true
           getUserInfo(getToken()).then(response => {
-            var ori_name = response.name
-            var ori_toid = response.toid
+            var ori_name = response.data.name
             var send_name = '';
-            var send_toid = '';
             var send_pswd = '';
             if (this.profile_edit_form.name === '') {
               send_name = ori_name
             } else {
               send_name = this.profile_edit_form.name
             }
-            if (this.profile_edit_form.toid === '') {
-              send_toid = ori_toid
-            } else {
-              send_toid = this.profile_edit_form.toid
-            }
             if (this.profile_edit_form.name !== '') {
               send_pswd = this.profile_edit_form.pswd
               patchprofilepswd(getToken(), send_pswd)
             }
-            patchprofile(getToken(), send_name, send_toid)
+            patchprofile(getToken(), send_name)
               .then(() => {
                 const h = this.$createElement
                 this.$notify({

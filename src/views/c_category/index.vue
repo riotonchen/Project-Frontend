@@ -485,19 +485,19 @@
   </div>
 </template>
 <script>
-import waves from '@/directive/waves'; // 水波紋指令
-import { getsortbudget_all } from '@/api/sortbudget/getsortbudget';
-import { postsort } from '@/api/sort/postsort';
-import { patchsort_update, patchsort_delete } from '@/api/sort/patchsort';
-import { postsubsort } from '@/api/subsort/postsubsort';
-import { postsortbudget } from '@/api/sortbudget/postsortbudget';
-import { getsubsort, getsinglesubsort } from '@/api/subsort/getsubsort';
+import waves from '@/directive/waves' // 水波紋指令
+import { getsortbudget_all } from '@/api/sortbudget/getsortbudget'
+import { postsort } from '@/api/sort/postsort'
+import { patchsort_update, patchsort_delete } from '@/api/sort/patchsort'
+import { postsubsort } from '@/api/subsort/postsubsort'
+import { postsortbudget } from '@/api/sortbudget/postsortbudget'
+import { getsubsort, getsinglesubsort } from '@/api/subsort/getsubsort'
 import {
   patchsubsort_update,
   patchsubsort_delete
-} from '@/api/subsort/patchsubsort';
-import { getToken } from '@/utils/auth';
-import { formatdate } from '@/utils/index';
+} from '@/api/subsort/patchsubsort'
+import { getToken } from '@/utils/auth'
+import { formatdate } from '@/utils/index'
 
 export default {
   name: 'CCategoryory',
@@ -605,9 +605,9 @@ export default {
     c_sort_payorin: function(newpi, oldpi) {
       if (this.c_sort_payorin === null || this.c_sort_payorin === '') {
         this.c_sort_disable = true
-        this.c_sort_id = '';
+        this.c_sort_id = ''
       } else if (newpi !== oldpi) {
-        this.c_sort_id = '';
+        this.c_sort_id = ''
         this.c_sort_disable = false
       } else {
         this.c_sort_disable = false
@@ -643,22 +643,22 @@ export default {
       }, 1500)
     },
     clean_name() {
-      this.c_subsort_edit.name = '';
+      this.c_subsort_edit.name = ''
     },
     clean_editsortname() {
-      this.c_category_editsort.name = '';
+      this.c_category_editsort.name = ''
     },
     clean_editsortbudget() {
-      this.c_category_editsort.budget = '';
+      this.c_category_editsort.budget = ''
     },
     get_category() {
       this.c_category_list = []
       let send_payin
       if (this.c_sort_payorin !== '') {
         if (this.c_sort_payorin === 0) {
-          send_payin = 'False';
+          send_payin = 'False'
         } else {
-          send_payin = 'True';
+          send_payin = 'True'
         }
         getsortbudget_all(
           getToken(),
@@ -711,7 +711,7 @@ export default {
       this.c_category_visible = true
       this.c_sort_row_id = row.sort_id.id
       this.c_sort_row_type = row.sort_id.type
-      this.c_subsort_id = '';
+      this.c_subsort_id = ''
       this.get_subsort()
     },
     handle_in_edit(index, row) {
@@ -755,8 +755,8 @@ export default {
                     type: 'success',
                     message: '已新增一筆主分類'
                   })
-                  this.c_sort_payorin = '';
-                  this.c_sort_id = '';
+                  this.c_sort_payorin = ''
+                  this.c_sort_id = ''
                   this.get_category()
                 })
                 .catch(error => {
@@ -828,8 +828,8 @@ export default {
                 type: 'success',
                 message: '已完成該筆分類相關修改'
               })
-              this.c_sort_payorin = '';
-              this.c_sort_id = '';
+              this.c_sort_payorin = ''
+              this.c_sort_id = ''
               this.get_category()
             })
             .catch(error => {
