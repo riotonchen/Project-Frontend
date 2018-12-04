@@ -1,4 +1,4 @@
-/* eslint-disable semi */
+
 <template>
   <div class="app-container">
 
@@ -212,13 +212,13 @@
 </template>
 
 <script>
-import waves from '@/directive/waves'
-import { formatdate } from '@/utils/index'
-import { getfeedback } from '@/api/feedback/getfeedback'
-import { patchfeedback } from '@/api/feedback/patchfeedback'
-import { getmemberlist } from '@/api/member/getmember'
-import { getToken } from '@/utils/auth'
-import { formatdate_inc_time } from '@/utils/index'
+import waves from '@/directive/waves';
+import { formatdate } from '@/utils/index';
+import { getfeedback } from '@/api/feedback/getfeedback';
+import { patchfeedback } from '@/api/feedback/patchfeedback';
+import { getmemberlist } from '@/api/member/getmember';
+import { getToken } from '@/utils/auth';
+import { formatdate_inc_time } from '@/utils/index';
 
 export default {
   name: 'AFeedbackmanage',
@@ -320,18 +320,20 @@ export default {
       let enddate
       if (this.startenddate.length === 2) {
         startdate = formatdate_inc_time(this.startenddate[0], 'yyyy-mm-dd')
-        enddate = formatdate_inc_time(this.startenddate[1], 'yyyy-mm-dd')
+        enddate = new Date(this.startenddate[1])
+        enddate.setDate(enddate.getDate() + 1)
+        enddate = formatdate_inc_time(enddate, 'yyyy-mm-dd')
       } else {
-        startdate = ''
-        enddate = ''
+        startdate = '';
+        enddate = '';
       }
       getfeedback(getToken(), startdate, enddate).then(res => {
         this.feedbackdata = res.data
         this.feedbackdata.forEach(items => {
           if (items.status === 0) {
-            items.status = '未回覆'
+            items.status = '未回覆';
           } else {
-            items.status = '已回覆'
+            items.status = '已回覆';
           }
           items.time = items.time
             .toString()
@@ -369,7 +371,7 @@ export default {
               title: '回覆成功',
               message: h('b', { style: 'color: teal' }, '該問題已經回覆')
             })
-            this.a_feedback_reply.content = ''
+            this.a_feedback_reply.content = '';
             this.get_feedback_all()
           })
           .catch(error => {
@@ -379,7 +381,7 @@ export default {
               type: 'error',
               message: '發生一點錯誤，請稍後送出一次'
             })
-            this.a_feedback_reply.content = ''
+            this.a_feedback_reply.content = '';
             this.get_feedback_all()
           })
       }, 3500)

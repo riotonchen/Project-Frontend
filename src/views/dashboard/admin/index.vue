@@ -32,27 +32,16 @@
 </template>
 
 <script>
-import PanelGroup from './components/PanelGroup'
+import PanelGroup from './components/PanelGroup';
 
-import TransactionTable from './components/TransactionTable'
+import TransactionTable from './components/TransactionTable';
 
-import YLineChart from './components/YLineChart'
-import MLineChart from './components/MLineChart'
+import YLineChart from './components/YLineChart';
+import MLineChart from './components/MLineChart';
 
-const lineChartData = {
-  messages: {
-    paydata: [130, 140, 50, 142, 70, 150, 160],
-    indata: [180, 160, 151, 106, 145, 150, 130]
-  },
-  purchases: {
-    paydata: [80, 100, 121, 104, 105, 90, 100],
-    indata: [120, 90, 100, 138, 142, 130, 130]
-  },
-  shoppings: {
-    paydata: [130, 140, 141, 142, 145, 150, 160],
-    indata: [120, 82, 91, 154, 162, 140, 130]
-  }
-}
+import { getmember } from '@/api/member/getmember';
+import { getToken } from '@/utils/auth';
+import { formatdate_inc_time } from '@/utils/index';
 
 export default {
   name: 'DashboardMember',
@@ -64,12 +53,19 @@ export default {
   },
   data() {
     return {
-      lineChartData: lineChartData.messages
+      lineChartData: {
+        mmemberjoin: [],
+        ymemberjoin: []
+      }
     }
+  },
+  created() {
+    this.get_member_all_m()
+    this.get_member_all_y()
   },
   methods: {
     handleSetLineChartData(type) {
-      this.lineChartData = lineChartData[type]
+      this.lineChartData = this.lineChartData[type]
     },
     showYLinecahrt() {
       setTimeout(() => {
@@ -83,6 +79,153 @@ export default {
         this.MLineChartshow = true
       }, 300)
       this.YLineChartshow = false
+    },
+    get_member_all_m() {
+      const startform = new Date()
+      const enddateform = new Date()
+      startform.setMonth(startform.getMonth() + 3)
+      startform.setDate(1)
+      enddateform.setMonth(enddateform.getMonth() + 4)
+      enddateform.setDate(0)
+      const mnows7 = formatdate_inc_time(startform, 'yyyy-mm-dd')
+      const mnowe7 = formatdate_inc_time(enddateform, 'yyyy-mm-dd')
+      startform.setMonth(startform.getMonth() - 1)
+      startform.setDate(1)
+      enddateform.setMonth(enddateform.getMonth() - 1)
+      enddateform.setDate(0)
+      const mnows6 = formatdate_inc_time(startform, 'yyyy-mm-dd')
+      const mnowe6 = formatdate_inc_time(enddateform, 'yyyy-mm-dd')
+      startform.setMonth(startform.getMonth() - 1)
+      startform.setDate(1)
+      enddateform.setMonth(enddateform.getMonth())
+      enddateform.setDate(0)
+      const mnows5 = formatdate_inc_time(startform, 'yyyy-mm-dd')
+      const mnowe5 = formatdate_inc_time(enddateform, 'yyyy-mm-dd')
+      startform.setMonth(startform.getMonth() - 1)
+      startform.setDate(1)
+      enddateform.setMonth(enddateform.getMonth())
+      enddateform.setDate(0)
+      const mnows4 = formatdate_inc_time(startform, 'yyyy-mm-dd')
+      const mnowe4 = formatdate_inc_time(enddateform, 'yyyy-mm-dd')
+      startform.setMonth(startform.getMonth() - 1)
+      startform.setDate(1)
+      enddateform.setMonth(enddateform.getMonth())
+      enddateform.setDate(0)
+      const mnows3 = formatdate_inc_time(startform, 'yyyy-mm-dd')
+      const mnowe3 = formatdate_inc_time(enddateform, 'yyyy-mm-dd')
+      startform.setMonth(startform.getMonth() - 1)
+      startform.setDate(1)
+      enddateform.setMonth(enddateform.getMonth())
+      enddateform.setDate(0)
+      const mnows2 = formatdate_inc_time(startform, 'yyyy-mm-dd')
+      const mnowe2 = formatdate_inc_time(enddateform, 'yyyy-mm-dd')
+      startform.setMonth(startform.getMonth() - 1)
+      startform.setDate(1)
+      enddateform.setMonth(enddateform.getMonth())
+      enddateform.setDate(0)
+      const mnows1 = formatdate_inc_time(startform, 'yyyy-mm-dd')
+      const mnowe1 = formatdate_inc_time(enddateform, 'yyyy-mm-dd')
+
+      getmember(getToken(), mnows1, mnowe1).then(res => {
+        this.lineChartData.mmemberjoin.push(res.data.length)
+        getmember(getToken(), mnows2, mnowe2).then(res => {
+          this.lineChartData.mmemberjoin.push(res.data.length)
+          getmember(getToken(), mnows3, mnowe3).then(res => {
+            this.lineChartData.mmemberjoin.push(res.data.length)
+            getmember(getToken(), mnows4, mnowe4).then(res => {
+              this.lineChartData.mmemberjoin.push(res.data.length)
+              getmember(getToken(), mnows5, mnowe5).then(res => {
+                this.lineChartData.mmemberjoin.push(res.data.length)
+                getmember(getToken(), mnows6, mnowe6).then(res => {
+                  this.lineChartData.mmemberjoin.push(res.data.length)
+                  getmember(getToken(), mnows7, mnowe7).then(res => {
+                    this.lineChartData.mmemberjoin.push(res.data.length)
+                  })
+                })
+              })
+            })
+          })
+        })
+      })
+    },
+    get_member_all_y() {
+      const startfory = new Date()
+      const enddatefory = new Date()
+      startfory.setYear(startfory.getFullYear() + 3)
+      startfory.setMonth(0)
+      startfory.setDate(1)
+      enddatefory.setYear(startfory.getFullYear())
+      enddatefory.setMonth(12)
+      enddatefory.setDate(1)
+      const ynows7 = formatdate_inc_time(startfory, 'yyyy-mm-dd')
+      const ynowe7 = formatdate_inc_time(
+        enddatefory.setDate(enddatefory.getDate() - 1),
+        'yyyy-mm-dd'
+      )
+      startfory.setYear(startfory.getFullYear() - 1)
+      enddatefory.setYear(startfory.getFullYear())
+      const ynows6 = formatdate_inc_time(startfory, 'yyyy-mm-dd')
+      const ynowe6 = formatdate_inc_time(
+        enddatefory.setDate(enddatefory.getDate()),
+        'yyyy-mm-dd'
+      )
+      startfory.setYear(startfory.getFullYear() - 1)
+      enddatefory.setYear(startfory.getFullYear())
+      const ynows5 = formatdate_inc_time(startfory, 'yyyy-mm-dd')
+      const ynowe5 = formatdate_inc_time(
+        enddatefory.setDate(enddatefory.getDate()),
+        'yyyy-mm-dd'
+      )
+      startfory.setYear(startfory.getFullYear() - 1)
+      enddatefory.setYear(startfory.getFullYear())
+      const ynows4 = formatdate_inc_time(startfory, 'yyyy-mm-dd')
+      const ynowe4 = formatdate_inc_time(
+        enddatefory.setDate(enddatefory.getDate()),
+        'yyyy-mm-dd'
+      )
+      startfory.setYear(startfory.getFullYear() - 1)
+      enddatefory.setYear(startfory.getFullYear())
+      const ynows3 = formatdate_inc_time(startfory, 'yyyy-mm-dd')
+      const ynowe3 = formatdate_inc_time(
+        enddatefory.setDate(enddatefory.getDate()),
+        'yyyy-mm-dd'
+      )
+      startfory.setYear(startfory.getFullYear() - 1)
+      enddatefory.setYear(startfory.getFullYear())
+      const ynows2 = formatdate_inc_time(startfory, 'yyyy-mm-dd')
+      const ynowe2 = formatdate_inc_time(
+        enddatefory.setDate(enddatefory.getDate()),
+        'yyyy-mm-dd'
+      )
+      startfory.setYear(startfory.getFullYear() - 1)
+      enddatefory.setYear(startfory.getFullYear())
+      const ynows1 = formatdate_inc_time(startfory, 'yyyy-mm-dd')
+      const ynowe1 = formatdate_inc_time(
+        enddatefory.setDate(enddatefory.getDate()),
+        'yyyy-mm-dd'
+      )
+
+      getmember(getToken(), ynows1, ynowe1).then(res => {
+        this.lineChartData.ymemberjoin.push(res.data.length)
+        getmember(getToken(), ynows2, ynowe2).then(res => {
+          this.lineChartData.ymemberjoin.push(res.data.length)
+          getmember(getToken(), ynows3, ynowe3).then(res => {
+            this.lineChartData.ymemberjoin.push(res.data.length)
+            getmember(getToken(), ynows4, ynowe4).then(res => {
+              this.lineChartData.ymemberjoin.push(res.data.length)
+              getmember(getToken(), ynows5, ynowe5).then(res => {
+                this.lineChartData.ymemberjoin.push(res.data.length)
+                getmember(getToken(), ynows6, ynowe6).then(res => {
+                  this.lineChartData.ymemberjoin.push(res.data.length)
+                  getmember(getToken(), ynows7, ynowe7).then(res => {
+                    this.lineChartData.ymemberjoin.push(res.data.length)
+                  })
+                })
+              })
+            })
+          })
+        })
+      })
     }
   }
 }

@@ -128,7 +128,7 @@ export default {
         },
         grid: {
           left: '3%',
-          right: '5%',
+          right: '8.5%',
           bottom: '3%',
           top: '20%',
           containLabel: true
@@ -164,9 +164,7 @@ export default {
                 { type: 'min', name: '最小值' }
               ]
             },
-            markLine: {
-              data: [{ type: 'average', name: '平均值' }]
-            },
+
             barGap: '-30%',
             barMaxWidth: '50%',
             data: paydata,
@@ -188,9 +186,7 @@ export default {
                 { type: 'min', name: '最小值' }
               ]
             },
-            markLine: {
-              data: [{ type: 'average', name: '平均值' }]
-            },
+
             data: indata,
             animationDuration: 3500,
             animationEasing: 'cubicInOut'

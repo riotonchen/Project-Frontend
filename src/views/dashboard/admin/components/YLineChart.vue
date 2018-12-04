@@ -8,10 +8,10 @@
 </template>
 
 <script>
-import echarts from 'echarts'
+import echarts from 'echarts';
 require('echarts/theme/macarons') // echarts theme
-import { debounce } from '@/utils'
-import { formatdate_inc_time } from '@/utils/index'
+import { debounce } from '@/utils';
+import { formatdate_inc_time } from '@/utils/index';
 
 export default {
   props: {
@@ -92,7 +92,7 @@ export default {
         this.__resizeHandler()
       }
     },
-    setOptions({ paydata, indata } = {}) {
+    setOptions({ ymemberjoin } = {}) {
       const start = new Date()
       const done = start.setTime(
         start.getTime() - 3600 * 1000 * 24 * 30 * 12 * 3
@@ -132,7 +132,7 @@ export default {
         },
         grid: {
           left: '3%',
-          right: '5%',
+          right: '8.5%',
           bottom: '3%',
           top: '20%',
           containLabel: true
@@ -150,13 +150,9 @@ export default {
           }
         },
 
-        legend: {
-          data: ['支出', '收入']
-        },
-
         series: [
           {
-            name: '支出',
+            name: '年會員增加量',
             itemStyle: {
               normal: {
                 color: '#ffbe00',
@@ -180,38 +176,9 @@ export default {
             },
             smooth: true,
             type: 'line',
-            data: paydata,
+            data: ymemberjoin,
             animationDuration: 3500,
             animationEasing: 'cubicInOut'
-          },
-          {
-            name: '收入',
-            smooth: true,
-            type: 'line',
-            itemStyle: {
-              normal: {
-                color: '#55aa00',
-                lineStyle: {
-                  color: '#55aa00',
-                  width: 5
-                },
-                areaStyle: {
-                  color: '#90ee90'
-                }
-              }
-            },
-            markPoint: {
-              data: [
-                { type: 'max', name: '最大值' },
-                { type: 'min', name: '最小值' }
-              ]
-            },
-            markLine: {
-              data: [{ type: 'average', name: '平均值' }]
-            },
-            data: indata,
-            animationDuration: 3500,
-            animationEasing: 'quadraticOut'
           }
         ]
       })

@@ -8,11 +8,11 @@
 </template>
 
 <script>
-import echarts from 'echarts'
+import echarts from 'echarts';
 require('echarts/theme/macarons') // echarts theme
-import { debounce } from '@/utils'
-import { formatdate_inc_time } from '@/utils/index'
-import 'zrender/lib/svg/svg'
+import { debounce } from '@/utils';
+import { formatdate_inc_time } from '@/utils/index';
+import 'zrender/lib/svg/svg';
 
 export default {
   props: {
@@ -93,7 +93,7 @@ export default {
         this.__resizeHandler()
       }
     },
-    setOptions({ paydata, indata } = {}) {
+    setOptions({ mmemberjoin } = {}) {
       const start = new Date()
       const done = start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
       const dtwo = start.setTime(start.getTime() + 3600 * 1000 * 24 * 30)
@@ -129,7 +129,7 @@ export default {
         },
         grid: {
           left: '3%',
-          right: '5%',
+          right: '8.5%',
           bottom: '3%',
           top: '20%',
           containLabel: true
@@ -147,13 +147,9 @@ export default {
           }
         },
 
-        legend: {
-          data: ['支出', '收入']
-        },
-
         series: [
           {
-            name: '支出',
+            name: '月會員加入量',
             itemStyle: {
               normal: {
                 color: '#FF44AA',
@@ -177,38 +173,9 @@ export default {
             },
             smooth: true,
             type: 'line',
-            data: paydata,
+            data: mmemberjoin,
             animationDuration: 3500,
             animationEasing: 'cubicInOut'
-          },
-          {
-            name: '收入',
-            smooth: true,
-            type: 'line',
-            itemStyle: {
-              normal: {
-                color: '#0066ff',
-                lineStyle: {
-                  color: '#0066ff',
-                  width: 5
-                },
-                areaStyle: {
-                  color: '#77ddFF'
-                }
-              }
-            },
-            markPoint: {
-              data: [
-                { type: 'max', name: '最大值' },
-                { type: 'min', name: '最小值' }
-              ]
-            },
-            markLine: {
-              data: [{ type: 'average', name: '平均值' }]
-            },
-            data: indata,
-            animationDuration: 3500,
-            animationEasing: 'quadraticOut'
           }
         ]
       })

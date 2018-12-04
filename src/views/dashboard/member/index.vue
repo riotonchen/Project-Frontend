@@ -140,7 +140,7 @@ export default {
   },
   methods: {
     handleSetLineChartData(type) {
-      this.lineChartData = lineChartData[type]
+      this.lineChartData = this.lineChartData[type]
     },
     showYLinecahrt() {
       setTimeout(() => {
@@ -156,8 +156,6 @@ export default {
       this.YLineChartshow = false
     },
     get_account_all_m() {
-      const mpaydata = []
-      const mindata = []
       const startform = new Date()
       const enddateform = new Date()
       startform.setMonth(startform.getMonth() + 3)
@@ -429,8 +427,6 @@ export default {
     },
     get_account_all_y() {
       // ynows4,ynowe4 為中間值
-      const ypaydata = []
-      const yindata = []
       const startfory = new Date()
       const enddatefory = new Date()
       startfory.setYear(startfory.getFullYear() + 3)
