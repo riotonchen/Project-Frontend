@@ -1,14 +1,17 @@
 <template>
 
-  <div :class="className" :style="{height:height,width:width}" />
+  <div
+    :class="className"
+    :style="{height:height,width:width}"
+  />
 
 </template>
 
 <script>
-import echarts from 'echarts'
+import echarts from 'echarts';
 require('echarts/theme/macarons') // echarts theme
-import { debounce } from '@/utils'
-import { formatdate_inc_time } from '@/utils/index'
+import { debounce } from '@/utils';
+import { formatdate_inc_time } from '@/utils/index';
 
 export default {
   props: {
@@ -60,7 +63,11 @@ export default {
 
     // 監聽側邊變化
     this.sidebarElm = document.getElementsByClassName('sidebar-container')[0]
-    this.sidebarElm && this.sidebarElm.addEventListener('transitionend', this.sidebarResizeHandler)
+    this.sidebarElm &&
+      this.sidebarElm.addEventListener(
+        'transitionend',
+        this.sidebarResizeHandler
+      )
   },
   beforeDestroy() {
     if (!this.chart) {
@@ -70,7 +77,11 @@ export default {
       window.removeEventListener('resize', this.__resizeHandler)
     }
 
-    this.sidebarElm && this.sidebarElm.removeEventListener('transitionend', this.sidebarResizeHandler)
+    this.sidebarElm &&
+      this.sidebarElm.removeEventListener(
+        'transitionend',
+        this.sidebarResizeHandler
+      )
 
     this.chart.dispose()
     this.chart = null
@@ -81,7 +92,7 @@ export default {
         this.__resizeHandler()
       }
     },
-    setOptions({ paydata, indata } = {}) {
+    setOptions({ mpaydata, mindata } = {}) {
       const start = new Date()
       const done = start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
       const dtwo = start.setTime(start.getTime() + 3600 * 1000 * 24 * 30)
@@ -102,7 +113,8 @@ export default {
         },
         tooltip: {
           trigger: 'axis',
-          axisPointer: { // 坐标轴指示器，坐标轴触发有效
+          axisPointer: {
+            // 坐标轴指示器，坐标轴触发有效
             type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
           },
           padding: [5, 10]
@@ -129,7 +141,8 @@ export default {
             formatdate_inc_time(oridate, 'yy-mm'),
             formatdate_inc_time(pone, 'yy-mm'),
             formatdate_inc_time(ptwo, 'yy-mm'),
-            formatdate_inc_time(pthr, 'yy-mm')]
+            formatdate_inc_time(pthr, 'yy-mm')
+          ]
         },
         calculable: true,
         series: [
@@ -149,13 +162,11 @@ export default {
               ]
             },
             markLine: {
-              data: [
-                { type: 'average', name: '平均值' }
-              ]
+              data: [{ type: 'average', name: '平均值' }]
             },
             barGap: '-30%',
             barMaxWidth: '50%',
-            data: [320, 302, 301, 334, 390, 330, 320],
+            data: mpaydata,
             animationDuration: 3500,
             animationEasing: 'cubicInOut'
           },
@@ -175,11 +186,9 @@ export default {
               ]
             },
             markLine: {
-              data: [
-                { type: 'average', name: '平均值' }
-              ]
+              data: [{ type: 'average', name: '平均值' }]
             },
-            data: [120, 132, 101, 134, 90, 230, 210],
+            data: mindata,
             animationDuration: 3500,
             animationEasing: 'cubicInOut'
           }

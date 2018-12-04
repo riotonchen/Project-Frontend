@@ -300,11 +300,11 @@
   </div>
 </template>
 <script>
-import waves from '@/directive/waves'; // 水波紋指令
-import { getToken } from '@/utils/auth';
-import { getmember, getmemberlist } from '@/api/member/getmember';
-import { getentprofile } from '@/api/ent-profile/getentprofile';
-import { patchentprofile } from '@/api/ent-profile/patchentprofile';
+import waves from '@/directive/waves' // 水波紋指令
+import { getToken } from '@/utils/auth'
+import { getmember, getmemberlist } from '@/api/member/getmember'
+import { getentprofile } from '@/api/ent-profile/getentprofile'
+import { patchentprofile } from '@/api/ent-profile/patchentprofile'
 export default {
   name: 'BManageBusiness',
   directives: {
@@ -410,13 +410,13 @@ export default {
     get_ent_info() {
       this.c_ent_confiinfo_visible = true
       getentprofile(getToken(), this.profile_edit_form.account).then(res => {
-        this.profile_edit_form.name = '';
-        this.profile_edit_form.manager = '';
-        this.profile_edit_form.uni_num = '';
-        this.profile_edit_form.mobile_num = '';
-        this.profile_edit_form.phone_num = '';
-        this.profile_edit_form.extension = '';
-        this.profile_edit_form.address = '';
+        this.profile_edit_form.name = ''
+        this.profile_edit_form.manager = ''
+        this.profile_edit_form.uni_num = ''
+        this.profile_edit_form.mobile_num = ''
+        this.profile_edit_form.phone_num = ''
+        this.profile_edit_form.extension = ''
+        this.profile_edit_form.address = ''
         this.profile_edit_form.id = res.data[0].store_id
         this.profile_edit_form.name = res.data[0].name
         this.profile_edit_form.manager = res.data[0].manager

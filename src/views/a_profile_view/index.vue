@@ -77,54 +77,54 @@
   </div>
 </template>
 <script>
-import { getUserInfo } from "@/api/login";
-import { getToken } from "@/utils/auth";
-import { formatdate_inc_time } from "@/utils/index";
-import store from "@/store";
+import { getUserInfo } from '@/api/login'
+import { getToken } from '@/utils/auth'
+import { formatdate_inc_time } from '@/utils/index'
+import store from '@/store'
 
 export default {
-  name: "AProfileView",
+  name: 'AProfileView',
   data() {
     return {
-      labelPosition: "right",
+      labelPosition: 'right',
       loadingprofile_edit: false,
       infoform: {
-        useraccount: "",
-        username: "",
-        userjoin: ""
+        useraccount: '',
+        username: '',
+        userjoin: ''
       },
-      userinfo_picture: ""
-    };
+      userinfo_picture: ''
+    }
   },
   created() {
-    this.getinfo();
+    this.getinfo()
   },
   methods: {
     getinfo() {
       getUserInfo(getToken()).then(response => {
-        const info = response.data;
-        this.infoform.useraccount = info.account;
-        this.infoform.username = info.name;
+        const info = response.data
+        this.infoform.useraccount = info.account
+        this.infoform.username = info.name
         this.infoform.userjoin = formatdate_inc_time(
           info.date_joined,
-          "yyyy-mm-dd HH:MM:ss"
-        );
-      });
-      this.userinfo_picture = store.getters.dbpicture;
+          'yyyy-mm-dd HH:MM:ss'
+        )
+      })
+      this.userinfo_picture = store.getters.dbpicture
     },
     goprofile_edit() {
-      this.loadingprofile_edit = true;
+      this.loadingprofile_edit = true
       setTimeout(() => {
         setTimeout(() => {
-          this.loadingprofile_edit = false;
+          this.loadingprofile_edit = false
           this.$router.push({
-            path: this.redirect || "/profile/admin-profile-edit"
-          });
-        }, 300);
-      }, 150);
+            path: this.redirect || '/profile/admin-profile-edit'
+          })
+        }, 300)
+      }, 150)
     }
   }
-};
+}
 </script>
 <style rel="stylesheet/scss" lang="scss" >
 .a_admin_info {
