@@ -75,9 +75,9 @@
   </div>
 </template>
 <script>
-import { getUserInfo } from '@/api/login'
-import { getToken } from '@/utils/auth'
-import store from '@/store'
+import { getUserInfo } from '@/api/login';
+import { getToken } from '@/utils/auth';
+import store from '@/store';
 export default {
   data() {
     return {
@@ -122,12 +122,10 @@ export default {
   width: 60%;
   margin: 15vh 19vw;
 }
-
 .btn {
   float: right;
   margin-bottom: 1.875rem;
 }
-
 .personal_view {
   font-size: 0;
 }
@@ -161,4 +159,3 @@ export default {
   width: 16rem;
 }
 </style>
-

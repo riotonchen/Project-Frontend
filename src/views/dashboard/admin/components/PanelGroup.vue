@@ -19,7 +19,7 @@
             />
           </div>
           <div class="card-panel-description">
-            <div class="card-panel-text">會員總人數</div>
+            <div class="card-panel-text">{{ $t('a_dashboard.people') }}</div>
             <count-to
               :start-val="0"
               :end-val="totalmember_num"
@@ -43,7 +43,7 @@
             />
           </div>
           <div class="card-panel-description">
-            <div class="card-panel-text">管理員人數</div>
+            <div class="card-panel-text">{{ $t('a_dashboard.admin') }}</div>
             <count-to
               :start-val="0"
               :end-val="admin_num"
@@ -67,7 +67,7 @@
             />
           </div>
           <div class="card-panel-description">
-            <div class="card-panel-text">普通會員人數</div>
+            <div class="card-panel-text">{{ $t('a_dashboard.member') }}</div>
             <count-to
               :start-val="0"
               :end-val="member_num"
@@ -91,7 +91,7 @@
             />
           </div>
           <div class="card-panel-description">
-            <div class="card-panel-text">商家會員人數</div>
+            <div class="card-panel-text">{{ $t('a_dashboard.business') }}</div>
             <count-to
               :start-val="0"
               :end-val="ent_num"
@@ -120,7 +120,7 @@
             />
           </div>
           <div class="card-panel-description">
-            <div class="card-panel-text">總共回饋量</div>
+            <div class="card-panel-text">{{ $t('a_dashboard.feedbacktotal') }}</div>
             <count-to
               :start-val="0"
               :end-val="all_feedback_num"
@@ -144,7 +144,7 @@
             />
           </div>
           <div class="card-panel-description">
-            <div class="card-panel-text">已回覆回饋</div>
+            <div class="card-panel-text">{{ $t('a_dashboard.replied') }}</div>
             <count-to
               :start-val="0"
               :end-val="done_feedback_num"
@@ -168,7 +168,7 @@
             />
           </div>
           <div class="card-panel-description">
-            <div class="card-panel-text">尚未回覆回饋</div>
+            <div class="card-panel-text">{{ $t('a_dashboard.noreply') }}</div>
             <count-to
               :start-val="0"
               :end-val="yet_feedback_num"
@@ -183,10 +183,10 @@
 </template>
 
 <script>
-import CountTo from 'vue-count-to'
-import { getToken } from '@/utils/auth'
-import { getmember, getmemberlist } from '@/api/member/getmember'
-import { getfeedback } from '@/api/feedback/getfeedback'
+import CountTo from 'vue-count-to';
+import { getToken } from '@/utils/auth';
+import { getmember, getmemberlist } from '@/api/member/getmember';
+import { getfeedback } from '@/api/feedback/getfeedback';
 
 export default {
   components: {

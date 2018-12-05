@@ -50,21 +50,28 @@ export default {
     h6: '地址上限64個中英數字',
     b_profile_edit: '商家會員'
   },
+
   b_signup: {
-    title: '新建商家帳號',
-    username: '帳號(電子信箱)',
+    signup: '註冊',
+    username: '信箱',
     password: '密碼',
-    doublepswd: '請再次輸入密碼',
-    signUP: '送出',
-    email: '管理員信箱',
-    name: '商家名稱',
-    princiapl: '負責人',
-    taxID: '統一編號',
-    telephone: '行動電話',
-    cellphone: '公司電話',
+    name: '公司名稱',
+    manager: '負責人名稱',
+    uni_num: '統一編號',
+    mobile_num: '手機號碼',
+    phone_num: '電話號碼',
     extension: '分機號碼',
-    address: '公司地址',
-    edit: '編輯'
+    address: '地址',
+    nextstep: '下一步',
+    laststep: '上一歩',
+    member_signup: '會員註冊',
+    backtohp: '回首頁',
+    confirm: '確認',
+    cancel: '取消',
+    send: '送出',
+    account_password: '商家註冊-帳號密碼',
+    imformation: '商家註冊-一般資訊 ',
+    connect_imformation: '商家註冊-連絡資訊'
   },
   b_profile_view: {
     businessview: '商家資料',
@@ -76,7 +83,9 @@ export default {
     cellphone: '公司電話',
     extension: '分機號碼',
     address: '公司地址',
-    edit: '編輯'
+    edit: '編輯',
+    picture: '目前大頭貼',
+    picturenow: '當前大頭貼'
   },
   b_activity_add: {
     commodityname: '商品名稱',
@@ -123,11 +132,9 @@ export default {
     alter: '修改'
   },
   c_card_view: {
-    name: '卡片名稱',
+    name: '票卡名稱',
     content: '請輸入內容',
     search: '搜尋',
-    add: '新增一筆',
-    cardname: '票卡名稱',
     cardnumber: '票卡編號',
     cardcode: '票卡條碼',
     codenumber: '條碼編號',
@@ -136,7 +143,8 @@ export default {
     delete: '刪除',
     cancel: '取消',
     confirm: '確定',
-    blank: '以下如不修改保持空白即可'
+    blank: '以下如不修改保持空白即可',
+    action: '操作'
   },
   c_category: {
     startdate: '開始日期',
@@ -205,14 +213,14 @@ export default {
   c_project: {
     word: '請輸入內容',
     search: '搜尋',
-    data: '新增一筆',
+    add: '新增專案',
     name: '專案名稱',
     expenditure: '專案總支出',
     income: '專案總收入',
     action: '操作',
     edit: '編輯',
     delete: '刪除',
-    canael: '取消',
+    cancel: '取消',
     confirm: '確認'
   },
   c_history: {
@@ -260,6 +268,41 @@ export default {
     h2: 'ToID 只限定於 8 碼',
     h3: '如不修改，空白即可'
   },
+  a_feedbackmanage: {
+    memberaccount: '會員帳號',
+    date: '日期',
+    problemnumber: '問題編號',
+    problemsubject: '問題主旨',
+    action: '操作',
+    alreadyreply: '該案件已回覆',
+    detailed: '詳細',
+    subclassname: '子分類名稱',
+    delete: '刪除',
+    cancel: '取消',
+    confirm: '確認',
+    problemcontent: '問題內容',
+    reply: '回覆',
+    replied: '該案件已回覆',
+    letter: '正在幫你寄一封信給該用戶中......',
+    status: '狀態',
+    act: '操作',
+    selecttime: '選擇時間',
+    startdate: '開始日期',
+    enddate: '結束日期',
+    replycontent: '回覆內容',
+    input: '請輸入'
+  },
+  a_dashboard: {
+    people: '會員總人數',
+    admin: '管理員人數',
+    member: '普通會員人數',
+    business: '商家會員人數',
+    feedbacktotal: '總共回饋量',
+    replied: '已回覆回饋',
+    noreply: '尚未回覆回饋',
+    record: '最近交易紀錄'
+  },
+
   a_signup: {
     title: '新建管理員帳號',
     username: '帳號(電子信箱)',

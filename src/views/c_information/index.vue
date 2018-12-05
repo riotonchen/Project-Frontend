@@ -30,6 +30,9 @@
 </template>
 
 <script>
+import { getinfomations } from '@/api/infomations/getinfomations';
+import { getToken } from '@/utils/auth';
+
 export default {
   data() {
     return {
@@ -72,8 +75,16 @@ export default {
       ]
     }
   },
-
-  methods: {}
+  created() {
+    this.get_infomations_all()
+  },
+  methods: {
+    get_infomations_all() {
+      getinfomations(getToken()).then(res => {
+        console.log(res.data)
+      })
+    }
+  }
 }
 </script>
 
@@ -94,7 +105,7 @@ export default {
     }
   }
   .infomations_pic:hover {
-    background-color: aliceblue;
+    transform: scale(1.1);
   }
 }
 .info_carousel {
@@ -108,8 +119,8 @@ export default {
     align-items: center;
     justify-content: center;
     img {
-      width: calc(100% / 6);
-      padding: 5px;
+      width: 30vh;
+      padding-top: 4vh;
     }
   }
 }

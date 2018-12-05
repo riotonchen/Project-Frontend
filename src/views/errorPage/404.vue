@@ -2,29 +2,47 @@
   <div class="wscn-http404-container">
     <div class="wscn-http404">
       <div class="pic-404">
-        <img class="pic-404__parent" src="@/assets/404_images/404.png" alt="404">
-        <img class="pic-404__child left" src="@/assets/404_images/404_cloud.png" alt="404">
-        <img class="pic-404__child mid" src="@/assets/404_images/404_cloud.png" alt="404">
-        <img class="pic-404__child right" src="@/assets/404_images/404_cloud.png" alt="404">
+        <img
+          class="pic-404__parent"
+          src="@/assets/404_images/404.png"
+          alt="404"
+        >
+        <img
+          class="pic-404__child left"
+          src="@/assets/404_images/404_cloud.png"
+          alt="404"
+        >
+        <img
+          class="pic-404__child mid"
+          src="@/assets/404_images/404_cloud.png"
+          alt="404"
+        >
+        <img
+          class="pic-404__child right"
+          src="@/assets/404_images/404_cloud.png"
+          alt="404"
+        >
       </div>
       <div class="bullshit">
         <div class="bullshit__oops">OOPS!</div>
         <div class="bullshit__headline">{{ message }}</div>
         <br>
         <div class="bullshit__info">請檢查您輸入的網址是否正確，請點擊以下按鈕返回首頁</div>
-        <a href="dashboard" class="bullshit__return-home">返回首頁</a>
+        <a
+          href="/"
+          class="bullshit__return-home"
+        >返回首頁</a>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-
 export default {
   name: 'Page404',
   computed: {
     message() {
-      return '你是不是進入錯的頁面了呢?????\n快回去RRRRRR!!!!!'
+      return '你是不是進入錯的頁面了呢?????\n快回去RRRRRR!!!!!';
     }
   }
 }

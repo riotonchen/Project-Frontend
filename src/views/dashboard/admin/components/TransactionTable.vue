@@ -21,16 +21,30 @@
    -->
   <div>
     <el-row>
-      <el-col :span="24" class="accounting_title_col">
-        <span>最近交易紀錄</span>
+      <el-col
+        :span="24"
+        class="accounting_title_col"
+      >
+        <span>{{ $t('a_dashboard.record') }}</span>
       </el-col>
     </el-row>
     <el-row>
       <el-col :span="24">
-        <el-table :data="c_user_history" :default-sort="{prop: 'purchasedate', order: 'descending'}" stripe style="width: 100%;" max-height="358" fit>
+        <el-table
+          :data="c_user_history"
+          :default-sort="{prop: 'purchasedate', order: 'descending'}"
+          stripe
+          style="width: 100%;"
+          max-height="358"
+          fit
+        >
           <el-table-column type="expand">
             <template slot-scope="scope">
-              <el-form label-position="left" inline class="table_expand">
+              <el-form
+                label-position="left"
+                inline
+                class="table_expand"
+              >
                 <!--
               <el-form-item label="發票隨機碼">
                 <div v-if="scope.row.invoice_id==='-'">
@@ -54,14 +68,23 @@
               </el-form>
             </template>
           </el-table-column>
-          <el-table-column :label="$t('c_history.date')" prop="purchasedate" sortable align="center">
+          <el-table-column
+            :label="$t('c_history.date')"
+            prop="purchasedate"
+            sortable
+            align="center"
+          >
             <template slot-scope="scope">
               <span>
                 {{ scope.row.purchasedate }}
               </span>
             </template>
           </el-table-column>
-          <el-table-column :label="$t('c_history.receipt')" prop="invoice_id.number" align="center">
+          <el-table-column
+            :label="$t('c_history.receipt')"
+            prop="invoice_id.number"
+            align="center"
+          >
             <template slot-scope="scope">
               <div v-if="scope.row.invoice_id==='-'">
                 <span>
@@ -75,7 +98,11 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column :label="$t('c_history.incomespend')" prop="type" align="center">
+          <el-table-column
+            :label="$t('c_history.incomespend')"
+            prop="type"
+            align="center"
+          >
             <template slot-scope="scope">
               <el-tag :type="scope.row.type==='支出'?'danger':'primary'">
                 <span>
@@ -84,35 +111,55 @@
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column :label="$t('c_history.mainsort')" prop="sort_id.name" align="center">
+          <el-table-column
+            :label="$t('c_history.mainsort')"
+            prop="sort_id.name"
+            align="center"
+          >
             <template slot-scope="scope">
               <span>
                 {{ scope.row.sort_id.name }}
               </span>
             </template>
           </el-table-column>
-          <el-table-column :label="$t('c_history.subclass')" prop="subsort_id.name" align="center">
+          <el-table-column
+            :label="$t('c_history.subclass')"
+            prop="subsort_id.name"
+            align="center"
+          >
             <template slot-scope="scope">
               <span>
                 {{ scope.row.subsort_id.name }}
               </span>
             </template>
           </el-table-column>
-          <el-table-column :label="$t('c_history.project')" prop="project_id.name" align="center">
+          <el-table-column
+            :label="$t('c_history.project')"
+            prop="project_id.name"
+            align="center"
+          >
             <template slot-scope="scope">
               <span>
                 {{ scope.row.project_id.name }}
               </span>
             </template>
           </el-table-column>
-          <el-table-column :label="$t('c_history.account')" prop="account_id.name" align="center">
+          <el-table-column
+            :label="$t('c_history.account')"
+            prop="account_id.name"
+            align="center"
+          >
             <template slot-scope="scope">
               <span>
                 {{ scope.row.account_id.name }}
               </span>
             </template>
           </el-table-column>
-          <el-table-column :label="$t('c_history.money')" prop="amount" align="center">
+          <el-table-column
+            :label="$t('c_history.money')"
+            prop="amount"
+            align="center"
+          >
             <template slot-scope="scope">
               <span>
                 {{ scope.row.amount }}
@@ -126,8 +173,8 @@
 </template>
 
 <script>
-import { getaccounting_all } from '@/api/accounting/getaccounting'
-import { getToken } from '@/utils/auth'
+import { getaccounting_all } from '@/api/accounting/getaccounting';
+import { getToken } from '@/utils/auth';
 
 export default {
   name: 'Memberaccountinglist',
@@ -145,16 +192,25 @@ export default {
       let enddate
       let payinval
       this.c_user_history = []
-      getaccounting_all(getToken(), startdate, enddate, payinval, this.c_sort, this.c_subsort, this.c_project, this.c_account).then((res) => {
+      getaccounting_all(
+        getToken(),
+        startdate,
+        enddate,
+        payinval,
+        this.c_sort,
+        this.c_subsort,
+        this.c_project,
+        this.c_account
+      ).then(res => {
         this.c_user_history = res.data
         this.c_user_history.forEach(items => {
           if (items.type === false) {
-            items.type = '支出'
+            items.type = '支出';
           } else {
-            items.type = '收入'
+            items.type = '收入';
           }
           if (items.invoice_id === null || items.invoice_id === undefined) {
-            items.invoice_id = '-'
+            items.invoice_id = '-';
           }
         })
       })

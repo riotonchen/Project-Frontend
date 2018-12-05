@@ -3,7 +3,7 @@
   <div class="app-container">
 
     <title>
-      {{ $t('route.a_feebackmanage') }}
+      {{ $t('route.a_feedbackmanage') }}
     </title>
     <div class="filter-container">
       <el-row class="date_seletor">
@@ -15,7 +15,7 @@
           :xl="1"
           class="selector_title"
         >
-          <span>{{ $t('a_feebackmanager.selecttime') }}</span>
+          <span>{{ $t('a_feedbackmanage.selecttime') }}</span>
         </el-col>
         <el-col
           :xs="24"
@@ -28,8 +28,8 @@
           <el-date-picker
             v-model="startenddate"
             :picker-options="feeddateselect"
-            :start-placeholder="$t('a_feebackmanager.startdate')"
-            :end-placeholder="$t('a_feebackmanager.enddate')"
+            :start-placeholder="$t('a_feedbackmanage.startdate')"
+            :end-placeholder="$t('a_feedbackmanage.enddate')"
             :clearable="dateclean"
             range-separator="-"
             align="center"
@@ -55,7 +55,7 @@
           align="center"
         />
         <el-table-column
-          :label="$t('a_feebackmanager.date')"
+          :label="$t('a_feedbackmanage.date')"
           prop="time"
           sortable
           align="center"
@@ -65,7 +65,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          :label="$t('a_feebackmanager.status')"
+          :label="$t('a_feedbackmanage.status')"
           prop="status"
           sortable
           align="center"
@@ -79,7 +79,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          :label="$t('a_feebackmanager.problemsubject')"
+          :label="$t('a_feedbackmanage.problemsubject')"
           prop="title"
           align="center"
         >
@@ -88,7 +88,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          :label="$t('a_feebackmanager.memberaccount')"
+          :label="$t('a_feedbackmanage.memberaccount')"
           prop="member_id"
           align="center"
         >
@@ -97,13 +97,13 @@
           </template>
         </el-table-column>
         <el-table-column
-          :label="$t('a_feebackmanager.act')"
+          :label="$t('a_feedbackmanage.act')"
           align="center"
         >
           <template slot-scope="scope">
             <div v-if="scope.row.status==='已回覆'">
               <el-tag type="success">
-                <span>該案件已回覆</span>
+                <span>{{ $t('a_feedbackmanage.replied') }}</span>
               </el-tag>
             </div>
             <div v-else>
@@ -111,7 +111,7 @@
                 type="primary"
                 plain
                 @click.native.prevent="handleDetailed(scope.$index,scope.row)"
-              >{{ $t('a_feebackmanager.detailed') }}</el-button>
+              >{{ $t('a_feedbackmanage.detailed') }}</el-button>
             </div>
           </template>
         </el-table-column>
@@ -131,7 +131,7 @@
           class="table_fdback_view"
         >
           <el-form-item
-            :label="$t('a_feebackmanager.problemcontent')"
+            :label="$t('a_feedbackmanage.problemcontent')"
             prop="problemcontent"
           >
             <!--問題內容檢視框-->
@@ -154,7 +154,7 @@
           <el-button
             type="primary"
             @click="a_feedbackreply()"
-          >{{ $t('a_feebackmanager.reply') }}</el-button>
+          >{{ $t('a_feedbackmanage.reply') }}</el-button>
         </span>
 
       </el-dialog>
@@ -167,7 +167,7 @@
           v-loading="replyloding"
           :ref="a_feedback_reply"
           :model="a_feedback_reply"
-          element-loading-text="正在幫你寄一封信給該用戶中......"
+          :element-loading-text="$t('a_feedbackmanage.letter')"
           element-loading-spinner="el-icon-loading"
           element-loading-background="rgba(0, 0, 0, 0.9)"
           label-position="top"
@@ -175,12 +175,12 @@
           class="table_fdback_view"
         >
           <el-form-item
-            :label="$t('a_feebackmanager.replycontent')"
+            :label="$t('a_feedbackmanage.replycontent')"
             prop="replycontent"
           >
             <el-input
               v-model="a_feedback_reply.content"
-              :placeholder="$t('a_feebackmanager.input')"
+              :placeholder="$t('a_feedbackmanage.input')"
               :autosize="{ minRows: 8, maxRows:8}"
               resize="none"
               type="textarea"
@@ -197,13 +197,13 @@
             :loading="replyloding"
             type="primary"
             @click.native.prevent="send_reback()"
-          >{{ $t('a_feebackmanager.confirm') }}</el-button>
+          >{{ $t('a_feedbackmanage.confirm') }}</el-button>
           <el-button
             :loading="replyloding"
             type="info"
             plain
             @click.native.prevent="a_feeback_cal()"
-          >{{ $t('a_feebackmanager.cancel') }}</el-button>
+          >{{ $t('a_feedbackmanage.cancel') }}</el-button>
         </span>
       </el-dialog>
     </div>

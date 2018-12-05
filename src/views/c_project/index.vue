@@ -6,7 +6,7 @@
     <div class="filter-container">
       <el-select
         v-model="c_project"
-        placeholder="專案名稱"
+        :placeholder="$t('c_project.name')"
         clearable
         filterable
         style="width: 25vw;max-width:7.5rem;min-width:5.5rem;"
@@ -24,7 +24,7 @@
         type="primary"
         @click="c_open_add_view()"
       >
-        新增專案
+        {{ $t('c_project.add') }}
       </el-button>
     </div>
     <div class="card_table_container">
@@ -45,7 +45,7 @@
           align="center"
         />
         <el-table-column
-          label="名稱"
+          :label="$t('c_project.name')"
           prop="name"
           align="center"
         >
@@ -54,7 +54,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="總收入"
+          :label="$t('c_project.income')"
           prop="total_income"
           align="center"
         >
@@ -63,7 +63,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="總支出"
+          :label="$t('c_project.expenditure')"
           prop="total_expenses"
           align="center"
         >
@@ -72,7 +72,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="操作"
+          :label="$t('c_project.action')"
           align="center"
         >
           <template slot-scope="scope">
@@ -80,7 +80,7 @@
               type="primary"
               plain
               @click.native.prevent="handle_edit(scope.$index,scope.row)"
-            >{{ $t('c_card_view.edit') }}</el-button>
+            >{{ $t('c_project.edit') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -88,8 +88,8 @@
     <div class="dialog_container">
       <el-dialog
         :visible.sync="c_project_visible"
+        :title="$t('c_project.edit')"
         width="80vw"
-        title="編輯"
       >
         <el-form
           ref="c_project_edit"
@@ -106,7 +106,7 @@
             <span />
           </el-form-item>
           <el-form-item
-            label="專案名稱"
+            :label="$t('c_project.name')"
             prop="name"
           >
             <el-input
@@ -127,23 +127,23 @@
             type="danger"
             plain
             @click.native.prevent="c_project_del()"
-          >刪除</el-button>
+          >{{ $t('c_project.delete') }}</el-button>
           <el-button
             type="primary"
             @click.native.prevent="c_project_confirm()"
-          >確定</el-button>
+          >{{ $t('c_project.confirm') }}</el-button>
           <el-button
             type="info"
             plain
             @click.native.prevent="c_project_cal()"
-          >取消</el-button>
+          >{{ $t('c_project.cancel') }}</el-button>
         </span>
 
       </el-dialog>
       <el-dialog
         :visible.sync="c_project_add_visible"
+        :title="$t('c_project.add')"
         width="80vw"
-        title="新增"
       >
         <el-form
           ref="c_project_add"
@@ -160,7 +160,7 @@
             <span />
           </el-form-item>
           <el-form-item
-            label="專案名稱"
+            :label="$t('c_project.name')"
             prop="name"
           >
             <el-input
@@ -179,12 +179,12 @@
           <el-button
             type="primary"
             @click.native.prevent="c_project_addn()"
-          >確定</el-button>
+          >{{ $t('c_project.confirm') }}</el-button>
           <el-button
             type="info"
             plain
             @click.native.prevent="c_project_cal()"
-          >取消</el-button>
+          >{{ $t('c_project.cancel') }}</el-button>
         </span>
       </el-dialog>
     </div>
@@ -192,15 +192,15 @@
 </template>
 
 <script>
-import waves from '@/directive/waves' // 水波紋指令
-import { getproject, getproject_single } from '@/api/project/getproject'
-import { postproject } from '@/api/project/postproject'
+import waves from '@/directive/waves'; // 水波紋指令
+import { getproject, getproject_single } from '@/api/project/getproject';
+import { postproject } from '@/api/project/postproject';
 import {
   patchproject_update,
   patchproject_delete
-} from '@/api/project/patchproject'
-import { getToken } from '@/utils/auth'
-import { formatdate } from '@/utils/index'
+} from '@/api/project/patchproject';
+import { getToken } from '@/utils/auth';
+import { formatdate } from '@/utils/index';
 
 export default {
   name: 'CProject',
@@ -208,9 +208,11 @@ export default {
     waves
   },
   data() {
-    const validecardnamelength = (rule, value, callback) => {
-      if (value.length > 10) {
-        callback(new Error('專案名稱至多10碼'))
+    const validatename = (rule, value, callback) => {
+      if (value === '' || value === null) {
+        return callback(new Error('名稱不能為空'))
+      } else if (value.length > 10) {
+        callback(new Error('名稱不可以大於 10 個字'))
       } else {
         callback()
       }
@@ -235,7 +237,7 @@ export default {
           {
             required: false,
             trigger: 'change',
-            validator: validecardnamelength
+            validator: validatename
           }
         ]
       }
@@ -253,10 +255,10 @@ export default {
       }, 1500)
     },
     clean_name() {
-      this.c_project_edit.name = ''
+      this.c_project_edit.name = '';
     },
     clean_number() {
-      this.c_project_edit.number = ''
+      this.c_project_edit.number = '';
     },
     handle_edit(index, row) {
       this.c_project_id = row.id
@@ -298,23 +300,30 @@ export default {
       this.c_project_add_visible = true
     },
     c_project_addn() {
-      postproject(getToken(), this.c_project_add.name)
-        .then(() => {
-          this.$message({
-            type: 'success',
-            message: '新增專案成功'
-          })
-          this.c_project_add.name = ''
-          this.get_project()
-        })
-        .catch(error => {
-          console.log(error)
-          this.$message({
-            type: 'error',
-            message: '發生一點錯誤，請稍後再做新增'
-          })
-        })
-      this.c_project_add_visible = false
+      this.$refs.c_project_add.validate(valid => {
+        if (valid) {
+          postproject(getToken(), this.c_project_add.name)
+            .then(() => {
+              this.$message({
+                type: 'success',
+                message: '新增專案成功'
+              })
+              this.c_project_add.name = '';
+              this.c_project_add_visible = false
+              this.get_project()
+            })
+            .catch(error => {
+              console.log(error)
+              this.$message({
+                type: 'error',
+                message: '發生一點錯誤，請稍後再做新增'
+              })
+            })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
     },
     c_project_confirm() {
       const date = formatdate('yyyy-mm-dd HH:MM:ss.l')

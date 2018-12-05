@@ -131,75 +131,95 @@
   </div>
 </template>
 <script>
-import { getUserInfo } from '@/api/login'
-import { getToken } from '@/utils/auth'
+import { getUserInfo } from '@/api/login';
+import { getToken } from '@/utils/auth';
 /* import { validateuninum } from '@/utils/validate'*/
-import { patchprofile, patchprofilepswd } from '@/api/profile/patchprofile'
-import { patchentprofile } from '@/api/ent-profile/patchentprofile'
-import { getentprofile } from '@/api/ent-profile/getentprofile'
-
+import { patchprofile, patchprofilepswd } from '@/api/profile/patchprofile';
+import { patchentprofile } from '@/api/ent-profile/patchentprofile';
+import { getentprofile } from '@/api/ent-profile/getentprofile';
 export default {
   name: 'CProfileEdit',
   data() {
     const validateuninum = (rule, value, callback) => {
-      if (value === '') {
-        callback()
-      } else if (value.length !== 8) {
+      if (value.length !== 8) {
         callback(new Error('統一編號只限定於 8 碼'))
+      } else if (value.length < 1) {
+        callback(new Error('統一編號不得為空'))
       } else {
         callback()
       }
     }
     const validatename = (rule, value, callback) => {
-      if (value === '') {
-        callback()
-      } else if (value.length > 25) {
-        callback(new Error('商家名稱不可以大於 25 個字'))
+      if (value.length > 10) {
+        callback(new Error('商家名稱不可以大於 10 個字'))
+      } else if (value.length < 1) {
+        callback(new Error('商家名稱不得為空'))
       } else {
         callback()
       }
     }
     const validatemobilenum = (rule, value, callback) => {
-      if (value === '') {
-        callback()
-      } else if (value.length > 20) {
-        callback(new Error('行動電話不可大於20碼'))
+      if (value.length > 30) {
+        callback(new Error('行動電話不可大於30碼'))
+      } else if (value.length < 1) {
+        callback(new Error('行動電話不得為空'))
       } else {
         callback()
       }
     }
     const validatephonenum = (rule, value, callback) => {
-      if (value === '') {
-        callback()
-      } else if (value.length > 30) {
-        callback(new Error('公司電話不可大於30碼'))
+      if (value.length > 20) {
+        callback(new Error('公司電話不可大於20碼'))
+      } else if (value.length < 1) {
+        callback(new Error('公司電話不得為空'))
       } else {
         callback()
       }
     }
     const validatemanager = (rule, value, callback) => {
-      if (value === '') {
-        callback()
-      } else if (value.length > 25) {
-        callback(new Error('負責人名稱不可以大於 25 個字'))
+      if (value.length > 10) {
+        callback(new Error('負責人名稱不可以大於 10 個字'))
+      } else if (value.length < 1) {
+        callback(new Error('負責人名稱不得為空'))
       } else {
         callback()
       }
     }
     const validateextension = (rule, value, callback) => {
-      if (value === '') {
-        callback()
-      } else if (value.length > 10) {
+      if (value.length > 10) {
         callback(new Error('分機不可大於 10 碼'))
+      } else if (value.length < 1) {
+        callback(new Error('分機不得為空'))
       } else {
         callback()
       }
     }
     const validateaddress = (rule, value, callback) => {
+      if (value.length > 64) {
+        callback(new Error('地址不可以大於64個字'))
+      } else if (value.length < 1) {
+        callback(new Error('地址不得為空'))
+      } else {
+        callback()
+      }
+    }
+
+    const validatePassword = (rule, value, callback) => {
       if (value === '') {
         callback()
-      } else if (value.length > 64) {
-        callback(new Error('地址不可以大於64個字'))
+      } else if (value.length < 8) {
+        callback(new Error('密碼不可以小於 8 碼'))
+      } else {
+        callback()
+      }
+    }
+    const validatedoublepswd = (rule, value, callback) => {
+      if (value === '') {
+        callback()
+      } else if (value !== this.profile_edit_form.pswd) {
+        callback(new Error('二次密碼不一樣，請再次輸入！'))
+      } else if (value === '' && this.profile_edit_form.pswd !== '') {
+        callback(new Error('請輸入，不可空白'))
       } else {
         callback()
       }
@@ -215,10 +235,8 @@ export default {
         email: '',
         name: '',
         manager: '',
-
         uni_num: '',
         mobile_num: '',
-
         phone_num: '',
         extension: '',
         address: '',
@@ -246,6 +264,12 @@ export default {
         ],
         address: [
           { required: false, trigger: 'change', validator: validateaddress }
+        ],
+        pswd: [
+          { required: false, trigger: 'change', validator: validatePassword }
+        ],
+        pswd2: [
+          { required: false, trigger: 'change', validator: validatedoublepswd }
         ]
       }
     }
@@ -325,7 +349,6 @@ export default {
               .catch(error => {
                 console.log(error.response)
                 this.loadingsend = false
-
                 const h = this.$createElement
                 this.$notify.error({
                   title: '送出失敗',

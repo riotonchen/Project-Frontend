@@ -104,7 +104,7 @@
             class="btn"
             @click.native.prevent="go_current_picture()"
           >
-            目前大頭貼
+            {{ $t('b_profile_view.picture') }}
           </el-button>
         </el-form>
       </el-card>
@@ -114,7 +114,7 @@
     <div class="dialog_container">
       <el-dialog
         :visible.sync="current_picture_dialog"
-        title="當前大頭貼"
+        :title="$t('b_profile_view.picturenow')"
         width="30vw"
       >
         <div style="padding-left:3.5vw;">
@@ -129,10 +129,10 @@
   </div>
 </template>
 <script>
-import { getUserInfo } from '@/api/login'
-import { getentprofile } from '@/api/ent-profile/getentprofile'
-import { getToken } from '@/utils/auth'
-import store from '@/store'
+import { getUserInfo } from '@/api/login';
+import { getentprofile } from '@/api/ent-profile/getentprofile';
+import { getToken } from '@/utils/auth';
+import store from '@/store';
 
 export default {
   name: 'BusinessProfileView',
