@@ -268,13 +268,13 @@ export default {
     remainingbudget: 'Remaining budget'
   },
   c_accountmanager: {
-    accountname: 'Account',
+    accountname: 'Account Name',
     number: 'Number',
     search: 'Search',
     word: 'Please enter the content',
     addnewaccount: 'Add a new amount of data',
-    startmoney: 'Initial amount',
-    finallymoney: 'Finally amount',
+    startmoney: 'Initial Amount',
+    finallymoney: 'Finally Amount',
     operating: 'Operation',
     edit: 'Edit',
     delete: 'Delete',
@@ -283,7 +283,9 @@ export default {
     confirm: 'Confirm',
     blank: 'If you do not need to modify, please keep balnk.',
     add: 'Add Account',
-    accounttype: 'Account Type'
+    accounttype: 'Account Type',
+    mainsortname: 'Main Sortname',
+    action: 'Action'
   },
   c_card_view: {
     name: 'Card Name',

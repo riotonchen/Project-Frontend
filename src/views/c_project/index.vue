@@ -192,15 +192,15 @@
 </template>
 
 <script>
-import waves from '@/directive/waves'; // 水波紋指令
-import { getproject, getproject_single } from '@/api/project/getproject';
-import { postproject } from '@/api/project/postproject';
+import waves from '@/directive/waves' // 水波紋指令
+import { getproject, getproject_single } from '@/api/project/getproject'
+import { postproject } from '@/api/project/postproject'
 import {
   patchproject_update,
   patchproject_delete
-} from '@/api/project/patchproject';
-import { getToken } from '@/utils/auth';
-import { formatdate } from '@/utils/index';
+} from '@/api/project/patchproject'
+import { getToken } from '@/utils/auth'
+import { formatdate } from '@/utils/index'
 
 export default {
   name: 'CProject',
@@ -255,10 +255,10 @@ export default {
       }, 1500)
     },
     clean_name() {
-      this.c_project_edit.name = '';
+      this.c_project_edit.name = ''
     },
     clean_number() {
-      this.c_project_edit.number = '';
+      this.c_project_edit.number = ''
     },
     handle_edit(index, row) {
       this.c_project_id = row.id
@@ -308,7 +308,7 @@ export default {
                 type: 'success',
                 message: '新增專案成功'
               })
-              this.c_project_add.name = '';
+              this.c_project_add.name = ''
               this.c_project_add_visible = false
               this.get_project()
             })

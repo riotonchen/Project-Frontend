@@ -7,7 +7,7 @@
     <div class="filter_container">
       <el-select
         v-model="c_account_type"
-        :placeholder="$t('c_accountmanager.project')"
+        :placeholder="$t('c_accountmanager.accounttype')"
         filterable
         clearable
         style="width: 10vw;max-width:8rem;min-width:5rem;"
@@ -24,7 +24,7 @@
       <el-select
         v-model="c_account_name"
         :disabled="c_account_name_visible"
-        :placeholder="$t('c_category.mainsortname')"
+        :placeholder="$t('c_accountmanager.mainsortname')"
         filterable
         style="width: 25vw;max-width:7.5rem;min-width:6.5rem;"
         @focus="get_account()"
@@ -41,7 +41,7 @@
         type="primary"
         @click="c_open_add_view()"
       >
-        {{ $t('c_accountmanager.data') }}
+        {{ $t('c_accountmanager.add') }}
       </el-button>
     </div>
     <div class="account_table_container">
@@ -92,7 +92,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          :label="$t('c_accountmanager.use')"
+          :label="$t('c_accountmanager.action')"
           align="center"
         >
           <template slot-scope="scope">
@@ -109,7 +109,7 @@
       <!--新增-->
       <el-dialog
         :visible.sync="c_category_add_visible"
-        :title="$t('c_accountmanager.addnewaccount')"
+        :title="$t('c_accountmanager.add')"
         width="80vw"
       >
         <el-form
@@ -135,7 +135,7 @@
           >
             <el-select
               v-model="c_category_add.type"
-              :placeholder="$t('c_accountmanager.project')"
+              :placeholder="$t('c_accountmanager.accounttype')"
               filterable
               clearable
               @focus="get_account()"
@@ -167,7 +167,7 @@
       <!--修改-->
       <el-dialog
         :visible.sync="c_category_configure_visible"
-        :title="$t('c_accountmanager.configure')"
+        :title="$t('c_accountmanager.edit')"
         width="80vw"
       >
         <el-form

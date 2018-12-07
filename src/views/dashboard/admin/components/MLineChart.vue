@@ -8,11 +8,11 @@
 </template>
 
 <script>
-import echarts from 'echarts';
+import echarts from 'echarts'
 require('echarts/theme/macarons') // echarts theme
-import { debounce } from '@/utils';
-import { formatdate_inc_time } from '@/utils/index';
-import 'zrender/lib/svg/svg';
+import { debounce } from '@/utils'
+import { formatdate_inc_time } from '@/utils/index'
+import 'zrender/lib/svg/svg'
 
 export default {
   props: {

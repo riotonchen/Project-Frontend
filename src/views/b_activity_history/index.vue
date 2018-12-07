@@ -5,73 +5,196 @@
     </title>
     <div class="activity_history_container">
       <!--目前使用日期做排序-->
-      <el-table :data="user_activity_history" :default-sort="{prop: 'date', order: 'descending'}" stripe style="width: 100%;" max-height="470" fit>
+      <el-table
+        :data="ent_activity_history"
+        :default-sort="{prop: 'status', order: 'descending'}"
+        stripe
+        style="width: 100%;"
+        max-height="470"
+        fit
+      >
         <el-table-column type="expand">
           <template slot-scope="props">
-            <el-form label-position="left" inline class="table_acthistory_view">
+            <el-form
+              label-position="left"
+              inline
+              class="table_acthistory_view"
+            >
               <el-form-item :label="$t('activity_history.photo')">
                 <span>{{ props.row.comment }}</span>
               </el-form-item>
             </el-form>
           </template>
         </el-table-column>
-        <el-table-column :label="$t('activity_history.offername')" prop="name" align="center" />
-        <el-table-column :label="$t('activity_history.offercontent')" prop="content" align="center" />
-        <el-table-column :label="$t('activity_history.status')" prop="status" align="center" />
-        <el-table-column :label="$t('activity_history.starttime')" prop="starttime" align="center" />
-        <el-table-column :label="$t('activity_history.endtime')" prop="endtime" align="center" />
-
-        <el-table-column>
+        <el-table-column
+          :label="$t('activity_history.offername')"
+          prop="name"
+          align="center"
+        >
           <template slot-scope="scope">
-            <el-button type="primary" @click="acthistory_edit(scope.$index,scope.row)">{{ $t('activity_history.edit') }}</el-button>
+            <span>
+              {{ scope.row.name }}
+            </span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          :label="$t('activity_history.offercontent')"
+          prop="content"
+          align="center"
+        > <template slot-scope="scope">
+          <span>
+            {{ scope.row.content }}
+          </span>
+        </template>
+        </el-table-column>
+        <el-table-column
+          :label="$t('activity_history.status')"
+          prop="status"
+          align="center"
+          sortable
+        >
+          <template slot-scope="scope">
+            <el-tag :type="scope.row.status==='未審核'?'danger':'primary'">
+              <span>
+                {{ scope.row.status }}
+              </span>
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column
+          :label="$t('activity_history.starttime')"
+          prop="starttime"
+          align="center"
+          sortable
+        >
+          <template slot-scope="scope">
+            <span>
+              {{ scope.row.starttime }}
+            </span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          :label="$t('activity_history.endtime')"
+          prop="endtime"
+          align="center"
+          sortable
+        >
+          <template slot-scope="scope">
+            <span>
+              {{ scope.row.endtime }}
+            </span>
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center">
+          <template slot-scope="scope">
+            <el-button
+              type="primary"
+              @click="acthistory_edit(scope.$index,scope.row)"
+            >{{ $t('activity_history.edit') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
     <div class="dialog_container">
-      <el-dialog :visible.sync="activity_history_visible" :title="$t('c_history.edit')" width="80vw">
-        <el-form :ref="activity_history_edit" :model="activity_history_edit" :rules="activity_history_rules" label-position="left" inline class="acthistory_dialog">
+      <el-dialog
+        :visible.sync="activity_history_visible"
+        :title="$t('c_history.edit')"
+        width="80vw"
+      >
+        <el-form
+          :ref="activity_history_edit"
+          :model="activity_history_edit"
+          :rules="activity_history_rules"
+          label-position="left"
+          inline
+          class="acthistory_dialog"
+        >
           <el-form-item>
             <span>{{ $t('activity_history.notmodify') }}</span>
           </el-form-item>
           <el-form-item>
             <span />
           </el-form-item>
-          <el-form-item :label="$t('activity_history.offername')" prop="offername">
-            <el-input v-model="activity_history_edit.offername" :placeholder="activity_history_offername_p" clearable />
+          <el-form-item
+            :label="$t('activity_history.offername')"
+            prop="offername"
+          >
+            <el-input
+              v-model="activity_history_edit.offername"
+              :placeholder="activity_history_offername_p"
+              clearable
+            />
           </el-form-item>
-          <el-form-item :label="$t('activity_history.offercontent')" prop="offercontent">
-            <el-input v-model="activity_history_edit.offercontent" :placeholder="activity_history_offercontent_p" clearable />
+          <el-form-item
+            :label="$t('activity_history.offercontent')"
+            prop="offercontent"
+          >
+            <el-input
+              v-model="activity_history_edit.offercontent"
+              :placeholder="activity_history_offercontent_p"
+              clearable
+            />
           </el-form-item>
           <el-form-item :label="$t('activity_history.starttime')">
-            <el-date-picker v-model="activity_history_edit.date1" :placeholder="activity_history_date1_p" type="date" />
+            <el-date-picker
+              v-model="activity_history_edit.date1"
+              :placeholder="activity_history_date1_p"
+              type="date"
+            />
           </el-form-item>
           <el-form-item :label="$t('activity_history.endtime')">
-            <el-date-picker v-model="activity_history_edit.date2" :placeholder="activity_history_date2_p" type="date" />
+            <el-date-picker
+              v-model="activity_history_edit.date2"
+              :placeholder="activity_history_date2_p"
+              type="date"
+            />
           </el-form-item>
           <el-form-item :label="$t('activity_history.photo')">
-            <el-upload :on-preview="handlePictureCardPreview" :on-remove="handleRemove" action="https://jsonplaceholder.typicode.com/posts/" list-type="picture-card">
+            <el-upload
+              :on-preview="handlePictureCardPreview"
+              :on-remove="handleRemove"
+              action="https://jsonplaceholder.typicode.com/posts/"
+              list-type="picture-card"
+            >
               <i class="el-icon-plus" />
             </el-upload>
             <el-dialog :visible.sync="acthistory_Visible">
-              <img :src="dialogImageUrl" width="100%" alt="">
+              <img
+                :src="dialogImageUrl"
+                width="100%"
+                alt=""
+              >
             </el-dialog>
           </el-form-item>
 
         </el-form>
-
-        <span slot="footer" class="invoice_dialog_footer">
-          <el-button type="danger" plain @click="acthistory_del()">{{ $t('activity_history.delete') }}</el-button>
-          <el-button type="primary" @click="acthistory_confirm()">{{ $t('activity_history.confirm') }}</el-button>
-          <el-button type="info" plain @click="acthistory_cal()">{{ $t('activity_history.cancel') }}</el-button>
+        <!--
+        <span
+          slot="footer"
+          class="invoice_dialog_footer"
+        >
+          <el-button
+            type="primary"
+            @click="acthistory_confirm()"
+          >{{ $t('activity_history.confirm') }}</el-button>
+          <el-button
+            type="info"
+            plain
+            @click="acthistory_cal()"
+          >{{ $t('activity_history.cancel') }}</el-button>
         </span>
-
+-->
       </el-dialog>
     </div>
   </div>
 </template>
 <script>
 import waves from '@/directive/waves' // 水波紋指令
+import { getToken } from '@/utils/auth'
+import { getentinfomations } from '@/api/infomations/getinfomations'
+import { getUserInfo } from '@/api/login'
+import { getentprofile } from '@/api/ent-profile/getentprofile'
 
 export default {
   name: 'ActHistory',
@@ -98,23 +221,24 @@ export default {
       }
     }
     return {
-
       startenddate: '',
       dialogImageUrl: '',
       acthistory_Visible: false,
-      activity_history_edit:
-      {
+      activity_history_edit: {
         name: '',
         content: '',
         status: '',
         starttime: '',
         endtime: '',
         photo: ''
-
       },
       activity_history_rules: {
-        offername: [{ required: false, trigger: 'change', validator: validatename }],
-        offercontent: [{ required: false, trigger: 'change', validator: valideContentlength }]
+        offername: [
+          { required: false, trigger: 'change', validator: validatename }
+        ],
+        offercontent: [
+          { required: false, trigger: 'change', validator: valideContentlength }
+        ]
       },
       activity_history_date1_p: '',
       activity_history_date2_p: '',
@@ -122,21 +246,30 @@ export default {
       activity_history_offercontent_p: '',
 
       activity_history_visible: false,
-      user_activity_history: [
-        // test data
-        {
-          name: 'wbwebt',
-          content: 'rwehteqn',
-          status: 'geheb',
-          starttime: '2018-11-01',
-          endtime: '2018-11-08',
-          photo: ''
-
-        }]
+      ent_activity_history: []
     }
   },
-
+  created() {
+    this.get_entinfo_all()
+  },
   methods: {
+    get_entinfo_all() {
+      getUserInfo(getToken()).then(res => {
+        getentprofile(getToken(), res.data.account).then(res => {
+          getentinfomations(getToken(), res.data[0].store_id).then(res => {
+            this.ent_activity_history = res.data
+            this.ent_activity_history.forEach(items => {
+              if (items.status === 0) {
+                items.status = '未審核'
+              } else {
+                items.status = '已發佈'
+              }
+            })
+          })
+        })
+      })
+    },
+
     handleRemove(file, fileList) {
       console.log(file, fileList)
     },
@@ -152,7 +285,7 @@ export default {
       this.activity_history_visible = true
     },
     acthistory_confirm() {
-      this.$refs.activity_history_edit.validate((valid) => {
+      this.$refs.activity_history_edit.validate(valid => {
         if (valid) {
           this.$message({
             type: 'success',
@@ -171,43 +304,6 @@ export default {
         message: '已取消修改'
       })
       this.activity_history_visible = false
-    },
-    acthistory_del() {
-      this.$confirm('你真的要刪除該筆資料嗎？', '警告', {
-        cancelButtonText: '取消',
-        confirmButtonText: '確認',
-        type: 'warning'
-      }).then(() => {
-        this.$confirm('請在確認一次是否要刪除該筆資料', '警告', {
-          cancelButtonText: '取消',
-          confirmButtonText: '確認',
-          type: 'warning'
-        }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '刪除成功'
-          }).catch((error) => {
-            console.log(error)
-            this.$message({
-              type: 'error',
-              message: '發生一點錯誤，請稍後再做修改'
-            })
-          })
-          this.c_card_visible = false
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消刪除'
-          })
-          this.activity_history_visible = false
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消刪除'
-        })
-        this.activity_history_visible = false
-      })
     }
   }
 }

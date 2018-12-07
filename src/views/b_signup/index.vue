@@ -517,10 +517,10 @@
 </template>
 
 <script>
-import { validateEmail } from '@/utils/validate';
-import LangSelect from '@/components/LangSelect';
-import { Postsignup } from '@/api/signup';
-import { postentprofile } from '@/api/ent-profile/postentprofile';
+import { validateEmail } from '@/utils/validate'
+import LangSelect from '@/components/LangSelect'
+import { Postsignup } from '@/api/signup'
+import { postentprofile } from '@/api/ent-profile/postentprofile'
 
 export default {
   name: 'BSignup',
@@ -704,9 +704,9 @@ export default {
   methods: {
     showPwd() {
       if (this.passwordType === 'password') {
-        this.passwordType = '';
+        this.passwordType = ''
       } else {
-        this.passwordType = 'password';
+        this.passwordType = 'password'
       }
     },
     changetoinfo() {

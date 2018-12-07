@@ -7,7 +7,8 @@ export function postinformations(
   content,
   starttime,
   endtime,
-  photo
+  photo,
+  id
 ) {
   const data = {
     store_id,
@@ -27,6 +28,9 @@ export function postinformations(
     headers: {
       Authorization: 'JWT ' + token
     },
-    data
+    data,
+    params: {
+      id
+    }
   })
 }

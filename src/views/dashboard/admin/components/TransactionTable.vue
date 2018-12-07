@@ -173,8 +173,8 @@
 </template>
 
 <script>
-import { getaccounting_all } from '@/api/accounting/getaccounting';
-import { getToken } from '@/utils/auth';
+import { getaccounting_all } from '@/api/accounting/getaccounting'
+import { getToken } from '@/utils/auth'
 
 export default {
   name: 'Memberaccountinglist',
@@ -205,12 +205,12 @@ export default {
         this.c_user_history = res.data
         this.c_user_history.forEach(items => {
           if (items.type === false) {
-            items.type = '支出';
+            items.type = '支出'
           } else {
-            items.type = '收入';
+            items.type = '收入'
           }
           if (items.invoice_id === null || items.invoice_id === undefined) {
-            items.invoice_id = '-';
+            items.invoice_id = '-'
           }
         })
       })

@@ -15,3 +15,18 @@ export function getinfomations(token) {
     }
   })
 }
+
+export function getentinfomations(token, store_id) {
+  var requ_url = 'https://www.177together.com/api/promotion/'
+
+  return request({
+    url: requ_url,
+    method: 'get',
+    headers: {
+      Authorization: 'JWT ' + token
+    },
+    params: {
+      store_id
+    }
+  })
+}

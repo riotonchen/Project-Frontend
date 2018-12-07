@@ -32,16 +32,16 @@
 </template>
 
 <script>
-import PanelGroup from './components/PanelGroup';
+import PanelGroup from './components/PanelGroup'
 
-import TransactionTable from './components/TransactionTable';
+import TransactionTable from './components/TransactionTable'
 
-import YLineChart from './components/YLineChart';
-import MLineChart from './components/MLineChart';
+import YLineChart from './components/YLineChart'
+import MLineChart from './components/MLineChart'
 
-import { getmember } from '@/api/member/getmember';
-import { getToken } from '@/utils/auth';
-import { formatdate_inc_time } from '@/utils/index';
+import { getmember } from '@/api/member/getmember'
+import { getToken } from '@/utils/auth'
+import { formatdate_inc_time } from '@/utils/index'
 
 export default {
   name: 'DashboardMember',

@@ -183,10 +183,10 @@
 </template>
 
 <script>
-import CountTo from 'vue-count-to';
-import { getToken } from '@/utils/auth';
-import { getmember, getmemberlist } from '@/api/member/getmember';
-import { getfeedback } from '@/api/feedback/getfeedback';
+import CountTo from 'vue-count-to'
+import { getToken } from '@/utils/auth'
+import { getmember, getmemberlist } from '@/api/member/getmember'
+import { getfeedback } from '@/api/feedback/getfeedback'
 
 export default {
   components: {

@@ -19,10 +19,10 @@
         :key="item"
         class="infomations_pic"
       >
-        <img :src="item.itemimg">
+        <img :src="item.promotion_id.photo">
         <br>
         <div class="infotext">
-          <span>{{ item.itemtext }}</span>
+          <span>{{ item.promotion_id.name }}</span>
         </div>
       </el-card>
     </div>
@@ -30,49 +30,13 @@
 </template>
 
 <script>
-import { getinfomations } from '@/api/infomations/getinfomations';
-import { getToken } from '@/utils/auth';
+import { getinfomations } from '@/api/infomations/getinfomations'
+import { getToken } from '@/utils/auth'
 
 export default {
   data() {
     return {
-      testpic: [
-        {
-          itemtext: '我是測試1',
-          itemimg: require('../../assets/images/a.jpg')
-        },
-        {
-          itemtext: '我是測試3',
-          itemimg: require('../../assets/images/c.jpg')
-        },
-        {
-          itemtext: '我是測試2',
-          itemimg: require('../../assets/images/b.jpg')
-        },
-
-        {
-          itemtext: '我是測試4',
-          itemimg: require('../../assets/images/d.jpg')
-        },
-        {
-          itemtext: '我是測試2',
-          itemimg: require('../../assets/images/b.jpg')
-        },
-
-        {
-          itemtext: '我是測試4',
-          itemimg: require('../../assets/images/d.jpg')
-        },
-
-        {
-          itemtext: '我是測試4',
-          itemimg: require('../../assets/images/d.jpg')
-        },
-        {
-          itemtext: '我是測試2',
-          itemimg: require('../../assets/images/b.jpg')
-        }
-      ]
+      testpic: []
     }
   },
   created() {
@@ -81,7 +45,12 @@ export default {
   methods: {
     get_infomations_all() {
       getinfomations(getToken()).then(res => {
-        console.log(res.data)
+        this.testpic = res.data
+
+        this.testpic.forEach(items => {
+          items.promotion_id.photo.toString().replace('blob:', '')
+        })
+        console.log(this.testpic)
       })
     }
   }

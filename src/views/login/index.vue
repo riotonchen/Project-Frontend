@@ -82,6 +82,27 @@
         @click.native.prevent="handleLogin"
       >{{ $t('login.logIn') }}</el-button>
       <!--<el-button class="thirdparty-button" type="primary" style="width:86.5%;margin-bottom:-5px;" @click="showDialog=true">{{ $t('login.thirdparty') }}</el-button>-->
+      <!--
+      <facebook-login
+        app-id="729208947414666"
+        version="v2.8"
+        class="v-facebook-login"
+        @login="getUserData"
+        @logout="onLogout"
+        @get-initial-status="getUserData"
+      />
+      -->
+      <div class="container">
+        <div class="row justify-content-center">
+          <div>
+            <button
+              type="button"
+              class="v-facebook-login"
+              @click="login"
+            >Login</button>
+          </div>
+        </div>
+      </div>
       <el-button
         :loading="loadinghome"
         type="primary"
@@ -89,6 +110,7 @@
         @click.native.prevent="gohome"
       >回首頁</el-button>
     </el-form>
+    <!--
     <el-dialog
       :title="$t('login.thirdparty')"
       :visible.sync="showDialog"
@@ -100,41 +122,41 @@
       <br>
       <social-sign />
     </el-dialog>
-
+-->
   </div>
 </template>
 
 <script>
-import { validateEmail } from '@/utils/validate'
-import LangSelect from '@/components/LangSelect'
-import SocialSign from './socialsignin'
+import { validateEmail } from '@/utils/validate';
+import LangSelect from '@/components/LangSelect';
+import facebookLogin from 'facebook-login-vuejs';
 
+const isvalidateEmail = (rule, value, callback) => {
+  if (!validateEmail(value)) {
+    callback(new Error('請輸入正確的 E-mail'))
+  } else {
+    callback()
+  }
+}
+const validatePassword = (rule, value, callback) => {
+  if (value.length < 8) {
+    callback(new Error('密碼不可以小於 8 碼'))
+  } else {
+    callback()
+  }
+}
+const validateMembertype = (rule, value, callback) => {
+  if (value === '') {
+    callback(new Error('請選擇會員類別'))
+  } else {
+    callback()
+  }
+}
 export default {
   name: 'Login',
-  components: { LangSelect, SocialSign },
-  data() {
-    const isvalidateEmail = (rule, value, callback) => {
-      if (!validateEmail(value)) {
-        callback(new Error('請輸入正確的 E-mail'))
-      } else {
-        callback()
-      }
-    }
-    const validatePassword = (rule, value, callback) => {
-      if (value.length < 8) {
-        callback(new Error('密碼不可以小於 8 碼'))
-      } else {
-        callback()
-      }
-    }
-    const validateMembertype = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('請選擇會員類別'))
-      } else {
-        callback()
-      }
-    }
+  components: { LangSelect, facebookLogin },
 
+  data() {
     return {
       loginForm: {
         username: '',
@@ -164,6 +186,7 @@ export default {
       ]
     }
   },
+
   watch: {
     $route: {
       handler: function(route) {
@@ -172,12 +195,69 @@ export default {
       immediate: true
     }
   },
+  mounted() {
+    const vm = this
+
+    // facebook 初始化
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId: '729208947414666',
+        cookie: true,
+        xfbml: true,
+        version: 'v3.1'
+      })
+      FB.AppEvents.logPageView()
+      // Get FB Login Status
+      FB.getLoginStatus(response => {
+        vm.statusChangeCallback(response)
+      })
+    };
+  },
   methods: {
+    getProfile() {
+      const vm = this
+      FB.api('/me?fields=name,id,email', function(response) {
+        vm.$set(vm, 'profile', response)
+      })
+    },
+    login() {
+      const vm = this
+      FB.login(
+        function(response) {
+          vm.statusChangeCallback(response)
+        },
+        {
+          scope: 'email, public_profile',
+          return_scopes: true
+        }
+      )
+    },
+    logout() {
+      const vm = this
+      FB.logout(function(response) {
+        vm.statusChangeCallback(response)
+      })
+    },
+    statusChangeCallback(response) {
+      const vm = this
+      if (response.status === 'connected') {
+        vm.authorized = true
+        vm.getProfile()
+      } else if (response.status === 'not_authorized') {
+        vm.authorized = false
+      } else if (response.status === 'unknown') {
+        vm.profile = {}
+        vm.authorized = false
+      } else {
+        vm.authorized = false
+      }
+    },
+
     showPwd() {
       if (this.passwordType === 'password') {
-        this.passwordType = ''
+        this.passwordType = '';
       } else {
-        this.passwordType = 'password'
+        this.passwordType = 'password';
       }
     },
     handleLogin() {
@@ -234,9 +314,6 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
-/* 修復input 背景不協調 和光標變色 */
-/* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
-
 $bg: #283443;
 $light_gray: #eee;
 $cursor: #fff;
@@ -360,10 +437,77 @@ $light_gray: #eee;
     cursor: pointer;
     user-select: none;
   }
-  .thirdparty-button {
-    position: absolute;
-    right: 35px;
-    bottom: 28px;
+}
+
+// http://www.color-hex.com/color/1c284c
+// https://iconmonstr.com/facebook-1-svg/
+// http://www.color-hex.com/color-palette/185
+// https://icons8.com/icon/set/facebook-f/all
+$color-white: #ffffff;
+$color-nepal: #8b9dc3;
+$color-chambray: #3b55a0;
+.v-facebook-login {
+  cursor: default; // Normalize IE 11
+  min-width: 15rem;
+  color: $color-white;
+  box-sizing: border-box;
+  border: 1px solid rgba($color-white, 0.05);
+  margin: 0; // Normalize Flex-box
+  padding-top: 0.5rem;
+  padding-left: 1.275rem;
+  padding-right: 1.275rem;
+  padding-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  border-radius: 0.25rem;
+  justify-content: center;
+  background-color: lighten($color-chambray, 1%);
+  *,
+  *::before,
+  *::after {
+    box-sizing: inherit;
+  }
+  &[disabled] {
+    opacity: 0.75;
+  }
+  &:hover {
+    background-color: lighten($color-chambray, 5%);
+  }
+  &:focus {
+    outline-width: 0;
+    box-shadow: 0 0 0 1px rgba($color-nepal, 0.5);
+  }
+}
+.token {
+  margin-right: 0.2rem;
+  transform: translateX(-0.5rem);
+}
+.loader {
+  display: block;
+  border-radius: 50%;
+  border-style: solid;
+  border-width: 0.1rem;
+  border-top-color: $color-nepal;
+  border-right-color: rgba($color-white, 1);
+  border-left-color: rgba($color-white, 1);
+  border-bottom-color: rgba($color-white, 1);
+  animation: v-facebook-login-spin 2s linear infinite;
+}
+.loader {
+  height: 1.5rem;
+  margin-right: 0.5rem;
+}
+.token,
+.loader {
+  opacity: 0.9;
+  width: 1.5rem;
+}
+@keyframes v-facebook-login-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
 </style>

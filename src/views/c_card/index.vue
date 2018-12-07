@@ -137,11 +137,11 @@
 </template>
 
 <script>
-import waves from '@/directive/waves'; // 水波紋指令
-import { getcard } from '@/api/card/getcard';
-import { patchcard_modify, patchcard_del } from '@/api/card/patchcard';
-import { getToken } from '@/utils/auth';
-import { formatdate } from '@/utils/index';
+import waves from '@/directive/waves' // 水波紋指令
+import { getcard } from '@/api/card/getcard'
+import { patchcard_modify, patchcard_del } from '@/api/card/patchcard'
+import { getToken } from '@/utils/auth'
+import { formatdate } from '@/utils/index'
 
 export default {
   name: 'CCard',
@@ -209,10 +209,10 @@ export default {
       }, 1500)
     },
     clean_name() {
-      this.c_card_edit.name = '';
+      this.c_card_edit.name = ''
     },
     clean_number() {
-      this.c_card_edit.number = '';
+      this.c_card_edit.number = ''
     },
     handle_edit(index, row) {
       this.c_card_id = row.id

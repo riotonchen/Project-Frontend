@@ -75,9 +75,9 @@
   </div>
 </template>
 <script>
-import { getUserInfo } from '@/api/login';
-import { getToken } from '@/utils/auth';
-import store from '@/store';
+import { getUserInfo } from '@/api/login'
+import { getToken } from '@/utils/auth'
+import store from '@/store'
 export default {
   data() {
     return {

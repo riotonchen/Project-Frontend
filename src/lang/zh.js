@@ -188,7 +188,6 @@ export default {
     project: '帳戶類型',
     search: '搜尋',
     word: '請輸入內容',
-    data: '新增一筆',
     style1: '帳戶類型',
     style2: '帳戶名稱',
     money: '初始金額',
@@ -203,12 +202,13 @@ export default {
     addnewaccount: '新增帳戶',
     startmoney: '初始金額',
     finallymoney: '餘額',
-    operating: '操作',
+    action: '操作',
     cancel: '取消',
     blank: '以下如不修改保持空白即可',
     add: '新增帳戶',
     accounttype: '帳戶類型',
-    configure: '修改帳戶'
+    configure: '修改帳戶',
+    mainsortname: '主類別名稱'
   },
   c_project: {
     word: '請輸入內容',

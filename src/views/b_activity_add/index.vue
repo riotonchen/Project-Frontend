@@ -61,15 +61,18 @@
       </div>
 
       <div class="upload">
+
         <el-upload
+          ref="upload"
           :on-change="changeUpload"
           :auto-upload="false"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload"
           :file-list="fileList"
           :class="{disabled:uploadDisabled}"
-          list-type="picture-card"
+          accept="image/jpeg,image/png"
           action=""
+          list-type="picture-card"
         >
           <img
             v-if="imageUrl"
@@ -81,6 +84,7 @@
             class="el-icon-plus avatar-uploader-icon"
           />
         </el-upload>
+
       </div>
 
       <div class="cheap_btn">
@@ -97,6 +101,9 @@
 import { formatdate_inc_time } from '@/utils/index';
 import { postinformations } from '@/api/infomations/postinformations';
 import { getToken } from '@/utils/auth';
+import { getentprofile } from '@/api/ent-profile/getentprofile';
+import { getUserInfo } from '@/api/login';
+
 export default {
   data() {
     const validatename = (rule, value, callback) => {
@@ -123,10 +130,13 @@ export default {
         name: '',
         content: '',
         addedtime: '',
-        dismountedtime: ''
+        dismountedtime: '',
+        imgraw: ''
       },
+      file: '',
       fileList: [],
-      redirect: undefined
+      redirect: undefined,
+      render: []
     }
   },
   computed: {
@@ -137,7 +147,6 @@ export default {
   watch: {
     'b_activity_add.dismountedtime': {
       handler: function(new_date, old_date) {
-        console.log(new_date, old_date)
         if (new_date < this.b_activity_add.addedtime) {
           this.$message({
             message: '錯誤！結束日期不可小於開始日期',
@@ -151,8 +160,8 @@ export default {
   },
   methods: {
     changeUpload: function(file, fileList) {
+      this.file = file
       this.fileList = fileList
-
       this.$nextTick(() => {
         const upload_list_li = document.getElementsByClassName(
           'el-upload-list'
@@ -168,34 +177,56 @@ export default {
         }
       })
     },
+    onUploadChange(file) {
+      const isIMAGE =
+        file.raw.type === 'image/jpeg' || file.raw.type === 'image/png';
+      const isLt1M = file.size / 1024 / 1024 < 1
+
+      if (!isIMAGE) {
+        this.$message.error('只能上传jpg/png图片!')
+        return false
+      }
+      if (!isLt1M) {
+        this.$message.error('上传文件大小不能超过 1MB!')
+        return false
+      }
+      var treader = new FileReader()
+      treader.readAsDataURL(file.raw)
+      treader.onload = function(e) {}
+    },
     send_data() {
-      postinformations(
-        getToken(),
-        this.b_activity_add.name,
-        this.b_activity_add.content,
-        formatdate_inc_time(
-          this.b_activity_add.addedtime,
-          'yyyy-mm-dd HH:MM:ss.l'
-        ),
-        this.b_activity_add.dismountedtime,
-        this.fileList
-      )
-        .then(res => {
-          this.$notify({
+      getUserInfo(getToken()).then(res => {
+        getentprofile(getToken(), res.data.account).then(res => {
+          const name = this.b_activity_add.name
+          const content = this.b_activity_add.content
+          const addedtime = this.b_activity_add.addedtime
+          const dismountedtime = this.b_activity_add.dismountedtime
+          const notice1 = this.$notify({
             title: '成功',
             message: '活動送出成功，管理員會盡快審核您的活動，並散播給相關用戶',
             type: 'success'
           })
-          setTimeout(() => {
-            this.$router.push({ path: this.redirect || '/' })
-          }, 3500)
+          const newroute = this.$router.push({ path: this.redirect || '/' })
+          var treader = new FileReader()
+          treader.readAsDataURL(this.file.raw)
+          treader.onload = function(e) {
+            postinformations(
+              getToken(),
+              res.data[0].store_id,
+              name,
+              content,
+              formatdate_inc_time(addedtime, 'yyyy-mm-dd'),
+              formatdate_inc_time(dismountedtime, 'yyyy-mm-dd'),
+              treader.result
+            ).then(res => {
+              notice1
+              setTimeout(() => {
+                newroute
+              }, 3500)
+            })
+          };
         })
-        .catch(() => {
-          this.$notify.error({
-            title: '错误',
-            message: '發生了一點錯誤，請稍後再送出一次'
-          })
-        })
+      })
     }
   }
 }

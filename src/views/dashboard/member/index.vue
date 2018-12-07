@@ -99,18 +99,18 @@
 </template>
 
 <script>
-import PanelGroup from './components/PanelGroup';
+import PanelGroup from './components/PanelGroup'
 
-import TransactionTable from './components/TransactionTable';
-import YLineChart from './components/YLineChart';
-import MLineChart from './components/MLineChart';
-import YStackLine from './components/YStackLine';
-import MStackLine from './components/MStackLine';
-import YINPie from './components/YINPie';
-import YPAYPie from './components/YPAYPie';
-import { getaccounting_all } from '@/api/accounting/getaccounting';
-import { getToken } from '@/utils/auth';
-import { formatdate_inc_time } from '@/utils/index';
+import TransactionTable from './components/TransactionTable'
+import YLineChart from './components/YLineChart'
+import MLineChart from './components/MLineChart'
+import YStackLine from './components/YStackLine'
+import MStackLine from './components/MStackLine'
+import YINPie from './components/YINPie'
+import YPAYPie from './components/YPAYPie'
+import { getaccounting_all } from '@/api/accounting/getaccounting'
+import { getToken } from '@/utils/auth'
+import { formatdate_inc_time } from '@/utils/index'
 
 export default {
   name: 'DashboardMember',
@@ -206,16 +206,16 @@ export default {
         let paydata = []
         res.data.forEach(items => {
           if (items.type === false) {
-            items.type = '支出';
+            items.type = '支出'
           } else {
-            items.type = '收入';
+            items.type = '收入'
           }
         })
         paydata = res.data.filter(function(item) {
-          return item.type === '支出';
+          return item.type === '支出'
         })
         indata = res.data.filter(function(item) {
-          return item.type === '收入';
+          return item.type === '收入'
         })
         paydata = paydata.reduce(function(accumulator, currentValue) {
           return accumulator + currentValue.amount
@@ -231,16 +231,16 @@ export default {
             let paydata = []
             res.data.forEach(items => {
               if (items.type === false) {
-                items.type = '支出';
+                items.type = '支出'
               } else {
-                items.type = '收入';
+                items.type = '收入'
               }
             })
             paydata = res.data.filter(function(item) {
-              return item.type === '支出';
+              return item.type === '支出'
             })
             indata = res.data.filter(function(item) {
-              return item.type === '收入';
+              return item.type === '收入'
             })
             paydata = paydata.reduce(function(accumulator, currentValue) {
               return accumulator + currentValue.amount
@@ -256,16 +256,16 @@ export default {
                 let paydata = []
                 res.data.forEach(items => {
                   if (items.type === false) {
-                    items.type = '支出';
+                    items.type = '支出'
                   } else {
-                    items.type = '收入';
+                    items.type = '收入'
                   }
                 })
                 paydata = res.data.filter(function(item) {
-                  return item.type === '支出';
+                  return item.type === '支出'
                 })
                 indata = res.data.filter(function(item) {
-                  return item.type === '收入';
+                  return item.type === '收入'
                 })
                 paydata = paydata.reduce(function(accumulator, currentValue) {
                   return accumulator + currentValue.amount
@@ -281,16 +281,16 @@ export default {
                     let paydata = []
                     res.data.forEach(items => {
                       if (items.type === false) {
-                        items.type = '支出';
+                        items.type = '支出'
                       } else {
-                        items.type = '收入';
+                        items.type = '收入'
                       }
                     })
                     paydata = res.data.filter(function(item) {
-                      return item.type === '支出';
+                      return item.type === '支出'
                     })
                     indata = res.data.filter(function(item) {
-                      return item.type === '收入';
+                      return item.type === '收入'
                     })
                     paydata = paydata.reduce(function(
                       accumulator,
@@ -311,16 +311,16 @@ export default {
                           let paydata = []
                           res.data.forEach(items => {
                             if (items.type === false) {
-                              items.type = '支出';
+                              items.type = '支出'
                             } else {
-                              items.type = '收入';
+                              items.type = '收入'
                             }
                           })
                           paydata = res.data.filter(function(item) {
-                            return item.type === '支出';
+                            return item.type === '支出'
                           })
                           indata = res.data.filter(function(item) {
-                            return item.type === '收入';
+                            return item.type === '收入'
                           })
                           paydata = paydata.reduce(function(
                             accumulator,
@@ -345,16 +345,16 @@ export default {
                                 let paydata = []
                                 res.data.forEach(items => {
                                   if (items.type === false) {
-                                    items.type = '支出';
+                                    items.type = '支出'
                                   } else {
-                                    items.type = '收入';
+                                    items.type = '收入'
                                   }
                                 })
                                 paydata = res.data.filter(function(item) {
-                                  return item.type === '支出';
+                                  return item.type === '支出'
                                 })
                                 indata = res.data.filter(function(item) {
-                                  return item.type === '收入';
+                                  return item.type === '收入'
                                 })
                                 paydata = paydata.reduce(function(
                                   accumulator,
@@ -382,16 +382,16 @@ export default {
                                     let paydata = []
                                     res.data.forEach(items => {
                                       if (items.type === false) {
-                                        items.type = '支出';
+                                        items.type = '支出'
                                       } else {
-                                        items.type = '收入';
+                                        items.type = '收入'
                                       }
                                     })
                                     paydata = res.data.filter(function(item) {
-                                      return item.type === '支出';
+                                      return item.type === '支出'
                                     })
                                     indata = res.data.filter(function(item) {
-                                      return item.type === '收入';
+                                      return item.type === '收入'
                                     })
                                     paydata = paydata.reduce(function(
                                       accumulator,
@@ -488,16 +488,16 @@ export default {
         let paydata = []
         res.data.forEach(items => {
           if (items.type === false) {
-            items.type = '支出';
+            items.type = '支出'
           } else {
-            items.type = '收入';
+            items.type = '收入'
           }
         })
         paydata = res.data.filter(function(item) {
-          return item.type === '支出';
+          return item.type === '支出'
         })
         indata = res.data.filter(function(item) {
-          return item.type === '收入';
+          return item.type === '收入'
         })
         paydata = paydata.reduce(function(accumulator, currentValue) {
           return accumulator + currentValue.amount
@@ -514,16 +514,16 @@ export default {
             let paydata = []
             res.data.forEach(items => {
               if (items.type === false) {
-                items.type = '支出';
+                items.type = '支出'
               } else {
-                items.type = '收入';
+                items.type = '收入'
               }
             })
             paydata = res.data.filter(function(item) {
-              return item.type === '支出';
+              return item.type === '支出'
             })
             indata = res.data.filter(function(item) {
-              return item.type === '收入';
+              return item.type === '收入'
             })
             paydata = paydata.reduce(function(accumulator, currentValue) {
               return accumulator + currentValue.amount
@@ -540,16 +540,16 @@ export default {
                 let paydata = []
                 res.data.forEach(items => {
                   if (items.type === false) {
-                    items.type = '支出';
+                    items.type = '支出'
                   } else {
-                    items.type = '收入';
+                    items.type = '收入'
                   }
                 })
                 paydata = res.data.filter(function(item) {
-                  return item.type === '支出';
+                  return item.type === '支出'
                 })
                 indata = res.data.filter(function(item) {
-                  return item.type === '收入';
+                  return item.type === '收入'
                 })
                 paydata = paydata.reduce(function(accumulator, currentValue) {
                   return accumulator + currentValue.amount
@@ -566,16 +566,16 @@ export default {
                     let paydata = []
                     res.data.forEach(items => {
                       if (items.type === false) {
-                        items.type = '支出';
+                        items.type = '支出'
                       } else {
-                        items.type = '收入';
+                        items.type = '收入'
                       }
                     })
                     paydata = res.data.filter(function(item) {
-                      return item.type === '支出';
+                      return item.type === '支出'
                     })
                     indata = res.data.filter(function(item) {
-                      return item.type === '收入';
+                      return item.type === '收入'
                     })
                     paydata = paydata.reduce(function(
                       accumulator,
@@ -597,16 +597,16 @@ export default {
                           let paydata = []
                           res.data.forEach(items => {
                             if (items.type === false) {
-                              items.type = '支出';
+                              items.type = '支出'
                             } else {
-                              items.type = '收入';
+                              items.type = '收入'
                             }
                           })
                           paydata = res.data.filter(function(item) {
-                            return item.type === '支出';
+                            return item.type === '支出'
                           })
                           indata = res.data.filter(function(item) {
-                            return item.type === '收入';
+                            return item.type === '收入'
                           })
                           paydata = paydata.reduce(function(
                             accumulator,
@@ -632,16 +632,16 @@ export default {
                                 let paydata = []
                                 res.data.forEach(items => {
                                   if (items.type === false) {
-                                    items.type = '支出';
+                                    items.type = '支出'
                                   } else {
-                                    items.type = '收入';
+                                    items.type = '收入'
                                   }
                                 })
                                 paydata = res.data.filter(function(item) {
-                                  return item.type === '支出';
+                                  return item.type === '支出'
                                 })
                                 indata = res.data.filter(function(item) {
-                                  return item.type === '收入';
+                                  return item.type === '收入'
                                 })
                                 paydata = paydata.reduce(function(
                                   accumulator,
@@ -670,16 +670,16 @@ export default {
                                     let paydata = []
                                     res.data.forEach(items => {
                                       if (items.type === false) {
-                                        items.type = '支出';
+                                        items.type = '支出'
                                       } else {
-                                        items.type = '收入';
+                                        items.type = '收入'
                                       }
                                     })
                                     paydata = res.data.filter(function(item) {
-                                      return item.type === '支出';
+                                      return item.type === '支出'
                                     })
                                     indata = res.data.filter(function(item) {
-                                      return item.type === '收入';
+                                      return item.type === '收入'
                                     })
                                     paydata = paydata.reduce(function(
                                       accumulator,

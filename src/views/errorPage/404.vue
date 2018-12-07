@@ -42,7 +42,7 @@ export default {
   name: 'Page404',
   computed: {
     message() {
-      return '你是不是進入錯的頁面了呢?????\n快回去RRRRRR!!!!!';
+      return '你是不是進入錯的頁面了呢?????\n快回去RRRRRR!!!!!'
     }
   }
 }

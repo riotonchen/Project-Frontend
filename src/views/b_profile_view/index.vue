@@ -129,10 +129,10 @@
   </div>
 </template>
 <script>
-import { getUserInfo } from '@/api/login';
-import { getentprofile } from '@/api/ent-profile/getentprofile';
-import { getToken } from '@/utils/auth';
-import store from '@/store';
+import { getUserInfo } from '@/api/login'
+import { getentprofile } from '@/api/ent-profile/getentprofile'
+import { getToken } from '@/utils/auth'
+import store from '@/store'
 
 export default {
   name: 'BusinessProfileView',
