@@ -1,9 +1,7 @@
 <template>
   <div class="fake_body">
     <div class="title">
-      <span>177 一起記</span>
-      <br>
-      <span>點擊LOGO 啟用帳號</span>
+      <span>尚未驗證信箱</span><br><span>快去信箱收信!!!</span>
     </div>
     <div class="loader">
       <span />
@@ -11,19 +9,11 @@
       <span />
       <span />
     </div>
-    <div class="logo">
-      <el-button
-        class="logobtn"
-        @click="check_account()"
-      >
-        <img src="../../assets/images/177.svg">
-      </el-button>
-    </div>
   </div>
 </template>
 
 <script>
-import { Post_check_account } from '@/api/signup'
+import { removeToken } from '@/utils/auth'
 export default {
   data() {
     return {
@@ -40,31 +30,11 @@ export default {
     }
   },
   created() {
-    this.get_hash_code()
+    this.cleantoken()
   },
   methods: {
-    get_hash_code() {
-      this.user_hash = this.$route.query.hash
-      console.log(this.user_hash)
-    },
-    check_account() {
-      Post_check_account(this.user_hash)
-        .then(() => {
-          this.$notify({
-            title: '成功',
-            message: '啟用帳號完成，過5秒幫你跳轉首頁',
-            type: 'success',
-            duration: 5000,
-            showClose: false
-          })
-          setTimeout(() => {
-            this.$router.push({ path: this.redirect || '/home' })
-          }, 5000)
-        })
-        .catch(error => {
-          console.log(error)
-          return false
-        })
+    cleantoken() {
+      removeToken()
     }
   }
 }
@@ -81,8 +51,8 @@ export default {
   background: #000;
   .loader {
     position: relative;
-    width: 23rem;
-    height: 23rem;
+    width: 30rem;
+    height: 30rem;
     border-radius: 50%;
     background: linear-gradient(#14ffe9, #ffcb3b, #d900ff);
     animation: animate 0.3s linear infinite;
@@ -130,10 +100,10 @@ export default {
     z-index: 9999;
     color: #ffcb3b;
     font-weight: bold;
-    font-size: 1.25rem;
+    font-size: 3rem;
     text-align: center;
     position: absolute;
-    margin-top: -14vh;
+    margin-top: -3vh;
   }
   .logo {
     position: absolute;

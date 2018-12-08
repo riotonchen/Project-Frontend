@@ -92,9 +92,9 @@
 </template>
 
 <script>
-import { validateEmail } from '@/utils/validate';
-import LangSelect from '@/components/LangSelect';
-import { Postsignup } from '@/api/signup';
+import { validateEmail } from '@/utils/validate'
+import LangSelect from '@/components/LangSelect'
+import { Postsignup } from '@/api/signup'
 
 export default {
   name: 'CSignup',
@@ -160,9 +160,9 @@ export default {
   methods: {
     showPwd() {
       if (this.passwordType === 'password') {
-        this.passwordType = '';
+        this.passwordType = ''
       } else {
-        this.passwordType = 'password';
+        this.passwordType = 'password'
       }
     },
     handleSignup() {

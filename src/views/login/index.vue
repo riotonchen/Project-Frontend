@@ -93,9 +93,8 @@
 </template>
 
 <script>
-import { validateEmail } from '@/utils/validate';
-import LangSelect from '@/components/LangSelect';
-import facebookLogin from 'facebook-login-vuejs';
+import { validateEmail } from '@/utils/validate'
+import LangSelect from '@/components/LangSelect'
 
 const isvalidateEmail = (rule, value, callback) => {
   if (!validateEmail(value)) {
@@ -121,7 +120,7 @@ const validateMembertype = (rule, value, callback) => {
 
 export default {
   name: 'Login',
-  components: { LangSelect, facebookLogin },
+  components: { LangSelect },
 
   data() {
     return {
@@ -167,9 +166,9 @@ export default {
   methods: {
     showPwd() {
       if (this.passwordType === 'password') {
-        this.passwordType = '';
+        this.passwordType = ''
       } else {
-        this.passwordType = 'password';
+        this.passwordType = 'password'
       }
     },
     handleLogin() {
@@ -180,7 +179,7 @@ export default {
             .dispatch('LoginByUsername', this.loginForm)
             .then(() => {
               this.loadingsend = false
-              this.$router.push({ path: '/' })
+              this.$router.push({ path: this.redirect || '/' })
               setTimeout(() => {
                 location.reload()
               }, 50)

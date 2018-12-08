@@ -12,6 +12,7 @@ import { mapGetters } from 'vuex'
 import adminDashboard from './admin'
 import enterpriseDashboard from './enterprise'
 import memberDashboard from './member'
+import { getToken } from '@/utils/auth'
 
 export default {
   name: 'Dashboard',
@@ -22,9 +23,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'roles'
-    ])
+    ...mapGetters(['roles'])
   },
   created() {
     if (this.roles.includes('1')) {
@@ -34,6 +33,7 @@ export default {
     } else {
       this.currentRole = 'memberDashboard'
     }
-  }
+  },
+  methods: {}
 }
 </script>

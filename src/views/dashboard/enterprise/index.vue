@@ -84,6 +84,7 @@
 </template>
 
 <script>
+import { getToken } from '@/utils/auth'
 import PanelGroup from './components/PanelGroup'
 
 import TransactionTable from './components/TransactionTable'
@@ -126,7 +127,19 @@ export default {
       lineChartData: lineChartData.messages
     }
   },
+  created() {
+    this.pushcheckstatus()
+  },
   methods: {
+    pushcheckstatus() {
+      var jwtDecode = require('jwt-decode')
+      var decoded = jwtDecode(getToken())
+      var user_id = decoded.status
+      if (user_id === 0) {
+        this.$router.push({ path: this.redirect || '/check_status' })
+      } else {
+      }
+    },
     handleSetLineChartData(type) {
       this.lineChartData = lineChartData[type]
     },

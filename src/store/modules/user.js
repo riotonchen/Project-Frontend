@@ -56,6 +56,9 @@ const user = {
     },
     SET_RENEW_TIME: (state, renew_time) => {
       state.renew_time = renew_time
+    },
+    SET_STATUS: (state, status) => {
+      state.status = status
     }
   },
 

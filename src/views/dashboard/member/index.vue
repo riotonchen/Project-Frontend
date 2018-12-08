@@ -111,7 +111,6 @@ import YPAYPie from './components/YPAYPie'
 import { getaccounting_all } from '@/api/accounting/getaccounting'
 import { getToken } from '@/utils/auth'
 import { formatdate_inc_time } from '@/utils/index'
-
 export default {
   name: 'DashboardMember',
   components: {
@@ -135,10 +134,20 @@ export default {
     }
   },
   created() {
-    this.get_account_all_y()
-    this.get_account_all_m()
+    this.pushcheckstatus()
   },
   methods: {
+    pushcheckstatus() {
+      var jwtDecode = require('jwt-decode')
+      var decoded = jwtDecode(getToken())
+      var user_id = decoded.status
+      if (user_id === 0) {
+        this.$router.push({ path: this.redirect || '/check_status' })
+      } else {
+        this.get_account_all_y()
+        this.get_account_all_m()
+      }
+    },
     handleSetLineChartData(type) {
       this.lineChartData = this.lineChartData[type]
     },

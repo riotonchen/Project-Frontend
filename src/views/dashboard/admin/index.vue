@@ -60,10 +60,20 @@ export default {
     }
   },
   created() {
-    this.get_member_all_m()
-    this.get_member_all_y()
+    this.pushcheckstatus()
   },
   methods: {
+    pushcheckstatus() {
+      var jwtDecode = require('jwt-decode')
+      var decoded = jwtDecode(getToken())
+      var user_id = decoded.status
+      if (user_id === 0) {
+        this.$router.push({ path: this.redirect || '/check_status' })
+      } else {
+        this.get_member_all_m()
+        this.get_member_all_y()
+      }
+    },
     handleSetLineChartData(type) {
       this.lineChartData = this.lineChartData[type]
     },
