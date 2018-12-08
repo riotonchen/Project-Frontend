@@ -6,7 +6,7 @@
 
 export function initFbSdk(options) {
   return new Promise(resolve => {
-    window.fbAsyncInit = function () {
+    window.fbAsyncInit = function() {
       const defaults = { cookie: true, xfbml: true }
       options = { ...defaults, ...options }
       window.FB.init(options)

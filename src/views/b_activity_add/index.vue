@@ -98,11 +98,11 @@
   </div>
 </template>
 <script>
-import { formatdate_inc_time } from '@/utils/index';
-import { postinformations } from '@/api/infomations/postinformations';
-import { getToken } from '@/utils/auth';
-import { getentprofile } from '@/api/ent-profile/getentprofile';
-import { getUserInfo } from '@/api/login';
+import { formatdate_inc_time } from '@/utils/index'
+import { postinformations } from '@/api/infomations/postinformations'
+import { getToken } from '@/utils/auth'
+import { getentprofile } from '@/api/ent-profile/getentprofile'
+import { getUserInfo } from '@/api/login'
 
 export default {
   data() {
@@ -152,7 +152,7 @@ export default {
             message: '錯誤！結束日期不可小於開始日期',
             type: 'warning'
           })
-          this.b_activity_add.dismountedtime = '';
+          this.b_activity_add.dismountedtime = ''
         }
       }
     },
@@ -179,7 +179,7 @@ export default {
     },
     onUploadChange(file) {
       const isIMAGE =
-        file.raw.type === 'image/jpeg' || file.raw.type === 'image/png';
+        file.raw.type === 'image/jpeg' || file.raw.type === 'image/png'
       const isLt1M = file.size / 1024 / 1024 < 1
 
       if (!isIMAGE) {
@@ -224,7 +224,7 @@ export default {
                 newroute
               }, 3500)
             })
-          };
+          }
         })
       })
     }

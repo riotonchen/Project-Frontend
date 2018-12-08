@@ -49,8 +49,8 @@
 </template>
 
 <script>
-import Scope from './FBLogin.Scope.js';
-import token from '@/assets/images/iconmonstr-facebook-1.svg';
+import Scope from './FBLogin.Scope.js'
+import token from '@/assets/images/iconmonstr-facebook-1.svg'
 
 export default {
   name: 'VFacebookLogin',

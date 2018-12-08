@@ -81,28 +81,6 @@
         style="width:100%;margin-bottom:15px;"
         @click.native.prevent="handleLogin"
       >{{ $t('login.logIn') }}</el-button>
-      <!--<el-button class="thirdparty-button" type="primary" style="width:86.5%;margin-bottom:-5px;" @click="showDialog=true">{{ $t('login.thirdparty') }}</el-button>-->
-      <!--
-      <facebook-login
-        app-id="729208947414666"
-        version="v2.8"
-        class="v-facebook-login"
-        @login="getUserData"
-        @logout="onLogout"
-        @get-initial-status="getUserData"
-      />
-      -->
-      <div class="container">
-        <div class="row justify-content-center">
-          <div>
-            <button
-              type="button"
-              class="v-facebook-login"
-              @click="login"
-            >Login</button>
-          </div>
-        </div>
-      </div>
       <el-button
         :loading="loadinghome"
         type="primary"
@@ -110,19 +88,7 @@
         @click.native.prevent="gohome"
       >回首頁</el-button>
     </el-form>
-    <!--
-    <el-dialog
-      :title="$t('login.thirdparty')"
-      :visible.sync="showDialog"
-      append-to-body
-    >
-      {{ $t('login.thirdpartyTips') }}
-      <br>
-      <br>
-      <br>
-      <social-sign />
-    </el-dialog>
--->
+
   </div>
 </template>
 
@@ -152,6 +118,7 @@ const validateMembertype = (rule, value, callback) => {
     callback()
   }
 }
+
 export default {
   name: 'Login',
   components: { LangSelect, facebookLogin },
@@ -181,8 +148,8 @@ export default {
       redirect: undefined,
       membertype: [
         { label: '會員', key: '2' },
-        { label: '管理員', key: '1' },
-        { label: '商家', key: '5' }
+        { label: '商家', key: '5' },
+        { label: '管理員', key: '1' }
       ]
     }
   },
@@ -195,64 +162,9 @@ export default {
       immediate: true
     }
   },
-  mounted() {
-    const vm = this
 
-    // facebook 初始化
-    window.fbAsyncInit = function() {
-      FB.init({
-        appId: '729208947414666',
-        cookie: true,
-        xfbml: true,
-        version: 'v3.1'
-      })
-      FB.AppEvents.logPageView()
-      // Get FB Login Status
-      FB.getLoginStatus(response => {
-        vm.statusChangeCallback(response)
-      })
-    };
-  },
+  created() {},
   methods: {
-    getProfile() {
-      const vm = this
-      FB.api('/me?fields=name,id,email', function(response) {
-        vm.$set(vm, 'profile', response)
-      })
-    },
-    login() {
-      const vm = this
-      FB.login(
-        function(response) {
-          vm.statusChangeCallback(response)
-        },
-        {
-          scope: 'email, public_profile',
-          return_scopes: true
-        }
-      )
-    },
-    logout() {
-      const vm = this
-      FB.logout(function(response) {
-        vm.statusChangeCallback(response)
-      })
-    },
-    statusChangeCallback(response) {
-      const vm = this
-      if (response.status === 'connected') {
-        vm.authorized = true
-        vm.getProfile()
-      } else if (response.status === 'not_authorized') {
-        vm.authorized = false
-      } else if (response.status === 'unknown') {
-        vm.profile = {}
-        vm.authorized = false
-      } else {
-        vm.authorized = false
-      }
-    },
-
     showPwd() {
       if (this.passwordType === 'password') {
         this.passwordType = '';

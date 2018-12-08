@@ -3,7 +3,14 @@
     <title>
       註冊
     </title>
-    <el-form ref="signupForm" :model="signupForm" :rules="signupRules" class="signup-form" auto-complete="on" label-position="left">
+    <el-form
+      ref="signupForm"
+      :model="signupForm"
+      :rules="signupRules"
+      class="signup-form"
+      auto-complete="on"
+      label-position="left"
+    >
 
       <div class="title-container">
         <h3 class="title">{{ $t('signup.title') }}</h3>
@@ -14,15 +21,31 @@
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
-        <el-input v-model="signupForm.username" :placeholder="$t('signup.username')" name="username" type="text" auto-complete="on" />
+        <el-input
+          v-model="signupForm.username"
+          :placeholder="$t('signup.username')"
+          name="username"
+          type="text"
+          auto-complete="on"
+        />
       </el-form-item>
 
       <el-form-item prop="password">
         <span class="svg-container">
           <svg-icon icon-class="password" />
         </span>
-        <el-input :type="passwordType" v-model="signupForm.password" :placeholder="$t('signup.password')" name="password" auto-complete="on" @keyup.enter.native="handleSignup" />
-        <span class="show-pwd" @click="showPwd">
+        <el-input
+          :type="passwordType"
+          v-model="signupForm.password"
+          :placeholder="$t('signup.password')"
+          name="password"
+          auto-complete="on"
+          @keyup.enter.native="handleSignup"
+        />
+        <span
+          class="show-pwd"
+          @click="showPwd"
+        >
           <svg-icon icon-class="eye" />
         </span>
       </el-form-item>
@@ -31,25 +54,47 @@
         <span class="svg-container">
           <svg-icon icon-class="password" />
         </span>
-        <el-input :type="passwordType" v-model="signupForm.doublepswd" :placeholder="$t('signup.doublepswd')" name="doublepswd" auto-complete="on" />
-        <span class="show-pwd" @click="showPwd">
+        <el-input
+          :type="passwordType"
+          v-model="signupForm.doublepswd"
+          :placeholder="$t('signup.doublepswd')"
+          name="doublepswd"
+          auto-complete="on"
+        />
+        <span
+          class="show-pwd"
+          @click="showPwd"
+        >
           <svg-icon icon-class="eye" />
         </span>
       </el-form-item>
 
-      <el-button :loading="loadingsend" type="primary" style="width:100%;margin-bottom:15px;" @click.native.prevent="handleSignup">{{ $t('signup.signUP') }}</el-button>
-      <el-button :loading="loadingent" type="primary" style="width:100%;margin-left:0px" @click.native.prevent="goent">商家註冊</el-button>
-      <el-button :loading="loadinghome" type="primary" style="width:100%;margin-left:0px;margin-top:15px;" @click.native.prevent="gohome">回首頁</el-button>
+      <el-button
+        :loading="loadingsend"
+        type="primary"
+        style="width:100%;margin-bottom:15px;"
+        @click.native.prevent="handleSignup"
+      >{{ $t('signup.signUP') }}</el-button>
+      <el-button
+        :loading="loadingent"
+        type="primary"
+        style="width:100%;margin-left:0px"
+        @click.native.prevent="goent"
+      >商家註冊</el-button>
+      <el-button
+        :loading="loadinghome"
+        type="primary"
+        style="width:100%;margin-left:0px;margin-top:15px;"
+        @click.native.prevent="gohome"
+      >回首頁</el-button>
     </el-form>
   </div>
 </template>
 
 <script>
-import { validateEmail } from '@/utils/validate'
-import LangSelect from '@/components/LangSelect'
-import {
-  Postsignup
-} from '@/api/signup'
+import { validateEmail } from '@/utils/validate';
+import LangSelect from '@/components/LangSelect';
+import { Postsignup } from '@/api/signup';
 
 export default {
   name: 'CSignup',
@@ -86,9 +131,15 @@ export default {
         doublepswd: ''
       },
       signupRules: {
-        username: [{ required: true, trigger: 'change', validator: isvalidateEmail }],
-        password: [{ required: true, trigger: 'change', validator: validatePassword }],
-        doublepswd: [{ required: true, trigger: 'change', validator: validatedoublepswd }]
+        username: [
+          { required: true, trigger: 'change', validator: isvalidateEmail }
+        ],
+        password: [
+          { required: true, trigger: 'change', validator: validatePassword }
+        ],
+        doublepswd: [
+          { required: true, trigger: 'change', validator: validatedoublepswd }
+        ]
       },
       passwordType: 'password',
       loadingsend: false,
@@ -109,9 +160,9 @@ export default {
   methods: {
     showPwd() {
       if (this.passwordType === 'password') {
-        this.passwordType = ''
+        this.passwordType = '';
       } else {
-        this.passwordType = 'password'
+        this.passwordType = 'password';
       }
     },
     handleSignup() {
@@ -123,22 +174,31 @@ export default {
               const h = this.$createElement
               this.$notify({
                 title: '註冊成功',
-                message: h('b', { style: 'color: teal' }, '恭喜你註冊成功，好好享受我們的服務吧！'),
+                message: h(
+                  'b',
+                  { style: 'color: teal' },
+                  '恭喜你註冊成功，快點去信箱收信，驗證帳號！'
+                ),
                 position: 'top-left'
               })
               this.loadingsend = false
               this.$router.push({ path: this.redirect || '/home' })
             })
-            .catch((error) => {
+            .catch(error => {
               console.log(error.response.data)
               if (error.response.data.error_msg === '帳號已存在！') {
                 const h = this.$createElement
                 this.$notify.error({
                   title: '註冊失敗',
-                  message: h('b', { style: 'color: red' }, '你輸入的電子信箱已經註冊過，請確認後再次註冊！ 5秒自動幫你重新刷新頁面'),
+                  message: h(
+                    'b',
+                    { style: 'color: red' },
+                    '你輸入的電子信箱已經註冊過，請確認後再次註冊！ 5秒自動幫你重新刷新頁面'
+                  ),
                   position: 'top-left',
                   showClose: false
                 })
+
                 setTimeout(() => {
                   location.reload()
                 }, 5000)
@@ -146,10 +206,15 @@ export default {
                 const h = this.$createElement
                 this.$notify.error({
                   title: '註冊失敗',
-                  message: h('b', { style: 'color: red' }, '發生了一點錯誤，請在試一次，如果一直發生請與我們聯繫，造成您的不良體驗，實在非常抱歉！ 5秒自動幫你跳轉'),
+                  message: h(
+                    'b',
+                    { style: 'color: red' },
+                    '發生了一點錯誤，請在試一次，如果一直發生請與我們聯繫，造成您的不良體驗，實在非常抱歉！ 5秒自動幫你跳轉'
+                  ),
                   position: 'top-left',
                   showClose: false
                 })
+
                 setTimeout(() => {
                   location.reload()
                 }, 5000)
@@ -178,7 +243,6 @@ export default {
     }
   }
 }
-
 </script>
 
 <style rel="stylesheet/scss" lang="scss">

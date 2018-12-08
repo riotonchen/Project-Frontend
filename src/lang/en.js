@@ -28,7 +28,7 @@ export default {
     b_activity_history: 'History Partial Info'
   },
   login: {
-    title: 'Login Form',
+    title: 'Login',
     logIn: 'Log in',
     username: 'Username',
     password: 'Password',

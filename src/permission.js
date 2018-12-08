@@ -23,7 +23,8 @@ const whiteList = [
   '/member_signup',
   '/ent_signup',
   '/login2',
-  '/home'
+  '/home',
+  '/active_account'
 ] // no redirect whitelist
 
 router.beforeEach((to, from, next) => {

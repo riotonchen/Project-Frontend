@@ -25,3 +25,14 @@ export function Post_a_signup(account, password) {
     data
   })
 }
+
+export function Post_check_account(hash) {
+  const data = {
+    hash
+  }
+  return request({
+    url: 'https://www.177together.com/api/member/',
+    method: 'post',
+    data
+  })
+}

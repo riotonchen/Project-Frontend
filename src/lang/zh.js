@@ -53,7 +53,7 @@ export default {
 
   b_signup: {
     signup: '註冊',
-    username: '信箱',
+    username: '帳號(電子信箱)',
     password: '密碼',
     name: '公司名稱',
     manager: '負責人名稱',
@@ -69,9 +69,9 @@ export default {
     confirm: '確認',
     cancel: '取消',
     send: '送出',
-    account_password: '商家註冊-帳號密碼',
-    imformation: '商家註冊-一般資訊 ',
-    connect_imformation: '商家註冊-連絡資訊'
+    account_password: '商家註冊',
+    imformation: '商家註冊',
+    connect_imformation: '商家註冊'
   },
   b_profile_view: {
     businessview: '商家資料',
@@ -441,8 +441,8 @@ export default {
     bdashboard: '回到總覽頁'
   },
   login: {
-    title: '▶ 登錄 ◀',
-    logIn: '登錄',
+    title: '▶ 登入 ◀',
+    logIn: '登入',
     username: '帳號',
     password: '密碼',
     any: '隨便填',
