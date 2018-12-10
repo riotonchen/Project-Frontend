@@ -98,11 +98,12 @@
   </div>
 </template>
 <script>
-import { formatdate_inc_time } from '@/utils/index'
-import { postinformations } from '@/api/infomations/postinformations'
-import { getToken } from '@/utils/auth'
-import { getentprofile } from '@/api/ent-profile/getentprofile'
-import { getUserInfo } from '@/api/login'
+import { formatdate_inc_time } from '@/utils/index';
+import { postinformations } from '@/api/infomations/postinformations';
+import { getToken } from '@/utils/auth';
+import { getentprofile } from '@/api/ent-profile/getentprofile';
+import { getUserInfo } from '@/api/login';
+import { base64ToBlob } from 'base64-blob';
 
 export default {
   data() {
@@ -152,7 +153,7 @@ export default {
             message: '錯誤！結束日期不可小於開始日期',
             type: 'warning'
           })
-          this.b_activity_add.dismountedtime = ''
+          this.b_activity_add.dismountedtime = '';
         }
       }
     },
@@ -179,7 +180,7 @@ export default {
     },
     onUploadChange(file) {
       const isIMAGE =
-        file.raw.type === 'image/jpeg' || file.raw.type === 'image/png'
+        file.raw.type === 'image/jpeg' || file.raw.type === 'image/png';
       const isLt1M = file.size / 1024 / 1024 < 1
 
       if (!isIMAGE) {
@@ -193,6 +194,17 @@ export default {
       var treader = new FileReader()
       treader.readAsDataURL(file.raw)
       treader.onload = function(e) {}
+    },
+    // base64 format to blob
+    convertBase64UrlToBlob(base64, mimeType) {
+      const bytes = window.atob(base64.split(',')[1])
+      const ab = new ArrayBuffer(bytes.length)
+      const ia = new Uint8Array(ab)
+      for (let i = 0; i < bytes.length; i++) {
+        ia[i] = bytes.charCodeAt(i)
+      }
+      const _blob = new Blob([ab], { type: mimeType })
+      return _blob
     },
     send_data() {
       getUserInfo(getToken()).then(res => {
@@ -210,6 +222,16 @@ export default {
           var treader = new FileReader()
           treader.readAsDataURL(this.file.raw)
           treader.onload = function(e) {
+            console.log(treader.result)
+            const bytes = window.atob(treader.result.split(',')[1])
+            const ab = new ArrayBuffer(bytes.length)
+            const ia = new Uint8Array(ab)
+            for (let i = 0; i < bytes.length; i++) {
+              ia[i] = bytes.charCodeAt(i)
+            }
+            const _blob = new Blob([ab], { type: 'image/png' })
+            const url = window.URL.createObjectURL(_blob)
+
             postinformations(
               getToken(),
               res.data[0].store_id,
@@ -217,14 +239,14 @@ export default {
               content,
               formatdate_inc_time(addedtime, 'yyyy-mm-dd'),
               formatdate_inc_time(dismountedtime, 'yyyy-mm-dd'),
-              treader.result
+              url
             ).then(res => {
               notice1
               setTimeout(() => {
                 newroute
               }, 3500)
             })
-          }
+          };
         })
       })
     }

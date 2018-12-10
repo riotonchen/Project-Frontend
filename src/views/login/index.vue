@@ -81,6 +81,7 @@
         style="width:100%;margin-bottom:15px;"
         @click.native.prevent="handleLogin"
       >{{ $t('login.logIn') }}</el-button>
+
       <el-button
         :loading="loadinghome"
         type="primary"
@@ -93,8 +94,8 @@
 </template>
 
 <script>
-import { validateEmail } from '@/utils/validate'
-import LangSelect from '@/components/LangSelect'
+import { validateEmail } from '@/utils/validate';
+import LangSelect from '@/components/LangSelect';
 
 const isvalidateEmail = (rule, value, callback) => {
   if (!validateEmail(value)) {
@@ -149,7 +150,13 @@ export default {
         { label: '會員', key: '2' },
         { label: '商家', key: '5' },
         { label: '管理員', key: '1' }
-      ]
+      ],
+
+      client_id:
+        '967297894338-mu84d62bf2hjh75l5km6j1lc8cbp6s7t.apps.googleusercontent.com'
+      /*
+      appId: '729208947414666'
+      */
     }
   },
 
@@ -164,13 +171,6 @@ export default {
 
   created() {},
   methods: {
-    showPwd() {
-      if (this.passwordType === 'password') {
-        this.passwordType = ''
-      } else {
-        this.passwordType = 'password'
-      }
-    },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
@@ -357,38 +357,7 @@ $light_gray: #eee;
 $color-white: #ffffff;
 $color-nepal: #8b9dc3;
 $color-chambray: #3b55a0;
-.v-facebook-login {
-  cursor: default; // Normalize IE 11
-  min-width: 15rem;
-  color: $color-white;
-  box-sizing: border-box;
-  border: 1px solid rgba($color-white, 0.05);
-  margin: 0; // Normalize Flex-box
-  padding-top: 0.5rem;
-  padding-left: 1.275rem;
-  padding-right: 1.275rem;
-  padding-bottom: 0.5rem;
-  display: flex;
-  align-items: center;
-  border-radius: 0.25rem;
-  justify-content: center;
-  background-color: lighten($color-chambray, 1%);
-  *,
-  *::before,
-  *::after {
-    box-sizing: inherit;
-  }
-  &[disabled] {
-    opacity: 0.75;
-  }
-  &:hover {
-    background-color: lighten($color-chambray, 5%);
-  }
-  &:focus {
-    outline-width: 0;
-    box-shadow: 0 0 0 1px rgba($color-nepal, 0.5);
-  }
-}
+
 .token {
   margin-right: 0.2rem;
   transform: translateX(-0.5rem);
