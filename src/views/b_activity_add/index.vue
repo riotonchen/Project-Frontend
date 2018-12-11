@@ -61,13 +61,26 @@
       </div>
 
       <div class="upload">
-
+        <!--
+        <label>File Preview
+          <input
+            id="file"
+            ref="file"
+            type="file"
+            accept="image/*"
+            @change="handleFileUpload()"
+          >
+        </label>
+        <img
+          v-show="showPreview"
+          :src="imagePreview"
+          style="height:100px;width:100px;"
+        >
+        -->
         <el-upload
           ref="upload"
           :on-change="changeUpload"
           :auto-upload="false"
-          :on-success="handleAvatarSuccess"
-          :before-upload="beforeAvatarUpload"
           :file-list="fileList"
           :class="{disabled:uploadDisabled}"
           accept="image/jpeg,image/png"
@@ -84,7 +97,6 @@
             class="el-icon-plus avatar-uploader-icon"
           />
         </el-upload>
-
       </div>
 
       <div class="cheap_btn">
@@ -103,7 +115,7 @@ import { postinformations } from '@/api/infomations/postinformations';
 import { getToken } from '@/utils/auth';
 import { getentprofile } from '@/api/ent-profile/getentprofile';
 import { getUserInfo } from '@/api/login';
-import { base64ToBlob } from 'base64-blob';
+import axios from 'axios';
 
 export default {
   data() {
@@ -134,10 +146,15 @@ export default {
         dismountedtime: '',
         imgraw: ''
       },
-      file: '',
+
       fileList: [],
       redirect: undefined,
-      render: []
+      render: [],
+      imageUrl: '',
+
+      file: '',
+      showPreview: false,
+      imagePreview: ''
     }
   },
   computed: {
@@ -160,8 +177,29 @@ export default {
     deep: true
   },
   methods: {
+    /*
+    handleFileUpload() {
+      this.file = this.$refs.file.files[0]
+      console.log(this.file)
+      const reader = new FileReader()
+      reader.addEventListener(
+        'load',
+        function() {
+          this.showPreview = true
+          this.imagePreview = reader.result
+        }.bind(this),
+        false
+      )
+      if (this.file) {
+        if (/\.(jpe?g|png|gif)$/i.test(this.file.name)) {
+          reader.readAsDataURL(this.file)
+        }
+      }
+    },
+    */
     changeUpload: function(file, fileList) {
       this.file = file
+      console.log(this.file.raw)
       this.fileList = fileList
       this.$nextTick(() => {
         const upload_list_li = document.getElementsByClassName(
@@ -191,20 +229,11 @@ export default {
         this.$message.error('上传文件大小不能超过 1MB!')
         return false
       }
-      var treader = new FileReader()
-      treader.readAsDataURL(file.raw)
-      treader.onload = function(e) {}
-    },
-    // base64 format to blob
-    convertBase64UrlToBlob(base64, mimeType) {
-      const bytes = window.atob(base64.split(',')[1])
-      const ab = new ArrayBuffer(bytes.length)
-      const ia = new Uint8Array(ab)
-      for (let i = 0; i < bytes.length; i++) {
-        ia[i] = bytes.charCodeAt(i)
-      }
-      const _blob = new Blob([ab], { type: mimeType })
-      return _blob
+      var reader = new FileReader()
+      reader.readAsDataURL(file.raw)
+      reader.onload = function(e) {
+        console.log(this.result) // 图片的base64数据
+      };
     },
     send_data() {
       getUserInfo(getToken()).then(res => {
@@ -213,40 +242,44 @@ export default {
           const content = this.b_activity_add.content
           const addedtime = this.b_activity_add.addedtime
           const dismountedtime = this.b_activity_add.dismountedtime
-          const notice1 = this.$notify({
-            title: '成功',
-            message: '活動送出成功，管理員會盡快審核您的活動，並散播給相關用戶',
-            type: 'success'
-          })
-          const newroute = this.$router.push({ path: this.redirect || '/' })
-          var treader = new FileReader()
-          treader.readAsDataURL(this.file.raw)
-          treader.onload = function(e) {
-            console.log(treader.result)
-            const bytes = window.atob(treader.result.split(',')[1])
-            const ab = new ArrayBuffer(bytes.length)
-            const ia = new Uint8Array(ab)
-            for (let i = 0; i < bytes.length; i++) {
-              ia[i] = bytes.charCodeAt(i)
-            }
-            const _blob = new Blob([ab], { type: 'image/png' })
-            const url = window.URL.createObjectURL(_blob)
+          const formData = new FormData()
+          formData.append('store_id', res.data[0].store_id)
+          formData.append('name', name)
+          formData.append('content', content)
+          formData.append('status', 0)
+          formData.append(
+            'starttime',
+            formatdate_inc_time(addedtime, 'yyyy-mm-dd')
+          )
+          formData.append(
+            'endtime',
+            formatdate_inc_time(dismountedtime, 'yyyy-mm-dd')
+          )
+          formData.append('syncstatus', 2)
+          formData.append('photo', this.file.raw)
 
-            postinformations(
-              getToken(),
-              res.data[0].store_id,
-              name,
-              content,
-              formatdate_inc_time(addedtime, 'yyyy-mm-dd'),
-              formatdate_inc_time(dismountedtime, 'yyyy-mm-dd'),
-              url
-            ).then(res => {
-              notice1
+          axios
+            .post('https://www.177together.com/api/promotion/', formData, {
+              headers: {
+                Authorization: 'JWT ' + getToken(),
+                'Content-Type': 'multipart/form-data'
+              }
+            })
+            .then(() => {
+              this.$notify({
+                title: '成功',
+                message:
+                  '活動送出成功，管理員會盡快審核您的活動，並散播給相關用戶',
+                type: 'success'
+              })
+
               setTimeout(() => {
-                newroute
+                this.$router.push({ path: this.redirect || '/' })
               }, 3500)
             })
-          };
+            .catch(() => {
+              console.log('FAILURE!!')
+            })
         })
       })
     }

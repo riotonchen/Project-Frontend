@@ -1,66 +1,34 @@
 <template>
   <div class="fake_body">
-
+    <div class="title">
+      <span>177 一起記</span>
+      <br>
+      <span>點擊LOGO 啟用帳號</span>
+    </div>
     <div class="loader">
       <span />
       <span />
       <span />
       <span />
     </div>
-    <transition name="el-fade-in-linear">
-      <div
-        v-show="logobtn"
-        class="title"
+    <div class="logo">
+      <el-button
+        class="logobtn"
+        @click="check_account()"
       >
-        <div>
-          <span>177 一起記</span>
-          <br>
-          <span>點擊LOGO 啟用帳號</span>
-        </div>
-        <div class="logo">
-          <el-button
-            class="logobtn"
-            @click="check_account()"
-          >
-            <img src="../../assets/images/177.svg">
-          </el-button>
-        </div>
-      </div>
-    </transition>
-    <div
-      style="display:flex;"
-      class="tik"
-    >
-      <transition name="el-zoom-in-center">
-        <div v-show="text3">
-          <span>3</span>
-        </div>
-      </transition>
-      <transition name="el-zoom-in-center">
-        <div v-show="text2">
-          <span>2</span>
-        </div>
-      </transition>
-      <transition name="el-zoom-in-center">
-        <div v-show="text1">
-          <span>1</span>
-        </div>
-      </transition>
+        <img src="../../assets/images/177.svg">
+      </el-button>
     </div>
   </div>
 </template>
 
 <script>
-import { Post_check_account } from '@/api/signup';
+import { Post_check_account } from '@/api/signup'
 export default {
   data() {
     return {
       user_hash: '',
-      redirect: undefined,
-      logobtn: true,
-      text3: false,
-      text2: false,
-      text1: false
+      redirect: undefined
     }
   },
   watch: {
@@ -84,24 +52,14 @@ export default {
         .then(() => {
           this.$notify({
             title: '成功',
-            message: '啟用帳號完成，過3秒幫你跳轉首頁',
+            message: '啟用帳號完成，過5秒幫你跳轉首頁',
             type: 'success',
-            duration: 3000,
+            duration: 5000,
             showClose: false
           })
-          this.text3 = true
-          this.logobtn = false
           setTimeout(() => {
-            this.text3 = false
-            this.text2 = true
-            setTimeout(() => {
-              this.text2 = false
-              this.text1 = true
-              setTimeout(() => {
-                this.$router.push({ path: this.redirect || '/home' })
-              }, 500)
-            }, 1000)
-          }, 1000)
+            this.$router.push({ path: this.redirect || '/home' })
+          }, 5000)
         })
         .catch(error => {
           console.log(error)
@@ -123,8 +81,8 @@ export default {
   background: #000;
   .loader {
     position: relative;
-    width: 50vh;
-    height: 50vh;
+    width: 23rem;
+    height: 23rem;
     border-radius: 50%;
     background: linear-gradient(#14ffe9, #ffcb3b, #d900ff);
     animation: animate 0.3s linear infinite;
@@ -185,22 +143,11 @@ export default {
       img {
         width: 9.375rem;
         margin-top: 4vh;
-        margin-left: -0.5vh;
       }
     }
   }
   .check_input {
     position: absolute;
-  }
-  .tik {
-    position: absolute;
-    color: #fbff00;
-    z-index: 9999;
-    font-weight: 900;
-    font-size: 30vh;
-    text-align: center;
-    //margin-left: 10px;
-    margin-top: -14px;
   }
 }
 </style>

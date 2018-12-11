@@ -176,6 +176,24 @@ if (getToken() === undefined || getToken() === null || getToken() === '') {
           ]
         },
         {
+          path: '/promotion-manage',
+          component: Layout,
+          alwaysShow: false,
+          redirect: 'noredirect',
+          children: [
+            {
+              path: '',
+              component: () => import('@/views/a_promotion/index'),
+              name: 'a_promotion',
+              meta: {
+                roles: ['1'],
+                title: 'a_promotion',
+                icon: 'user'
+              }
+            }
+          ]
+        },
+        {
           path: '/membermanage/business',
           component: Layout,
           alwaysShow: false,

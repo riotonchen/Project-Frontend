@@ -30,8 +30,8 @@
 </template>
 
 <script>
-import { getinfomations } from '@/api/infomations/getinfomations';
-import { getToken } from '@/utils/auth';
+import { getinfomations } from '@/api/infomations/getinfomations'
+import { getToken } from '@/utils/auth'
 
 export default {
   data() {
@@ -46,26 +46,11 @@ export default {
     get_infomations_all() {
       getinfomations(getToken()).then(res => {
         this.testpic = res.data
-        let base64data = '';
-        let blob
-        const reader = new FileReader()
+
         this.testpic.forEach(items => {
-          console.log(items.promotion_id.photo)
-          /*
-          blob = new Blob([items.promotion_id.photo], { type: 'image/png' })
-          items.promotion_id.photo = window.URL.createObjectURL(blob)
-          */
-          /*
-          reader.readAsDataURL(blob)
-          reader.onloadend = function() {
-            base64data = reader.result
-            const url = window.URL.createObjectURL(base64data)
-            items.promotion_id.photo = url
-            console.log(url)
-            console.log(base64data.substr(base64data.indexOf(',') + 1))
-          };
-          */
+          items.promotion_id.photo.toString().replace('blob:', '')
         })
+        console.log(this.testpic)
       })
     }
   }

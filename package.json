@@ -19,8 +19,7 @@
   },
   "dependencies": {
     "axios": "0.18.0",
-    "base64-blob": "^1.2.1",
-    "base64toblob": "0.0.2",
+    "b64-to-blob": "^1.2.19",
     "clipboard": "1.7.1",
     "codemirror": "5.39.2",
     "connect": "3.6.6",
@@ -36,7 +35,6 @@
     "mockjs": "1.0.1-beta3",
     "normalize.css": "8.0.1",
     "nprogress": "0.2.0",
-    "qs": "^6.6.0",
     "screenfull": "3.3.3",
     "showdown": "1.8.6",
     "simplemde": "1.11.2",

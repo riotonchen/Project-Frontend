@@ -19,6 +19,7 @@ export default {
     a_profile_view: '管理員資訊',
     a_profile_edit: '管理員編輯資訊',
     a_signup: '管理員註冊',
+    a_promotion: '促銷活動管理',
     a_manage_business: '商家管理',
     a_manage_member: '會員管理',
     a_feebackmanage: '回饋管理',

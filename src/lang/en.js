@@ -19,6 +19,7 @@ export default {
     a_profile_view: 'Admin Info',
     a_profile_edit: 'Admin Edit Info',
     a_signup: 'Admin Signup',
+    a_promotion: 'Promotion Manage',
     a_manage_business: 'Ent Manage',
     a_manage_member: 'Member Manage',
     a_feedbackmanage: 'Feedback Manage',

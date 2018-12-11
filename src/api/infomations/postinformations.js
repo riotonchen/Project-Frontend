@@ -1,36 +1,18 @@
 import request from '@/utils/request'
 
-export function postinformations(
-  token,
-  store_id,
-  name,
-  content,
-  starttime,
-  endtime,
-  photo,
-  id
-) {
-  const data = {
-    store_id,
-    name,
-    content,
-    status: 0,
-    starttime,
-    endtime,
-    syncstatus: 2,
-    photo
-  }
+export function postinformations(token, formData) {
   var requ_url = 'https://www.177together.com/api/promotion/'
+  const data = {
+    formData
+  }
 
   return request({
     url: requ_url,
     method: 'post',
     headers: {
-      Authorization: 'JWT ' + token
+      Authorization: 'JWT ' + token,
+      'Content-Type': 'multipart/form-data'
     },
-    data,
-    params: {
-      id
-    }
+    data
   })
 }
