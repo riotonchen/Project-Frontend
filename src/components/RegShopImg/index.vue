@@ -63,7 +63,7 @@ export default {
             function getImageBlob(url, cb) {
               var xhr = new XMLHttpRequest()
               xhr.open('get', url, true)
-              xhr.responseType = 'blob';
+              xhr.responseType = 'blob'
               xhr.onload = function() {
                 if (this.status === 200) {
                   if (cb) cb(this.response)
@@ -92,7 +92,7 @@ export default {
                 }
                 // 把base64的信息放到imgthing的file里
                 file.base64 = e.target.result
-              };
+              }
             }
             preView(fileList[0].url)
             // 试着获取bolb里面的数据-------------E

@@ -8,6 +8,7 @@
     <div class="promotion_table">
       <el-table
         :data="b_promotion"
+        :default-sort="{prop: 'status', order: 'acscending'}"
         stripe
         style="width: 100%;"
         max-height="600"
@@ -49,6 +50,7 @@
           label="狀態"
           prop="status"
           align="center"
+          sortable
         >
           <template slot-scope="scope">
             <el-tag :type="scope.row.status==='已審核'?'primary':'danger'">
@@ -60,6 +62,7 @@
           label="起日"
           prop="starttime"
           align="center"
+          sortable
         >
           <template slot-scope="scope">
             <span>{{ scope.row.starttime }}</span>
@@ -69,6 +72,7 @@
           label="迄日"
           prop="endtime"
           align="center"
+          sortable
         >
           <template slot-scope="scope">
             <span>{{ scope.row.endtime }}</span>
@@ -99,9 +103,9 @@
 </template>
 
 <script>
-import { getentinfomations } from '@/api/infomations/getinfomations';
-import { getToken } from '@/utils/auth';
-import { formatdate, formatdate_inc_time } from '@/utils/index';
+import { getentinfomations } from '@/api/infomations/getinfomations'
+import { patchinfomations } from '@/api/infomations/patchinfomations'
+import { getToken } from '@/utils/auth'
 export default {
   data() {
     return {
@@ -117,16 +121,31 @@ export default {
         this.b_promotion = res.data
         this.b_promotion.forEach(items => {
           if (items.status === 1) {
-            items.status = '已審核';
+            items.status = '已審核'
           } else {
-            items.status = '未審核';
+            items.status = '未審核'
           }
         })
       })
     },
-    check_promotion() {
-      this.b_promotion = []
-      this.get_all_promotion()
+    check_promotion(index, row) {
+      this.$confirm('是否審核該優惠資訊', '提示', {
+        confirmButtonText: '確定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        patchinfomations(getToken(), row.id)
+          .then(() => {
+            setTimeout(() => {
+              this.b_promotion = []
+              this.get_all_promotion()
+            }, 500)
+          })
+          .catch(() => {
+            console.log('error')
+            return false
+          })
+      })
     }
   }
 }
