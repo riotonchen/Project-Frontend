@@ -34,7 +34,7 @@
               :autosize="{ minRows: 3, maxRows:3}"
               type="textarea"
               resize="none"
-              style="width: 15vw"
+              style="width: 18vw"
               class="activity_table"
             />
           </el-form-item>
@@ -44,7 +44,7 @@
               v-model="b_activity_add.addedtime"
               :placeholder="$t('b_activity_add.date')"
               type="date"
-              style="width:15vw;min-width:7.5rem;max-width:15rem;"
+              style="width:15vw;min-width:7.5rem;max-width:20rem;"
             />
           </el-form-item>
 
@@ -53,37 +53,26 @@
               v-model="b_activity_add.dismountedtime"
               :placeholder="$t('b_activity_add.date')"
               type="date"
-              style="width:15vw;min-width:7.5rem;max-width:15rem;"
+              style="width:15vw;min-width:7.5rem;max-width:20rem;"
             />
           </el-form-item>
-
+          <el-form-item label="活動連結">
+            <el-input
+              v-model="b_activity_add.link"
+              class="activity_table"
+            />
+          </el-form-item>
         </el-form>
       </div>
 
       <div class="upload">
-        <!--
-        <label>File Preview
-          <input
-            id="file"
-            ref="file"
-            type="file"
-            accept="image/*"
-            @change="handleFileUpload()"
-          >
-        </label>
-        <img
-          v-show="showPreview"
-          :src="imagePreview"
-          style="height:100px;width:100px;"
-        >
-        -->
         <el-upload
           ref="upload"
           :on-change="changeUpload"
           :auto-upload="false"
           :file-list="fileList"
           :class="{disabled:uploadDisabled}"
-          accept="image/jpeg,image/png"
+          accept="image/jpeg,image/png,image/gif"
           action=""
           list-type="picture-card"
         >
@@ -111,7 +100,7 @@
 </template>
 <script>
 import { formatdate_inc_time } from '@/utils/index'
-import { postinformations } from '@/api/infomations/postinformations'
+// import { postinformations } from '@/api/infomations/postinformations';
 import { getToken } from '@/utils/auth'
 import { getentprofile } from '@/api/ent-profile/getentprofile'
 import { getUserInfo } from '@/api/login'
@@ -144,7 +133,8 @@ export default {
         content: '',
         addedtime: '',
         dismountedtime: '',
-        imgraw: ''
+        imgraw: '',
+        link: ''
       },
 
       fileList: [],
@@ -256,6 +246,7 @@ export default {
             formatdate_inc_time(dismountedtime, 'yyyy-mm-dd')
           )
           formData.append('syncstatus', 2)
+          formData.append('link', this.b_activity_add.link)
           formData.append('photo', this.file.raw)
 
           axios

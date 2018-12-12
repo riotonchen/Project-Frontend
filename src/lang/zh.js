@@ -19,7 +19,7 @@ export default {
     a_profile_view: '管理員資訊',
     a_profile_edit: '管理員編輯資訊',
     a_signup: '管理員註冊',
-    a_promotion: '促銷活動管理',
+    a_promotion: '優惠活動管理',
     a_manage_business: '商家管理',
     a_manage_member: '會員管理',
     a_feebackmanage: '回饋管理',
@@ -451,7 +451,7 @@ export default {
     thirdpartyTips: '尚未完成'
   },
   signup: {
-    title: '普通會員-帳號註冊',
+    title: '會員註冊',
     signUP: '送出',
     username: '帳號(電子信箱)',
     password: '密碼',

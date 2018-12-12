@@ -1,7 +1,7 @@
 <template>
   <div class="activity_history">
     <title>
-      {{ $t('route.activity_history') }}
+      {{ $t('route.b_activity_history') }}
     </title>
     <div class="activity_history_container">
       <!--目前使用日期做排序-->
@@ -10,18 +10,27 @@
         :default-sort="{prop: 'status', order: 'descending'}"
         stripe
         style="width: 100%;"
-        max-height="470"
+        max-height="700"
         fit
       >
         <el-table-column type="expand">
-          <template slot-scope="props">
+          <template slot-scope="scope">
             <el-form
               label-position="left"
               inline
-              class="table_acthistory_view"
+              class="table_expand"
             >
-              <el-form-item :label="$t('activity_history.photo')">
-                <span>{{ props.row.comment }}</span>
+              <el-form-item label="內容">
+                <span>{{ scope.row.content }}</span>
+              </el-form-item>
+              <el-form-item label="商品照片">
+                <img
+                  :src="scope.row.photo "
+                  class="promotion_img"
+                >
+              </el-form-item>
+              <el-form-item label="活動連結">
+                <a :href="scope.row.link" />
               </el-form-item>
             </el-form>
           </template>
@@ -332,6 +341,22 @@ export default {
   color: #99a9bf;
 }
 .table_acthistory_view .el-form-item {
+  margin-right: 0;
+  margin-bottom: 0;
+  width: 100%;
+}
+.table_expand {
+  font-size: 0;
+}
+.table_expand label {
+  width: 90px;
+  color: #99a9bf;
+}
+.table_expand img {
+  width: 100px;
+  //width: 100px;
+}
+.table_expand .el-form-item {
   margin-right: 0;
   margin-bottom: 0;
   width: 100%;

@@ -38,7 +38,7 @@
         <div class="card-panel">
           <div class="card-panel-icon-wrapper icon-message">
             <svg-icon
-              icon-class="message"
+              icon-class="admin-with-cogwheels"
               class-name="card-panel-icon"
             />
           </div>
@@ -60,9 +60,9 @@
         class="card-panel-col"
       >
         <div class="card-panel">
-          <div class="card-panel-icon-wrapper icon-message">
+          <div class="card-panel-icon-wrapper icon-shopping">
             <svg-icon
-              icon-class="message"
+              icon-class="group-of-men"
               class-name="card-panel-icon"
             />
           </div>
@@ -84,9 +84,9 @@
         class="card-panel-col"
       >
         <div class="card-panel">
-          <div class="card-panel-icon-wrapper icon-message">
+          <div class="card-panel-icon-wrapper icon-money">
             <svg-icon
-              icon-class="message"
+              icon-class="communication"
               class-name="card-panel-icon"
             />
           </div>
@@ -113,9 +113,9 @@
         class="card-panel-col"
       >
         <div class="card-panel">
-          <div class="card-panel-icon-wrapper icon-message">
+          <div class="card-panel-icon-wrapper icon-money">
             <svg-icon
-              icon-class="message"
+              icon-class="candidate"
               class-name="card-panel-icon"
             />
           </div>
@@ -161,7 +161,7 @@
         class="card-panel-col"
       >
         <div class="card-panel">
-          <div class="card-panel-icon-wrapper icon-message">
+          <div class="card-panel-icon-wrapper icon-yell">
             <svg-icon
               icon-class="message"
               class-name="card-panel-icon"
@@ -290,6 +290,9 @@ export default {
     }
     .icon-message {
       color: #36a3f7;
+    }
+    .icon-yell {
+      color: #ffb812;
     }
     .icon-money {
       color: #f4516c;

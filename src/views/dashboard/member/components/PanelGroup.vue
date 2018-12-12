@@ -14,7 +14,7 @@
         <div class="card-panel">
           <div class="card-panel-icon-wrapper icon-people">
             <svg-icon
-              icon-class="peoples"
+              icon-class="incomes"
               class-name="card-panel-icon"
             />
           </div>
@@ -36,9 +36,9 @@
         class="card-panel-col"
       >
         <div class="card-panel">
-          <div class="card-panel-icon-wrapper icon-message">
+          <div class="card-panel-icon-wrapper icon-money">
             <svg-icon
-              icon-class="message"
+              icon-class="expensive"
               class-name="card-panel-icon"
             />
           </div>
@@ -62,7 +62,7 @@
         <div class="card-panel">
           <div class="card-panel-icon-wrapper icon-message">
             <svg-icon
-              icon-class="message"
+              icon-class="transaction"
               class-name="card-panel-icon"
             />
           </div>
@@ -89,9 +89,9 @@
         class="card-panel-col"
       >
         <div class="card-panel">
-          <div class="card-panel-icon-wrapper icon-people">
+          <div class="card-panel-icon-wrapper icon-message">
             <svg-icon
-              icon-class="peoples"
+              icon-class="product"
               class-name="card-panel-icon"
             />
           </div>
@@ -113,9 +113,9 @@
         class="card-panel-col"
       >
         <div class="card-panel">
-          <div class="card-panel-icon-wrapper icon-message">
+          <div class="card-panel-icon-wrapper icon-yell">
             <svg-icon
-              icon-class="message"
+              icon-class="money-bag-with-dollar-symbol"
               class-name="card-panel-icon"
             />
           </div>
@@ -139,7 +139,7 @@
         <div class="card-panel">
           <div class="card-panel-icon-wrapper icon-money">
             <svg-icon
-              icon-class="money"
+              icon-class="wallet-filled-money-tool"
               class-name="card-panel-icon"
             />
           </div>
@@ -163,7 +163,7 @@
         <div class="card-panel">
           <div class="card-panel-icon-wrapper icon-shopping">
             <svg-icon
-              icon-class="shopping"
+              icon-class="notepad"
               class-name="card-panel-icon"
             />
           </div>
@@ -376,6 +376,7 @@ export default {
       .icon-money {
         background: #f4516c;
       }
+
       .icon-shopping {
         background: #34bfa3;
       }
@@ -385,6 +386,9 @@ export default {
     }
     .icon-message {
       color: #36a3f7;
+    }
+    .icon-yell {
+      color: #ffb812;
     }
     .icon-money {
       color: #f4516c;

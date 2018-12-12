@@ -95,6 +95,28 @@
           >{{ $t('c_profile_edit.cancel') }}</el-button>
 
         </el-form>
+        <div class="upload">
+          <el-upload
+            ref="upload"
+            :on-change="changeUpload"
+            :auto-upload="false"
+            :file-list="fileList"
+            :class="{disabled:uploadDisabled}"
+            accept="image/jpeg,image/png,image/gif"
+            action=""
+            list-type="picture-card"
+          >
+            <img
+              v-if="imageUrl"
+              :src="imageUrl"
+              class="avatar"
+            >
+            <i
+              v-else
+              class="el-icon-plus avatar-uploader-icon"
+            />
+          </el-upload>
+        </div>
       </el-card>
     </div>
   </div>
@@ -104,7 +126,7 @@ import { getUserInfo } from '@/api/login'
 import { getToken } from '@/utils/auth'
 import { validatetoid } from '@/utils/validate'
 import { patchprofile, patchprofilepswd } from '@/api/profile/patchprofile'
-
+import axios from 'axios'
 export default {
   name: 'CProfileEdit',
   data() {
@@ -172,7 +194,15 @@ export default {
           { required: false, trigger: 'change', validator: validatedoublepswd }
         ]
       },
-      redirect: undefined
+      redirect: undefined,
+      imageUrl: '',
+      fileList: [],
+      file: ''
+    }
+  },
+  computed: {
+    uploadDisabled: function() {
+      return this.fileList.length > 0
     }
   },
   watch: {
@@ -216,6 +246,7 @@ export default {
       this.$refs.profile_edit_form.validate(valid => {
         if (valid) {
           this.loadingprofile_view_send = true
+
           getUserInfo(getToken()).then(response => {
             var ori_name = response.name
             var ori_toid = response.toid
@@ -238,20 +269,62 @@ export default {
             }
             patchprofile(getToken(), send_name, send_toid)
               .then(() => {
-                const h = this.$createElement
-                this.$notify({
-                  title: '送出成功',
-                  message: h(
-                    'b',
-                    { style: 'color: teal' },
-                    '你的個人資料已更新'
-                  ),
-                  type: 'success'
-                })
-                this.loadingsend = false
-                this.$router.push({
-                  path: this.redirect || '/profile/profile-view'
-                })
+                if (this.file === '') {
+                  const h = this.$createElement
+                  this.$notify({
+                    title: '送出成功',
+                    message: h(
+                      'b',
+                      { style: 'color: teal' },
+                      '你的個人資料已更新'
+                    ),
+                    type: 'success'
+                  })
+                  this.loadingsend = false
+                  this.$router.push({
+                    path: this.redirect || '/profile/profile-view'
+                  })
+                } else {
+                  getUserInfo(getToken()).then(res => {
+                    console.log(res.data)
+                    const formData = new FormData()
+                    formData.append('dbpicture', this.file.raw)
+
+                    axios
+                      .patch(
+                        'https://www.177together.com/api/member/' +
+                          res.data.id +
+                          '/',
+                        formData,
+                        {
+                          headers: {
+                            Authorization: 'JWT ' + getToken(),
+                            'Content-Type': 'multipart/form-data'
+                          }
+                        }
+                      )
+                      .then(() => {
+                        const h = this.$createElement
+                        this.$notify({
+                          title: '送出成功',
+                          message: h(
+                            'b',
+                            { style: 'color: teal' },
+                            '你的個人資料已更新'
+                          ),
+                          type: 'success'
+                        })
+                        this.loadingsend = false
+                        this.$router.push({
+                          path: this.redirect || '/profile/profile-view'
+                        })
+                        location.reload()
+                      })
+                      .catch(() => {
+                        console.log('FAILURE!!')
+                      })
+                  })
+                }
               })
               .catch(error => {
                 console.log(error.response)
@@ -289,11 +362,62 @@ export default {
           })
         }
       })
+    },
+    changeUpload: function(file, fileList) {
+      this.file = file
+      console.log(this.file.raw)
+      this.fileList = fileList
+      this.$nextTick(() => {
+        const upload_list_li = document.getElementsByClassName(
+          'el-upload-list'
+        )[0].children
+        for (let i = 0; i < upload_list_li.length; i++) {
+          const li_a = upload_list_li[i]
+          const imgElement = document.createElement('img')
+          imgElement.setAttribute('src', fileList[i].url)
+          imgElement.setAttribute('style', 'max-width:50%;padding-left:25%')
+          if (li_a.lastElementChild.nodeName !== 'IMG') {
+            li_a.appendChild(imgElement)
+          }
+        }
+      })
+    },
+    patchpicture() {
+      if (this.file === '') {
+        console.log()
+      } else {
+        getUserInfo(getToken()).then(res => {
+          console.log(res.data)
+          const formData = new FormData()
+          formData.append('dbpicture', this.file.raw)
+
+          axios
+            .patch(
+              'https://www.177together.com/api/member/' + res.data.id + '/',
+              formData,
+              {
+                headers: {
+                  Authorization: 'JWT ' + getToken(),
+                  'Content-Type': 'multipart/form-data'
+                }
+              }
+            )
+            .catch(() => {
+              console.log('FAILURE!!')
+            })
+        })
+      }
     }
   }
 }
 </script>
 <style rel="stylesheet/scss" lang="scss" >
+.disabled .el-upload--picture-card {
+  display: none;
+}
+.disabled .el-icon-delete {
+  display: none;
+}
 .personal_edit_form {
   width: 60%;
   margin: 15vh 18vw;
@@ -317,17 +441,22 @@ export default {
 }
 .personal_edit input {
   font-family: "Microsoft JhengHei";
-  width: 30vw;
+  width: 18vw;
 }
 .personal_edit textarea {
   font-family: "Microsoft JhengHei";
   border: 0;
-  width: 30vw;
+  width: 18vw;
   padding-top: 0.65rem;
 }
 .personal_edit .el-form-item {
   margin-right: 0;
   //margin-bottom: 0;
   width: 100%;
+}
+.upload {
+  position: absolute;
+  margin-top: -35vh;
+  margin-left: 40%;
 }
 </style>

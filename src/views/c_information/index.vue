@@ -8,7 +8,7 @@
           :key="item"
         >
           <div class="infomations_pic">
-            <img :src="item.itemimg">
+            <img :src="item.promotion_id.photo">
           </div>
         </el-carousel-item>
       </el-carousel>
@@ -19,7 +19,9 @@
         :key="item"
         class="infomations_pic"
       >
-        <img :src="item.promotion_id.photo">
+        <a :href="item.promotion_id.link">
+          <img :src="item.promotion_id.photo">
+        </a>
         <br>
         <div class="infotext">
           <span>{{ item.promotion_id.name }}</span>
@@ -74,7 +76,7 @@ export default {
     }
   }
   .infomations_pic:hover {
-    transform: scale(1.1);
+    transform: scale(1.15);
   }
 }
 .info_carousel {

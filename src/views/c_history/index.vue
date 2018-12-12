@@ -698,6 +698,7 @@ export default {
     c_payorin: function(newc_payorin, oldc_payorin) {
       if (oldc_payorin === '') {
         this.c_sort_disable = false
+        this.get_sort()
       } else if (newc_payorin === '') {
         this.c_sort = ''
         this.c_subsort = ''
