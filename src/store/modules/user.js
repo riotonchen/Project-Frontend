@@ -79,8 +79,34 @@ const user = {
             resolve()
           })
           .catch(error => {
+            reject(error)
+            MessageBox.confirm(
+              '你的帳號，密碼，或著是會員類別輸入錯誤。',
+              '登入錯誤',
+              {
+                confirmButtonText: '重新登入',
+                showCancelButton: false,
+                type: 'error',
+                beforeClose: (action, instance, done) => {
+                  if (action === 'confirm') {
+                    instance.confirmButtonLoading = true
+                    instance.confirmButtonText = '跳轉中'
+                    setTimeout(() => {
+                      done()
+                      setTimeout(() => {
+                        instance.confirmButtonLoading = false
+                      }, 500)
+                    }, 800)
+                  } else {
+                    done()
+                  }
+                }
+              }
+            ).then(() => {
+              location.reload()
+            }) /*
             if (error === 'Account does not exists or parameter error.') {
-              reject(error)
+               reject(error)
               MessageBox.confirm(
                 '你的帳號，密碼，或著是會員類別輸入錯誤。',
                 '登入錯誤',
@@ -118,7 +144,7 @@ const user = {
                   location.reload()
                 }, 1500)
               }, 800)
-            }
+            }*/
           })
       })
     },

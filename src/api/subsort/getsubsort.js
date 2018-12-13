@@ -1,6 +1,7 @@
 import request from '@/utils/request'
+import { formatdate_inc_time } from '@/utils/index'
 
-export function getsubsort(token, sort_id) {
+export function getsubsort(token, sort_id, purchasedate) {
   const data = {
     token,
     sort_id
@@ -8,10 +9,15 @@ export function getsubsort(token, sort_id) {
   var jwtDecode = require('jwt-decode')
   var decoded = jwtDecode(token)
   var user_id = decoded.user_id
-  var requ_url = 'https://www.177together.com/api/subsort/?member_id=' + user_id + '&syncstatus_not=3&sort_id=' + sort_id
+  var requ_url =
+    'https://www.177together.com/api/subsort/?member_id=' +
+    user_id +
+    '&syncstatus_not=3&sort_id=' +
+    sort_id +
+    '&purchasedate=' +
+    formatdate_inc_time(purchasedate, 'yyyy-mm')
 
   return request({
-
     url: requ_url,
     method: 'get',
     headers: {
@@ -28,7 +34,6 @@ export function getsinglesubsort(token, subsort_id) {
   var requ_url = 'https://www.177together.com/api/subsort/' + subsort_id + '/'
 
   return request({
-
     url: requ_url,
     method: 'get',
     headers: {
@@ -39,10 +44,12 @@ export function getsinglesubsort(token, subsort_id) {
 }
 
 export function getsubsortforadmin(token, member_id, sort_id) {
-  var requ_url = 'https://www.177together.com/api/subsort/?member_id=' + member_id + '&syncstatus_not=3'
+  var requ_url =
+    'https://www.177together.com/api/subsort/?member_id=' +
+    member_id +
+    '&syncstatus_not=3'
 
   return request({
-
     url: requ_url,
     method: 'get',
     headers: {

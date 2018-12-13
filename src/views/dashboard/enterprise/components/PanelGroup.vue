@@ -20,7 +20,7 @@
             />
           </div>
           <div class="card-panel-description">
-            <div class="card-panel-text">本年度總收入</div>
+            <div class="card-panel-text">已建立優惠資訊</div>
             <count-to
               :start-val="0"
               :end-val="c_user_y_history_in"
@@ -44,7 +44,7 @@
             />
           </div>
           <div class="card-panel-description">
-            <div class="card-panel-text">本年度總支出</div>
+            <div class="card-panel-text">已成功推送數量</div>
             <count-to
               :start-val="0"
               :end-val="c_user_y_history_pay"
@@ -68,7 +68,7 @@
             />
           </div>
           <div class="card-panel-description">
-            <div class="card-panel-text">本年度總盈餘</div>
+            <div class="card-panel-text">尚未審核數量</div>
             <count-to
               :start-val="0"
               :end-val="c_user_y_history_balance"

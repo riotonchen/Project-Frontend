@@ -404,7 +404,8 @@ export default {
     projectname: '專案名稱',
     call: '名稱',
     income: '總收入',
-    spend: '總支出'
+    spend: '總支出',
+    cardname: '卡片名稱'
   },
 
   c_accounting: {

@@ -608,7 +608,7 @@
         <div class="filter_container">
           <el-select
             v-model="c_card"
-            :placeholder="$t('c_card_view.cardname')"
+            :placeholder="$t('a_manage_member.cardname')"
             clearable
             filterable
             style="width: 25vw;max-width:7.5rem;min-width:5.5rem;"

@@ -46,7 +46,7 @@
         value-format="yyyy-MM"
         align="center"
         type="month"
-        style="width: 10vw;min-width:7rem;max-width:10rem;"
+        style="width: 10vw;min-width:9rem;max-width:12rem;"
       />
 
       <!--新增主分類-->
@@ -354,7 +354,7 @@
                 align="center"
               >
                 <template slot-scope="scope">
-                  <span>{{ scope.row.allin }}</span>
+                  <span>{{ scope.row.range_expense }}</span>
                 </template>
               </el-table-column>
 
@@ -688,10 +688,12 @@ export default {
       })
     },
     get_subsort() {
-      getsubsort(getToken(), this.c_sort_row_id).then(response => {
-        this.c_subsort_in_item = response.data
-        this.c_subsort_in_options = response.data
-      })
+      getsubsort(getToken(), this.c_sort_row_id, this.startenddate).then(
+        response => {
+          this.c_subsort_in_item = response.data
+          this.c_subsort_in_options = response.data
+        }
+      )
     },
     get_subchange() {
       if (this.c_subsort_id === '') {

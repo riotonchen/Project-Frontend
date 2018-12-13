@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { Message } from 'element-ui'
+// import { Message } from 'element-ui'
 
 import store from '@/store'
 import { getToken } from '@/utils/auth'
@@ -36,6 +36,7 @@ service.interceptors.response.use(
   error => {
     console.log('err' + error) // for debug
     // 上線時要拔掉
+    /*
     Message({
       message: error.message,
       type: 'error',
@@ -43,6 +44,7 @@ service.interceptors.response.use(
     })
 
     return Promise.reject(error)
+    */
   }
 )
 
