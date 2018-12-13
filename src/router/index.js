@@ -151,7 +151,7 @@ if (getToken() === undefined || getToken() === null || getToken() === '') {
               meta: {
                 roles: ['1'],
                 title: 'a_profile_view',
-                icon: 'user'
+                icon: 'businessman'
               }
             }
           ]
@@ -188,7 +188,7 @@ if (getToken() === undefined || getToken() === null || getToken() === '') {
               meta: {
                 roles: ['1'],
                 title: 'a_promotion',
-                icon: 'user'
+                icon: 'megaphone'
               }
             }
           ]
@@ -206,7 +206,7 @@ if (getToken() === undefined || getToken() === null || getToken() === '') {
               meta: {
                 roles: ['1'],
                 title: 'a_manage_business',
-                icon: 'user'
+                icon: 'agreement'
               }
             }
           ]
@@ -224,7 +224,7 @@ if (getToken() === undefined || getToken() === null || getToken() === '') {
               meta: {
                 roles: ['1'],
                 title: 'a_manage_member',
-                icon: 'user'
+                icon: 'member'
               }
             }
           ]
@@ -242,7 +242,7 @@ if (getToken() === undefined || getToken() === null || getToken() === '') {
               meta: {
                 roles: ['1'],
                 title: 'a_feedbackmanage',
-                icon: 'user'
+                icon: 'writing'
               }
             }
           ]

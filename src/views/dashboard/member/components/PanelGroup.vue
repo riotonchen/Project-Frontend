@@ -113,7 +113,7 @@
         class="card-panel-col"
       >
         <div class="card-panel">
-          <div class="card-panel-icon-wrapper icon-yell">
+          <div class="card-panel-icon-wrapper icon-shopping">
             <svg-icon
               icon-class="money-bag-with-dollar-symbol"
               class-name="card-panel-icon"
@@ -376,7 +376,9 @@ export default {
       .icon-money {
         background: #f4516c;
       }
-
+      .icon-yell {
+        color: #ffb812;
+      }
       .icon-shopping {
         background: #34bfa3;
       }
