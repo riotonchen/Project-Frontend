@@ -1,6 +1,9 @@
 <template>
 
-  <div :class="className" :style="{height:height,width:width}" />
+  <div
+    :class="className"
+    :style="{height:height,width:width}"
+  />
 
 </template>
 
@@ -60,7 +63,11 @@ export default {
 
     // 監聽側邊變化
     this.sidebarElm = document.getElementsByClassName('sidebar-container')[0]
-    this.sidebarElm && this.sidebarElm.addEventListener('transitionend', this.sidebarResizeHandler)
+    this.sidebarElm &&
+      this.sidebarElm.addEventListener(
+        'transitionend',
+        this.sidebarResizeHandler
+      )
   },
   beforeDestroy() {
     if (!this.chart) {
@@ -70,7 +77,11 @@ export default {
       window.removeEventListener('resize', this.__resizeHandler)
     }
 
-    this.sidebarElm && this.sidebarElm.removeEventListener('transitionend', this.sidebarResizeHandler)
+    this.sidebarElm &&
+      this.sidebarElm.removeEventListener(
+        'transitionend',
+        this.sidebarResizeHandler
+      )
 
     this.chart.dispose()
     this.chart = null
@@ -81,18 +92,22 @@ export default {
         this.__resizeHandler()
       }
     },
-    setOptions({ paydata, indata } = {}) {
+    setOptions({ alldata } = {}) {
       const start = new Date()
-      const done = start.setTime(start.getTime() - 3600 * 1000 * 24 * 30 * 12 * 3)
+      const done = start.setTime(
+        start.getTime() - 3600 * 1000 * 24 * 30 * 12 * 3
+      )
       const dtwo = start.setTime(start.getTime() + 3600 * 1000 * 24 * 30 * 12)
       const dthr = start.setTime(start.getTime() + 3600 * 1000 * 24 * 30 * 12)
-      const oridate = start.setTime(start.getTime() + 3600 * 1000 * 24 * 30 * 12)
+      const oridate = start.setTime(
+        start.getTime() + 3600 * 1000 * 24 * 30 * 12
+      )
       const pone = start.setTime(start.getTime() + 3600 * 1000 * 24 * 30 * 12)
       const ptwo = start.setTime(start.getTime() + 3600 * 1000 * 24 * 30 * 12)
       const pthr = start.setTime(start.getTime() + 3600 * 1000 * 24 * 30 * 12)
       this.chart.setOption({
         title: {
-          text: '年報表收支出',
+          text: '年建立優惠量',
           textStyle: {
             color: '#000080',
             fontSize: '17',
@@ -108,7 +123,8 @@ export default {
             formatdate_inc_time(oridate, 'yyyy'),
             formatdate_inc_time(pone, 'yyyy'),
             formatdate_inc_time(ptwo, 'yyyy'),
-            formatdate_inc_time(pthr, 'yyyy')],
+            formatdate_inc_time(pthr, 'yyyy')
+          ],
           boundaryGap: false,
           axisTick: {
             show: true
@@ -134,72 +150,37 @@ export default {
           }
         },
 
-        legend: {
-          data: ['支出', '收入']
-        },
-
-        series: [{
-          name: '支出',
-          itemStyle: {
-            normal: {
-              color: '#ffbe00',
-              lineStyle: {
+        series: [
+          {
+            name: '支出',
+            itemStyle: {
+              normal: {
                 color: '#ffbe00',
-                width: 5
-              },
-              areaStyle: {
-                color: '#FFff77'
+                lineStyle: {
+                  color: '#ffbe00',
+                  width: 5
+                },
+                areaStyle: {
+                  color: '#FFff77'
+                }
               }
-            }
-          },
-          markPoint: {
-            data: [
-              { type: 'max', name: '最大值' },
-              { type: 'min', name: '最小值' }
-            ]
-          },
-          markLine: {
-            data: [
-              { type: 'average', name: '平均值' }
-            ]
-          },
-          smooth: true,
-          type: 'line',
-          data: paydata,
-          animationDuration: 3500,
-          animationEasing: 'cubicInOut'
-        },
-        {
-          name: '收入',
-          smooth: true,
-          type: 'line',
-          itemStyle: {
-            normal: {
-              color: '#55aa00',
-              lineStyle: {
-                color: '#55aa00',
-                width: 5
-              },
-              areaStyle: {
-                color: '#90ee90'
-              }
-            }
-          },
-          markPoint: {
-            data: [
-              { type: 'max', name: '最大值' },
-              { type: 'min', name: '最小值' }
-            ]
-          },
-          markLine: {
-            data: [
-              { type: 'average', name: '平均值' }
-            ]
-          },
-          data: indata,
-          animationDuration: 3500,
-          animationEasing: 'quadraticOut'
-        }]
+            },
+            markPoint: {
+              data: [
+                { type: 'max', name: '最大值' },
+                { type: 'min', name: '最小值' }
+              ]
+            },
+            markLine: {
+              data: [{ type: 'average', name: '平均值' }]
+            },
+            smooth: true,
+            type: 'line',
+            data: alldata,
+            animationDuration: 3500,
+            animationEasing: 'cubicInOut'
+          }
+        ]
       })
     },
     initChart() {

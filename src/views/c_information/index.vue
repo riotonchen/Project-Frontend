@@ -36,7 +36,7 @@
     <div v-show="nodata">
       <div class="fakebody">
         <div class="loader">
-          <span>正在幫你準備優惠資訊ING</span>
+          <span>你的專屬資訊快來了!!!</span>
         </div>
       </div>
     </div>

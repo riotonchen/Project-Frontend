@@ -23,7 +23,7 @@
             <div class="card-panel-text">已建立優惠資訊</div>
             <count-to
               :start-val="0"
-              :end-val="c_user_y_history_in"
+              :end-val="b_information"
               :duration="3500"
               class="card-panel-num"
             />
@@ -47,7 +47,7 @@
             <div class="card-panel-text">已成功推送數量</div>
             <count-to
               :start-val="0"
-              :end-val="c_user_y_history_pay"
+              :end-val="b_information_suc"
               :duration="3500"
               class="card-panel-num"
             />
@@ -61,7 +61,7 @@
         class="card-panel-col"
       >
         <div class="card-panel">
-          <div class="card-panel-icon-wrapper icon-message">
+          <div class="card-panel-icon-wrapper icon-money">
             <svg-icon
               icon-class="message"
               class-name="card-panel-icon"
@@ -71,7 +71,7 @@
             <div class="card-panel-text">尚未審核數量</div>
             <count-to
               :start-val="0"
-              :end-val="c_user_y_history_balance"
+              :end-val="b_information_yet"
               :duration="3500"
               class="card-panel-num"
             />
@@ -85,10 +85,9 @@
 <script>
 import CountTo from 'vue-count-to'
 import { getToken } from '@/utils/auth'
-import { getaccount_all } from '@/api/account/getaccount'
-import { getaccounting_all } from '@/api/accounting/getaccounting'
-import { getsortbudget_all } from '@/api/sortbudget/getsortbudget'
-import { formatdate_inc_time } from '@/utils/index'
+import { getentinfomations } from '@/api/infomations/getinfomations'
+import { getentprofile } from '@/api/ent-profile/getentprofile'
+import store from '../../../../store'
 
 export default {
   components: {
@@ -96,151 +95,37 @@ export default {
   },
   data() {
     return {
-      account_all_data: [],
-      account_all_balance: [],
-      c_user_m_history: [],
-      c_user_m_history_pay: [],
-      c_user_m_history_in: [],
-      c_user_y_history: [],
-      c_user_y_history_pay: [],
-      c_user_y_history_in: [],
-      c_category_m_list: [],
-      c_user_y_history_balance: ''
+      b_information: 0,
+      b_information_suc: 0,
+      b_information_yet: 0
     }
   },
   created() {
-    this.getaccount_all_data()
-    this.get_getaccounting_all()
-    this.get_getproject_all()
+    this.get_all_promotion()
   },
   methods: {
     handleSetLineChartData(type) {
       this.$emit('handleSetLineChartData', type)
     },
-    getaccount_all_data() {
-      getaccount_all(getToken()).then(res_month => {
-        this.account_all_data = res_month.data
-        this.account_all_balance = this.account_all_data.reduce(function(
-          accumulator,
-          currentValue
-        ) {
-          return accumulator + currentValue.balance
-        },
-        0)
-      })
-    },
-    get_getaccounting_all() {
-      const date = new Date()
-      const startmonth = new Date(date.getFullYear(), date.getMonth(), 1)
-      const endmonth = new Date(date.getFullYear(), date.getMonth() + 1, 0)
-      const startyear = new Date(date.getFullYear(), 0, 1)
-      const endyear = new Date(date.getFullYear(), 12, 0)
-      this.c_user_history = []
-      getaccounting_all(
-        getToken(),
-        formatdate_inc_time(startmonth, 'yyyy-mm-dd'),
-        formatdate_inc_time(endmonth, 'yyyy-mm-dd')
-      ).then(res_month => {
-        getaccounting_all(
-          getToken(),
-          formatdate_inc_time(startyear, 'yyyy-mm-dd'),
-          formatdate_inc_time(endyear, 'yyyy-mm-dd')
-        ).then(res_year => {
-          this.c_user_y_history = res_year.data
-          this.c_user_y_history.forEach(items => {
-            if (items.type === false) {
-              items.type = '支出'
-            } else {
-              items.type = '收入'
-            }
-            if (items.invoice_id === null || items.invoice_id === undefined) {
-              items.invoice_id = '-'
-            }
+    get_all_promotion() {
+      getentprofile(getToken(), store.getters.account).then(res => {
+        getentinfomations(getToken(), res.data[0].store_id).then(res => {
+          this.b_information = res.data.length
+          const data = []
+          let data_suc = []
+          let data_yet = []
+          for (let i = 0; i < res.data.length; i++) {
+            data.push(res.data[i])
+          }
+          data_suc = data.filter(function(item) {
+            return item.status === 1
           })
-          this.c_user_y_history_pay = this.c_user_y_history.filter(function(
-            item
-          ) {
-            return item.type === '支出'
+          data_yet = data.filter(function(item) {
+            return item.status === 0
           })
-
-          this.c_user_y_history_pay = this.c_user_y_history_pay.reduce(function(
-            accumulator,
-            currentValue
-          ) {
-            return accumulator + currentValue.amount
-          },
-          0)
-          this.c_user_y_history_in = this.c_user_y_history.filter(function(
-            item
-          ) {
-            return item.type === '收入'
-          })
-          this.c_user_y_history_in = this.c_user_y_history_in.reduce(function(
-            accumulator,
-            currentValue
-          ) {
-            return accumulator + currentValue.amount
-          },
-          0)
-          this.c_user_y_history_balance =
-            this.c_user_y_history_in - this.c_user_y_history_pay
-
-          this.c_user_m_history = res_month.data
-          this.c_user_m_history.forEach(items => {
-            if (items.type === false) {
-              items.type = '支出'
-            } else {
-              items.type = '收入'
-            }
-            if (items.invoice_id === null || items.invoice_id === undefined) {
-              items.invoice_id = '-'
-            }
-          })
-          this.c_user_m_history_pay = this.c_user_m_history.filter(function(
-            item
-          ) {
-            return item.type === '支出'
-          })
-
-          this.c_user_m_history_pay = this.c_user_m_history_pay.reduce(function(
-            accumulator,
-            currentValue
-          ) {
-            return accumulator + currentValue.amount
-          },
-          0)
-          this.c_user_m_history_in = this.c_user_m_history.filter(function(
-            item
-          ) {
-            return item.type === '收入'
-          })
-          this.c_user_m_history_in = this.c_user_m_history_in.reduce(function(
-            accumulator,
-            currentValue
-          ) {
-            return accumulator + currentValue.amount
-          },
-          0)
+          this.b_information_suc = data_suc.length
+          this.b_information_yet = data_yet.length
         })
-      })
-    },
-    get_getproject_all() {
-      this.c_category_m_list = []
-      const date = new Date()
-      const startmonth = new Date(date.getFullYear(), date.getMonth(), 1)
-      getsortbudget_all(
-        getToken(),
-        formatdate_inc_time(startmonth, 'yyyy'),
-        formatdate_inc_time(startmonth, 'mm')
-      ).then(res_month => {
-        this.c_category_m_list = res_month.data
-        this.c_category_m_list = this.c_category_m_list.reduce(function(
-          accumulator,
-          currentValue
-        ) {
-          return accumulator + currentValue.balance
-        },
-        0)
       })
     }
   }

@@ -281,6 +281,9 @@ export default {
       .icon-money {
         background: #f4516c;
       }
+      .icon-yell {
+        background: #ffb812;
+      }
       .icon-shopping {
         background: #34bfa3;
       }

@@ -14,31 +14,38 @@
           type="index"
           align="center"
         />
-        <el-table-column :label="$t('a_manage_business.account')">
+        <el-table-column
+          :label="$t('a_manage_business.number')"
+          align="center"
+        >
           <template
             slot-scope="scope"
-            prop="account"
-            align="center"
+            prop="id"
           >
-            <span>{{ scope.row.account }}</span>
+            <span>{{ scope.row.store_id }}</span>
           </template>
         </el-table-column>
-        <el-table-column :label="$t('a_manage_business.name')">
+
+        <el-table-column
+          :label="$t('a_manage_business.name')"
+          align="center"
+        >
           <template
             slot-scope="scope"
             prop="name"
-            align="center"
           >
             <span>{{ scope.row.name }}</span>
           </template>
         </el-table-column>
-        <el-table-column :label="$t('a_manage_business.number')">
+        <el-table-column
+          :label="$t('a_manage_business.account')"
+          align="center"
+        >
           <template
             slot-scope="scope"
-            prop="id"
-            align="center"
+            prop="account"
           >
-            <span>{{ scope.row.id }}</span>
+            <span>{{ scope.row.email }}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -374,6 +381,7 @@ export default {
       }, 1500)
     },
     get_member_all() {
+      /*
       const oridata = []
       getmember(getToken()).then(res => {
         for (let i = 0; i <= res.data.length; i++) {
@@ -385,20 +393,26 @@ export default {
           })
         }
       })
+      */
+      getentprofile(getToken()).then(res => {
+        this.a_all_ent_data = res.data
+      })
     },
     handle_advance(index, row) {
       this.a_ent_adv_visible = true
-      this.profile_edit_form.account = row.account
+      this.profile_edit_form.account = row.email
     },
     adv_cal() {
       this.a_ent_adv_visible = false
     },
     in_adv_motion_cal() {
       this.c_ent_confiinfo_visible = false
+      /*
       this.$message({
         type: 'info',
         message: '已取消動作'
       })
+      */
     },
 
     changetoinfoview() {
