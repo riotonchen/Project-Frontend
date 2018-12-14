@@ -22,7 +22,7 @@ export function getinfomations(token) {
   })
 }
 
-export function getentinfomations(token, store_id, startime, endtime) {
+export function getentinfomations(token, store_id, starttime, endtime) {
   var requ_url = 'https://www.177together.com/api/promotion/'
 
   return request({
@@ -33,7 +33,7 @@ export function getentinfomations(token, store_id, startime, endtime) {
     },
     params: {
       store_id,
-      startime,
+      starttime,
       endtime
     }
   })
