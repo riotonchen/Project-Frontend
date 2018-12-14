@@ -48,21 +48,26 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: #000;
+  background: rgba(0, 0, 0, 1);
   .loader {
     position: relative;
-    width: 30rem;
-    height: 30rem;
+    width: 60vh;
+    height: 60vh;
+    cursor: pointer;
     border-radius: 50%;
-    background: linear-gradient(#14ffe9, #ffcb3b, #d900ff);
-    animation: animate 0.3s linear infinite;
+    box-shadow: 0 0 30px rgba(73, 86, 216, 0.7),
+      0 0 30px rgba(73, 86, 216, 0.7) inset;
+    animation: breath 2.5s ease-in-out 0s infinite alternate;
+    //background: linear-gradient(#14ffe9, #ffcb3b, #d900ff);
+    //animation: animate 0.3s linear infinite;
     span {
       position: absolute;
       width: 100%;
       height: 100%;
       border-radius: 50%;
-      background: linear-gradient(#14ffe9, #ffcb3b, #d900ff);
+      //background: linear-gradient(#14ffe9, #ffcb3b, #d900ff);
     }
+    /*
     span:nth-child(1) {
       filter: blur(5px);
     }
@@ -75,7 +80,9 @@ export default {
     span:nth-child(4) {
       filter: blur(50px);
     }
+    */
   }
+  /*
   @keyframes animate {
     0% {
       transform: rotate(0deg);
@@ -84,15 +91,35 @@ export default {
       transform: rotate(360deg);
     }
   }
+  */
+  @keyframes breath {
+    0% {
+      opacity: 1;
+      box-shadow: 0 0 90vw rgba(0, 225, 255, 0.9),
+        0 0 12vw rgba(0, 225, 255, 0.7) inset;
+    }
+    50% {
+      opacity: 0.6;
+      border: 1px solid rgba(59, 58, 58, 0.1);
+      box-shadow: 0 0 45vw rgba(163, 186, 251, 0.8),
+        0 0 6vw rgba(0, 0, 0, 0.7) inset;
+    }
+    100% {
+      opacity: 1;
+      box-shadow: 0 0 90vw rgba(0, 225, 255, 0.9),
+        0 0 12vw rgba(0, 225, 255, 0.7) inset;
+    }
+  }
 
   .loader:after {
+    opacity: 0.5;
     content: "";
     position: absolute;
-    top: 1.5625rem;
-    left: 1.5625rem;
-    right: 1.5625rem;
-    bottom: 1.5625rem;
-    background: #000;
+    top: 0rem;
+    left: 0rem;
+    right: 0rem;
+    bottom: 0rem;
+    background: rgba(0, 0, 0, 0.3);
     border-radius: 50%;
   }
 
