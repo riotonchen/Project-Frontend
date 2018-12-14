@@ -33,10 +33,20 @@ export default {
     logIn: 'Log in',
     username: 'Username',
     password: 'Password',
+    bkhome: 'Back to Home',
     any: 'any',
     thirdparty: 'Or connect with',
     thirdpartyTips:
       'Can not be simulated on local, so please combine you own business simulation! ! !'
+  },
+  signup: {
+    title: 'Sign Up',
+    signUP: 'Send Out',
+    username: 'Account(Email)',
+    password: 'Password',
+    doublepswd: 'Plz key the same password',
+    entsignup: 'Enterprise Signup',
+    bkhome: 'Back to Home'
   },
   b_profile_edit: {
     email: 'email',

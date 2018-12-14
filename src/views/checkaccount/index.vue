@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import { Post_check_account } from '@/api/signup'
+import { Post_check_account } from '@/api/signup';
 export default {
   data() {
     return {
@@ -77,7 +77,6 @@ export default {
   methods: {
     get_hash_code() {
       this.user_hash = this.$route.query.hash
-      console.log(this.user_hash)
     },
     check_account() {
       Post_check_account(this.user_hash)
@@ -105,7 +104,13 @@ export default {
         })
         .catch(error => {
           console.log(error)
-          return false
+          this.$notify({
+            title: '錯誤',
+            message: '啟用帳號失敗，請聯絡我們幫你處理',
+            type: 'error',
+            duration: 3000,
+            showClose: false
+          })
         })
     }
   }
@@ -130,7 +135,7 @@ export default {
     //background: linear-gradient(#14ffe9, #ffcb3b, #d900ff);
     box-shadow: 0 0 30px rgba(73, 86, 216, 0.7),
       0 0 30px rgba(73, 86, 216, 0.7) inset;
-    animation: breath 2.5s ease-in-out 0s infinite alternate;
+    animation: breath 0.7s ease-in-out 0s infinite alternate;
     //animation: animate 0.3s linear infinite;
     span {
       position: absolute;

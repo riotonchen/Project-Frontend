@@ -86,15 +86,15 @@
         type="primary"
         style="width:100%;margin-bottom:-200px;margin-left:0px"
         @click.native.prevent="gohome"
-      >回首頁</el-button>
+      >{{ $t('login.bkhome') }}</el-button>
     </el-form>
 
   </div>
 </template>
 
 <script>
-import { validateEmail } from '@/utils/validate'
-import LangSelect from '@/components/LangSelect'
+import { validateEmail } from '@/utils/validate';
+import LangSelect from '@/components/LangSelect';
 
 const isvalidateEmail = (rule, value, callback) => {
   if (!validateEmail(value)) {
@@ -166,9 +166,9 @@ export default {
   methods: {
     showPwd() {
       if (this.passwordType === 'password') {
-        this.passwordType = ''
+        this.passwordType = '';
       } else {
-        this.passwordType = 'password'
+        this.passwordType = 'password';
       }
     },
     handleLogin() {

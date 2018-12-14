@@ -80,21 +80,21 @@
         type="primary"
         style="width:100%;margin-left:0px"
         @click.native.prevent="goent"
-      >商家註冊</el-button>
+      >{{ $t('signup.entsignup') }}</el-button>
       <el-button
         :loading="loadinghome"
         type="primary"
         style="width:100%;margin-left:0px;margin-top:15px;"
         @click.native.prevent="gohome"
-      >回首頁</el-button>
+      >{{ $t('signup.bkhome') }}</el-button>
     </el-form>
   </div>
 </template>
 
 <script>
-import { validateEmail } from '@/utils/validate'
-import LangSelect from '@/components/LangSelect'
-import { Postsignup } from '@/api/signup'
+import { validateEmail } from '@/utils/validate';
+import LangSelect from '@/components/LangSelect';
+import { Postsignup } from '@/api/signup';
 
 export default {
   name: 'CSignup',
@@ -160,9 +160,9 @@ export default {
   methods: {
     showPwd() {
       if (this.passwordType === 'password') {
-        this.passwordType = ''
+        this.passwordType = '';
       } else {
-        this.passwordType = 'password'
+        this.passwordType = 'password';
       }
     },
     handleSignup() {

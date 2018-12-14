@@ -30,6 +30,17 @@
                   class="promotion_img"
                 >
               </el-form-item>
+              <el-form-item
+                label="活動連結"
+                style="color:rgba(0,0,255,0.7);"
+              >
+                <a
+                  :href="scope.row.link"
+                  target="_blank"
+                >
+                  <span>{{ scope.row.link }}</span>
+                </a>
+              </el-form-item>
             </el-form>
           </template>
         </el-table-column>
@@ -103,9 +114,9 @@
 </template>
 
 <script>
-import { getentinfomations } from '@/api/infomations/getinfomations'
-import { patchinfomations } from '@/api/infomations/patchinfomations'
-import { getToken } from '@/utils/auth'
+import { getentinfomations } from '@/api/infomations/getinfomations';
+import { patchinfomations } from '@/api/infomations/patchinfomations';
+import { getToken } from '@/utils/auth';
 export default {
   data() {
     return {
@@ -121,9 +132,9 @@ export default {
         this.b_promotion = res.data
         this.b_promotion.forEach(items => {
           if (items.status === 1) {
-            items.status = '已審核'
+            items.status = '已審核';
           } else {
-            items.status = '未審核'
+            items.status = '未審核';
           }
         })
       })

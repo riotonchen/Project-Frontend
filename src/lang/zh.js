@@ -447,6 +447,7 @@ export default {
     logIn: '登入',
     username: '帳號',
     password: '密碼',
+    bkhome: '回到首頁',
     any: '隨便填',
     thirdparty: '第三方登入',
     thirdpartyTips: '尚未完成'
@@ -456,7 +457,9 @@ export default {
     signUP: '送出',
     username: '帳號(電子信箱)',
     password: '密碼',
-    doublepswd: '請再次輸入密碼'
+    doublepswd: '請再次輸入密碼',
+    entsignup: '商家註冊',
+    bkhome: '回到首頁'
   },
 
   documentation: {

@@ -29,8 +29,16 @@
                   class="promotion_img"
                 >
               </el-form-item>
-              <el-form-item label="活動連結">
-                <a :href="scope.row.link" />
+              <el-form-item
+                label="活動連結"
+                style="color:rgba(0,0,255,0.7);"
+              >
+                <a
+                  :href="scope.row.link"
+                  target="_blank"
+                >
+                  <span>{{ scope.row.link }}</span>
+                </a>
               </el-form-item>
             </el-form>
           </template>
@@ -199,11 +207,11 @@
   </div>
 </template>
 <script>
-import waves from '@/directive/waves' // 水波紋指令
-import { getToken } from '@/utils/auth'
-import { getentinfomations } from '@/api/infomations/getinfomations'
-import { getUserInfo } from '@/api/login'
-import { getentprofile } from '@/api/ent-profile/getentprofile'
+import waves from '@/directive/waves'; // 水波紋指令
+import { getToken } from '@/utils/auth';
+import { getentinfomations } from '@/api/infomations/getinfomations';
+import { getUserInfo } from '@/api/login';
+import { getentprofile } from '@/api/ent-profile/getentprofile';
 
 export default {
   name: 'ActHistory',
@@ -269,11 +277,12 @@ export default {
             this.ent_activity_history = res.data
             this.ent_activity_history.forEach(items => {
               if (items.status === 0) {
-                items.status = '未審核'
+                items.status = '未審核';
               } else {
-                items.status = '已發佈'
+                items.status = '已發佈';
               }
             })
+            console.log(this.ent_activity_history)
           })
         })
       })

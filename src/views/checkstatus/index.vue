@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { removeToken } from '@/utils/auth'
+import { removeToken } from '@/utils/auth';
 export default {
   data() {
     return {
@@ -57,7 +57,7 @@ export default {
     border-radius: 50%;
     box-shadow: 0 0 30px rgba(73, 86, 216, 0.7),
       0 0 30px rgba(73, 86, 216, 0.7) inset;
-    animation: breath 2.5s ease-in-out 0s infinite alternate;
+    animation: breath 0.7s ease-in-out 0s infinite alternate;
     //background: linear-gradient(#14ffe9, #ffcb3b, #d900ff);
     //animation: animate 0.3s linear infinite;
     span {

@@ -8,11 +8,11 @@
 </template>
 
 <script>
-import echarts from 'echarts'
+import echarts from 'echarts';
 require('echarts/theme/macarons') // echarts theme
-import { debounce } from '@/utils'
-import { formatdate_inc_time } from '@/utils/index'
-import 'zrender/lib/svg/svg'
+import { debounce } from '@/utils';
+import { formatdate_inc_time } from '@/utils/index';
+import 'zrender/lib/svg/svg';
 
 export default {
   props: {
@@ -93,7 +93,7 @@ export default {
         this.__resizeHandler()
       }
     },
-    setOptions({ alldata } = {}) {
+    setOptions({ mpromotion } = {}) {
       const start = new Date()
       const done = start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
       const dtwo = start.setTime(start.getTime() + 3600 * 1000 * 24 * 30)
@@ -149,7 +149,7 @@ export default {
 
         series: [
           {
-            name: '支出',
+            name: 'm優惠量',
             itemStyle: {
               normal: {
                 color: '#FF44AA',
@@ -173,7 +173,7 @@ export default {
             },
             smooth: true,
             type: 'line',
-            data: alldata,
+            data: mpromotion,
             animationDuration: 3500,
             animationEasing: 'cubicInOut'
           }

@@ -22,7 +22,7 @@ export function getinfomations(token) {
   })
 }
 
-export function getentinfomations(token, store_id) {
+export function getentinfomations(token, store_id, startime, endtime) {
   var requ_url = 'https://www.177together.com/api/promotion/'
 
   return request({
@@ -32,7 +32,9 @@ export function getentinfomations(token, store_id) {
       Authorization: 'JWT ' + token
     },
     params: {
-      store_id
+      store_id,
+      startime,
+      endtime
     }
   })
 }

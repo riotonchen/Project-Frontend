@@ -72,24 +72,23 @@
 </template>
 
 <script>
-import { getToken } from '@/utils/auth'
-import { formatdate_inc_time } from '@/utils/index'
-import store from '../../../store'
-import PanelGroup from './components/PanelGroup'
+import { getToken } from '@/utils/auth';
+import { formatdate_inc_time } from '@/utils/index';
+import store from '../../../store';
+import { getentinfomations } from '@/api/infomations/getinfomations';
+import { getUserInfo } from '@/api/login';
+import { getentprofile } from '@/api/ent-profile/getentprofile';
 
-import TransactionTable from './components/TransactionTable'
+import PanelGroup from './components/PanelGroup';
 
-import YLineChart from './components/YLineChart'
-import MLineChart from './components/MLineChart'
-import YStackLine from './components/YStackLine'
-import MStackLine from './components/MStackLine'
-import YINPie from './components/YINPie'
-import YPAYPie from './components/YPAYPie'
-const lineChartData = {
-  promotion: {
-    alldata: [130, 140, 50, 142, 70, 150, 160]
-  }
-}
+import TransactionTable from './components/TransactionTable';
+
+import YLineChart from './components/YLineChart';
+import MLineChart from './components/MLineChart';
+import YStackLine from './components/YStackLine';
+import MStackLine from './components/MStackLine';
+import YINPie from './components/YINPie';
+import YPAYPie from './components/YPAYPie';
 
 export default {
   name: 'DashboardMember',
@@ -105,7 +104,10 @@ export default {
   },
   data() {
     return {
-      lineChartData: lineChartData.promotion
+      lineChartData: {
+        ypromotion: [],
+        mpromotion: []
+      }
     }
   },
   created() {
@@ -118,12 +120,15 @@ export default {
       var user_id = decoded.status
       if (user_id === 0) {
         this.$router.push({ path: this.redirect || '/check_status' })
+      } else {
+        this.get_promotion_m()
+        this.get_promotion_all_y()
       }
     },
     handleSetLineChartData(type) {
       this.lineChartData = lineChartData[type]
     },
-    get_account_all_m() {
+    get_promotion_m() {
       const startform = new Date()
       const enddateform = new Date()
       startform.setMonth(startform.getMonth() + 3)
@@ -169,231 +174,58 @@ export default {
       const mnows1 = formatdate_inc_time(startform, 'yyyy-mm-dd')
       const mnowe1 = formatdate_inc_time(enddateform, 'yyyy-mm-dd')
 
-      getaccounting_all(getToken(), mnows1, mnowe1).then(res => {
-        let indata = []
-        let paydata = []
-        res.data.forEach(items => {
-          if (items.type === false) {
-            items.type = '支出'
-          } else {
-            items.type = '收入'
-          }
-        })
-        paydata = res.data.filter(function(item) {
-          return item.type === '支出'
-        })
-        indata = res.data.filter(function(item) {
-          return item.type === '收入'
-        })
-        paydata = paydata.reduce(function(accumulator, currentValue) {
-          return accumulator + currentValue.amount
-        }, 0)
-        indata = indata.reduce(function(accumulator, currentValue) {
-          return accumulator + currentValue.amount
-        }, 0)
-        this.lineChartData.mpaydata.push(paydata)
-        this.lineChartData.mindata.push(indata)
-        setTimeout(() => {
-          getaccounting_all(getToken(), mnows2, mnowe2).then(res => {
-            let indata = []
-            let paydata = []
-            res.data.forEach(items => {
-              if (items.type === false) {
-                items.type = '支出'
-              } else {
-                items.type = '收入'
-              }
-            })
-            paydata = res.data.filter(function(item) {
-              return item.type === '支出'
-            })
-            indata = res.data.filter(function(item) {
-              return item.type === '收入'
-            })
-            paydata = paydata.reduce(function(accumulator, currentValue) {
-              return accumulator + currentValue.amount
-            }, 0)
-            indata = indata.reduce(function(accumulator, currentValue) {
-              return accumulator + currentValue.amount
-            }, 0)
-            this.lineChartData.mpaydata.push(paydata)
-            this.lineChartData.mindata.push(indata)
-            setTimeout(() => {
-              getaccounting_all(getToken(), mnows3, mnowe3).then(res => {
-                let indata = []
-                let paydata = []
-                res.data.forEach(items => {
-                  if (items.type === false) {
-                    items.type = '支出'
-                  } else {
-                    items.type = '收入'
+      getUserInfo(getToken()).then(res => {
+        getentprofile(getToken(), res.data.account).then(res => {
+          const store_id = res.data[0].store_id
+          getentinfomations(getToken(), store_id, mnows1, mnowe1).then(res => {
+            this.lineChartData.mpromotion.push(res.data.length)
+            getentinfomations(getToken(), store_id, mnows2, mnowe2).then(
+              res => {
+                this.lineChartData.mpromotion.push(res.data.length)
+                getentinfomations(getToken(), store_id, mnows3, mnowe3).then(
+                  res => {
+                    this.lineChartData.mpromotion.push(res.data.length)
+                    getentinfomations(
+                      getToken(),
+                      store_id,
+                      mnows4,
+                      mnowe4
+                    ).then(res => {
+                      this.lineChartData.mpromotion.push(res.data.length)
+                      getentinfomations(
+                        getToken(),
+                        store_id,
+                        mnows5,
+                        mnowe5
+                      ).then(res => {
+                        this.lineChartData.mpromotion.push(res.data.length)
+                        getentinfomations(
+                          getToken(),
+                          store_id,
+                          mnows6,
+                          mnowe6
+                        ).then(res => {
+                          this.lineChartData.mpromotion.push(res.data.length)
+                          getentinfomations(
+                            getToken(),
+                            store_id,
+                            mnows7,
+                            mnowe7
+                          ).then(res => {
+                            this.lineChartData.mpromotion.push(res.data.length)
+                          })
+                        })
+                      })
+                    })
                   }
-                })
-                paydata = res.data.filter(function(item) {
-                  return item.type === '支出'
-                })
-                indata = res.data.filter(function(item) {
-                  return item.type === '收入'
-                })
-                paydata = paydata.reduce(function(accumulator, currentValue) {
-                  return accumulator + currentValue.amount
-                }, 0)
-                indata = indata.reduce(function(accumulator, currentValue) {
-                  return accumulator + currentValue.amount
-                }, 0)
-                this.lineChartData.mpaydata.push(paydata)
-                this.lineChartData.mindata.push(indata)
-                setTimeout(() => {
-                  getaccounting_all(getToken(), mnows4, mnowe4).then(res => {
-                    let indata = []
-                    let paydata = []
-                    res.data.forEach(items => {
-                      if (items.type === false) {
-                        items.type = '支出'
-                      } else {
-                        items.type = '收入'
-                      }
-                    })
-                    paydata = res.data.filter(function(item) {
-                      return item.type === '支出'
-                    })
-                    indata = res.data.filter(function(item) {
-                      return item.type === '收入'
-                    })
-                    paydata = paydata.reduce(function(
-                      accumulator,
-                      currentValue
-                    ) {
-                      return accumulator + currentValue.amount
-                    },
-                    0)
-                    indata = indata.reduce(function(accumulator, currentValue) {
-                      return accumulator + currentValue.amount
-                    }, 0)
-                    this.lineChartData.mpaydata.push(paydata)
-                    this.lineChartData.mindata.push(indata)
-                    setTimeout(() => {
-                      getaccounting_all(getToken(), mnows5, mnowe5).then(
-                        res => {
-                          let indata = []
-                          let paydata = []
-                          res.data.forEach(items => {
-                            if (items.type === false) {
-                              items.type = '支出'
-                            } else {
-                              items.type = '收入'
-                            }
-                          })
-                          paydata = res.data.filter(function(item) {
-                            return item.type === '支出'
-                          })
-                          indata = res.data.filter(function(item) {
-                            return item.type === '收入'
-                          })
-                          paydata = paydata.reduce(function(
-                            accumulator,
-                            currentValue
-                          ) {
-                            return accumulator + currentValue.amount
-                          },
-                          0)
-                          indata = indata.reduce(function(
-                            accumulator,
-                            currentValue
-                          ) {
-                            return accumulator + currentValue.amount
-                          },
-                          0)
-                          this.lineChartData.mpaydata.push(paydata)
-                          this.lineChartData.mindata.push(indata)
-                          setTimeout(() => {
-                            getaccounting_all(getToken(), mnows6, mnowe6).then(
-                              res => {
-                                let indata = []
-                                let paydata = []
-                                res.data.forEach(items => {
-                                  if (items.type === false) {
-                                    items.type = '支出'
-                                  } else {
-                                    items.type = '收入'
-                                  }
-                                })
-                                paydata = res.data.filter(function(item) {
-                                  return item.type === '支出'
-                                })
-                                indata = res.data.filter(function(item) {
-                                  return item.type === '收入'
-                                })
-                                paydata = paydata.reduce(function(
-                                  accumulator,
-                                  currentValue
-                                ) {
-                                  return accumulator + currentValue.amount
-                                },
-                                0)
-                                indata = indata.reduce(function(
-                                  accumulator,
-                                  currentValue
-                                ) {
-                                  return accumulator + currentValue.amount
-                                },
-                                0)
-                                this.lineChartData.mpaydata.push(paydata)
-                                this.lineChartData.mindata.push(indata)
-                                setTimeout(() => {
-                                  getaccounting_all(
-                                    getToken(),
-                                    mnows7,
-                                    mnowe7
-                                  ).then(res => {
-                                    let indata = []
-                                    let paydata = []
-                                    res.data.forEach(items => {
-                                      if (items.type === false) {
-                                        items.type = '支出'
-                                      } else {
-                                        items.type = '收入'
-                                      }
-                                    })
-                                    paydata = res.data.filter(function(item) {
-                                      return item.type === '支出'
-                                    })
-                                    indata = res.data.filter(function(item) {
-                                      return item.type === '收入'
-                                    })
-                                    paydata = paydata.reduce(function(
-                                      accumulator,
-                                      currentValue
-                                    ) {
-                                      return accumulator + currentValue.amount
-                                    },
-                                    0)
-                                    indata = indata.reduce(function(
-                                      accumulator,
-                                      currentValue
-                                    ) {
-                                      return accumulator + currentValue.amount
-                                    },
-                                    0)
-                                    this.lineChartData.mpaydata.push(paydata)
-                                    this.lineChartData.mindata.push(indata)
-                                  })
-                                }, 50)
-                              }
-                            )
-                          }, 50)
-                        }
-                      )
-                    }, 50)
-                  })
-                }, 50)
-              })
-            }, 50)
+                )
+              }
+            )
           })
-        }, 50)
+        })
       })
     },
-    get_account_all_y() {
+    get_promotion_all_y() {
       // ynows4,ynowe4 為中間值
       const startfory = new Date()
       const enddatefory = new Date()
@@ -451,234 +283,55 @@ export default {
         'yyyy-mm-dd'
       )
 
-      getaccounting_all(getToken(), ynows1, ynowe1).then(res => {
-        let indata = []
-        let paydata = []
-        res.data.forEach(items => {
-          if (items.type === false) {
-            items.type = '支出'
-          } else {
-            items.type = '收入'
-          }
-        })
-        paydata = res.data.filter(function(item) {
-          return item.type === '支出'
-        })
-        indata = res.data.filter(function(item) {
-          return item.type === '收入'
-        })
-        paydata = paydata.reduce(function(accumulator, currentValue) {
-          return accumulator + currentValue.amount
-        }, 0)
-        indata = indata.reduce(function(accumulator, currentValue) {
-          return accumulator + currentValue.amount
-        }, 0)
-        this.lineChartData.paydata.push(paydata)
-        this.lineChartData.indata.push(indata)
-
-        setTimeout(() => {
-          getaccounting_all(getToken(), ynows2, ynowe2).then(res => {
-            let indata = []
-            let paydata = []
-            res.data.forEach(items => {
-              if (items.type === false) {
-                items.type = '支出'
-              } else {
-                items.type = '收入'
-              }
-            })
-            paydata = res.data.filter(function(item) {
-              return item.type === '支出'
-            })
-            indata = res.data.filter(function(item) {
-              return item.type === '收入'
-            })
-            paydata = paydata.reduce(function(accumulator, currentValue) {
-              return accumulator + currentValue.amount
-            }, 0)
-            indata = indata.reduce(function(accumulator, currentValue) {
-              return accumulator + currentValue.amount
-            }, 0)
-            this.lineChartData.paydata.push(paydata)
-            this.lineChartData.indata.push(indata)
-
-            setTimeout(() => {
-              getaccounting_all(getToken(), ynows3, ynowe3).then(res => {
-                let indata = []
-                let paydata = []
-                res.data.forEach(items => {
-                  if (items.type === false) {
-                    items.type = '支出'
-                  } else {
-                    items.type = '收入'
+      getUserInfo(getToken()).then(res => {
+        getentprofile(getToken(), res.data.account).then(res => {
+          const store_id = res.data[0].store_id
+          getentinfomations(getToken(), store_id, ynows1, ynowe1).then(res => {
+            this.lineChartData.ypromotion.push(res.data.length)
+            getentinfomations(getToken(), store_id, ynows2, ynowe2).then(
+              res => {
+                this.lineChartData.ypromotion.push(res.data.length)
+                getentinfomations(getToken(), store_id, ynows3, ynowe3).then(
+                  res => {
+                    this.lineChartData.ypromotion.push(res.data.length)
+                    getentinfomations(
+                      getToken(),
+                      store_id,
+                      ynows4,
+                      ynowe4
+                    ).then(res => {
+                      this.lineChartData.ypromotion.push(res.data.length)
+                      getentinfomations(
+                        getToken(),
+                        store_id,
+                        ynows5,
+                        ynowe5
+                      ).then(res => {
+                        this.lineChartData.ypromotion.push(res.data.length)
+                        getentinfomations(
+                          getToken(),
+                          store_id,
+                          ynows6,
+                          ynowe6
+                        ).then(res => {
+                          this.lineChartData.ypromotion.push(res.data.length)
+                          getentinfomations(
+                            getToken(),
+                            store_id,
+                            ynows7,
+                            ynowe7
+                          ).then(res => {
+                            this.lineChartData.ypromotion.push(res.data.length)
+                          })
+                        })
+                      })
+                    })
                   }
-                })
-                paydata = res.data.filter(function(item) {
-                  return item.type === '支出'
-                })
-                indata = res.data.filter(function(item) {
-                  return item.type === '收入'
-                })
-                paydata = paydata.reduce(function(accumulator, currentValue) {
-                  return accumulator + currentValue.amount
-                }, 0)
-                indata = indata.reduce(function(accumulator, currentValue) {
-                  return accumulator + currentValue.amount
-                }, 0)
-                this.lineChartData.paydata.push(paydata)
-                this.lineChartData.indata.push(indata)
-
-                setTimeout(() => {
-                  getaccounting_all(getToken(), ynows4, ynowe4).then(res => {
-                    let indata = []
-                    let paydata = []
-                    res.data.forEach(items => {
-                      if (items.type === false) {
-                        items.type = '支出'
-                      } else {
-                        items.type = '收入'
-                      }
-                    })
-                    paydata = res.data.filter(function(item) {
-                      return item.type === '支出'
-                    })
-                    indata = res.data.filter(function(item) {
-                      return item.type === '收入'
-                    })
-                    paydata = paydata.reduce(function(
-                      accumulator,
-                      currentValue
-                    ) {
-                      return accumulator + currentValue.amount
-                    },
-                    0)
-                    indata = indata.reduce(function(accumulator, currentValue) {
-                      return accumulator + currentValue.amount
-                    }, 0)
-                    this.lineChartData.paydata.push(paydata)
-                    this.lineChartData.indata.push(indata)
-
-                    setTimeout(() => {
-                      getaccounting_all(getToken(), ynows5, ynowe5).then(
-                        res => {
-                          let indata = []
-                          let paydata = []
-                          res.data.forEach(items => {
-                            if (items.type === false) {
-                              items.type = '支出'
-                            } else {
-                              items.type = '收入'
-                            }
-                          })
-                          paydata = res.data.filter(function(item) {
-                            return item.type === '支出'
-                          })
-                          indata = res.data.filter(function(item) {
-                            return item.type === '收入'
-                          })
-                          paydata = paydata.reduce(function(
-                            accumulator,
-                            currentValue
-                          ) {
-                            return accumulator + currentValue.amount
-                          },
-                          0)
-                          indata = indata.reduce(function(
-                            accumulator,
-                            currentValue
-                          ) {
-                            return accumulator + currentValue.amount
-                          },
-                          0)
-                          this.lineChartData.paydata.push(paydata)
-                          this.lineChartData.indata.push(indata)
-
-                          setTimeout(() => {
-                            getaccounting_all(getToken(), ynows6, ynowe6).then(
-                              res => {
-                                let indata = []
-                                let paydata = []
-                                res.data.forEach(items => {
-                                  if (items.type === false) {
-                                    items.type = '支出'
-                                  } else {
-                                    items.type = '收入'
-                                  }
-                                })
-                                paydata = res.data.filter(function(item) {
-                                  return item.type === '支出'
-                                })
-                                indata = res.data.filter(function(item) {
-                                  return item.type === '收入'
-                                })
-                                paydata = paydata.reduce(function(
-                                  accumulator,
-                                  currentValue
-                                ) {
-                                  return accumulator + currentValue.amount
-                                },
-                                0)
-                                indata = indata.reduce(function(
-                                  accumulator,
-                                  currentValue
-                                ) {
-                                  return accumulator + currentValue.amount
-                                },
-                                0)
-                                this.lineChartData.paydata.push(paydata)
-                                this.lineChartData.indata.push(indata)
-
-                                setTimeout(() => {
-                                  getaccounting_all(
-                                    getToken(),
-                                    ynows7,
-                                    ynowe7
-                                  ).then(res => {
-                                    let indata = []
-                                    let paydata = []
-                                    res.data.forEach(items => {
-                                      if (items.type === false) {
-                                        items.type = '支出'
-                                      } else {
-                                        items.type = '收入'
-                                      }
-                                    })
-                                    paydata = res.data.filter(function(item) {
-                                      return item.type === '支出'
-                                    })
-                                    indata = res.data.filter(function(item) {
-                                      return item.type === '收入'
-                                    })
-                                    paydata = paydata.reduce(function(
-                                      accumulator,
-                                      currentValue
-                                    ) {
-                                      return accumulator + currentValue.amount
-                                    },
-                                    0)
-                                    indata = indata.reduce(function(
-                                      accumulator,
-                                      currentValue
-                                    ) {
-                                      return accumulator + currentValue.amount
-                                    },
-                                    0)
-                                    this.lineChartData.paydata.push(paydata)
-                                    this.lineChartData.indata.push(indata)
-                                  })
-                                }, 50)
-                              }
-                            )
-                          }, 50)
-                        }
-                      )
-                    }, 50)
-                  })
-                }, 50)
-              })
-            }, 50)
+                )
+              }
+            )
           })
-        }, 50)
+        })
       })
     }
   }

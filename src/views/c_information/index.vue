@@ -44,8 +44,8 @@
 </template>
 
 <script>
-import { getinfomations } from '@/api/infomations/getinfomations'
-import { getToken } from '@/utils/auth'
+import { getinfomations } from '@/api/infomations/getinfomations';
+import { getToken } from '@/utils/auth';
 
 export default {
   data() {
@@ -87,12 +87,12 @@ export default {
   justify-content: center;
   align-items: center;
   height: 90vh;
-  background: #383636;
+  //background: #383636;
   font-family: "Microsoft JhengHei";
   .loader {
     position: relative;
     font-size: 5vw;
-    background: #000;
+    background: rgba(0, 0, 0, 0.5);
     color: #000;
     font-weight: bold;
     letter-spacing: 10px;
@@ -109,7 +109,7 @@ export default {
     left: 0;
     width: 10rem;
     height: 100%;
-    background: rgba(255, 208, 0, 0.863);
+    background: rgba(24, 30, 31, 0.7);
     animation: animate 3s linear infinite;
   }
   @keyframes animate {
